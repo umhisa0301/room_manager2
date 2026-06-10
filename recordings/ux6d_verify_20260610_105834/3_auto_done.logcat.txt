@@ -1,0 +1,1223 @@
+--------- beginning of main
+06-10 11:06:18.647 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:monkey -p com.stepbytestudio.room_manager2 -c android.intent.category.LAUNCHER 1'
+06-10 11:06:18.735  1247  1247 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+06-10 11:06:18.739  1247  1247 I AndroidRuntime: Using default boot image
+06-10 11:06:18.739  1247  1247 I AndroidRuntime: Leaving lock profiling enabled
+06-10 11:06:18.743  1247  1247 I app_process: Using generational CollectorTypeCC GC.
+06-10 11:06:18.795  1247  1247 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+06-10 11:06:18.804  1247  1247 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:18.804  1247  1247 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+06-10 11:06:18.805  1247  1247 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+06-10 11:06:18.805  1247  1247 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:18.807  1247  1247 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:18.808  1247  1247 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+06-10 11:06:18.831  1247  1247 W libc    : Access denied finding property "ro.product.name_for_attestation"
+06-10 11:06:18.832  1247  1247 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+06-10 11:06:18.832  1247  1247 W libc    : Access denied finding property "ro.product.model_for_attestation"
+06-10 11:06:18.833  1247  1247 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:18.833  1247  1247 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+06-10 11:06:18.834  1247  1247 W Monkey  : args: [-p, com.stepbytestudio.room_manager2, -c, android.intent.category.LAUNCHER, 1]
+06-10 11:06:18.834  1247  1247 W Monkey  :  arg: "-p"
+06-10 11:06:18.834  1247  1247 W Monkey  :  arg: "com.stepbytestudio.room_manager2"
+--------- beginning of kernel
+06-10 11:06:18.833     0     0 I binder  : 1247:1247 ioctl 40046210 7fe63a4640 returned -22
+06-10 11:06:18.834  1247  1247 W Monkey  :  arg: "-c"
+06-10 11:06:18.834  1247  1247 W Monkey  :  arg: "android.intent.category.LAUNCHER"
+06-10 11:06:18.834  1247  1247 W Monkey  :  arg: "1"
+06-10 11:06:18.835  1247  1247 W Monkey  : data="com.stepbytestudio.room_manager2"
+06-10 11:06:18.835  1247  1247 W Monkey  : data="android.intent.category.LAUNCHER"
+--------- beginning of system
+06-10 11:06:18.844  1596  2995 W ActivityManager: registerReceiverWithFeature: no app for null
+06-10 11:06:18.850  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10495; state: DISABLED
+06-10 11:06:18.851  1596  2995 W ActivityTaskManager: callingPackage for (uid=2000, pid=1247) has no WPC
+06-10 11:06:18.851  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10495; state: DISABLED
+06-10 11:06:18.852  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10495; state: DISABLED
+06-10 11:06:18.853  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10495; state: DISABLED
+06-10 11:06:18.853  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10495; state: ENABLED
+06-10 11:06:18.856  1364  1526 W ANDR-PERF-LM: MetaMeter: handlePrimaryAsync() 118: AdaptLaunch MetaMeter. No MeterMgr Available to handle this Primary Async. !!!!
+06-10 11:06:18.856  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.857  1596  2995 E ANDR-PERF-JNI: com_qualcomm_qtiperformance_native_perf_io_prefetch_start
+06-10 11:06:18.859  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.859  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.862  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10495; state: DISABLED
+06-10 11:06:18.862  1364  1526 W ANDR-PERF-LM: MetaMeter: handlePrimaryAsync() 118: AdaptLaunch MetaMeter. No MeterMgr Available to handle this Primary Async. !!!!
+06-10 11:06:18.862  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.863  1361  4291 E ANDR-IOP: io prefetch is disabled
+06-10 11:06:18.863  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10495; state: DISABLED
+06-10 11:06:18.865  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10495; state: ENABLED
+06-10 11:06:18.865  1596  2995 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+06-10 11:06:18.868  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 194833441; UID 10495; state: ENABLED
+06-10 11:06:18.868  1596  2995 I ActivityTaskManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity} with LAUNCH_SINGLE_TOP from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+06-10 11:06:18.869  2875  2949 V WindowManagerShell: Transition requested: android.os.BinderProxy@1fb334a TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=1297 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity } baseActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} topActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} origActivity=null realActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} numActivities=1 lastActiveTime=68923504 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@6d192bb} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 58 - 0, 0) topActivityInfo=ActivityInfo{992a3d8 com.stepbytestudio.room_manager2.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+06-10 11:06:18.870  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10495; state: DISABLED
+06-10 11:06:18.870  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 177438394; UID 10495; state: DISABLED
+06-10 11:06:18.870  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135772972; UID 10495; state: DISABLED
+06-10 11:06:18.870  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135754954; UID 10495; state: ENABLED
+06-10 11:06:18.871  1596  2124 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10495; state: ENABLED
+06-10 11:06:18.871  1247  1247 I Monkey  : Events injected: 1
+06-10 11:06:18.871  1364  1526 W ANDR-PERF-LM: FeatureState: writeState() 188: GameOptimization: State transition not allowed
+06-10 11:06:18.883  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10495; state: DISABLED
+06-10 11:06:18.884  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10495; state: DISABLED
+06-10 11:06:18.884  1175  1175 D Zygote  : Forked child process 1276
+06-10 11:06:18.885  1596  2124 I ActivityManager: Start proc 1276:com.stepbytestudio.room_manager2/u0a495 for next-top-activity {com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}
+06-10 11:06:18.885  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.885  1596  1282 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1220 com.qualcomm.qti.Performance$SendGameLaunchBroadcast.run:247 java.lang.Thread.run:1572 <bottom of call stack> <bottom of call stack> 
+06-10 11:06:18.894  1596  8761 D CoreBackPreview: Window{fb0aaab u0 Splash Screen com.stepbytestudio.room_manager2}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@fcd4687, mPriority=0, mIsAnimationCallback=false}
+06-10 11:06:18.894  2875  2960 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:18.895  2875  2967 E OpenGLRenderer: Unable to match the desired swap behavior.
+06-10 11:06:18.896  1247  1247 I Monkey  : ## Network stats: elapsed time=43ms (0ms mobile, 0ms wifi, 43ms not connected)
+06-10 11:06:18.897  1247  1247 I app_process: System.exit called, status: 0
+06-10 11:06:18.897  1247  1247 I AndroidRuntime: VM exiting with result code 0.
+06-10 11:06:18.898  4781  6250 W SQLiteLog: (28) double-quoted string literal: "com.stepbytestudio.room_manager2"
+06-10 11:06:18.902  1596  2622 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10495; state: ENABLED
+06-10 11:06:18.905  1596  2084 V WindowManager: Sent Transition #168 createdAt=06-10 11:06:18.853 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=1297 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity } baseActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} topActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} origActivity=null realActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} numActivities=1 lastActiveTime=68923504 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{55ec795 Task{469548f #1297 type=standard I=com.stepbytestudio.room_manager2/.MainActivity}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 58 - 0, 0) topActivityInfo=ActivityInfo{c6890aa com.stepbytestudio.room_manager2.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+06-10 11:06:18.905  1596  2084 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+06-10 11:06:18.905  1596  2084 V WindowManager:     info={id=168 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{55ec795 Task{469548f #1297 type=standard I=com.stepbytestudio.room_manager2/.MainActivity}}} m=OPEN f=NONE leash=Surface(name=Task=1297)/@0x4c496d9 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{RemoteToken{d522a0e Task{5f550b0 #1251 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0x67235d3 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:06:18.906  2875  2949 V WindowManagerShell: onTransitionReady android.os.BinderProxy@1fb334a: {id=168 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@68dea8f} m=OPEN f=NONE leash=Surface(name=Task=1297)/@0xf3615f0 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@17ea11c} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0xc56a769 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:06:18.906  2875  2949 V WindowManagerShell: Playing animation for (#168)android.os.BinderProxy@1fb334a@0
+06-10 11:06:18.906  1481  1481 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@bbd5067
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@df2b4d4
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@367c67d
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@357c972
+06-10 11:06:18.906  2875  2949 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@bedb1c3
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@304a40
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@8af4d79
+06-10 11:06:18.906  2875  2949 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=168 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@68dea8f} m=OPEN f=NONE leash=Surface(name=Task=1297)/@0xf3615f0 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@17ea11c} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0xc56a769 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{jp.co.sharp.android.launcher3/jp.co.sharp.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@7566ce4, appThread = android.app.IApplicationThread$Stub$Proxy@152054d, debugName = QuickstepLaunchHome }}
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  Delegate animation for #168 to null
+06-10 11:06:18.906  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@d50abe
+06-10 11:06:18.906  2875  2949 V WindowManagerShell: start default transition animation, info = {id=168 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@68dea8f} m=OPEN f=NONE leash=Surface(name=Task=1297)/@0xf3615f0 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@17ea11c} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0xc56a769 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:06:18.907  2875  2949 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@96f02fa animAttr=0x13 type=OPEN isEntrance=false
+06-10 11:06:18.907  2875  2949 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@71a54c6 animAttr=0x12 type=OPEN isEntrance=true
+06-10 11:06:18.909  2875  2949 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@d50abe
+06-10 11:06:18.912  1276  1276 I o.room_manager2: Late-enabling -Xcheck:jni
+06-10 11:06:18.931  1276  1276 I o.room_manager2: Using generational CollectorTypeCC GC.
+06-10 11:06:18.933 16269 16278 I adbd    : jdwp connection from 1276
+06-10 11:06:18.937  1276  1276 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:18.937     0     0 I binder  : 1276:1276 ioctl 40046210 7fffd73c00 returned -22
+06-10 11:06:18.945  1364  4267 E ANDR-PERF-LM: VmRssMeter:: start() 453: Could not find pid, can not collect vmrss data
+06-10 11:06:18.947  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:06:18.947  1364  4268 E ANDR-PERF-LM: VmRssMeter:: start() 453: Could not find pid, can not collect vmrss data
+06-10 11:06:18.947  1364  4268 E ANDR-PERF-LM: AdaptiveLaunch: writeToDataBase() 64: Meter aborted or could not get meter data for this run
+06-10 11:06:18.947  1596  2607 D CompatibilityInfo: mCompatibilityFlags - 0
+06-10 11:06:18.947  1596  2607 D CompatibilityInfo: applicationDensity - 280
+06-10 11:06:18.947  1596  2607 D CompatibilityInfo: applicationScale - 1.0
+06-10 11:06:18.960  4674  7943 D MainProcessObserver: pid:1276 uid:10495 foregroundActivities:true
+06-10 11:06:18.962  1596  8761 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:18.962  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10495; state: ENABLED
+06-10 11:06:18.962  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10495; state: ENABLED
+06-10 11:06:18.962  4674  7943 D onForegroundChanged: topActivity:ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}, taskId:1297, windowingMode:1
+06-10 11:06:18.962  4674  7943 D onForegroundChanged: packageName:com.stepbytestudio.room_manager2
+06-10 11:06:18.965  1596  2607 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:18.967  1596  2998 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10495; state: ENABLED
+06-10 11:06:18.973 30974 30974 I bynm    : onPause
+06-10 11:06:18.977  1596  4709 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:18.979     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (-5000)
+06-10 11:06:19.110  1596  8761 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:19.117  1276  1276 D nativeloader: Configuring clns-4 for other apk /data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/lib/arm64:/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.stepbytestudio.room_manager2
+06-10 11:06:19.124  1276  1276 D nativeloader: Load libframework-connectivity-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity.jar: ok
+06-10 11:06:19.125  1276  1276 I Perf    : Connecting to perf service.
+06-10 11:06:19.130  1276  1276 V GraphicsEnvironment: Currently set values for:
+06-10 11:06:19.130  1276  1276 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+06-10 11:06:19.130  1276  1276 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+06-10 11:06:19.131  1276  1276 V GraphicsEnvironment: ANGLE GameManagerService for com.stepbytestudio.room_manager2: false
+06-10 11:06:19.131  1276  1276 V GraphicsEnvironment: com.stepbytestudio.room_manager2 is not listed in per-application setting
+06-10 11:06:19.131  1276  1276 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+06-10 11:06:19.150  1596  2998 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10495. pid: 1276
+06-10 11:06:19.181  1276  1312 D FlutterJNI: Beginning load of flutter...
+06-10 11:06:19.188  1276  1363 I ResourceExtractor: Found extracted resources res_timestamp-7-1781057083417
+06-10 11:06:19.207  2875  2949 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#168)android.os.BinderProxy@1fb334a@0
+06-10 11:06:19.208  1276  1312 D nativeloader: Load /data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk): ok
+06-10 11:06:19.209  1596  2084 V WindowManager: Finish Transition #168: created at 06-10 11:06:18.853 collect-started=0.046ms request-sent=13.684ms started=17.074ms ready=48.035ms sent=50.426ms finished=355.36ms
+06-10 11:06:19.209  1276  1312 D FlutterJNI: flutter (null) was loaded normally!
+06-10 11:06:19.212  2875  2949 V WindowManagerShell: Track 0 became idle
+06-10 11:06:19.212  2875  2949 V WindowManagerShell: All active transition animations finished
+06-10 11:06:19.230  1276  1276 W o.room_manager2: type=1400 audit(0.0:14592): avc:  denied  { read } for  name="max_map_count" dev="proc" ino=1128227 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:18.979     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4287 batt_curr:-5
+06-10 11:06:19.235     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:19.235     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:19.235     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:19.235     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:19.235     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:19.257  1276  1389 D vulkan  : searching for layers in '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/lib/arm64'
+06-10 11:06:19.257  1276  1389 D vulkan  : searching for layers in '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a'
+06-10 11:06:19.265  1276  1389 D vulkan  : added global layer 'VK_LAYER_KHRONOS_validation' from library '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a/libVkLayer_khronos_validation.so'
+06-10 11:06:19.276  1276  1389 I AdrenoVK-0: ===== BEGIN DUMP OF OVERRIDDEN SETTINGS =====
+06-10 11:06:19.276  1276  1389 I AdrenoVK-0: ===== END DUMP OF OVERRIDDEN SETTINGS =====
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: QUALCOMM build          : a3cdec2236, Ief33eea0db
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Build Date              : 08/23/22
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Shader Compiler Version : EV031.35.01.12
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Local Branch            : 
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Reconstruct Branch      : 
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Build Config            : S P 10.0.7 AArch64
+06-10 11:06:19.277  1276  1389 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+06-10 11:06:19.282  1276  1389 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-10 11:06:19.352  1596  2123 E Notifier: app_name=com.stepbytestudio.room_manager2
+06-10 11:06:19.433  1276  1441 I flutter : The Dart VM service is listening on http://127.0.0.1:38637/5ujDe-2Z45U=/
+06-10 11:06:19.505  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 0] [i 3]
+06-10 11:06:19.538  1276  1276 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:06:19.538  1276  1276 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:06:19.538  1276  1276 I o.room_manager2: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:06:19.538  1276  1276 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:06:19.567  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10495; state: DISABLED
+06-10 11:06:19.569  1276  1276 W OpenGLRenderer: Unknown dataspace 0
+06-10 11:06:19.708  1276  1276 I flutter : [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+06-10 11:06:19.709  1276  1276 I flutter : [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+06-10 11:06:19.729  1276  1276 I Choreographer: Skipped 34 frames!  The application may be doing too much work on its main thread.
+06-10 11:06:19.770  1596  4709 D CoreBackPreview: Window{dc1a95f u0 com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@cb5ac0a, mPriority=0, mIsAnimationCallback=false}
+06-10 11:06:19.781     0     0 I binder  : 1276:1276 ioctl 40046210 7fffd702c4 returned -22
+06-10 11:06:19.783  1276  1276 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:19.778  1276  1276 W o.room_manager2: type=1400 audit(0.0:14593): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: QUALCOMM build                   : a3cdec2236, Ief33eea0db
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Build Date                       : 08/23/22
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: OpenGL ES Shader Compiler Version: EV031.35.01.12
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Local Branch                     : 
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Remote Branch                    : 
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Remote Branch                    : 
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Reconstruct Branch               : 
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Build Config                     : S P 10.0.7 AArch64
+06-10 11:06:19.784  1276  1308 I AdrenoGLES-0: Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+06-10 11:06:19.788  1276  1308 I AdrenoGLES-0: PFP: 0x016ee201, ME: 0x00000000
+06-10 11:06:19.800  1276  1276 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:19.794  1276  1276 W o.room_manager2: type=1400 audit(0.0:14594): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:19.801     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+06-10 11:06:19.806     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+06-10 11:06:19.807  1276  1389 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:06:19.807  1276  1389 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.807  1276  1389 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.807  1276  1389 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.807  1276  1389 E Gralloc4: isSupported(1, 1, 56, 1, ...) failed with 1
+06-10 11:06:19.807  1276  1308 E OpenGLRenderer: Unable to match the desired swap behavior.
+06-10 11:06:19.808  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:06:19.808  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.808  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.808  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+06-10 11:06:19.809  1276  1389 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E Gralloc4: isSupported(1, 1, 59, 1, ...) failed with 1
+06-10 11:06:19.809  1357  1504 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:06:19.809  1357  1504 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1357  1504 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1357  1504 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+06-10 11:06:19.809  1276  1389 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E Gralloc4: isSupported(1, 1, 56, 1, ...) failed with 1
+06-10 11:06:19.809  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:06:19.809  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+06-10 11:06:19.809  1276  1389 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1276  1389 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1276  1389 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E Gralloc4: isSupported(1, 1, 59, 1, ...) failed with 1
+06-10 11:06:19.809  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:06:19.809  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:06:19.809  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:06:19.809  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:06:19.809  1276  1389 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+06-10 11:06:19.809  1276  1389 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:06:20.113  1596  4709 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:20.117  1596  4709 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:20.125  1596  2607 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:20.160  1276  1296 I o.room_manager2: Compiler allocated 4485KB to compile void android.view.ViewRootImpl.performTraversals()
+06-10 11:06:20.546  1276  1276 I flutter : [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-10 11:06:20.692     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4286)mV, data(0xd658)
+06-10 11:06:21.149  1276  1276 I flutter : [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+06-10 11:06:21.149  1276  1276 I flutter : [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+06-10 11:06:21.174  1276  1276 I flutter : [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:20.692     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:22.052     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (2187)
+06-10 11:06:22.200  1276  1276 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:22.524  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:22.638  1276  1276 I flutter : [ROOMコレ][surface] tab=candidate surface=ok_list
+06-10 11:06:22.663  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:22.718  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:22.750  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:22.783  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:23.323  1276  1276 I flutter : [AUTO_REACTION_SYNC] scheduled
+06-10 11:06:22.053     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4286 batt_curr:2
+06-10 11:06:23.331     0     0 I (virq   : irq_count)- 4:9010498 14:3680440 194:3262403 6:2718741 20:2570163 166:2157657 155:1993717 1:725462 265:460116 255:446027
+06-10 11:06:23.331     0     0 I (cpu    : irq_count)- 0:9866847 1:11493852 2:1549295 3:1933536 4:232276 5:263517 6:1737452 7:1714640
+06-10 11:06:23.331     0     0 I (ipi    : irq_count)- 0:30687594 1:10653353 2:0 3:0 4:178014 5:3128702 6:0
+06-10 11:06:23.358  1276  1276 I Choreographer: Skipped 179 frames!  The application may be doing too much work on its main thread.
+06-10 11:06:23.373  1276  1276 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:23.373  1276  1276 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 11:06:23.377  1276  1276 I flutter : [RECOMMEND_GUARD] skipReason=sameDay
+06-10 11:06:23.386  1276  1276 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:23.386  1276  1276 I flutter : [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=46 filter= tab=candidate
+06-10 11:06:23.395  1276  1276 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:23.395  1276  1276 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 11:06:23.531  1276  1276 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:23.604  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:23.608  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:23.611  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:23.615  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:23.690  1276  1276 I WebViewFactory: Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+06-10 11:06:23.693  1276  1276 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+06-10 11:06:23.695  1276  1276 D nativeloader: Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+06-10 11:06:23.709  1276  1276 I cr_WVCFactoryProvider: version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+06-10 11:06:23.713  1276  1276 D nativeloader: Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+06-10 11:06:23.715  1276  1276 D nativeloader: Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+06-10 11:06:23.717  1276  1497 I chromium: [0610/110623.717387:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+06-10 11:06:23.720  1276  1276 I cr_LibraryLoader: Successfully loaded native library
+06-10 11:06:23.721  1276  1276 I cr_CachingUmaRecorder: Flushed 18 samples from 18 histograms, 0 samples were dropped.
+06-10 11:06:23.724  1276  1276 I cr_ChildProcLH: ScopedServiceBindingBatch.tryActivate: false
+06-10 11:06:23.726  1276  1276 I cr_CombinedPProvider: #registerProvider() provider:WV.wk@1d13aa8 isPolicyCacheEnabled:false policyProvidersSize:0
+06-10 11:06:23.727  1596  8761 D CompatibilityChangeReporter: Compat change id reported: 161145287; UID 10495; state: ENABLED
+06-10 11:06:23.727  1276  1276 I cr_PolicyProvider: #setManagerAndSource() 0
+06-10 11:06:23.729  1276  1276 I cr_DisplayManager: Is Display Topology available: false
+06-10 11:06:23.731  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 99043; state: DISABLED
+06-10 11:06:23.731  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 177438394; UID 99043; state: DISABLED
+06-10 11:06:23.731  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 135772972; UID 99043; state: DISABLED
+06-10 11:06:23.731  1596  2607 D CompatibilityChangeReporter: Compat change id reported: 135754954; UID 99043; state: ENABLED
+06-10 11:06:23.731  1596  2124 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10495; state: ENABLED
+06-10 11:06:23.740  3093  3093 D Zygote  : Forked child process 1535
+06-10 11:06:23.745  1596  2124 I ActivityManager: Start proc 1535:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i43 for  {com.stepbytestudio.room_manager2/org.chromium.content.app.SandboxedProcessService0:0}
+06-10 11:06:23.748  1535  1535 E libc    : SetHeapTaggingLevel: re-enabling tagging after it was disabled is not supported
+06-10 11:06:23.751  1535  1535 I ocessService0:0: Using generational CollectorTypeCC GC.
+06-10 11:06:23.754  1276  1276 I cr_CombinedPProvider: #linkNativeInternal() 1
+06-10 11:06:23.754  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 183155436; UID 10495; state: ENABLED
+06-10 11:06:23.755  1276  1276 I cr_AppResProvider: #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+06-10 11:06:23.755  1276  1276 I cr_PolicyProvider: #notifySettingsAvailable() 0
+06-10 11:06:23.755  1276  1276 I cr_CombinedPProvider: #onSettingsAvailable() 0
+06-10 11:06:23.755  1276  1276 I cr_CombinedPProvider: #flushPolicies()
+06-10 11:06:23.759  1535  1535 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:23.760     0     0 I binder  : 1535:1535 ioctl 40046210 7fffd73610 returned -22
+06-10 11:06:23.766  1596  2607 D CompatibilityInfo: mCompatibilityFlags - 0
+06-10 11:06:23.766  1596  2607 D CompatibilityInfo: applicationDensity - 280
+06-10 11:06:23.766  1596  2607 D CompatibilityInfo: applicationScale - 1.0
+06-10 11:06:23.772  1535  1535 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 99043; state: ENABLED
+06-10 11:06:23.772  1535  1535 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 99043; state: ENABLED
+06-10 11:06:23.781  1535  1535 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+06-10 11:06:23.787  1276  1577 W chromium: [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+06-10 11:06:23.789  1535  1535 I cr_WebViewApkApp: version=148.0.7778.215 (777821503) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 splits=<none>
+06-10 11:06:23.791  1276  1276 W chromium: [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 98475489
+06-10 11:06:23.791  1596  2607 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 99043. pid: 1535
+06-10 11:06:23.793  1596  8761 W ProcessStats: Tracking association SourceState{d8dfe37 com.google.android.gms.persistent/10128 BTop #70094} whose proc state 2 is better than process ProcessState{28b7abd com.google.android.adservices.api/10290 pkg=com.google.android.adservices.api} proc state 14 (42 skipped)
+06-10 11:06:23.795  1535  1535 W SystemServiceRegistry: No service published for: virtualdevice
+06-10 11:06:23.797  1535  1535 I cr_ChildProcessService: Creating new ChildProcessService pid=1535
+06-10 11:06:23.803  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 214741472; UID 10495; state: ENABLED
+06-10 11:06:23.826  1596  2998 D ActivityManager: Cancel freezing 28501 com.google.android.gms
+06-10 11:06:23.838 28501 28501 D BoundBrokerSvc: onRebind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+06-10 11:06:23.877  1276  1608 I CameraManagerGlobal: Connecting to camera service
+06-10 11:06:23.889  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 171228096; UID 10495; state: ENABLED
+06-10 11:06:23.920  1596  2998 I AppsFilter: interaction: PackageSetting{4c59c3b com.stepbytestudio.room_manager2/10495} -> PackageSetting{4d8ea92 com.android.adbkeyboard/10496} BLOCKED
+06-10 11:06:24.086  1276  1276 I PlatformViewsController: Hosting view in view hierarchy for platform view: 0
+06-10 11:06:24.087  1276  1276 I PlatformViewsController: PlatformView is using SurfaceProducer backend
+06-10 11:06:24.088  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 236825255; UID 10495; state: ENABLED
+06-10 11:06:24.089  1276  1276 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:24.082  1276  1276 W o.room_manager2: type=1400 audit(0.0:14595): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:23.845     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:24.092  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:24.094  1276  1276 D CompatibilityChangeReporter: Compat change id reported: 193247900; UID 10495; state: ENABLED
+06-10 11:06:24.097  1276  1276 I Choreographer: Skipped 43 frames!  The application may be doing too much work on its main thread.
+06-10 11:06:24.107  1276  1276 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:24.102  1276  1276 W o.room_manager2: type=1400 audit(0.0:14596): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: QUALCOMM build          : a3cdec2236, Ief33eea0db
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Build Date              : 08/23/22
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Shader Compiler Version : EV031.35.01.12
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Local Branch            : 
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Reconstruct Branch      : 
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Build Config            : S P 10.0.7 AArch64
+06-10 11:06:24.114  1276  1276 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+06-10 11:06:24.129  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:24.143  1276  1305 I OpenGLRenderer: Davey! duration=763ms; Flags=1, FrameTimelineVsyncId=1417999, IntendedVsync=68928008489636, Vsync=68928725156274, InputEventId=0, HandleInputStart=68928734677558, AnimationStart=68928734679017, PerformTraversalsStart=68928734704225, DrawStart=68928743362923, FrameDeadline=68928025156302, FrameInterval=68928734370475, FrameStartTime=16666666, SyncQueued=68928767435215, SyncStart=68928767514381, IssueDrawCommandsStart=68928768098965, SwapBuffers=68928771235058, FrameCompleted=68928772472402, DequeueBufferDuration=1015886, QueueBufferDuration=704219, GpuCompleted=68928772472402, SwapBuffersCompleted=68928772262402, DisplayPresentTime=597248, CommandSubmissionCompleted=68928771235058, 
+06-10 11:06:24.149  1596  2084 I ActivityTaskManager: Displayed com.stepbytestudio.room_manager2/.MainActivity for user 0: +5s288ms
+06-10 11:06:24.149  1596  2084 I ActivityTaskManager: Fully drawn com.stepbytestudio.room_manager2/.MainActivity: +5s288ms
+06-10 11:06:24.193  1481  1563 I ComposerExtn: SmoMoImpl::FrameIsLate: no valid present time for layer 3967
+06-10 11:06:24.201  1596  2998 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10495; state: ENABLED
+06-10 11:06:24.201  1596  2998 I ImeTracker: com.stepbytestudio.room_manager2:dc474a61: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+06-10 11:06:24.201  1596  2998 I ImeTracker: com.stepbytestudio.room_manager2:dc474a61: onCancelled at PHASE_SERVER_SHOULD_HIDE
+06-10 11:06:24.205  1481  1481 I ComposerExtn: SmoMoImpl::FrameIsEarly: no valid present time for layer 3967
+06-10 11:06:24.207  4526  4526 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2259 
+06-10 11:06:24.207  4526  4526 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():127 repeatCheckTimes = 0, locked = false
+06-10 11:06:24.207  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:24.208  4526  4526 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1446 onStartInput(EditorInfo{EditorInfo{packageName=com.stepbytestudio.room_manager2, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+06-10 11:06:24.208  4526  4526 I AndroidIME: LatinIMEBase.updateInputViewCoverNavigation():321 Update input view padding, isNavbarOverInputWindow=false, bottom inset=84
+06-10 11:06:24.209  4526  4526 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():127 repeatCheckTimes = 1, locked = false
+06-10 11:06:24.211  1596  2998 W PackageConfigPersister: App-specific configuration not found for packageName: com.stepbytestudio.room_manager2 and userId: 0
+06-10 11:06:24.245  3226 14962 W DynamicDDSService: appName is not found in cache: jp.co.sharp.android.launcher3
+06-10 11:06:24.258  3313  3394 I ImeTracker: jp.co.sharp.android.launcher3:f7b56136: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+06-10 11:06:24.258  3313  3394 I ImeTracker: jp.co.sharp.android.launcher3:f7b56136: onFailed at PHASE_CLIENT_VIEW_SERVED
+06-10 11:06:24.257 30974 30974 I bynm    : onStop
+06-10 11:06:24.278  4674  7943 D MainProcessObserver: pid:3313 uid:10216 foregroundActivities:false
+06-10 11:06:24.279  1596  4709 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:24.280  4674  7943 D onForegroundChanged: topActivity:ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}, taskId:1297, windowingMode:1
+06-10 11:06:24.280  4674  7943 D onForegroundChanged: packageName:com.stepbytestudio.room_manager2
+06-10 11:06:24.283  1596  4709 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:24.294  1596  2998 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:24.355     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:24.356     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:24.356     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:24.356     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:24.356     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:24.513  2875  2960 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@c7c9f97
+06-10 11:06:24.514  1596  2607 W InputManager-JNI: Input channel object 'fb0aaab Splash Screen com.stepbytestudio.room_manager2 (client)' was disposed without first being removed with the input manager!
+06-10 11:06:24.517  1596  8761 D CoreBackPreview: Window{fb0aaab u0 Splash Screen com.stepbytestudio.room_manager2 EXITING}: Setting back callback null
+06-10 11:06:24.562  1596  2123 E Notifier: app_name=com.stepbytestudio.room_manager2
+06-10 11:06:24.563  2875  2960 W FrameTracker: Missed App frame:JANK_APP_DEADLINE_MISSED, 1418216, 32841079, CUJ=J<SPLASHSCREEN_EXIT_ANIM>
+06-10 11:06:24.563  2875  2960 W FrameTracker: Missing HWUI jank callback for vsyncId: 1418290, CUJ=J<SPLASHSCREEN_EXIT_ANIM>
+06-10 11:06:24.871     0     0 I [MAX77729-chg] max77729_period_work: max77729_period_work: batt_volt:4284 batt_curr:-12, batt_temp 282, fast_mode 0 soc 99 batt_id 1
+06-10 11:06:24.871     0     0 I [MAX77729-chg] max77729_set_topoff_current: max77729_set_topoff_current: reg_data(0x00), topoff(150mA)
+06-10 11:06:25.091     0     0 E nopmi_chg_jeita_workfunc: nopmi_chg_jeita_workfunc:
+06-10 11:06:25.091     0     0 E nopmi_chg_jeita_get_bat_temperature: In nopmi_chg_jeita_get_bat_temperature:
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita_get_bat_temperature: Out nopmi_chg_jeita_get_bat_temperature:get_bat_temperature is 28
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: In nopmi_chg_handle_jeita_current: entert handle jeita
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA] Battery Normal Temperature between 15 and 45 !!
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]jeita_current_limit 2500 !!
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]preState:2 newState:2 tmp:28 cv:4400,4350 jeita_current_limit:2500
+06-10 11:06:25.093     0     0 E nopmi_chg_jeita_get_charger_enabled: Out nopmi_chg_jeita_get_charger_enabled:enabled is 1
+06-10 11:06:25.124     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (7187)
+06-10 11:06:25.296  1596  2998 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:25.303  1596  2998 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:25.310  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.315  1596  8761 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:25.325  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.342  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.358  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.374  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.390  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.407  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.423  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.440  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.124     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4288 batt_curr:7
+06-10 11:06:25.440     0     0 I [cds_ol][0x1343351e9d3][02:06:25.440283] wlan: [2578:I:QDF] DHCP-A RX: SA:54:9b:49:46:73:20 DA:ff:ff:ff:ff:ff:ff
+06-10 11:06:25.443  1276  1276 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+06-10 11:06:25.447  3124  3411 D DhcpClient: Received packet: ba:fb:e9:8e:ff:78 ACK: your new IP /192.168.10.7, netmask /255.255.255.0, gateways [/192.168.10.1] DNS servers: /192.168.10.1 , lease time 86400, domain null
+06-10 11:06:25.456  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.473  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.490  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.506  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.523  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.539  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:25.539  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 0] [i 0]
+06-10 11:06:25.540  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.558  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.573  1276  1308 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:25.595  1276  1624 D ProfileInstaller: Installing profile for com.stepbytestudio.room_manager2
+06-10 11:06:27.333  1276  1276 I flutter : [AUTO_REACTION_SYNC] started
+06-10 11:06:27.413  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:27.418  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:27.422  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:27.427  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:27.704     0     0 I [MAX77729-fg] max77729_fg_read_temp: max77729_fg_read_temp: TEMPERATURE(28343), data(0x1c58)
+06-10 11:06:28.195     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (4062)
+06-10 11:06:28.195     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4288)mV, data(0xd66a)
+06-10 11:06:28.195     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4288 batt_curr:4
+06-10 11:06:29.476     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:29.477     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:29.477     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:29.477     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:29.477     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:30.385  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.402  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.410  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.425  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.443  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.460  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.476  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.493  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.510  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.527  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.543  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.561  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.577  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.593  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.610  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.627  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.644  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.661  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.676  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.693  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.710  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.727  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.744  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.759  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.777  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.793  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.811  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.827  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.843  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.860  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.877  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.893  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.911  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.928  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.944  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.960  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.977  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.993  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.010  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.027  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.044  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.060  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.077  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.093  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.111  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.127  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.144  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.161  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.177  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.193  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.211  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.227  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.245  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.260  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:30.694     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:31.268     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (-3125)
+06-10 11:06:31.276  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.293  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.310  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.326  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.344  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.360  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.376  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.393  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.410  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.426  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.443  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.460  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.476  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.494  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.510  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.527  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.544  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.561  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.564  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:31.577  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.594  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.610  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.627  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.644  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.661  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.677  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.269     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4286 batt_curr:-3
+06-10 11:06:31.681     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:31.682     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (8125)
+06-10 11:06:31.686     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:31.687     0     0 W healthd : battery l=100 v=4287 t=28.3 h=2 st=5 c=8125 fc=3335000 cc=18 chg=u
+06-10 11:06:31.688     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:31.689     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (8125)
+06-10 11:06:31.690     0     0 I [MAX77729-fg] max77729_fg_read_temp: max77729_fg_read_temp: TEMPERATURE(28351), data(0x1c5a)
+06-10 11:06:31.693  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.693     0     0 I [MAX77729-fg] max77729_fg_read_temp: max77729_fg_read_temp: TEMPERATURE(28351), data(0x1c5a)
+06-10 11:06:31.694  1984  1984 V directcharged: ControllerService::onHealthInfoChangedHandler(HealthInfo)
+06-10 11:06:31.694     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:31.697     0     0 D [MAX77729-chg] max77729_chg_store_attrs: max77729_chg_store_attrs() PMIC-0043 temp_value : 28000
+06-10 11:06:31.697     0     0 D [MAX77729-chg] max77729_chg_store_attrs: max77729_chg_store_attrs() PMIC-0043 get charger->connector_temp : 28
+06-10 11:06:31.700  3200  3200 D DeviceStatisticsService: onReceive: action= android.intent.action.BATTERY_CHANGED
+06-10 11:06:31.700  1596  2123 D ActivityManager: sync unfroze 28313 jp.co.sharp.android.usbchargingalart for 3
+06-10 11:06:31.700  1596  2123 D ActivityManager: Async freezing 28313 jp.co.sharp.android.usbchargingalart
+06-10 11:06:31.700  1596  2123 D ActivityManager: Cancel freezing 28313 jp.co.sharp.android.usbchargingalart
+06-10 11:06:31.700  1596  2123 D ActivityManager: Async freezing 28313 jp.co.sharp.android.usbchargingalart
+06-10 11:06:31.701  3215  3215 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+06-10 11:06:31.701  3215  3215 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 1
+06-10 11:06:31.701  2875  4512 D PowerUI : can't show warning due to - plugged: true status unknown: false
+06-10 11:06:31.701  3200  3200 V DeviceStatisticsService: chargerType=2 batteryLevel=100 totalBatteryCapacity=1984000
+06-10 11:06:31.702  1596  2084 I UsbDeviceManager: MSG_CHECK_HOST_NEEDS_WARNING
+06-10 11:06:31.702  1596  2084 D UsbDeviceManager: set mNotificationShown = false
+06-10 11:06:31.707  1381  1381 V vendor.sharp.hardware.intelligentcharge.directcharge@1.0-service: DirectCharge::getStatus() -> INACTIVE
+06-10 11:06:31.709  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.726  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.743  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.759  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.776  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.793  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.810  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.827  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.843  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.859  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.876  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.893  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.910  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.927  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.943  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.960  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.977  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:31.993  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.010  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.027  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.043  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.059  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.076  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.094  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.110  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.128  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.142  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.160  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.178  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.193  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.210  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.221  8178  8848 D MainJobService: BATTERY_FULL_CHARGED: start
+06-10 11:06:32.221  8178  8848 D MainJobService: BATTERY_FULL_CHARGED: end
+06-10 11:06:32.222  8178  8752 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=cd48aff5-cfda-48e9-b67c-44bcaecb2dff, tags={ jp.co.sharp.android.ichargeservice.MainJobService } ]
+06-10 11:06:32.227  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.241  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.258  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.276  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.293  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.310  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.327  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.344  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.360  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.377  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.394  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.410  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.427  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.444  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.460  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.476  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.495  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.511  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.527  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.545  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.560  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.577  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.594  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.611  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.627  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.644  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.660  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.677  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.694  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.708  3124  3411 D IpClient/wlan0: addressUpdated: 2404:7a82:d243:cb00:fdfb:f2f5:84d6:b905/64 on ifindex 24 flags 0x00000900 scope 0
+06-10 11:06:32.708  3124  3411 D IpClient/wlan0: addressUpdated: 2404:7a82:d243:cb00:e52b:6728:8340:8ebb/64 on ifindex 24 flags 0x00000001 scope 0
+06-10 11:06:32.709  3124  3411 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@2df92c7
+06-10 11:06:32.709  3124  3411 D ApfFilter: (wlan0): Ignoring RA RA fe80::569b:49ff:fe46:7320 -> ff02::1 3600s 2404:7a82:d243:cb00::/64 300s/300s DNS 440s 2404:7a82:d243:cb00:569b:49ff:fe46:7320  which matches RA fe80::569b:49ff:fe46:7320 -> ff02::1 3600s 2404:7a82:d243:cb00::/64 300s/300s DNS 440s 2404:7a82:d243:cb00:569b:49ff:fe46:7320 
+06-10 11:06:32.714  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.723  6437  6437 E iCharge.Receiver: jp.co.sharp.android.ichargeservice.action.BATTERY_FULL_CHARGED
+06-10 11:06:32.728  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.744  6437  8820 D MainJobService: ACTION_BATTERY_FULL_CHARGED: start
+06-10 11:06:32.744  6437  8820 D MainJobService: ACTION_BATTERY_FULL_CHARGED: end
+06-10 11:06:32.745  6437  8816 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=056165ed-f803-4e7b-bbcd-80aed6141d03, tags={ jp.co.sharp.android.icharge.services.MainJobService } ]
+06-10 11:06:32.745  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.758  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.775  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.792  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.803     0     0 I (virq   : irq_count)- 4:9021580 14:3682544 194:3264461 6:2720104 20:2570409 166:2157854 155:1994010 1:725495 265:460172 17:446559
+06-10 11:06:32.803     0     0 I (cpu    : irq_count)- 0:9869856 1:11500632 2:1549595 3:1933876 4:233099 5:264189 6:1741481 7:1718288
+06-10 11:06:32.803     0     0 I (ipi    : irq_count)- 0:30713388 1:10662239 2:0 3:0 4:178047 5:3130599 6:0
+06-10 11:06:32.810  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.828  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.843  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.861  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.876  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.893  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.910  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.927  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.944  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.960  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.977  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:32.993  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.011  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.027  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.044  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.060  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.076  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.093  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.110  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.127  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.143  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.161  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.176  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.193  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.210  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.224  3219  3219 D CarrierSvcBindHelper: onPackageModified: jp.co.sharp.android.icharge
+06-10 11:06:33.224  3219  3219 D CarrierSvcBindHelper: No carrier app for: 0
+06-10 11:06:33.225  3219  3219 D CarrierSvcBindHelper: No carrier app for: 1
+06-10 11:06:33.225  4275 11028 I PermissionControllerServiceImpl: Updating user sensitive for uid 10185
+06-10 11:06:33.225  3219  3600 D EuiccConnector: handleMessage: E msg.what=1
+06-10 11:06:33.225  3219  3600 D EuiccConnector: processMsg: ConnectedState
+06-10 11:06:33.225  3219  3600 D EuiccConnector: processMsg: DisconnectedState
+06-10 11:06:33.226  3219  3600 D EuiccConnector: handleMessage: X
+06-10 11:06:33.229  1596  2654 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+06-10 11:06:33.232  3162  3162 D Avrcp_ext: AvrcpServiceBroadcastReceiver-> Action: android.intent.action.PACKAGE_CHANGED
+06-10 11:06:33.232  3162  3162 D Avrcp_ext: AvrcpServiceBroadcastReceiver-> packageName: jp.co.sharp.android.icharge
+06-10 11:06:33.232  3162  3776 V Avrcp_ext: AvrcpMessageHandler: received message=40
+06-10 11:06:33.232  3162  3776 D Avrcp_ext: packageName: jp.co.sharp.android.icharge removed: false
+06-10 11:06:33.234  3162  3776 D Avrcp_ext: isBrowsableListUpdated: browsable list size mismatch, true
+06-10 11:06:33.234  3162  3776 D Avrcp_ext: Exit handlePackageModified
+06-10 11:06:33.234  3162  3776 V Avrcp_ext: Exit handleMessage
+06-10 11:06:33.234  3162  3776 V Avrcp_ext: AvrcpMessageHandler: received message=39
+06-10 11:06:33.234  3162  3776 D Avrcp_ext: MSG_UPDATE_MEDIA_PLAYER_LIST
+06-10 11:06:33.234  3162  3776 D Avrcp_ext: buildBrowsablePlayerList 
+06-10 11:06:33.234  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.235  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.235  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.google.android.googlequicksearchbox
+06-10 11:06:33.235  3162  3776 V Avrcp_ext: isBrowseSupported for com.google.android.googlequicksearchbox: false
+06-10 11:06:33.236  3162  3776 D Avrcp_ext: Adding media player info for com.google.android.googlequicksearchbox with id 1
+06-10 11:06:33.236  3162  3776 D Avrcp_ext: update #1:MediaPlayerInfo com.google.android.googlequicksearchbox (as 'Google') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.236  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.236  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.google.android.youtube
+06-10 11:06:33.236  3162  3776 V Avrcp_ext: isBrowseSupported for com.google.android.youtube: false
+06-10 11:06:33.237  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.237  3162  3776 D Avrcp_ext: Adding media player info for com.google.android.youtube with id 2
+06-10 11:06:33.237  3162  3776 D Avrcp_ext: update #2:MediaPlayerInfo com.google.android.youtube (as 'YouTube') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.237  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.237  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.microsoft.skydrive
+06-10 11:06:33.237  3162  3776 V Avrcp_ext: isBrowseSupported for com.microsoft.skydrive: false
+06-10 11:06:33.237  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.239  3162  3776 D Avrcp_ext: Adding media player info for com.microsoft.skydrive with id 3
+06-10 11:06:33.239  3162  3776 D Avrcp_ext: update #3:MediaPlayerInfo com.microsoft.skydrive (as 'OneDrive') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.239  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.240  3162  3776 V Avrcp_ext: updateCurrentMediaState: mMediaController: null
+06-10 11:06:33.240  3162  3776 W Avrcp_ext: isMusicActive: false getBluetoothPlayState: 2 A2dp State: 11 mAudioPlaybackIsActive: false
+06-10 11:06:33.240  3162  3776 W Avrcp_ext: updateCurrentMediaState: isPlaying = false
+06-10 11:06:33.240  3162  3776 V Avrcp_ext: Media update: id -1➡-1? [MediaAttributes: none] : [MediaAttributes: none]
+06-10 11:06:33.240  3162  3776 D Avrcp_ext: isPackageNameValid: browsedPackage = isValid = false
+06-10 11:06:33.240  3162  3776 W Avrcp_ext: updateCurrentMediaState: isInactivePlayer = true
+06-10 11:06:33.241  3219  3600 D EuiccConnector: handleMessage: E msg.what=1
+06-10 11:06:33.241  3219  3600 D EuiccConnector: processMsg: ConnectedState
+06-10 11:06:33.241  3219  3600 D EuiccConnector: processMsg: DisconnectedState
+06-10 11:06:33.241  3219  3600 D EuiccConnector: handleMessage: X
+06-10 11:06:33.242  1596  2654 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+06-10 11:06:33.240  3162  3776 V Avrcp_ext: updatePlaybackState, state: PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null} device: null
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: updatePlayerStateAndPosition, old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}, state=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}
+06-10 11:06:33.242  3162  3776 V Avrcp_ext: old state = PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}, new state= PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}
+06-10 11:06:33.242  4275 11028 I PermissionControllerServiceImpl: Updating user sensitive for uid 10195
+06-10 11:06:33.242  3162  3776 D HeadsetService: getHeadsetService(): returning com.android.bluetooth.hfp.HeadsetService@e383c06
+06-10 11:06:33.242  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.243  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.243  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.243  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.243  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.243  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.243  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.244  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.244  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.244  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.244  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.244  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68889163, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.244  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.244  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.244  3162  3776 V Avrcp_ext: Exit updatePlayerStateAndPosition
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: isAdmStable = false activeAbsAddr = null device = null
+06-10 11:06:33.244  3162  3776 V Avrcp_ext: Exit handleMessage
+06-10 11:06:33.244  3162  3162 D Avrcp_ext: AvrcpServiceBroadcastReceiver-> Action: android.intent.action.PACKAGE_CHANGED
+06-10 11:06:33.244  3162  3162 D Avrcp_ext: AvrcpServiceBroadcastReceiver-> packageName: jp.co.sharp.android.ichargeservice
+06-10 11:06:33.244  3162  3776 V Avrcp_ext: AvrcpMessageHandler: received message=40
+06-10 11:06:33.244  3162  3776 D Avrcp_ext: packageName: jp.co.sharp.android.ichargeservice removed: false
+06-10 11:06:33.246  3162  3776 D Avrcp_ext: isBrowsableListUpdated: browsable list size mismatch, true
+06-10 11:06:33.246  3162  3776 D Avrcp_ext: Exit handlePackageModified
+06-10 11:06:33.246  3162  3776 V Avrcp_ext: Exit handleMessage
+06-10 11:06:33.246  3162  3776 V Avrcp_ext: AvrcpMessageHandler: received message=39
+06-10 11:06:33.246  3162  3776 D Avrcp_ext: MSG_UPDATE_MEDIA_PLAYER_LIST
+06-10 11:06:33.246  3162  3776 D Avrcp_ext: buildBrowsablePlayerList 
+06-10 11:06:33.247  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.google.android.googlequicksearchbox
+06-10 11:06:33.247  3162  3776 V Avrcp_ext: isBrowseSupported for com.google.android.googlequicksearchbox: false
+06-10 11:06:33.247  3162  3776 D Avrcp_ext: Adding media player info for com.google.android.googlequicksearchbox with id 1
+06-10 11:06:33.247  3162  3776 D Avrcp_ext: update #1:MediaPlayerInfo com.google.android.googlequicksearchbox (as 'Google') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.247  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.247  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.google.android.youtube
+06-10 11:06:33.247  3162  3776 V Avrcp_ext: isBrowseSupported for com.google.android.youtube: false
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: Adding media player info for com.google.android.youtube with id 2
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: update #2:MediaPlayerInfo com.google.android.youtube (as 'YouTube') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.248  3162  3776 V Avrcp_ext: getMediaPlayerInfo: Found com.microsoft.skydrive
+06-10 11:06:33.248  3162  3776 V Avrcp_ext: isBrowseSupported for com.microsoft.skydrive: false
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: Adding media player info for com.microsoft.skydrive with id 3
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: update #3:MediaPlayerInfo com.microsoft.skydrive (as 'OneDrive') Type = 1, SubType = 0, Status = 0 Feature Bits [40 41 42 44 45 47 48 58] Controller: null
+06-10 11:06:33.248  3162  3776 D Avrcp_ext: Added MediaPlayerController/MediaPlayerPackage
+06-10 11:06:33.249  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: updateCurrentMediaState: mMediaController: null
+06-10 11:06:33.250  3162  3776 W Avrcp_ext: isMusicActive: false getBluetoothPlayState: 2 A2dp State: 11 mAudioPlaybackIsActive: false
+06-10 11:06:33.250  3162  3776 W Avrcp_ext: updateCurrentMediaState: isPlaying = false
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Media update: id -1➡-1? [MediaAttributes: none] : [MediaAttributes: none]
+06-10 11:06:33.250  3162  3776 D Avrcp_ext: isPackageNameValid: browsedPackage = isValid = false
+06-10 11:06:33.250  3162  3776 W Avrcp_ext: updateCurrentMediaState: isInactivePlayer = true
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: updatePlaybackState, state: PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null} device: null
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: Device: no name: 
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: updatePlayerStateAndPosition, old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}, state=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: old state = PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}, new state= PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}
+06-10 11:06:33.250  3162  3776 D HeadsetService: getHeadsetService(): returning com.android.bluetooth.hfp.HeadsetService@e383c06
+06-10 11:06:33.250  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.250  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.250  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.250  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.250  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.250  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.250  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.250  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.250  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.250  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.250  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.250  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.251  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.251  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.251  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.251  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.251  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.251  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  3162  3776 D HeadsetService: isScoOrCallActive(): Call Active:falseCall is Ringing:falseSCO is Active:false
+06-10 11:06:33.251  3162  3776 D HeadsetService:  isAudioOn: The number of audio connected devices 0
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: updatePlayStatusForDevice: device: null
+06-10 11:06:33.251  3162  3776 V Avrcp_ext: updatePlaybackState (1): old=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937878, actions=0, custom actions=[], active item id=-1, error=null}(2), new=PlaybackState {state=PAUSED(2), position=-1, buffered position=0, speed=0.0, updated=68937887, actions=0, custom actions=[], active item id=-1, error=null}(2)
+06-10 11:06:33.251  3162  3776 I Avrcp_ext: Exit updatePlayStatusForDevice
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: Enter sendPlayPosNotificationRsp
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: sendPlayPosNotificationRsp: Not registered or requesting.
+06-10 11:06:33.251  3162  3776 V Avrcp_ext: Exit updatePlayerStateAndPosition
+06-10 11:06:33.251  3162  3776 D Avrcp_ext: isAdmStable = false activeAbsAddr = null device = null
+06-10 11:06:33.251  3162  3776 V Avrcp_ext: Exit handleMessage
+06-10 11:06:33.252  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.253  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.254  4526  4526 I PkDeviceHelper: PkDeviceHelper.refreshDevices():87 refreshing devices
+06-10 11:06:33.257  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1456)] SecureElement::getEseHandleFromGenericId: enter; ESE-ID = 0x00
+06-10 11:06:33.257  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1497)] SecureElement::getEseHandleFromGenericId: enter; ESE-Handle = 0x400
+06-10 11:06:33.257  4691  4691 E AidRoutingManager: Size of routing table970
+06-10 11:06:33.257  4691  4691 I NfcService: Add T4T Nfcee AID
+06-10 11:06:33.259  3219  3219 E SmsApplication: jp.co.sharp.android.smsbackup does not have system signature
+06-10 11:06:33.259  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.261  4691  4691 D RegisteredNfcFServicesCache: Service unchanged, not updating
+06-10 11:06:33.275  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.275  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1456)] SecureElement::getEseHandleFromGenericId: enter; ESE-ID = 0x00
+06-10 11:06:33.275  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1497)] SecureElement::getEseHandleFromGenericId: enter; ESE-Handle = 0x400
+06-10 11:06:33.275  4691  4691 E AidRoutingManager: Size of routing table970
+06-10 11:06:33.275  4691  4691 I NfcService: Add T4T Nfcee AID
+06-10 11:06:33.275  3219  3686 D ImsResolver: maybeAddedImsService, packageName: jp.co.sharp.android.icharge
+06-10 11:06:33.277  4691  4691 D RegisteredNfcFServicesCache: Service unchanged, not updating
+06-10 11:06:33.277  4691  4691 I libnfc_nci: [INFO:NativeT4tNfcee.cpp(869)] nfcManager_isFwSupportNonStdT4TAid Enter isFwSupport = 1
+06-10 11:06:33.277  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1456)] SecureElement::getEseHandleFromGenericId: enter; ESE-ID = 0x7F
+06-10 11:06:33.278  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1497)] SecureElement::getEseHandleFromGenericId: enter; ESE-Handle = 0x410
+06-10 11:06:33.278  4691  4691 E libnfc_nci: [ERROR:nfa_ee_api.cc(661)] Bad ee_handle or AID (len=7)
+06-10 11:06:33.278  4691  4691 E libnfc_nci: [ERROR:RoutingManager.cpp(492)] RoutingManager::addAidRouting: failed to route AID
+06-10 11:06:33.278  3216  3290 D SecureElementService: getReaders() for com.android.nfc
+06-10 11:06:33.278  3219  3219 D CarrierSvcBindHelper: onPackageModified: jp.co.sharp.android.ichargeservice
+06-10 11:06:33.278  3219  3219 D CarrierSvcBindHelper: No carrier app for: 0
+06-10 11:06:33.280  3216  3290 I SecureElement-Terminal-SIM1: isNfcEventAllowed: No access rules for checking.
+06-10 11:06:33.280  3219  3219 D CarrierSvcBindHelper: No carrier app for: 1
+06-10 11:06:33.281  4691  4691 I libnfc_nci: [INFO:NativeT4tNfcee.cpp(869)] nfcManager_isFwSupportNonStdT4TAid Enter isFwSupport = 1
+06-10 11:06:33.281  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1456)] SecureElement::getEseHandleFromGenericId: enter; ESE-ID = 0x7F
+06-10 11:06:33.281  4691  4691 I libnfc_nci: [INFO:SecureElement.cpp(1497)] SecureElement::getEseHandleFromGenericId: enter; ESE-Handle = 0x410
+06-10 11:06:33.281  4691  4691 E libnfc_nci: [ERROR:nfa_ee_api.cc(661)] Bad ee_handle or AID (len=7)
+06-10 11:06:33.281  4691  4691 E libnfc_nci: [ERROR:RoutingManager.cpp(492)] RoutingManager::addAidRouting: failed to route AID
+06-10 11:06:33.281  3216  3290 D SecureElementService: getReaders() for com.android.nfc
+06-10 11:06:33.285  3216  3290 I SecureElement-Terminal-SIM1: isNfcEventAllowed: No access rules for checking.
+06-10 11:06:33.287  3216  3246 W com.android.se: Reducing the number of considered missed Gc histogram windows from 312 to 100
+06-10 11:06:33.291  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.293  3219  3219 E SmsApplication: jp.co.sharp.android.smsbackup does not have system signature
+06-10 11:06:33.301  3219  3686 D ImsResolver: maybeAddedImsService, packageName: jp.co.sharp.android.ichargeservice
+06-10 11:06:33.309  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.324  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.342  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.357  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.376  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.393  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.411  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.428  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.444  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.459  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.477  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.494  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.511  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.526  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.544  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.559  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.576  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.594  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.611  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.627  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.644  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.660  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.676  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.694  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.710  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.714  2875  2875 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+06-10 11:06:33.717  2875  2875 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+06-10 11:06:33.721  1596  8761 D CompatibilityChangeReporter: Compat change id reported: 261072174; UID 10495; state: ENABLED
+06-10 11:06:33.731  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.744 28501  1643 I ComponentChangedIO: Feature is not enabled, skipping component changed intent operation [CONTEXT service_id=469 ]
+06-10 11:06:33.745  1481  2232 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.745 28501  1643 I ComponentChangedIO: Feature is not enabled, skipping component changed intent operation [CONTEXT service_id=469 ]
+06-10 11:06:33.758  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.775  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.792  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.809  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.826  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.843  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.859  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.875  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.895  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.911  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.927  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.944  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.960  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.977  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:33.994  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.011  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.027  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.046  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.062  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.078  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.085     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4287)mV, data(0xd65e)
+06-10 11:06:34.095  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.113  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.127  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.146  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.161  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.178  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.194  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.212  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.228  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.246  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.261  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.279  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.295  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.312  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.329  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.087     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:34.340     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (0)
+06-10 11:06:34.346  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.361  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.378  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.394  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.411  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.427  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.437  1276  1299 W o.room_manager2: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+06-10 11:06:34.437  1276  1299 W o.room_manager2: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+06-10 11:06:34.443  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.461  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.478  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.494  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.512  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.529  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.545  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.561  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.578  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.580  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:34.594  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.340     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4287 batt_curr:0
+06-10 11:06:34.595     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:34.596     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:34.596     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:34.596     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:34.596     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:34.610  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.629  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.645  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.661  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.678  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.694  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.710  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.727  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.745  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.762  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.778  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.794  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.813  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.827  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.846  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.861  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.878  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.894  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.911  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.927  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.945  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.961  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.977  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:34.994  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.012  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.027  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.044  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.061  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.078  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.094  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.112  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.111     0     0 I [MAX77729-chg] max77729_period_work: max77729_period_work: batt_volt:4284 batt_curr:-5, batt_temp 284, fast_mode 0 soc 99 batt_id 1
+06-10 11:06:35.112     0     0 I [MAX77729-chg] max77729_set_topoff_current: max77729_set_topoff_current: reg_data(0x00), topoff(150mA)
+06-10 11:06:35.112     0     0 I [MAX77729-chg] max77729_chg_set_wdtmr_kick: max77729_chg_set_wdtmr_kick: WDT Kick
+06-10 11:06:35.113     0     0 I [MAX77729-chg] max77729_get_charging_health: max77729_get_charging_health: details00(0xe0)
+06-10 11:06:35.114     0     0 I [MAX77729-chg] max77729_get_vbus_state: max77729_get_vbus_state: VBUS is valid. CHGIN < CHGIN_OVLO
+06-10 11:06:35.115     0     0 I [MAX77729-chg] max77729_get_charging_health: max77729_get_charging_health: vbus_state: 0x3, chg_dtls: 0x4, iin: 196mA, vbyp: 5053mV, health: 0, abnormal: false
+06-10 11:06:35.128  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.143  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.161  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.178  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.194  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.212  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.223     0     0 I [MAX77729-fg] max77729_fg_periodic_read: [0][FG] 0080h,ff00h,7f80h,ff00h,1900h,0d01h,63ceh,6306h,1c68h,d668h,0007h,ffedh,0001h,5e91h,63e7h,0d04h,0d08h,ffffh,6e80h,5500h,0419h,0148h,1be6h,0012h,0dd2h,d63dh,2712h,db87h,12edh,0214h,0250h,0d04h,ffffh,6200h,3700h,0db1h,1403h,1e05h,1b83h,743ah,2602h,cea4h,043ch,3830h,ed8ah,1e87h,0400h,0001h,769ah,73c3h,1b00h,ffffh,1c68h,0d08h,0b0eh,05e0h,0046h,263fh,aa64h,ffa0h,1680h,1408h,456ah,e000h,07fch,0000h,1400h,02b8h,d66fh,0392h,3424h,01c9h,5ce5h,2241h,0cc6h,03dbh,133bh,133ah,90fbh,0d09h,0000h,6c0dh,7f80h,2e4fh,7f80h,0005h,05cbh,0600h,0000h,0010h,090ch,0055h,0017h,0204h,032fh,0000h,0830h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,8400h,0000h,ffffh,63e0h,0d04h,1cfch,0013h,ec0eh,7f80h,0000h,0000h,0010h,0000h,4ab6h,0000h,4680h,0000h,4000h,0000h,7d00h,0520h,ffffh,ffffh,ffffh,ffffh,20b4h,0000h,0000h,f6b5h,3a1dh,5bd0h,0006h,d66ch,003ch,2910h,d65ah,5cceh,
+06-10 11:06:35.223     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb0:0x0
+06-10 11:06:35.223     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb1:0xba
+06-10 11:06:35.224     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb2:0xcf
+06-10 11:06:35.224     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb3:0xe0
+06-10 11:06:35.224     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb4:0x34
+06-10 11:06:35.225     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb5:0x0
+06-10 11:06:35.225     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb6:0xff
+06-10 11:06:35.225     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb7:0x15
+06-10 11:06:35.226     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb8:0xaf
+06-10 11:06:35.226     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb9:0x72
+06-10 11:06:35.226     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xba:0x80
+06-10 11:06:35.227     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbb:0x13
+06-10 11:06:35.228  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.227     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbc:0x6d
+06-10 11:06:35.227     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbd:0x6d
+06-10 11:06:35.228     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbe:0x34
+06-10 11:06:35.228     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbf:0x0
+06-10 11:06:35.228     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc0:0x93
+06-10 11:06:35.229     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc1:0x53
+06-10 11:06:35.229     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc2:0x0
+06-10 11:06:35.244  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.262  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.278  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.295  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.311  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.329  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.229     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc3:0x68
+06-10 11:06:35.331     0     0 E nopmi_chg_jeita_workfunc: nopmi_chg_jeita_workfunc:
+06-10 11:06:35.331     0     0 E nopmi_chg_jeita_get_bat_temperature: In nopmi_chg_jeita_get_bat_temperature:
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita_get_bat_temperature: Out nopmi_chg_jeita_get_bat_temperature:get_bat_temperature is 28
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: In nopmi_chg_handle_jeita_current: entert handle jeita
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA] Battery Normal Temperature between 15 and 45 !!
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]jeita_current_limit 2500 !!
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]preState:2 newState:2 tmp:28 cv:4400,4350 jeita_current_limit:2500
+06-10 11:06:35.332     0     0 E nopmi_chg_jeita_get_charger_enabled: Out nopmi_chg_jeita_get_charger_enabled:enabled is 1
+06-10 11:06:35.337  1596  2632 D ActivityManager: freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:35.338  1596  2632 D ActivityManager: reportOneUidFrozenStateChanged uid 10281 frozen = true
+06-10 11:06:35.344  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.361  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.378  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.394  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.411  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.428  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.445  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.462  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.478  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.494  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.512  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.528  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.544  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.561  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.577  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.596  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.611  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.629  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.644  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.661  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.677  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.694  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.711  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.730  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.745  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.763  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.778  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.794  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.812  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.829  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.846  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.861  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.879  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.895  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:35.920  1481  1563 E ComposerExtn: SmoMoState::FrameIsLate: queued_frames >= 2
+06-10 11:06:36.348  1596  2632 D ActivityManager: Freezer deadlock watchdog
+06-10 11:06:37.412     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (-7187)
+06-10 11:06:39.273  1596  4709 W ProcessStats: Tracking association SourceState{784d281 com.google.android.gms/10128 BTop #70139} whose proc state 2 is better than process ProcessState{82f66ed com.android.vending/10115 pkg=com.android.vending} proc state 14 (34 skipped)
+06-10 11:06:39.276 28501 28501 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+06-10 11:06:39.285  3162  3552 I BtGatt.ScanManager: msg.what = 6
+06-10 11:06:37.412     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4288 batt_curr:-7
+06-10 11:06:39.715     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:39.716     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:39.716     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:39.716     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:39.716     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:40.484     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (-7187)
+06-10 11:06:40.484     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4285 batt_curr:-7
+06-10 11:06:40.695     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4287)mV, data(0xd666)
+06-10 11:06:40.750  1596  4709 D ActivityManager: Async freezing 28501 com.google.android.gms
+06-10 11:06:41.704  1596  2632 D ActivityManager: freezing 28313 jp.co.sharp.android.usbchargingalart
+06-10 11:06:40.696     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:42.275     0     0 I (virq   : irq_count)- 4:9034603 14:3685075 194:3266941 6:2722603 20:2570481 166:2158497 155:1994297 1:725495 265:460229 17:447552
+06-10 11:06:42.275     0     0 I (cpu    : irq_count)- 0:9873628 1:11508443 2:1550162 3:1934479 4:233939 5:265111 6:1746174 7:1723174
+06-10 11:06:42.275     0     0 I (ipi    : irq_count)- 0:30741949 1:10668373 2:0 3:0 4:178104 5:3131824 6:0
+06-10 11:06:42.278     0     0 I max77729_usb_main: max77729_muic_print_reg_log USBC1:0x27, USBC2:0x05, BC:0x81, CC0:0x71, CC1:0x9, PD0:0x19, PD1:0x47
+06-10 11:06:42.279     0     0 I max77729_usb_main: max77729_muic_print_reg_log UIC_INT_M:0x5, CC_INT_M:0x30, PD_INT_M:0x3, VDM_INT_M:0xf0, PMIC_MASK:0xf2, WDT:0, POR:0
+06-10 11:06:42.713  1596  2632 D ActivityManager: Freezer deadlock watchdog
+06-10 11:06:43.556     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (0)
+06-10 11:06:43.629  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:43.556     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4287 batt_curr:0
+06-10 11:06:44.763  3219  3600 D EuiccConnector: handleMessage: E msg.what=3
+06-10 11:06:44.763  3219  3600 D EuiccConnector: processMsg: ConnectedState
+06-10 11:06:44.765 28445 28445 I EuiccGoogle: [2] EuiccServiceImpl.onDestroy: onDestroy: EuiccService on destroy.
+06-10 11:06:44.767  1596  4709 D ActivityManager: Async freezing 28445 com.google.android.euicc
+06-10 11:06:44.769  3219  3600 D EuiccConnector: transitionTo: destState=AvailableState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: handleMessage: new destination call exit/enter
+06-10 11:06:44.770  3219  3600 D EuiccConnector: setupTempStateStackWithStatesToEnter: X mTempStateStackCount=2,curStateInfo: null
+06-10 11:06:44.770  3219  3600 D EuiccConnector: invokeExitMethods: ConnectedState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: invokeExitMethods: DisconnectedState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: moveTempStackToStateStack: i=1,j=0
+06-10 11:06:44.770  3219  3600 D EuiccConnector: moveTempStackToStateStack: i=0,j=1
+06-10 11:06:44.770  3219  3600 D EuiccConnector: moveTempStackToStateStack: X mStateStackTop=1,startingIndex=0,Top=AvailableState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: invokeEnterMethods: UnavailableState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: invokeEnterMethods: AvailableState
+06-10 11:06:44.770  3219  3600 D EuiccConnector: handleMessage: X
+06-10 11:06:44.328     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:44.835     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:44.836     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:44.836     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:44.836     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:44.836     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:45.152  1276  1276 I flutter : [ROOM_SYNC][WARN] ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）
+06-10 11:06:45.152  1276  1276 I flutter : [ROOM_SYNC][WARN] 使用した正規表現（絶対URL）: https?://(?:www\.)?room\.rakuten\.co\.jp/[^\s"<>]+
+06-10 11:06:45.152  1276  1276 I flutter : [ROOM_SYNC][WARN] 使用した正規表現（href）: href\s*=\s*["']([^"']+)["']
+06-10 11:06:45.153  1276  1276 I flutter : [ROOM_SYNC][WARN] HTML内に room.rakuten.co.jp を含むか: true
+06-10 11:06:45.158  1276  1276 I flutter : [ROOM_SYNC][WARN] HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: true
+06-10 11:06:45.222  1276  1276 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:45.222  1276  1276 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 11:06:45.278  1276  1276 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:45.351     0     0 I [MAX77729-chg] max77729_period_work: max77729_period_work: batt_volt:4285 batt_curr:-4, batt_temp 284, fast_mode 0 soc 99 batt_id 1
+06-10 11:06:45.353     0     0 I [MAX77729-chg] max77729_set_topoff_current: max77729_set_topoff_current: reg_data(0x00), topoff(150mA)
+06-10 11:06:45.358  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:45.363  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:45.366  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:45.370  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:45.464  1276  1276 I flutter : [AUTO_REACTION_SYNC] completed noChange
+06-10 11:06:45.551  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:45.555  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:45.563  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:45.567  1276  1276 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:45.571     0     0 E nopmi_chg_jeita_workfunc: nopmi_chg_jeita_workfunc:
+06-10 11:06:45.571     0     0 E nopmi_chg_jeita_get_bat_temperature: In nopmi_chg_jeita_get_bat_temperature:
+06-10 11:06:45.572     0     0 I [MAX77729-fg] max77729_fg_read_temp: max77729_fg_read_temp: TEMPERATURE(28468), data(0x1c78)
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita_get_bat_temperature: Out nopmi_chg_jeita_get_bat_temperature:get_bat_temperature is 28
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: In nopmi_chg_handle_jeita_current: entert handle jeita
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA] Battery Normal Temperature between 15 and 45 !!
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]jeita_current_limit 2500 !!
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]preState:2 newState:2 tmp:28 cv:4400,4350 jeita_current_limit:2500
+06-10 11:06:45.572     0     0 E nopmi_chg_jeita_get_charger_enabled: Out nopmi_chg_jeita_get_charger_enabled:enabled is 1
+06-10 11:06:46.630     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (2187)
+06-10 11:06:46.632     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4288)mV, data(0xd66a)
+06-10 11:06:46.643  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:46.964 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:uiautomator dump /sdcard/ux6d_3_auto_done_final.xml'
+06-10 11:06:47.076  1708  1708 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+06-10 11:06:47.084  1708  1708 I AndroidRuntime: Using default boot image
+06-10 11:06:47.084  1708  1708 I AndroidRuntime: Leaving lock profiling enabled
+06-10 11:06:47.087  1708  1708 I app_process: Using generational CollectorTypeCC GC.
+06-10 11:06:47.145  1708  1708 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+06-10 11:06:47.154  1708  1708 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:47.154  1708  1708 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+06-10 11:06:47.154  1708  1708 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+06-10 11:06:47.155  1708  1708 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:47.156  1708  1708 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:47.157  1708  1708 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+06-10 11:06:47.181  1708  1708 W libc    : Access denied finding property "ro.product.name_for_attestation"
+06-10 11:06:47.181  1708  1708 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+06-10 11:06:47.181  1708  1708 W libc    : Access denied finding property "ro.product.model_for_attestation"
+06-10 11:06:46.632     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4288 batt_curr:2
+06-10 11:06:47.174  1708  1708 W main    : type=1400 audit(0.0:14597): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:47.183  1708  1708 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:47.174  1708  1708 W main    : type=1400 audit(0.0:14598): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:47.174  1708  1708 W main    : type=1400 audit(0.0:14599): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:47.183  1708  1708 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+06-10 11:06:47.186  1708  1708 D UiAutomationConnection: Created on user UserHandle{0}
+06-10 11:06:47.186  1708  1708 I UiAutomation: Initialized for user 0 on display 0
+06-10 11:06:47.186  1708  1708 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+06-10 11:06:47.183     0     0 I binder  : 1708:1708 ioctl 40046210 7fcf620230 returned -22
+06-10 11:06:47.188  1596  2998 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+06-10 11:06:47.188  1596  2998 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+06-10 11:06:47.190  1596  2724 W AS.AudioService: handleMessage({ when=0 what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:47.190  1596  2998 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:47.192  1596  1596 D BatterySaverPolicy: accessibility changed to true, updating policy.
+06-10 11:06:47.198  1596  2724 W AS.AudioService: handleMessage({ when=0 what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:47.198  1596  8761 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:47.199  1596  1596 D AS.AudioService: Accessibility volume enabled = false
+06-10 11:06:47.207  4275  4381 D AccessibilitySourceService: enabled a11y services count 0
+06-10 11:06:47.207  4275  4381 D AccessibilitySourceService: a11y source sending 0 issue to sc
+06-10 11:06:47.208  1596  2998 D SafetySourceDataValidat: No cert check requested for package com.google.android.permissioncontroller
+06-10 11:06:48.349  1708  1708 W libc    : Access denied finding property "qemu.sf.lcd_density"
+06-10 11:06:48.349  1708  1708 W libc    : Access denied finding property "qemu.sf.lcd_density"
+06-10 11:06:48.342  1708  1708 W uiautomator: type=1400 audit(0.0:14600): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=2822 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+06-10 11:06:48.342  1708  1708 W uiautomator: type=1400 audit(0.0:14601): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=2822 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+06-10 11:06:48.377  1596  1625 D CompatibilityChangeReporter: Compat change id reported: 161145287; UID 10495; state: ENABLED
+06-10 11:06:48.379  1276  1276 I cr_A11yState: Enabled accessibility services list updated. []
+06-10 11:06:48.381  1276  1276 I cr_A11yState: Informing listeners of changes.
+06-10 11:06:48.382  1276  1276 I cr_A11yState: New AccessibilityState: State{isComplexUserInteractionServiceEnabled=false, isTouchExplorationEnabled=false, isPerformGesturesEnabled=false, isAnyAccessibilityServiceEnabled=false, isAccessibilityToolPresent=false, isTextShowPasswordEnabled=true, isOnlyAutofillRunning=false, isOnlyPasswordManagersEnabled=false, isKnownScreenReaderEnabled=false}
+06-10 11:06:48.386  1708  1708 W AccessibilityNodeInfoDumper: Fetch time: 36ms
+06-10 11:06:48.388  1596  2724 W AS.AudioService: handleMessage({ when=0 what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:48.389  1596  1625 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:48.389  1596  1625 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+06-10 11:06:48.398  1596  1596 D BatterySaverPolicy: accessibility changed to false, updating policy.
+06-10 11:06:48.398     0     0 I binder  : 1708:1708 ioctl 40046210 7fcf620424 returned -22
+06-10 11:06:48.399  1708  1708 D AndroidRuntime: Shutting down VM
+06-10 11:06:49.280 16269 16269 I adbd    : adbd service requested 'sync:'
+06-10 11:06:49.335 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-d''
+06-10 11:06:49.355     0     0 I logd    : logdr: UID=2000 GID=2000 PID=1727 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

@@ -1,0 +1,550 @@
+--------- beginning of main
+06-10 11:05:56.611 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:monkey -p com.stepbytestudio.room_manager2 -c android.intent.category.LAUNCHER 1'
+06-10 11:05:56.707   880   880 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+06-10 11:05:56.712   880   880 I AndroidRuntime: Using default boot image
+06-10 11:05:56.712   880   880 I AndroidRuntime: Leaving lock profiling enabled
+06-10 11:05:56.715   880   880 I app_process: Using generational CollectorTypeCC GC.
+06-10 11:05:56.767   880   880 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+06-10 11:05:56.777   880   880 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:05:56.777   880   880 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+06-10 11:05:56.777   880   880 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+06-10 11:05:56.778   880   880 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:05:56.779   880   880 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:05:56.780   880   880 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+06-10 11:05:56.803   880   880 W libc    : Access denied finding property "ro.product.name_for_attestation"
+06-10 11:05:56.804   880   880 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+06-10 11:05:56.804   880   880 W libc    : Access denied finding property "ro.product.model_for_attestation"
+06-10 11:05:56.805   880   880 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:05:56.805   880   880 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+06-10 11:05:56.806   880   880 W Monkey  : args: [-p, com.stepbytestudio.room_manager2, -c, android.intent.category.LAUNCHER, 1]
+06-10 11:05:56.806   880   880 W Monkey  :  arg: "-p"
+--------- beginning of kernel
+06-10 11:05:56.805     0     0 I binder  : 880:880 ioctl 40046210 7fecb4b500 returned -22
+06-10 11:05:56.806   880   880 W Monkey  :  arg: "com.stepbytestudio.room_manager2"
+06-10 11:05:56.806   880   880 W Monkey  :  arg: "-c"
+06-10 11:05:56.806   880   880 W Monkey  :  arg: "android.intent.category.LAUNCHER"
+06-10 11:05:56.806   880   880 W Monkey  :  arg: "1"
+06-10 11:05:56.807   880   880 W Monkey  : data="com.stepbytestudio.room_manager2"
+06-10 11:05:56.807   880   880 W Monkey  : data="android.intent.category.LAUNCHER"
+--------- beginning of system
+06-10 11:05:56.816  1596  2995 W ActivityManager: registerReceiverWithFeature: no app for null
+06-10 11:05:56.824  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10495; state: DISABLED
+06-10 11:05:56.824  1596  2995 W ActivityTaskManager: callingPackage for (uid=2000, pid=880) has no WPC
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10495; state: DISABLED
+06-10 11:05:56.825  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10495; state: DISABLED
+06-10 11:05:56.826  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10495; state: ENABLED
+06-10 11:05:56.830  1364  1526 W ANDR-PERF-LM: MetaMeter: handlePrimaryAsync() 118: AdaptLaunch MetaMeter. No MeterMgr Available to handle this Primary Async. !!!!
+06-10 11:05:56.830  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.830  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.831  1596  2995 E ANDR-PERF-JNI: com_qualcomm_qtiperformance_native_perf_io_prefetch_start
+06-10 11:05:56.831  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.834  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10495; state: DISABLED
+06-10 11:05:56.834  1364  1526 W ANDR-PERF-LM: MetaMeter: handlePrimaryAsync() 118: AdaptLaunch MetaMeter. No MeterMgr Available to handle this Primary Async. !!!!
+06-10 11:05:56.834  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10495; state: DISABLED
+06-10 11:05:56.835  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.835  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 197654537; UID 10495; state: ENABLED
+06-10 11:05:56.836  1361  4291 E ANDR-IOP: io prefetch is disabled
+06-10 11:05:56.836  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10495; state: ENABLED
+06-10 11:05:56.837  1596  2995 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+06-10 11:05:56.842  1596  2995 D CompatibilityChangeReporter: Compat change id reported: 194833441; UID 10495; state: ENABLED
+06-10 11:05:56.843  1596  2995 I ActivityTaskManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity} with LAUNCH_SINGLE_TOP from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+06-10 11:05:56.843  2875  2949 V WindowManagerShell: Transition requested: android.os.BinderProxy@a14bc2d TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=1295 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity } baseActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} topActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} origActivity=null realActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} numActivities=1 lastActiveTime=68901479 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@3f80562} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 58 - 0, 0) topActivityInfo=ActivityInfo{e0a56f3 com.stepbytestudio.room_manager2.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+06-10 11:05:56.844   880   880 I Monkey  : Events injected: 1
+06-10 11:05:56.852  1596 11935 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10495; state: DISABLED
+06-10 11:05:56.852  1596 11935 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10495; state: DISABLED
+06-10 11:05:56.854  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10495; state: DISABLED
+06-10 11:05:56.854  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 177438394; UID 10495; state: DISABLED
+06-10 11:05:56.854  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135772972; UID 10495; state: DISABLED
+06-10 11:05:56.854  1596  2096 D CompatibilityChangeReporter: Compat change id reported: 135754954; UID 10495; state: ENABLED
+06-10 11:05:56.855  1481  1481 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+06-10 11:05:56.855  1596  2124 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10495; state: ENABLED
+06-10 11:05:56.855  1596  2995 D CoreBackPreview: Window{edb31ef u0 Splash Screen com.stepbytestudio.room_manager2}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@25cf9da, mPriority=0, mIsAnimationCallback=false}
+06-10 11:05:56.865  1596  2622 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10495; state: ENABLED
+06-10 11:05:56.867  2875  2960 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:05:56.867  1175  1175 D Zygote  : Forked child process 900
+06-10 11:05:56.868  2875  2967 E OpenGLRenderer: Unable to match the desired swap behavior.
+06-10 11:05:56.868  1596  2124 I ActivityManager: Start proc 900:com.stepbytestudio.room_manager2/u0a495 for next-top-activity {com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}
+06-10 11:05:56.868  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.869   880   880 I Monkey  : ## Network stats: elapsed time=43ms (0ms mobile, 0ms wifi, 43ms not connected)
+06-10 11:05:56.869  1596   901 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1220 com.qualcomm.qti.Performance$SendGameLaunchBroadcast.run:247 java.lang.Thread.run:1572 <bottom of call stack> <bottom of call stack> 
+06-10 11:05:56.870   880   880 I app_process: System.exit called, status: 0
+06-10 11:05:56.870   880   880 I AndroidRuntime: VM exiting with result code 0.
+06-10 11:05:56.873  4781  6250 W SQLiteLog: (28) double-quoted string literal: "com.stepbytestudio.room_manager2"
+06-10 11:05:56.881  2875  2949 V WindowManagerShell: onTransitionReady android.os.BinderProxy@a14bc2d: {id=164 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@fae2c86} m=OPEN f=NONE leash=Surface(name=Task=1295)/@0xaf7b16b sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@45df947} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0x74754c8 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:05:56.881  2875  2949 V WindowManagerShell: Playing animation for (#164)android.os.BinderProxy@a14bc2d@0
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@bbd5067
+06-10 11:05:56.881  1596  2084 V WindowManager: Sent Transition #164 createdAt=06-10 11:05:56.827 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=1295 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.stepbytestudio.room_manager2/.MainActivity } baseActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} topActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} origActivity=null realActivity=ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity} numActivities=1 lastActiveTime=68901479 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{2323900 Task{8703bd0 #1295 type=standard I=com.stepbytestudio.room_manager2/.MainActivity}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 58 - 0, 0) topActivityInfo=ActivityInfo{2c07539 com.stepbytestudio.room_manager2.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+06-10 11:05:56.881  1596  2084 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@df2b4d4
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@367c67d
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@357c972
+06-10 11:05:56.881  1596  2084 V WindowManager:     info={id=164 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{2323900 Task{8703bd0 #1295 type=standard I=com.stepbytestudio.room_manager2/.MainActivity}}} m=OPEN f=NONE leash=Surface(name=Task=1295)/@0xff0ea32 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{RemoteToken{d522a0e Task{5f550b0 #1251 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0x67235d3 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:05:56.881  2875  2949 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@bedb1c3
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@304a40
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@8af4d79
+06-10 11:05:56.881  2875  2949 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=164 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@fae2c86} m=OPEN f=NONE leash=Surface(name=Task=1295)/@0xaf7b16b sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@45df947} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0x74754c8 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{jp.co.sharp.android.launcher3/jp.co.sharp.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@7566ce4, appThread = android.app.IApplicationThread$Stub$Proxy@152054d, debugName = QuickstepLaunchHome }}
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  Delegate animation for #164 to null
+06-10 11:05:56.881  2875  2949 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@d50abe
+06-10 11:05:56.881  2875  2949 V WindowManagerShell: start default transition animation, info = {id=164 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@fae2c86} m=OPEN f=NONE leash=Surface(name=Task=1295)/@0xaf7b16b sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@45df947} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1251)/@0x74754c8 sb=Rect(0, 0 - 720, 1520) eb=Rect(0, 0 - 720, 1520) d=0}]}
+06-10 11:05:56.882  2875  2949 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@34a0a9d animAttr=0x13 type=OPEN isEntrance=false
+06-10 11:05:56.882  2875  2949 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@f41b399 animAttr=0x12 type=OPEN isEntrance=true
+06-10 11:05:56.883  2875  2949 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@d50abe
+06-10 11:05:56.892   900   900 I o.room_manager2: Late-enabling -Xcheck:jni
+06-10 11:05:56.904  1364  4267 E ANDR-PERF-LM: VmRssMeter:: start() 453: Could not find pid, can not collect vmrss data
+06-10 11:05:56.906  1364  4268 E ANDR-PERF-LM: VmRssMeter:: start() 453: Could not find pid, can not collect vmrss data
+06-10 11:05:56.906  1364  4268 E ANDR-PERF-LM: AdaptiveLaunch: writeToDataBase() 64: Meter aborted or could not get meter data for this run
+06-10 11:05:56.911   900   900 I o.room_manager2: Using generational CollectorTypeCC GC.
+06-10 11:05:56.914 16269 16278 I adbd    : jdwp connection from 900
+06-10 11:05:56.917   900   900 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:05:56.917     0     0 I binder  : 900:900 ioctl 40046210 7fffd73c00 returned -22
+06-10 11:05:56.924  1364  1526 E ANDR-PERF-LM: MetaMeter: handleAsync() 166: AdaptLaunch Invalid Async
+06-10 11:05:56.925  1596  2995 D CompatibilityInfo: mCompatibilityFlags - 0
+06-10 11:05:56.925  1596  2995 D CompatibilityInfo: applicationDensity - 280
+06-10 11:05:56.925  1596  2995 D CompatibilityInfo: applicationScale - 1.0
+06-10 11:05:56.931  4674  8209 D MainProcessObserver: pid:900 uid:10495 foregroundActivities:true
+06-10 11:05:56.933  1596  8761 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:05:56.933  4674  8209 D onForegroundChanged: topActivity:ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}, taskId:1295, windowingMode:1
+06-10 11:05:56.933  4674  8209 D onForegroundChanged: packageName:com.stepbytestudio.room_manager2
+06-10 11:05:56.935  1596  8761 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:05:56.936  1596  2995 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:05:56.945   900   900 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10495; state: ENABLED
+06-10 11:05:56.946   900   900 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10495; state: ENABLED
+06-10 11:05:56.947 30974 30974 I bynm    : onPause
+06-10 11:05:56.948  1596  8761 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:05:56.951  1596  8761 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10495; state: ENABLED
+06-10 11:05:57.101   900   900 D nativeloader: Configuring clns-4 for other apk /data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/lib/arm64:/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.stepbytestudio.room_manager2
+06-10 11:05:57.108   900   900 D nativeloader: Load libframework-connectivity-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity.jar: ok
+06-10 11:05:57.109   900   900 I Perf    : Connecting to perf service.
+06-10 11:05:57.113   900   900 V GraphicsEnvironment: Currently set values for:
+06-10 11:05:57.113   900   900 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+06-10 11:05:57.113   900   900 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+06-10 11:05:57.114   900   900 V GraphicsEnvironment: ANGLE GameManagerService for com.stepbytestudio.room_manager2: false
+06-10 11:05:57.114   900   900 V GraphicsEnvironment: com.stepbytestudio.room_manager2 is not listed in per-application setting
+06-10 11:05:57.114   900   900 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+06-10 11:05:57.132  1596  2995 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10495. pid: 900
+06-10 11:05:57.161   900   923 I ResourceExtractor: Found extracted resources res_timestamp-7-1781057083417
+06-10 11:05:57.163   900   922 D FlutterJNI: Beginning load of flutter...
+06-10 11:05:57.175  2875  2949 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#164)android.os.BinderProxy@a14bc2d@0
+06-10 11:05:57.176  1596  2084 V WindowManager: Finish Transition #164: created at 06-10 11:05:56.827 collect-started=0.05ms request-sent=15.045ms started=16.588ms ready=51.195ms sent=52.964ms finished=349.406ms
+06-10 11:05:57.178  2875  2949 V WindowManagerShell: Track 0 became idle
+06-10 11:05:57.178  2875  2949 V WindowManagerShell: All active transition animations finished
+06-10 11:05:57.199   900   922 D nativeloader: Load /data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk): ok
+06-10 11:05:57.200   900   922 D FlutterJNI: flutter (null) was loaded normally!
+06-10 11:05:57.218   900   900 W o.room_manager2: type=1400 audit(0.0:14422): avc:  denied  { read } for  name="max_map_count" dev="proc" ino=1123802 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:proc_max_map_count:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:05:57.232   900   925 D vulkan  : searching for layers in '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/lib/arm64'
+06-10 11:05:57.232   900   925 D vulkan  : searching for layers in '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a'
+06-10 11:05:57.236   900   925 D vulkan  : added global layer 'VK_LAYER_KHRONOS_validation' from library '/data/app/~~Hp5e58tznYxdhxhHjoScoA==/com.stepbytestudio.room_manager2-SowUdRESBFR5YGf6Kbuqwg==/base.apk!/lib/arm64-v8a/libVkLayer_khronos_validation.so'
+06-10 11:05:57.257   900   925 I AdrenoVK-0: ===== BEGIN DUMP OF OVERRIDDEN SETTINGS =====
+06-10 11:05:57.257   900   925 I AdrenoVK-0: ===== END DUMP OF OVERRIDDEN SETTINGS =====
+06-10 11:05:57.258   900   925 I AdrenoVK-0: QUALCOMM build          : a3cdec2236, Ief33eea0db
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Build Date              : 08/23/22
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Shader Compiler Version : EV031.35.01.12
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Local Branch            : 
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Remote Branch           : 
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Remote Branch           : 
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Reconstruct Branch      : 
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Build Config            : S P 10.0.7 AArch64
+06-10 11:05:57.258   900   925 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+06-10 11:05:57.264   900   925 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-10 11:05:57.329  1596  2123 E Notifier: app_name=com.stepbytestudio.room_manager2
+06-10 11:05:57.395   900   941 I flutter : The Dart VM service is listening on http://127.0.0.1:43291/eYXLdvhgjqo=/
+06-10 11:05:57.475     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (-13125)
+06-10 11:05:57.527   900   900 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:05:57.527   900   900 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:05:57.527   900   900 I o.room_manager2: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:05:57.527   900   900 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 11:05:57.555   900   900 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10495; state: DISABLED
+06-10 11:05:57.557   900   900 W OpenGLRenderer: Unknown dataspace 0
+06-10 11:05:57.721   900   900 I flutter : [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+06-10 11:05:57.723   900   900 I flutter : [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+06-10 11:05:57.747   900   900 I Choreographer: Skipped 36 frames!  The application may be doing too much work on its main thread.
+06-10 11:05:57.790  1596  5525 D CoreBackPreview: Window{9ee3760 u0 com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@6fbcebf, mPriority=0, mIsAnimationCallback=false}
+06-10 11:05:57.475     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4281 batt_curr:-13
+06-10 11:05:57.802     0     0 I binder  : 900:900 ioctl 40046210 7fffd702c4 returned -22
+06-10 11:05:57.803   900   900 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:05:57.798   900   900 W o.room_manager2: type=1400 audit(0.0:14423): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: QUALCOMM build                   : a3cdec2236, Ief33eea0db
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Build Date                       : 08/23/22
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: OpenGL ES Shader Compiler Version: EV031.35.01.12
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Local Branch                     : 
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Remote Branch                    : 
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Remote Branch                    : 
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Reconstruct Branch               : 
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Build Config                     : S P 10.0.7 AArch64
+06-10 11:05:57.804   900   919 I AdrenoGLES-0: Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+06-10 11:05:57.809   900   919 I AdrenoGLES-0: PFP: 0x016ee201, ME: 0x00000000
+06-10 11:05:57.821   900   900 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:05:57.814   900   900 W o.room_manager2: type=1400 audit(0.0:14424): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:05:57.822     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+06-10 11:05:57.824   900   925 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:05:57.824   900   925 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.824   900   925 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.824   900   925 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.824   900   925 E Gralloc4: isSupported(1, 1, 56, 1, ...) failed with 1
+06-10 11:05:57.825  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:05:57.825  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.825  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.825  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.825   900   925 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+06-10 11:05:57.825   900   925 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:05:57.825   900   925 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:05:57.825   900   925 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.825   900   925 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.825   900   925 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.825   900   925 E Gralloc4: isSupported(1, 1, 59, 1, ...) failed with 1
+06-10 11:05:57.825  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:05:57.825  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.825  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.825  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.826   900   925 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+06-10 11:05:57.826   900   925 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:05:57.826   900   925 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:05:57.826   900   925 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.826   900   925 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.826   900   925 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.826   900   925 E Gralloc4: isSupported(1, 1, 56, 1, ...) failed with 1
+06-10 11:05:57.826  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x38
+06-10 11:05:57.826  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.826  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.826  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.826   900   925 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+06-10 11:05:57.826   900   925 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:05:57.826   900   925 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:05:57.826   900   925 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.826   900   925 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.826   900   925 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.826   900   925 E Gralloc4: isSupported(1, 1, 59, 1, ...) failed with 1
+06-10 11:05:57.826  1357  6707 E qdgralloc: GetGpuPixelFormat: No map for format: 0x3b
+06-10 11:05:57.826  1357  6707 E AdrenoUtils: <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+06-10 11:05:57.826  1357  6707 E AdrenoUtils: <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+06-10 11:05:57.826  1357  6707 E qdgralloc: GetGpuResourceSizeAndDimensions Graphics metadata init failed
+06-10 11:05:57.826   900   925 E GraphicBufferAllocator: Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+06-10 11:05:57.826   900   925 E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+06-10 11:05:57.823     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+06-10 11:05:57.836   900   919 E OpenGLRenderer: Unable to match the desired swap behavior.
+06-10 11:05:57.893  3124  3411 D IpClient/wlan0: addressUpdated: 2404:7a82:d243:cb00:fdfb:f2f5:84d6:b905/64 on ifindex 24 flags 0x00000900 scope 0
+06-10 11:05:57.893  3124  3411 D IpClient/wlan0: addressUpdated: 2404:7a82:d243:cb00:e52b:6728:8340:8ebb/64 on ifindex 24 flags 0x00000001 scope 0
+06-10 11:05:57.894  3124  3411 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@2df92c7
+06-10 11:05:57.894  3124  3411 D ApfFilter: (wlan0): Adding RA fe80::569b:49ff:fe46:7320 -> ff02::1 3600s 2404:7a82:d243:cb00::/64 300s/300s DNS 440s 2404:7a82:d243:cb00:569b:49ff:fe46:7320 
+06-10 11:05:57.948  1596  5525 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:05:57.952  1596  5525 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:05:57.964  1596  2995 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:05:57.984   900   907 I o.room_manager2: Compiler allocated 4485KB to compile void android.view.ViewRootImpl.performTraversals()
+06-10 11:05:58.358  3163  3953 D QCNEJ/WlanStaInfoRelay: Received action: android.net.wifi.RSSI_CHANGED
+06-10 11:05:58.365  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:05:58.372  1596  2713 D ConnectivityService: NetReassign [no changes] [c 1] [a 0] [i 2]
+06-10 11:05:58.374  3430 15874 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:05:58.374  3430 15874 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:05:58.376  3430 15874 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:05:58.376  3430 15874 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:05:58.376  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 1] [i 2]
+06-10 11:05:58.377  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:05:58.377  3430 14932 I NearbyMediums: Wifi changed new SSID: "aterm-bb71a6-5s"
+06-10 11:05:58.377  3430 14932 I NearbyMediums: WifiLanConnectivityInfo is not changed, skip notify.
+06-10 11:05:58.414   900   900 I flutter : [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-10 11:05:58.755     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:05:58.756     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:05:58.756     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:05:58.756     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:05:58.756     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:05:58.875  3430  3430 I NearbySharing: Network state changed: NetworkState(isRestricted=false, isOnline=true, isCongested=false, isMetered=false, isWifiConnected=true)
+06-10 11:05:59.024   900   900 I flutter : [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+06-10 11:05:59.025   900   900 I flutter : [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+06-10 11:05:59.050   900   900 I flutter : [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:00.074   900   900 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:00.513   900   900 I flutter : [ROOMコレ][surface] tab=candidate surface=ok_list
+06-10 11:06:00.537   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:00.548     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (6250)
+06-10 11:06:00.591   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:00.622   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:00.654   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:00.548     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4287 batt_curr:6
+06-10 11:06:01.178   900   900 I flutter : [AUTO_REACTION_SYNC] scheduled
+06-10 11:06:01.211   900   900 I Choreographer: Skipped 178 frames!  The application may be doing too much work on its main thread.
+06-10 11:06:01.226   900   900 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:01.226   900   900 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 11:06:01.230   900   900 I flutter : [RECOMMEND_GUARD] skipReason=sameDay
+06-10 11:06:01.241   900   900 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:01.241   900   900 I flutter : [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=46 filter= tab=candidate
+06-10 11:06:01.250   900   900 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 11:06:01.250   900   900 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 11:06:01.372  3163  3953 D QCNEJ/WlanStaInfoRelay: Received action: android.net.wifi.RSSI_CHANGED
+06-10 11:06:01.376  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:01.385  3430  4675 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:06:01.385  3430  4675 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:06:01.387   900   900 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 11:06:01.388  3430  5203 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:06:01.388  3430  5203 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:06:01.389  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 2] [i 2]
+06-10 11:06:01.393  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:01.393  3430 14932 I NearbyMediums: Wifi changed new SSID: "aterm-bb71a6-5s"
+06-10 11:06:01.393  3430 14932 I NearbyMediums: WifiLanConnectivityInfo is not changed, skip notify.
+06-10 11:06:01.461   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 11:06:01.465   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 11:06:01.468   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 11:06:01.471   900   900 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 11:06:01.545   900   900 I WebViewFactory: Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+06-10 11:06:01.547   900   900 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+06-10 11:06:01.549   900   900 D nativeloader: Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+06-10 11:06:01.565   900   900 I cr_WVCFactoryProvider: version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+06-10 11:06:01.569   900   900 D nativeloader: Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+06-10 11:06:01.571   900   900 D nativeloader: Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+06-10 11:06:01.573   900   970 I chromium: [0610/110601.573251:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+06-10 11:06:01.576   900   900 I cr_LibraryLoader: Successfully loaded native library
+06-10 11:06:01.577   900   900 I cr_CachingUmaRecorder: Flushed 18 samples from 18 histograms, 0 samples were dropped.
+06-10 11:06:01.580   900   900 I cr_ChildProcLH: ScopedServiceBindingBatch.tryActivate: false
+06-10 11:06:01.582   900   900 I cr_CombinedPProvider: #registerProvider() provider:WV.wk@1d13aa8 isPolicyCacheEnabled:false policyProvidersSize:0
+06-10 11:06:01.583  1596 11935 D CompatibilityChangeReporter: Compat change id reported: 161145287; UID 10495; state: ENABLED
+06-10 11:06:01.583   900   900 I cr_PolicyProvider: #setManagerAndSource() 0
+06-10 11:06:01.585   900   900 I cr_DisplayManager: Is Display Topology available: false
+06-10 11:06:01.591  1596  5525 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 99041; state: DISABLED
+06-10 11:06:01.591  1596  5525 D CompatibilityChangeReporter: Compat change id reported: 177438394; UID 99041; state: DISABLED
+06-10 11:06:01.591  1596  5525 D CompatibilityChangeReporter: Compat change id reported: 135772972; UID 99041; state: DISABLED
+06-10 11:06:01.591  1596  5525 D CompatibilityChangeReporter: Compat change id reported: 135754954; UID 99041; state: ENABLED
+06-10 11:06:01.591  1596  2124 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10495; state: ENABLED
+06-10 11:06:01.600  3093  3093 D Zygote  : Forked child process 975
+06-10 11:06:01.607   900   900 I cr_CombinedPProvider: #linkNativeInternal() 1
+06-10 11:06:01.608   900   900 D CompatibilityChangeReporter: Compat change id reported: 183155436; UID 10495; state: ENABLED
+06-10 11:06:01.609   900   900 I cr_AppResProvider: #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+06-10 11:06:01.609   900   900 I cr_PolicyProvider: #notifySettingsAvailable() 0
+06-10 11:06:01.609   900   900 I cr_CombinedPProvider: #onSettingsAvailable() 0
+06-10 11:06:01.609   975   975 E libc    : SetHeapTaggingLevel: re-enabling tagging after it was disabled is not supported
+06-10 11:06:01.609   900   900 I cr_CombinedPProvider: #flushPolicies()
+06-10 11:06:01.616   975   975 I ocessService0:0: Using generational CollectorTypeCC GC.
+06-10 11:06:01.622  1596  2124 I ActivityManager: Start proc 975:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i41 for  {com.stepbytestudio.room_manager2/org.chromium.content.app.SandboxedProcessService0:0}
+06-10 11:06:01.626   975   975 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:00.688     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:01.627     0     0 I binder  : 975:975 ioctl 40046210 7fffd73610 returned -22
+06-10 11:06:01.633   900   985 W chromium: [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+06-10 11:06:01.633  1596 11935 D CompatibilityInfo: mCompatibilityFlags - 0
+06-10 11:06:01.634  1596 11935 D CompatibilityInfo: applicationDensity - 280
+06-10 11:06:01.634  1596 11935 D CompatibilityInfo: applicationScale - 1.0
+06-10 11:06:01.639   975   975 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 99041; state: ENABLED
+06-10 11:06:01.639   975   975 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 99041; state: ENABLED
+06-10 11:06:01.646   975   975 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+06-10 11:06:01.648   900   900 W chromium: [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 98475489
+06-10 11:06:01.655   975   975 I cr_WebViewApkApp: version=148.0.7778.215 (777821503) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 splits=<none>
+06-10 11:06:01.658   900   900 D CompatibilityChangeReporter: Compat change id reported: 214741472; UID 10495; state: ENABLED
+06-10 11:06:01.658  1596 11935 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 99041. pid: 975
+06-10 11:06:01.660   975   975 W SystemServiceRegistry: No service published for: virtualdevice
+06-10 11:06:01.662   975   975 I cr_ChildProcessService: Creating new ChildProcessService pid=975
+06-10 11:06:01.697  1596 11935 D ActivityManager: Cancel freezing 28501 com.google.android.gms
+06-10 11:06:01.723 28501 28501 D BoundBrokerSvc: onRebind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+06-10 11:06:01.733  1596  1618 I system_server: Background young concurrent copying GC freed 21MB AllocSpace bytes, 22(440KB) LOS objects, 30% free, 51MB/73MB, paused 432us,291us total 129.870ms
+06-10 11:06:01.744  1596  1620 W System  : A resource failed to call release. 
+06-10 11:06:01.744  1596  1620 W System  : A resource failed to call HardwareBuffer.close. 
+06-10 11:06:01.752   900  1006 I CameraManagerGlobal: Connecting to camera service
+06-10 11:06:01.754  1596  1620 W System  : A resource failed to call release. 
+06-10 11:06:01.755  1596  1620 W System  : A resource failed to call HardwareBuffer.close. 
+06-10 11:06:01.773   900   900 D CompatibilityChangeReporter: Compat change id reported: 171228096; UID 10495; state: ENABLED
+06-10 11:06:01.802  1596  2995 I AppsFilter: interaction: PackageSetting{6ae0311 com.stepbytestudio.room_manager2/10495} -> PackageSetting{4d8ea92 com.android.adbkeyboard/10496} BLOCKED
+06-10 11:06:01.881  3430  3430 I NearbySharing: Network state changed: NetworkState(isRestricted=false, isOnline=true, isCongested=false, isMetered=false, isWifiConnected=true)
+06-10 11:06:01.965   900   900 I PlatformViewsController: Hosting view in view hierarchy for platform view: 0
+06-10 11:06:01.966   900   900 I PlatformViewsController: PlatformView is using SurfaceProducer backend
+06-10 11:06:01.967   900   900 D CompatibilityChangeReporter: Compat change id reported: 236825255; UID 10495; state: ENABLED
+06-10 11:06:01.962   900   900 W o.room_manager2: type=1400 audit(0.0:14425): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:01.969   900   900 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:01.971   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:01.971   900   900 D CompatibilityChangeReporter: Compat change id reported: 193247900; UID 10495; state: ENABLED
+06-10 11:06:01.974   900   900 I Choreographer: Skipped 45 frames!  The application may be doing too much work on its main thread.
+06-10 11:06:01.978   900   900 W o.room_manager2: type=1400 audit(0.0:14426): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+06-10 11:06:01.983   900   900 W libc    : Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+06-10 11:06:01.990   900   900 I AdrenoVK-0: QUALCOMM build          : a3cdec2236, Ief33eea0db
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Build Date              : 08/23/22
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Shader Compiler Version : EV031.35.01.12
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Local Branch            : 
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Remote Branch           : 
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Reconstruct Branch      : 
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Build Config            : S P 10.0.7 AArch64
+06-10 11:06:01.990   900   900 I AdrenoVK-0: Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+06-10 11:06:02.005   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:02.019  1596  2084 I ActivityTaskManager: Displayed com.stepbytestudio.room_manager2/.MainActivity for user 0: +5s192ms
+06-10 11:06:02.024  1596  2084 I ActivityTaskManager: Fully drawn com.stepbytestudio.room_manager2/.MainActivity: +5s192ms
+06-10 11:06:02.032   900   913 I OpenGLRenderer: Davey! duration=790ms; Flags=1, FrameTimelineVsyncId=1412813, IntendedVsync=68905858239622, Vsync=68906608239592, InputEventId=0, HandleInputStart=68906611742046, AnimationStart=68906611743504, PerformTraversalsStart=68906611765119, DrawStart=68906619179754, FrameDeadline=68905874906288, FrameInterval=68906611466473, FrameStartTime=16666666, SyncQueued=68906642898556, SyncStart=68906643030588, IssueDrawCommandsStart=68906643966265, SwapBuffers=68906647276525, FrameCompleted=68906648566525, DequeueBufferDuration=1019531, QueueBufferDuration=875677, GpuCompleted=68906648418973, SwapBuffersCompleted=68906648566525, DisplayPresentTime=0, CommandSubmissionCompleted=68906647276525, 
+06-10 11:06:02.073  1481  2231 I ComposerExtn: SmoMoImpl::FrameIsLate: no valid present time for layer 3913
+06-10 11:06:02.083  1596 11935 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10495; state: ENABLED
+06-10 11:06:02.083  1596 11935 I ImeTracker: com.stepbytestudio.room_manager2:9b2a63ff: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+06-10 11:06:02.083  1596 11935 I ImeTracker: com.stepbytestudio.room_manager2:9b2a63ff: onCancelled at PHASE_SERVER_SHOULD_HIDE
+06-10 11:06:02.087  1481  1481 I ComposerExtn: SmoMoImpl::FrameIsEarly: no valid present time for layer 3913
+06-10 11:06:02.088  4526  4526 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2259 
+06-10 11:06:02.089  4526  4526 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():127 repeatCheckTimes = 0, locked = false
+06-10 11:06:02.090  4526  4526 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1446 onStartInput(EditorInfo{EditorInfo{packageName=com.stepbytestudio.room_manager2, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+06-10 11:06:02.090  4526  4526 I AndroidIME: LatinIMEBase.updateInputViewCoverNavigation():321 Update input view padding, isNavbarOverInputWindow=false, bottom inset=84
+06-10 11:06:02.091  4526  4526 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():127 repeatCheckTimes = 1, locked = false
+06-10 11:06:02.092   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:02.096  1596  2995 W PackageConfigPersister: App-specific configuration not found for packageName: com.stepbytestudio.room_manager2 and userId: 0
+06-10 11:06:02.116  1596  8761 W ProcessStats: Tracking association SourceState{784d281 com.google.android.gms/10128 BTop #69968} whose proc state 2 is better than process ProcessState{82f66ed com.android.vending/10115 pkg=com.android.vending} proc state 14 (37 skipped)
+06-10 11:06:02.129  3226 14962 W DynamicDDSService: appName is not found in cache: jp.co.sharp.android.launcher3
+06-10 11:06:02.141 30974 30974 I bynm    : onStop
+06-10 11:06:02.143  3313  3394 I ImeTracker: jp.co.sharp.android.launcher3:d0825682: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+06-10 11:06:02.143  3313  3394 I ImeTracker: jp.co.sharp.android.launcher3:d0825682: onFailed at PHASE_CLIENT_VIEW_SERVED
+06-10 11:06:02.160  4674 25639 D MainProcessObserver: pid:3313 uid:10216 foregroundActivities:false
+06-10 11:06:02.161  1596 11935 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:02.162  4674 25639 D onForegroundChanged: topActivity:ComponentInfo{com.stepbytestudio.room_manager2/com.stepbytestudio.room_manager2.MainActivity}, taskId:1295, windowingMode:1
+06-10 11:06:02.162  4674 25639 D onForegroundChanged: packageName:com.stepbytestudio.room_manager2
+06-10 11:06:02.168  1596  2995 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:02.180  1596 11935 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:02.380  2875  2960 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@d515ae
+06-10 11:06:02.380  1596  5525 W InputManager-JNI: Input channel object 'edb31ef Splash Screen com.stepbytestudio.room_manager2 (client)' was disposed without first being removed with the input manager!
+06-10 11:06:02.382  1596 11935 D CoreBackPreview: Window{edb31ef u0 Splash Screen com.stepbytestudio.room_manager2 EXITING}: Setting back callback null
+06-10 11:06:02.429  1596  2123 E Notifier: app_name=com.stepbytestudio.room_manager2
+06-10 11:06:03.181  1596  5525 W ActivityTaskManager: MANAGE_ACTIVITY_STACKS is deprecated, please use alternative permission: MANAGE_ACTIVITY_TASKS
+06-10 11:06:03.185  1596  5525 D ActivityManager: Cancel freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:03.193   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.198  1596 11935 D ActivityManager: Async freezing 28407 jp.co.sharp.android.gaming2
+06-10 11:06:03.208   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.224   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.240   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.256   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.258   900   900 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+06-10 11:06:03.273   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.290   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.292   900   900 W ImageReader_JNI: Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+06-10 11:06:03.306   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.323   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.340   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.357   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.366     0     0 I [MAX77729-fg] max77729_fg_read_vcell: max77729_fg_read_vcell: VCELL(4286)mV, data(0xd656)
+06-10 11:06:03.373   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.390   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.406   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.423   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.440   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.456   900   919 E FrameEvents: updateAcquireFence: Did not find frame.
+06-10 11:06:03.590   900  1013 D ProfileInstaller: Installing profile for com.stepbytestudio.room_manager2
+06-10 11:06:03.366     0     0 W nopmi_chg update_csoc: update_csoc() : corrected_display_capacity = 100 corrected_capacity = 998 capacity = 99 precision_capacity = 998
+06-10 11:06:03.619     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (4062)
+06-10 11:06:03.620     0     0 E nopmi_chg nopmi_cv_step_monitor_work: fg_cc_cv_step_check: batt_volt:4287 batt_curr:4
+06-10 11:06:03.875     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work usb_present 1 charger->connector_temp 28 charger->offcharge_mode=0
+06-10 11:06:03.877     0     0 E [MAX77729-chg] max77729_get_charger_state: max77729_get_charger_state : charger status (0x34)
+06-10 11:06:03.877     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: typec_usb_overheat=0, level=0
+06-10 11:06:03.877     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: 000_ cc_safety_level = 0,
+06-10 11:06:03.877     0     0 D [MAX77729-chg] maxim_typec_usb_therm_work: PMIC-0043 maxim_typec_usb_therm_work out
+06-10 11:06:04.343 28959 28984 I Finsky  : [117] Stats for Executor: GrpcBackgroundExecutor vzk@c3c8a99[Running, pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 2]
+06-10 11:06:04.387     0     0 I (virq   : irq_count)- 4:8993236 14:3677368 194:3259430 6:2716977 20:2569633 166:2156928 155:1993157 1:725395 265:460002 255:445514
+06-10 11:06:04.387     0     0 I (cpu    : irq_count)- 0:9862200 1:11482489 2:1548508 3:1932475 4:231212 5:262227 6:1732149 7:1709523
+06-10 11:06:04.387     0     0 I (ipi    : irq_count)- 0:30642032 1:10614202 2:0 3:0 4:177949 5:3120474 6:0
+06-10 11:06:04.392     0     0 I [MAX77729-chg] max77729_period_work: max77729_period_work: batt_volt:4284 batt_curr:-8, batt_temp 281, fast_mode 0 soc 99 batt_id 1
+06-10 11:06:04.393     0     0 I [MAX77729-chg] max77729_set_topoff_current: max77729_set_topoff_current: reg_data(0x00), topoff(150mA)
+06-10 11:06:04.393     0     0 I [MAX77729-chg] max77729_chg_set_wdtmr_kick: max77729_chg_set_wdtmr_kick: WDT Kick
+06-10 11:06:04.394     0     0 I [MAX77729-chg] max77729_get_charging_health: max77729_get_charging_health: details00(0xe0)
+06-10 11:06:04.395  3163  3953 D QCNEJ/WlanStaInfoRelay: Received action: android.net.wifi.RSSI_CHANGED
+06-10 11:06:04.394     0     0 I [MAX77729-chg] max77729_get_vbus_state: max77729_get_vbus_state: VBUS is valid. CHGIN < CHGIN_OVLO
+06-10 11:06:04.396     0     0 I [MAX77729-chg] max77729_get_charging_health: max77729_get_charging_health: vbus_state: 0x3, chg_dtls: 0x4, iin: 123mA, vbyp: 5076mV, health: 0, abnormal: false
+06-10 11:06:04.403  3430 15874 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:06:04.403  3430 15874 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:06:04.404  2875  2875 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+06-10 11:06:04.404  3430 15874 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+06-10 11:06:04.405  3430 15874 W .gms.persistent: Large reply transaction of 1056768 bytes, interface descriptor , code 1
+06-10 11:06:04.416  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 1] [i 1]
+06-10 11:06:04.416  3430 14932 I NearbyMediums: Wifi changed new SSID: "aterm-bb71a6-5s"
+06-10 11:06:04.416  3430 14932 I NearbyMediums: WifiLanConnectivityInfo is not changed, skip notify.
+06-10 11:06:04.422  1596  2713 D ConnectivityService: NetReassign [no changes] [c 0] [a 0] [i 2]
+06-10 11:06:04.503     0     0 I [MAX77729-fg] max77729_fg_periodic_read: [0][FG] 0080h,ff00h,7f80h,ff00h,1900h,0d01h,63ceh,6306h,1c2ch,d662h,000ah,ffe6h,0002h,5e91h,63e7h,0d04h,0d07h,ffffh,6e80h,5500h,0419h,0148h,1bbfh,0012h,0dd2h,d636h,2712h,db87h,12edh,0214h,0250h,0d03h,ffffh,6200h,3700h,0db1h,1403h,1e05h,1b83h,74e2h,2602h,cea4h,043ch,3830h,ed8ah,1e87h,0400h,0001h,769ah,73c3h,1b00h,ffffh,1c2ch,0d08h,0b0eh,05e0h,0046h,263fh,aa64h,ffa0h,1680h,1408h,44bbh,e000h,07fch,0000h,1400h,01a0h,d66fh,0392h,3424h,01c9h,5ce5h,2241h,0cc6h,036ah,133bh,133ah,a4dch,0d09h,0000h,6c15h,7f80h,2e85h,7f80h,0005h,05cbh,0600h,0000h,0010h,090ch,0055h,0035h,0204h,032fh,0000h,03dch,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,0000h,8400h,0000h,ffffh,63e0h,0d04h,06dah,0f20h,fffdh,0331h,0009h,0000h,03f0h,fffeh,4ab6h,0000h,4680h,0000h,4000h,0000h,7d00h,0520h,ffffh,ffffh,ffffh,ffffh,20b1h,0000h,0000h,f92fh,3a71h,5bcfh,fffeh,d66ch,003ch,2910h,d658h,5cceh,
+06-10 11:06:04.503     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb0:0x0
+06-10 11:06:04.504     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb1:0xba
+06-10 11:06:04.504     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb2:0xcf
+06-10 11:06:04.504     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb3:0xe0
+06-10 11:06:04.505     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb4:0x34
+06-10 11:06:04.505     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb5:0x0
+06-10 11:06:04.505     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb6:0xff
+06-10 11:06:04.506     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb7:0x15
+06-10 11:06:04.506     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb8:0xaf
+06-10 11:06:04.506     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xb9:0x72
+06-10 11:06:04.507     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xba:0x80
+06-10 11:06:04.507     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbb:0x13
+06-10 11:06:04.507     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbc:0x6d
+06-10 11:06:04.508     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbd:0x6d
+06-10 11:06:04.508     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbe:0x34
+06-10 11:06:04.508     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xbf:0x0
+06-10 11:06:04.509     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc0:0x93
+06-10 11:06:04.509     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc1:0x53
+06-10 11:06:04.509     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc2:0x0
+06-10 11:06:04.509     0     0 E [MAX77729-chg] max77729_chg_dump_reg: 77729_chg_dump_reg:0xc3:0x68
+06-10 11:06:04.611     0     0 E nopmi_chg_jeita_workfunc: nopmi_chg_jeita_workfunc:
+06-10 11:06:04.611     0     0 E nopmi_chg_jeita_get_bat_temperature: In nopmi_chg_jeita_get_bat_temperature:
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita_get_bat_temperature: Out nopmi_chg_jeita_get_bat_temperature:get_bat_temperature is 28
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: In nopmi_chg_handle_jeita_current: entert handle jeita
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA] Battery Normal Temperature between 15 and 45 !!
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]jeita_current_limit 2500 !!
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita nopmi_chg_handle_jeita_current: [SW_JEITA]preState:2 newState:2 tmp:28 cv:4400,4350 jeita_current_limit:2500
+06-10 11:06:04.613     0     0 E nopmi_chg_jeita_get_charger_enabled: Out nopmi_chg_jeita_get_charger_enabled:enabled is 1
+06-10 11:06:04.911  3430  3430 I NearbySharing: Network state changed: NetworkState(isRestricted=false, isOnline=true, isCongested=false, isMetered=false, isWifiConnected=true)
+06-10 11:06:04.937 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:uiautomator dump /sdcard/ux6d_1_normal_final.xml'
+06-10 11:06:04.945 29141 29157 I Finsky:background: [117] Stats for Executor: bgExecutor vzk@1b95034[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 68]
+06-10 11:06:04.971 29141 29157 I Finsky:background: [117] Stats for Executor: LightweightExecutor vzk@4d1491[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 18]
+06-10 11:06:05.027  1014  1014 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+06-10 11:06:05.031  1014  1014 I AndroidRuntime: Using default boot image
+06-10 11:06:05.031  1014  1014 I AndroidRuntime: Leaving lock profiling enabled
+06-10 11:06:05.034  1014  1014 I app_process: Using generational CollectorTypeCC GC.
+06-10 11:06:05.084  1014  1014 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+06-10 11:06:05.086 29141 29157 I Finsky:background: [117] Stats for Executor: BlockingExecutor vzk@d307eec[Running, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 18]
+06-10 11:06:05.094  1014  1014 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:05.094  1014  1014 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+06-10 11:06:05.094  1014  1014 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+06-10 11:06:05.095  1014  1014 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:05.096  1014  1014 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+06-10 11:06:05.096  1014  1014 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+06-10 11:06:05.120  1014  1014 W libc    : Access denied finding property "ro.product.name_for_attestation"
+06-10 11:06:05.121  1014  1014 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+06-10 11:06:05.121  1014  1014 W libc    : Access denied finding property "ro.product.model_for_attestation"
+06-10 11:06:05.114  1014  1014 W main    : type=1400 audit(0.0:14427): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:05.122  1014  1014 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+06-10 11:06:05.114  1014  1014 W main    : type=1400 audit(0.0:14428): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:05.114  1014  1014 W main    : type=1400 audit(0.0:14429): avc:  denied  { read } for  name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=2643 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+06-10 11:06:05.122  1014  1014 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+06-10 11:06:05.122     0     0 I binder  : 1014:1014 ioctl 40046210 7fd3834250 returned -22
+06-10 11:06:05.125  1014  1014 D UiAutomationConnection: Created on user UserHandle{0}
+06-10 11:06:05.125  1014  1014 I UiAutomation: Initialized for user 0 on display 0
+06-10 11:06:05.125  1014  1014 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+06-10 11:06:05.127  1596  2995 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+06-10 11:06:05.127  1596  2995 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+06-10 11:06:05.128  1596  2724 W AS.AudioService: handleMessage({ when=-1ms what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:05.129  1596  2995 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:05.130  1596  1596 D BatterySaverPolicy: accessibility changed to true, updating policy.
+06-10 11:06:05.145  1596  2724 W AS.AudioService: handleMessage({ when=0 what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:05.147  1596  8761 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:05.148  1596  1596 D AS.AudioService: Accessibility volume enabled = false
+06-10 11:06:05.152  4275  4381 D AccessibilitySourceService: enabled a11y services count 0
+06-10 11:06:05.152  4275  4381 D AccessibilitySourceService: a11y source sending 0 issue to sc
+06-10 11:06:05.152  1596  2995 D SafetySourceDataValidat: No cert check requested for package com.google.android.permissioncontroller
+06-10 11:06:05.274   900   900 I flutter : [AUTO_REACTION_SYNC] skipped reason=recentSync
+06-10 11:06:05.963  1596  2632 D ActivityManager: freezing 32030 com.google.android.apps.photos
+06-10 11:06:05.965  1596  2632 D ActivityManager: reportOneUidFrozenStateChanged uid 10162 frozen = true
+06-10 11:06:06.284  1014  1014 W libc    : Access denied finding property "qemu.sf.lcd_density"
+06-10 11:06:06.284  1014  1014 W libc    : Access denied finding property "qemu.sf.lcd_density"
+06-10 11:06:06.278  1014  1014 W uiautomator: type=1400 audit(0.0:14430): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=2822 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+06-10 11:06:06.278  1014  1014 W uiautomator: type=1400 audit(0.0:14431): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=2822 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+06-10 11:06:06.319  1596  4189 D CompatibilityChangeReporter: Compat change id reported: 161145287; UID 10495; state: ENABLED
+06-10 11:06:06.320   900   900 I cr_A11yState: Enabled accessibility services list updated. []
+06-10 11:06:06.322   900   900 I cr_A11yState: Informing listeners of changes.
+06-10 11:06:06.322   900   900 I cr_A11yState: New AccessibilityState: State{isComplexUserInteractionServiceEnabled=false, isTouchExplorationEnabled=false, isPerformGesturesEnabled=false, isAnyAccessibilityServiceEnabled=false, isAccessibilityToolPresent=false, isTextShowPasswordEnabled=true, isOnlyAutofillRunning=false, isOnlyPasswordManagersEnabled=false, isKnownScreenReaderEnabled=false}
+06-10 11:06:06.326  1014  1014 W AccessibilityNodeInfoDumper: Fetch time: 41ms
+06-10 11:06:06.328  1596  2724 W AS.AudioService: handleMessage({ when=0 what=35 target=com.android.server.audio.AudioService$AudioHandler }) from pid=1596, uid=1000
+06-10 11:06:06.330  1596  2995 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+06-10 11:06:06.330  1596  2995 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+06-10 11:06:06.330  1596  1596 D BatterySaverPolicy: accessibility changed to false, updating policy.
+06-10 11:06:06.336  1014  1014 D AndroidRuntime: Shutting down VM
+06-10 11:06:06.336     0     0 I binder  : 1014:1014 ioctl 40046210 7fd3834444 returned -22
+06-10 11:06:06.442  3124  3411 D IpClient/wlan0: interfaceLinkStateChanged: ifindex 24 up
+06-10 11:06:06.693     0     0 E [MAX77729-fg] max77729_fg_get_property: max77729_fg_get_property: CURRENT_NOW (3125)
+06-10 11:06:07.007  1596  2632 D ActivityManager: Freezer deadlock watchdog
+06-10 11:06:07.219 16269 16269 I adbd    : adbd service requested 'sync:'
+06-10 11:06:07.268 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-d''
