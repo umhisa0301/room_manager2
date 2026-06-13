@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ROOM manager</string>
+    <!-- Google 公式テスト用 AdMob App ID。本番 ID は Monetization-5 で差し替え。 -->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 </resources>

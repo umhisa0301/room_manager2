@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../config/monetization_config.dart';
 import 'ad_placeholder_slot.dart';
+import 'admob_banner_ad_slot.dart';
+import 'monetization_ad_content_resolver.dart';
 import 'monetization_ad_placement.dart';
 
 export 'monetization_ad_placement.dart';
@@ -12,12 +14,16 @@ class MonetizationAdSlot extends StatelessWidget {
     super.key,
     required this.placement,
     this.adsEnabledOverride,
+    this.loadAdMobForTesting,
   });
 
   final MonetizationAdPlacement placement;
 
   /// テスト用。未指定時は [MonetizationFlags.isAdsEnabled] を参照する。
   final bool? adsEnabledOverride;
+
+  /// テスト用。`false` のとき [AdMobBannerAdSlot] の広告ロードをスキップする。
+  final bool? loadAdMobForTesting;
 
   static Key keyForPlacement(MonetizationAdPlacement placement) {
     return Key('monetization_ad_slot_${placement.name}');
@@ -27,10 +33,21 @@ class MonetizationAdSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isVisible) {
-      return const SizedBox.shrink();
+    final content = resolveMonetizationAdContent(
+      placement: placement,
+      adsEnabled: _isVisible,
+    );
+    switch (content) {
+      case MonetizationAdContentKind.none:
+        return const SizedBox.shrink();
+      case MonetizationAdContentKind.admobBanner:
+        return AdMobBannerAdSlot(
+          placement: placement,
+          loadAdForTesting: loadAdMobForTesting,
+        );
+      case MonetizationAdContentKind.placeholder:
+        return AdPlaceholderSlot(placement: placement);
     }
-    return AdPlaceholderSlot(placement: placement);
   }
 }
 

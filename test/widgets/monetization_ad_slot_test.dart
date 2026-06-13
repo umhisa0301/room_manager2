@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/monetization_config.dart';
+import 'package:room_manager2/widgets/monetization/admob_banner_ad_slot.dart';
 import 'package:room_manager2/widgets/monetization/monetization_ad_slot.dart';
 
 Widget _wrap(Widget child) {
@@ -30,7 +31,7 @@ void main() {
       expect(tester.getSize(find.byType(MonetizationAdSlot)), Size.zero);
     });
 
-    testWidgets('shows banner placeholder when adsEnabledOverride is true', (
+    testWidgets('shows AdMob banner slot when adsEnabledOverride is true', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -38,15 +39,16 @@ void main() {
           const MonetizationAdSlot(
             placement: MonetizationAdPlacement.homeBottomBanner,
             adsEnabledOverride: true,
+            loadAdMobForTesting: false,
           ),
         ),
       );
 
+      expect(find.byType(AdMobBannerAdSlot), findsOneWidget);
       expect(
         find.byKey(const Key('monetization_ad_slot_homeBottomBanner')),
-        findsOneWidget,
+        findsNothing,
       );
-      expect(find.text('広告'), findsOneWidget);
     });
 
     testWidgets(
@@ -77,7 +79,7 @@ void main() {
       },
     );
 
-    testWidgets('homeBottomBanner shows expected copy in debug mode', (
+    testWidgets('homeBottomBanner routes to AdMob banner slot in debug mode', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -85,12 +87,13 @@ void main() {
           const MonetizationAdSlot(
             placement: MonetizationAdPlacement.homeBottomBanner,
             adsEnabledOverride: true,
+            loadAdMobForTesting: false,
           ),
         ),
       );
 
-      expect(find.text('広告枠'), findsOneWidget);
-      expect(find.text('Sponsored placeholder'), findsOneWidget);
+      expect(find.byType(AdMobBannerAdSlot), findsOneWidget);
+      expect(find.text('Sponsored placeholder'), findsNothing);
     });
 
     testWidgets('todayRecommendationSummaryBanner shows expected copy', (
@@ -154,6 +157,21 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    testWidgets('does not create AdMob banner slot when ads disabled', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrap(
+          const MonetizationAdSlot(
+            placement: MonetizationAdPlacement.homeBottomBanner,
+            adsEnabledOverride: false,
+          ),
+        ),
+      );
+
+      expect(find.byType(AdMobBannerAdSlot), findsNothing);
+    });
+
     testWidgets('compile-time ADS_ENABLED=false uses shrink by default', (
       tester,
     ) async {
@@ -171,6 +189,7 @@ void main() {
         find.byKey(const Key('monetization_ad_slot_homeBottomBanner')),
         findsNothing,
       );
+      expect(find.byType(AdMobBannerAdSlot), findsNothing);
     });
   });
 

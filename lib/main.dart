@@ -45,6 +45,7 @@ import 'models/genre_master.dart';
 import 'config/debug_log_flags.dart';
 import 'config/monetization_config.dart';
 import 'config/room_import_enrichment_verify_config.dart';
+import 'services/admob_initializer.dart';
 import 'utils/room_sync_log.dart';
 
 Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
@@ -94,6 +95,7 @@ void main() async {
   final genreMasterRepository = GenreMasterRepository(prefs: prefs);
   await _bootstrapRakutenGenreNameCache(genreMasterRepository);
   await GenreMasterService.instance.load();
+  await AdMobInitializer.initializeIfNeeded();
   runApp(
     MyApp(
       productRepository: productRepository,
