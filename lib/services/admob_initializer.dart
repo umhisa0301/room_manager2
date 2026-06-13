@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../config/admob_config.dart';
 import '../config/monetization_config.dart';
 
 /// AdMob SDK の起動時初期化（[MonetizationFlags.isAdsEnabled] のときのみ）。
@@ -20,6 +21,15 @@ abstract final class AdMobInitializer {
       if (kDebugMode) {
         debugPrint('[ADMOB] initialization skipped ads=false');
       }
+      return;
+    }
+
+    if (kReleaseMode && !kProfileMode && AdMobConfig.resolveEnvironment() == null) {
+      debugPrint(
+        '[ADMOB] initialization skipped: release build without production '
+        'banner ad unit ID (set AdMobConfig.production* and '
+        'kReleaseAdMobIdsEnabled=true)',
+      );
       return;
     }
 

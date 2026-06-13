@@ -47,6 +47,9 @@ class AdMobBannerAdSlotState extends State<AdMobBannerAdSlot> {
 
     final adUnitId = AdMobConfig.homeBottomBannerAdUnitId();
     if (adUnitId == null) {
+      debugPrint(
+        '[ADMOB] banner load skipped env=${AdMobConfig.environmentLogLabel}',
+      );
       if (mounted) {
         setState(() => _loadFailed = true);
       }

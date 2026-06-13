@@ -1,28 +1,134 @@
 import 'dart:io';
 
-/// AdMob 広告ユニット ID 設定（テストのみ）。
+import 'package:flutter/foundation.dart';
+
+/// AdMob の実行環境（テスト広告 / 本番広告）。
+enum AdMobEnvironment {
+  test,
+  production,
+}
+
+/// AdMob 広告ユニット ID 設定。
 ///
-/// App ID は Android [AndroidManifest.xml] / 将来の iOS Info.plist にのみ配置する。
-/// 本番 ID は Monetization-5 以降で差し替える。
+/// - **App ID**（`ca-app-pub-…~…`）は Android [strings.xml] / 将来の iOS Info.plist のみ。
+/// - **バナー広告ユニット ID**（`ca-app-pub-…/…`）は本ファイルのみ。
+/// - テスト ID と本番 ID は定数で明確に分離する。
+/// - 本番 ID は [kReleaseAdMobIdsEnabled] を true にし、各 production 定数へ実値を入れたときのみ有効。
 abstract final class AdMobConfig {
-  /// Google 公式テスト用バナー広告ユニット ID（Android）。
+  /// 本番 AdMob ID を release ビルドで使うか。
+  ///
+  /// false のままでは release でも広告ユニット ID は返さず、SDK 初期化もスキップする。
+  /// 本番 ID を strings.xml / 下記 production 定数へ設定したあと true にする。
+  static const bool kReleaseAdMobIdsEnabled = false;
+
+  // --- Google 公式テスト ID（変更しない） ---
+
+  static const String testAndroidAppId =
+      'ca-app-pub-3940256099942544~3347511713';
+
   static const String testAndroidBannerAdUnitId =
       'ca-app-pub-3940256099942544/6300978111';
 
-  /// Google 公式テスト用バナー広告ユニット ID（iOS）。
   static const String testIosBannerAdUnitId =
       'ca-app-pub-3940256099942544/2934735716';
 
-  // TODO(Monetization-5): 本番バナー広告ユニット ID をプラットフォーム別に追加
+  // --- 本番 ID（AdMob 管理画面の実値を入れる。ダミー値は入れない） ---
+
+  // TODO(Monetization-6A): AdMob 管理画面の Android バナー広告ユニット ID を設定し
+  // [kReleaseAdMobIdsEnabled] を true にする。
+  static const String productionAndroidBannerAdUnitId = '';
+
+  // TODO(Monetization-6A): iOS 対応時に Info.plist の GADApplicationIdentifier と
+  // 本番バナー広告ユニット ID を設定する。
+  static const String productionIosBannerAdUnitId = '';
+
+  /// Android 本番バナー広告ユニット ID が利用可能か。
+  static bool get isProductionAndroidBannerAdUnitIdConfigured =>
+      kReleaseAdMobIdsEnabled && productionAndroidBannerAdUnitId.isNotEmpty;
+
+  /// iOS 本番バナー広告ユニット ID が利用可能か。
+  static bool get isProductionIosBannerAdUnitIdConfigured =>
+      kReleaseAdMobIdsEnabled && productionIosBannerAdUnitId.isNotEmpty;
+
+  /// 現ビルドで広告ロードに使う環境。未設定 release では `null`（ロードしない）。
+  static AdMobEnvironment? resolveEnvironment() {
+    return resolveAdMobEnvironment(
+      useProductionAdIds: kReleaseMode && !kProfileMode,
+      productionAndroidBannerConfigured:
+          isProductionAndroidBannerAdUnitIdConfigured,
+      productionIosBannerConfigured: isProductionIosBannerAdUnitIdConfigured,
+      isAndroid: Platform.isAndroid,
+      isIos: Platform.isIOS,
+    );
+  }
 
   /// [MonetizationAdPlacement.homeBottomBanner] 用のバナー広告ユニット ID。
   static String? homeBottomBannerAdUnitId() {
-    if (Platform.isAndroid) {
-      return testAndroidBannerAdUnitId;
+    return resolveHomeBottomBannerAdUnitId(
+      environment: resolveEnvironment(),
+      isAndroid: Platform.isAndroid,
+      isIos: Platform.isIOS,
+      testAndroidBannerAdUnitId: testAndroidBannerAdUnitId,
+      testIosBannerAdUnitId: testIosBannerAdUnitId,
+      productionAndroidBannerAdUnitId: productionAndroidBannerAdUnitId,
+      productionIosBannerAdUnitId: productionIosBannerAdUnitId,
+    );
+  }
+
+  /// debug ログ用（ID 本体は出さない）。
+  static String get environmentLogLabel {
+    final env = resolveEnvironment();
+    if (env == null) {
+      return 'unconfigured-release';
     }
-    if (Platform.isIOS) {
-      return testIosBannerAdUnitId;
-    }
+    return env.name;
+  }
+}
+
+/// 単体テスト用の純粋関数。
+///
+/// [useProductionAdIds] は Flutter の release ビルドのみ true（profile は false）。
+AdMobEnvironment? resolveAdMobEnvironment({
+  required bool useProductionAdIds,
+  required bool productionAndroidBannerConfigured,
+  required bool productionIosBannerConfigured,
+  required bool isAndroid,
+  required bool isIos,
+}) {
+  if (!useProductionAdIds) {
+    return AdMobEnvironment.test;
+  }
+  if (isAndroid && productionAndroidBannerConfigured) {
+    return AdMobEnvironment.production;
+  }
+  if (isIos && productionIosBannerConfigured) {
+    return AdMobEnvironment.production;
+  }
+  return null;
+}
+
+/// 単体テスト用の純粋関数。
+String? resolveHomeBottomBannerAdUnitId({
+  required AdMobEnvironment? environment,
+  required bool isAndroid,
+  required bool isIos,
+  required String testAndroidBannerAdUnitId,
+  required String testIosBannerAdUnitId,
+  required String productionAndroidBannerAdUnitId,
+  required String productionIosBannerAdUnitId,
+}) {
+  if (environment == null) {
     return null;
   }
+  if (isAndroid) {
+    return environment == AdMobEnvironment.production
+        ? productionAndroidBannerAdUnitId
+        : testAndroidBannerAdUnitId;
+  }
+  if (isIos) {
+    return environment == AdMobEnvironment.production
+        ? productionIosBannerAdUnitId
+        : testIosBannerAdUnitId;
+  }
+  return null;
 }

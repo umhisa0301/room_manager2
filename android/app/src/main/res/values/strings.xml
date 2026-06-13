@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ROOM manager</string>
-    <!-- Google 公式テスト用 AdMob App ID。本番 ID は Monetization-5 で差し替え。 -->
+    <!--
+      AdMob App ID（debug / profile 用テスト ID）。
+      形式: ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy（広告ユニット ID の / とは異なる）
+
+      本番 App ID 設定手順（Monetization-6A）:
+      1. AdMob 管理画面で Android 用 App ID を取得
+      2. android/app/src/release/res/values/strings.xml を新規作成し
+         admob_app_id に本番 App ID を記載（main のテスト ID は debug/profile 用として残す）
+      3. lib/config/admob_config.dart の production 定数と kReleaseAdMobIdsEnabled を設定
+
+      TODO(Monetization-6A): 本番 Android App ID 未設定（上記 release 用 strings.xml 未作成）
+    -->
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 </resources>
