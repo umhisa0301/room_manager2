@@ -43,6 +43,7 @@ import 'state/today_recommendation_provider.dart';
 import 'navigation/app_shell_controller.dart';
 import 'models/genre_master.dart';
 import 'config/debug_log_flags.dart';
+import 'config/monetization_config.dart';
 import 'config/room_import_enrichment_verify_config.dart';
 import 'utils/room_sync_log.dart';
 
@@ -68,6 +69,7 @@ void main() async {
       'verboseItem=${DebugLogFlags.kVerboseItemLogsEnabled} '
       'summary=${DebugLogFlags.kDebugLogSummaryEnabled}',
     );
+    debugPrint(MonetizationFlags.debugLogLine);
   }
   roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);
   final prefs = await SharedPreferences.getInstance();
