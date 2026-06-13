@@ -19,7 +19,7 @@ abstract final class AdMobConfig {
   ///
   /// false のままでは release でも広告ユニット ID は返さず、SDK 初期化もスキップする。
   /// 本番 ID を strings.xml / 下記 production 定数へ設定したあと true にする。
-  static const bool kReleaseAdMobIdsEnabled = false;
+  static const bool kReleaseAdMobIdsEnabled = true;
 
   // --- Google 公式テスト ID（変更しない） ---
 
@@ -34,9 +34,8 @@ abstract final class AdMobConfig {
 
   // --- 本番 ID（AdMob 管理画面の実値を入れる。ダミー値は入れない） ---
 
-  // TODO(Monetization-6A): AdMob 管理画面の Android バナー広告ユニット ID を設定し
-  // [kReleaseAdMobIdsEnabled] を true にする。
-  static const String productionAndroidBannerAdUnitId = '';
+  static const String productionAndroidBannerAdUnitId =
+      'ca-app-pub-3311460421786551/5377056540';
 
   // TODO(Monetization-6A): iOS 対応時に Info.plist の GADApplicationIdentifier と
   // 本番バナー広告ユニット ID を設定する。

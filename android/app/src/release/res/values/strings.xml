@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- release ビルド専用の本番 AdMob App ID（~ 形式）。debug/profile は main のテスト ID を使用。 -->
+    <string name="admob_app_id">ca-app-pub-3311460421786551~1326089331</string>
+</resources>

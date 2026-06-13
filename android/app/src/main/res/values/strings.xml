@@ -11,7 +11,7 @@
          admob_app_id に本番 App ID を記載（main のテスト ID は debug/profile 用として残す）
       3. lib/config/admob_config.dart の production 定数と kReleaseAdMobIdsEnabled を設定
 
-      TODO(Monetization-6A): 本番 Android App ID 未設定（上記 release 用 strings.xml 未作成）
+      本番 App ID は android/app/src/release/res/values/strings.xml を参照
     -->
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 </resources>

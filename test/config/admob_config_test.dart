@@ -151,13 +151,21 @@ void main() {
   });
 
   group('AdMobConfig production guard', () {
-    test('kReleaseAdMobIdsEnabled is false until production IDs are set', () {
-      expect(AdMobConfig.kReleaseAdMobIdsEnabled, isFalse);
+    test('kReleaseAdMobIdsEnabled is true after Monetization-6B setup', () {
+      expect(AdMobConfig.kReleaseAdMobIdsEnabled, isTrue);
     });
 
-    test('production android banner is not configured by default', () {
-      expect(AdMobConfig.isProductionAndroidBannerAdUnitIdConfigured, isFalse);
-      expect(AdMobConfig.productionAndroidBannerAdUnitId, isEmpty);
+    test('production android banner is configured with non-test unit ID', () {
+      expect(AdMobConfig.isProductionAndroidBannerAdUnitIdConfigured, isTrue);
+      expect(AdMobConfig.productionAndroidBannerAdUnitId, isNotEmpty);
+      expect(
+        AdMobConfig.productionAndroidBannerAdUnitId,
+        'ca-app-pub-3311460421786551/5377056540',
+      );
+      expect(
+        AdMobConfig.productionAndroidBannerAdUnitId,
+        isNot(AdMobConfig.testAndroidBannerAdUnitId),
+      );
     });
   });
 }
