@@ -40,6 +40,7 @@ import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
 import '../widgets/home_auto_reaction_sync_coordinator.dart';
 import '../widgets/home_in_app_notice_card.dart';
+import '../widgets/monetization/monetization_ad_slot.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
 
@@ -673,6 +674,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                       focusCandidateProductId: productId,
                                     ),
                                 onOpenFullList: () => _openRoomList(context),
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
+                              const MonetizationAdSlot(
+                                placement:
+                                    MonetizationAdPlacement.homeBottomBanner,
                               ),
                             ],
                           ),

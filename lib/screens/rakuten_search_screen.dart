@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/debug_log_flags.dart';
+import '../config/monetization_config.dart';
+import '../widgets/monetization/monetization_ad_slot.dart';
 import '../config/shop_discovery_pool_fallback_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
@@ -1536,9 +1538,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       }
       return const SizedBox.shrink();
     }
+    final adsEnabled = MonetizationFlags.isAdsEnabled;
+    final productCount = orderedResults.length;
+    final itemCount = RakutenSearchNativeAdListIndex.virtualItemCount(
+      productCount: productCount,
+      adsEnabled: adsEnabled,
+    );
     return KeyedSubtree(
       key: _listViewportLayoutKey,
-      child: ListView.separated(
+      child: ListView.builder(
         key: const Key('product_search_result_list'),
         controller: scrollController,
         padding: EdgeInsets.fromLTRB(
@@ -1547,50 +1555,70 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           RakutenSearchScreenUi.screenPadH,
           bottomPad,
         ),
-        itemCount: orderedResults.length,
-        separatorBuilder: (_, __) =>
-            SizedBox(height: RakutenSearchScreenUi.listCardGap),
+        itemCount: itemCount,
         itemBuilder: (context, index) {
-          final item = orderedResults[index];
+          final gap = RakutenSearchScreenUi.listCardGap;
+          if (RakutenSearchNativeAdListIndex.isAdVirtualIndex(
+            virtualIndex: index,
+            productCount: productCount,
+            adsEnabled: adsEnabled,
+          )) {
+            return Padding(
+              padding: EdgeInsets.only(top: index > 0 ? gap : 0, bottom: gap),
+              child: const MonetizationAdSlot(
+                placement: MonetizationAdPlacement.rakutenSearchNativeList,
+              ),
+            );
+          }
+          final productIndex =
+              RakutenSearchNativeAdListIndex.productIndexForVirtualIndex(
+            virtualIndex: index,
+            productCount: productCount,
+            adsEnabled: adsEnabled,
+          );
+          final item = orderedResults[productIndex];
           final isSelectable = _isSelectableForBulk(item, managed);
-          return RakutenSearchResultCard(
-            key: index == 0
-                ? const Key('product_search_result_item')
-                : ValueKey('product_search_result_item_$index'),
-            item: item,
-            localStatus: managed.statusForProduct(item.productId),
-            isRegistering: managed.isRegistering(item.productId),
-            selectionMode: _bulkCheckboxVisible(search),
-            isSelected: _selectedProductIds.contains(item.productId),
-            isSelectionEnabled: isSelectable && !_isBulkRegistering,
-            selectionDisabledLabel: _selectionDisabledReason(item, managed),
-            genreDisplayLineOverride: search.genreLineForItem(item),
-            onToggleSelected: () {
-              if (!isSelectable || _isBulkRegistering) return;
-              setState(() {
-                if (_selectedProductIds.contains(item.productId)) {
-                  _selectedProductIds.remove(item.productId);
-                } else {
-                  _selectedProductIds.add(item.productId);
+          return Padding(
+            padding: EdgeInsets.only(top: index > 0 ? gap : 0),
+            child: RakutenSearchResultCard(
+              key: productIndex == 0
+                  ? const Key('product_search_result_item')
+                  : ValueKey('product_search_result_item_$productIndex'),
+              item: item,
+              localStatus: managed.statusForProduct(item.productId),
+              isRegistering: managed.isRegistering(item.productId),
+              selectionMode: _bulkCheckboxVisible(search),
+              isSelected: _selectedProductIds.contains(item.productId),
+              isSelectionEnabled: isSelectable && !_isBulkRegistering,
+              selectionDisabledLabel: _selectionDisabledReason(item, managed),
+              genreDisplayLineOverride: search.genreLineForItem(item),
+              onToggleSelected: () {
+                if (!isSelectable || _isBulkRegistering) return;
+                setState(() {
+                  if (_selectedProductIds.contains(item.productId)) {
+                    _selectedProductIds.remove(item.productId);
+                  } else {
+                    _selectedProductIds.add(item.productId);
+                  }
+                });
+              },
+              onRegisterCandidate: () async {
+                final before = managed.statusForProduct(item.productId);
+                final err = await managed.registerCandidate(item);
+                if (!context.mounted) return;
+                if (err != null) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(err)));
+                  return;
                 }
-              });
-            },
-            onRegisterCandidate: () async {
-              final before = managed.statusForProduct(item.productId);
-              final err = await managed.registerCandidate(item);
-              if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-                return;
-              }
-              if (before == RakutenManagedProductStatus.none &&
-                  managed.statusForProduct(item.productId) ==
-                      RakutenManagedProductStatus.candidate) {
-                _showCandidateRegisteredSnackBar(context);
-              }
-            },
+                if (before == RakutenManagedProductStatus.none &&
+                    managed.statusForProduct(item.productId) ==
+                        RakutenManagedProductStatus.candidate) {
+                  _showCandidateRegisteredSnackBar(context);
+                }
+              },
+            ),
           );
         },
       ),

@@ -19,6 +19,7 @@ import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_bulk_selection_header.dart';
 import '../utils/product_card_rakuten_open.dart';
+import '../widgets/monetization/monetization_ad_slot.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
   const TodayRecommendationsScreen({super.key, this.skipInitialEnsure = false});
@@ -280,6 +281,10 @@ class _TodayRecommendationsScreenState
                   completed: rec.isCompleted,
                   cooldown: rec.manualRegenerateCooldownStatus(),
                   onRegenerate: _regenerate,
+                ),
+                const MonetizationAdSlot(
+                  placement: MonetizationAdPlacement
+                      .todayRecommendationSummaryBanner,
                 ),
                 if (selectable.isNotEmpty)
                   Padding(
