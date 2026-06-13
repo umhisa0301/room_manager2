@@ -221,4 +221,4561 @@ _**Agent (default)**_
 <think><details><summary>Thought Process</summary>
 Phase C3 / Release Candidate のクローズドテスト前最終確認を実施する。ユーザーが指定した15項目の検証と既知課題の整理を求めている。
 
-room_manager2 のクローズドテスト前最終確認を実施する。物理デバイスでの直接実行はできないため、コードパスの検証とビルド・テスト・分析・既知課題整理を実施する。新規実装は避ける。バグ修正のみ最小差分で対応する。Provider / Repository / Service</details></think>
+room_manager2 のクローズドテスト前最終確認を実施する。物理デバイスでの直接実行はできないため、コードパスの検証とビルド・テスト・分析・既知課題整理を実施する。新規実装は避ける。バグ修正のみ最小差分で対応する。Provider / Repository / Service / API の大幅変更や UI 文言の大幅変更は行わない。</details></think>
+
+_**Agent (default)**_
+
+Phase C3 の最終確認を進めます。コードベースの確認、`flutter analyze` / `flutter test`、profile APK と release AAB のビルドを並行で実施します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "コードベース確認（UX改修・フラグ・導線）",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "flutter analyze / flutter test 実行",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "Profile APK ビルド確認",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Release AAB ビルド確認",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Dev/非公開機能の公開漏れコード監査",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "報告書作成（15セクション）",
+      "id": "6",
+      "status": "pending"
+    }
+  ],
+  "success": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "UX改修・フラグ監査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Explore the Flutter project at c:\\dev\\app_project\\room_manager2 for Phase C3 UX verification. Find and report:\n\n1. Home screen: main CTA (\"おすすめを見る\" or \"おすすめコレを見る\"), \"今日の小さな目標\", posting milestone, announcement card (single, dismissable, same-day persistence), \"今すぐ反応を確認\" button, auto reaction check \"反応を確認中…\" disabled state\n2. Recommendation screen flow\n3. ROOM collection screens\n4. Analysis tab and \"分析で見る\" navigation with dismiss persistence\n5. My page / dev automation visibility conditions\n6. Auto reaction check logic: no history skip, 4h recentSync skip, silent (no SnackBar/Dialog), notification on increase only\n7. dart-define flags: DEV_AUTOMATION_ENABLED, SHOW_URL_ADD_ENTRY_POINT, DEMO_MODE, CATALOG_AUDIT_LOGS, PRODUCT_CATALOG_ENABLED, SHOP_CATALOG_ENABLED - where they're used and gating logic\n\nReturn file paths, key class/function names, and whether implementation matches requirements. Be thorough.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "6e61d523-eb62-4cad-9d1a-37b759bf24e3",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "6e61d523-eb62-4cad-9d1a-37b759bf24e3"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.{dart,yaml,gradle,properties}",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "DEV_AUTOMATION_ENABLED|SHOW_URL_ADD_ENTRY_POINT|DEMO_MODE|CATALOG_AUDIT_LOGS|PRODUCT_CATALOG_ENABLED|SHOP_CATALOG_ENABLED"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "DEV_AUTOMATION_ENABLED|SHOW_URL_ADD_ENTRY_POINT|DEMO_MODE|CATALOG_AUDIT_LOGS|PRODUCT_CATALOG_ENABLED|SHOP_CATALOG_ENABLED",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "integration_test/add_candidate_from_url_e2e_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/config/shop_catalog_config.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/utils/shop_search_fetch_log.dart"
+    },
+    {
+      "matchCount": 11,
+      "uri": "lib/utils/product_catalog_audit.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/utils/today_recommendation_catalog_test.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "test/utils/shop_catalog_mapper_test.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/config/dev_automation_config.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/utils/app_debug_log.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/shop_pool_fallback_audit.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/config/product_catalog_config.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/services/product_catalog_shop_aggregator_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/e2e/product_catalog_search_device_path_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/utils/app_debug_log_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/config/dev_automation_config_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/config/debug_log_flags.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/shop_discovery_pool_supplement_ui_bridge.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/config/demo_mode.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "tool/phase4_p2_device_verify.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "test/repository/shop_catalog_repository_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/repository/product_catalog_repository.dart"
+    }
+  ],
+  "totalFiles": 20,
+  "totalMatches": 55
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (1 file)
+
+| File |
+|------|
+| `../pubspec.yaml` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+クローズドテスト前最終確認の実施準備を進めています。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1
+```
+
+```
+]633;CAnalyzing room_manager2...                                      ]633;CAnalyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:115:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:150:26 - use_build_context_synchronously
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/widgets.dart' - tool\phase4_p2_device_verify.dart:1:8 - unnecessary_import
+   info - Angle brackets will be interpreted as HTML - tool\phase4_p2_device_verify.dart:11:20 - unintended_html_in_doc_comment
+
+5 issues found. (ran in 124.8s)
+]633;D;1
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint requires kDebugMode and dart-define
+00:00 +1: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint is false when dart-define is not set (default test run)
+00:01 +2: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags isEnabled combines debug path and internal release path
+00:01 +3: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags debug path requires kDebugMode and DEV_AUTOMATION_ENABLED
+00:01 +4: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path requires kReleaseMode
+00:01 +5: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_ENABLED is set
+00:01 +6: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_TOKEN is set
+00:01 +7: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable throws when disabled
+00:01 +8: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:01 +9: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs is non-negative
+00:01 +10: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs defaults to 5000 when define omitted at compile time
+00:02 +11: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:02 +12: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:02 +13: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:03 +14: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:03 +15: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:03 +16: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:03 +17: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:04 +18: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:04 +19: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:04 +20: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:05 +21: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:05 +22: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:05 +23: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:05 +24: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:05 +25: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:06 +26: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:06 +27: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:07 +28: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:07 +29: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:07 +30: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:08 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:08 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:08 +33: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:08 +34: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:08 +35: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +36: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +37: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +38: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +39: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +40: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +41: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +42: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +43: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +44: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +45: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +46: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +47: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +48: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +49: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:17 +49: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button when dev automation callback is provided
+[DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true
+00:17 +50: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:17 +51: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:19 +52: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:19 +53: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:19 +54: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +55: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:20 +56: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +57: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +58: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +59: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +60: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +61: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +62: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:21 +63: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+[SHOP_DISCOVERY_SAVE_SHOP] source=detail shopCode=the-charme shopName=水筒ショップ result=success
+00:22 +64: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:23 +65: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.classifyCandidateAddOutcome classifies added
+00:23 +66: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.classifyCandidateAddOutcome classifies alreadyCandidate
+00:23 +67: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.classifyCandidateAddOutcome classifies alreadyManaged
+00:23 +68: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.classifyCandidateAddOutcome classifies skippedDuplicate
+00:23 +69: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.classifyCandidateAddOutcome classifies userVisibleError
+00:24 +70: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.validateIterations accepts values within range
+00:24 +71: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.validateIterations rejects null
+00:24 +72: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.validateIterations rejects out of range values
+00:24 +73: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:24 +74: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:24 +75: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +76: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +77: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +78: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +79: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +80: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +81: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +82: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:25 +83: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:26 +84: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator カタログ空なら空リスト
+00:26 +85: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+00:26 +86: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+00:26 +87: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+00:26 +88: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+00:26 +89: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale 商品は除外
+00:26 +90: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+00:26 +91: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator representativeImageUrl が安全画像になる
+00:26 +92: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreName が商品の genreName から入る
+00:26 +93: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator genreId のみでも primaryGenreId は入る
+00:26 +94: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceProductIds は複数商品分保持する
+00:26 +95: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreId が件数最多ジャンルになる
+00:26 +96: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator score 順になる
+00:26 +97: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sampleProductIds が入る
+00:26 +98: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 保存ショップ除外を指定できる
+00:26 +99: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopDiscovery 由来商品でも shopCode 単位に集計できる
+00:26 +100: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale でない medium 商品は aggregator から除外されない
+00:26 +101: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 未確認 shopName は表示名に使わない
+00:27 +102: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 のときだけ1回リトライして成功すれば通常レスポンスを返す
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=200 page=2 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=true statusCode=200
+00:27 +103: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 が2回続くときは失敗扱いになる
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=false statusCode=429
+[Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): Rate limit is exceeded.
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:105:24)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:47:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:27 +104: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 以外の HTTP エラーではリトライしない
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=400 page=1 bytes=23
+[Rakuten] error response body (full, status=400): {"error":"bad_request"}
+[Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): bad_request
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:91:14)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:74:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:27 +105: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry shopCode 検索でも 429 のときだけ1回リトライする
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=429 page=1 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=1
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=200 page=1 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=1 success=true statusCode=200
+00:28 +106: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:29 +107: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:29 +108: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:29 +109: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl スラッグ URL でも shopCode と itemCode を抽出する
+00:29 +110: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl affiliateUrl から itemCode を抽出する
+00:29 +111: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天BOOKS URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://books.rakuten.co.jp/rb/1234567890/ reason=unsupportedRakutenService host=books.rakuten.co.jp service=books
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=books.rakuten.co.jp
+00:29 +112: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天ファッション URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://brandavenue.rakuten.co.jp/item/foo/ reason=unsupportedRakutenService host=brandavenue.rakuten.co.jp service=fashion
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=brandavenue.rakuten.co.jp
+00:29 +113: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:29 +114: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:29 +115: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:29 +116: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:29 +117: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:29 +118: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:29 +119: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts ROOM 取り込み slug productId と shopCode でコレ済み判定
+00:30 +120: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:30 +121: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:30 +122: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:30 +123: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:31 +124: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:31 +125: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:32 +126: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:32 +127: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:32 +128: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:32 +129: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:32 +130: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:32 +131: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:32 +132: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:32 +133: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:32 +134: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:32 +135: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:32 +136: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:32 +137: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:32 +138: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:32 +139: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:32 +140: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:32 +141: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:32 +142: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:32 +143: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:32 +144: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:33 +145: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:34 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:34 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:34 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:34 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:34 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:34 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:34 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:34 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:34 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:34 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:34 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:34 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:35 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:35 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:35 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:35 +161: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:35 +162: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:35 +163: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:35 +164: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+00:35 +165: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:35 +166: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:35 +167: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+00:35 +168: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:35 +169: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport unknownGenreRatio=1.0 なら excellent/good にならない
+00:35 +170: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+00:35 +171: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+00:35 +172: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+00:35 +173: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+00:35 +174: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:35 +175: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+00:36 +176: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+00:36 +177: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+00:36 +178: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+00:36 +179: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+00:36 +180: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:36 +181: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+00:36 +182: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+00:36 +183: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+00:36 +184: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+00:36 +185: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+00:36 +186: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:37 +187: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+00:37 +188: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:37 +189: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:37 +190: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:37 +191: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:38 +192: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:38 +193: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:38 +194: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:38 +195: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:38 +196: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:38 +197: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:38 +198: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:38 +199: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:38 +200: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:38 +201: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:38 +202: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:38 +203: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:38 +204: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:38 +205: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:38 +206: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:38 +207: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:38 +208: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:38 +209: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:38 +210: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:38 +211: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:38 +212: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:38 +213: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:38 +214: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+00:38 +215: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:38 +216: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:38 +217: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:38 +218: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:38 +219: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:38 +220: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:38 +221: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:38 +222: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:38 +223: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みショップは displayCandidates から除外される
+00:38 +224: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みでないショップは従来通り displayCandidates に残る
+00:38 +225: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge extractDisplayCandidates 単体では保存済み判定を行わない
+00:39 +226: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:39 +227: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+00:39 +228: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+00:39 +229: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+00:39 +230: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:40 +231: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:40 +232: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+00:40 +233: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:40 +234: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+00:40 +235: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+00:41 +236: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:41 +237: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:41 +238: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:41 +239: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:42 +240: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:42 +241: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:42 +242: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:42 +243: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:42 +243: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shopDiscoveryUserActionLog は debug ビルドで no-op 例外なし
+[TEST_USER_ACTION] noop
+00:42 +244: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:42 +244: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates importantDebugLog は debug ビルドで no-op 例外なし
+[TEST_IMPORTANT] noop
+00:43 +245: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:43 +246: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +247: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +248: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +249: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +250: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +251: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +252: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +253: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +254: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +255: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:44 +256: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+[GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+00:44 +257: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=false shows SnackBar when blocked
+[GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+00:44 +258: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:45 +258: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:45 +259: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:45 +260: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+00:45 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+00:45 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:45 +262: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem source=search / sourceTrust=high になる
+00:45 +263: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem affiliate URL は normalizedItemUrl に残るが identity URL ではない
+00:45 +264: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:45 +265: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:45 +266: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:45 +267: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+00:45 +268: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:45 +269: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+00:45 +270: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+00:45 +271: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+00:45 +272: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems kProductCatalogEnabled=false のとき no-op
+00:45 +273: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:45 +274: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+00:45 +275: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+00:45 +276: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+00:45 +277: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+00:45 +278: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+00:45 +279: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+00:45 +280: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+00:45 +281: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+00:46 +282: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+00:46 +283: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+00:46 +284: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+00:46 +285: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+00:46 +286: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+00:46 +287: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:46 +288: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:46 +289: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:46 +290: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+00:46 +291: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 画像なしを判定できる
+00:46 +292: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 価格なしを判定できる
+00:46 +293: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 安全 NG を判定できる
+00:47 +294: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+line-1
+line-2
+line-3
+line-4
+00:47 +295: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer ignores empty messages
+00:47 +296: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer notifies listeners when a line is added
+[DEV_AUTOMATION_TEST] ok
+00:49 +297: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder 推奨順に含まれる genreId は指定順で並ぶ
+00:49 +298: C:/dev/app_project/room_manager2/test/utils/home_auto_reaction_sync_test.dart: HomeAutoReactionSyncPolicy.skipReason returns null when all conditions pass
+00:49 +299: C:/dev/app_project/room_manager2/test/utils/home_auto_reaction_sync_test.dart: HomeAutoReactionSyncPolicy.skipReason returns null when all conditions pass
+00:49 +300: C:/dev/app_project/room_manager2/test/utils/home_auto_reaction_sync_test.dart: HomeAutoReactionSyncPolicy.skipReason returns null when all conditions pass
+00:49 +301: C:/dev/app_project/room_manager2/test/utils/home_auto_reaction_sync_test.dart: HomeAutoReactionSyncPolicy.skipReason returns null when all conditions pass
+00:49 +302: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:49 +303: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:49 +304: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:49 +305: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:49 +306: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:49 +307: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:50 +307: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration rootNodes の先頭はレディースファッション
+00:50 +308: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration getAllGenres も同じ先頭順
+00:50 +309: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration 百貨店・総合通販・ギフトは推奨順の最後付近
+00:50 +310: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (tearDownAll)
+00:50 +310: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.highestMilestoneTier maps post counts to milestone tiers
+00:50 +311: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=0 and no rec → no notice
+00:50 +312: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=1 → milestone praise
+00:50 +313: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=5 → 5件達成 copy
+00:50 +314: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=10 → 10件達成 copy
+00:50 +315: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=20 → high progress copy
+00:50 +316: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=3 → generic progress copy
+00:50 +317: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone dismissed post milestone is skipped
+00:50 +318: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed shows when all recommendations are processed
+00:50 +319: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while recommendations are pending
+00:50 +320: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while loading
+00:50 +321: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority post milestone wins over rec completed
+00:50 +322: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority post milestone wins over reaction increased
+00:50 +323: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority reaction increased wins over rec completed
+00:50 +324: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased no history → no reaction notice
+00:50 +325: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased single history entry → no reaction notice (baseline guard)
+00:50 +326: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased 2+ history + likeIncreasedItems &gt; 0 → reaction notice
+00:50 +327: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased 2+ history + commentIncreasedItems &gt; 0 → reaction notice
+00:50 +328: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased both like and comment increased → combined body
+00:50 +329: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased dismissed reaction notice key → no notice
+00:50 +330: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased no increase counts → no reaction notice
+00:51 +331: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=0 → next=1
+00:51 +332: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=1 → next=5
+00:51 +333: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=5 → next=10
+00:51 +334: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=10 → next=20
+00:51 +335: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=20 → completed/highProgress
+00:51 +336: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount uses rolling-24h label when calendar day is unavailable
+00:52 +337: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+00:52 +338: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 商品のみ残ると pool itemCount=1 になる
+00:52 +339: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:52 +340: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:52 +341: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+00:52 +342: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:52 +343: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+00:52 +344: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+00:52 +345: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+00:52 +346: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+00:52 +347: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+00:52 +348: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+00:52 +349: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:52 +350: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:52 +351: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +352: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +353: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +354: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +355: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +356: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +357: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +358: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +359: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +360: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:52 +361: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+00:52 +362: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+00:52 +363: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+00:52 +364: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+00:52 +365: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+00:52 +366: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+00:52 +367: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了前の read は usesFreshCatalog=false
+00:52 +368: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了後の read は usesFreshCatalog=true
+00:53 +369: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+00:53 +370: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+00:53 +371: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:53 +372: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+00:53 +373: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:54 +374: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage と reviewCount 両方あり
+00:54 +375: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage のみ
+00:54 +376: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewCount のみ
+00:54 +377: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel どちらもない
+00:54 +378: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported item.rakuten.co.jp は対象外にならない
+00:54 +379: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天BOOKS URL は unsupportedRakutenService
+00:54 +380: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天ファッション brandavenue は unsupportedRakutenService
+00:54 +381: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported fashion.rakuten.co.jp は unsupportedRakutenService
+00:54 +382: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が BOOKS を指す場合も対象外
+00:55 +383: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が item.rakuten の場合は対象外にならない
+00:55 +384: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天以外の URL は null
+00:55 +385: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+00:55 +386: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+00:55 +387: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+00:55 +388: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+00:55 +389: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+00:55 +390: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+00:55 +391: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+00:55 +392: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+00:55 +393: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+00:55 +394: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+00:55 +395: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+00:55 +396: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+00:55 +397: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+00:56 +398: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:56 +399: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:57 +400: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:57 +401: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:57 +402: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:57 +403: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:57 +404: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:57 +405: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:57 +406: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:57 +407: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:58 +408: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl 通常 item.rakuten URL を正規化する
+00:58 +409: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl スラッグ URL を正規化する
+00:58 +410: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl affiliateUrl の pc= から item URL を復元する
+00:58 +411: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.decodeAffiliatePcTargetUrl affiliate 以外は null
+00:59 +412: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:59 +413: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:59 +414: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:59 +415: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:59 +416: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:59 +417: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:59 +418: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:59 +419: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:59 +420: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+00:59 +421: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:59 +422: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+01:00 +423: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+01:00 +424: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+01:00 +425: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+01:00 +426: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+01:00 +427: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+01:00 +428: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+01:00 +429: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+01:00 +430: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+01:00 +431: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+01:01 +432: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+01:01 +433: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+01:01 +434: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+01:01 +435: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+01:01 +436: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+01:01 +437: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+01:01 +438: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+01:01 +439: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+01:01 +440: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+01:02 +441: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+01:02 +442: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+01:02 +443: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+01:02 +444: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+01:02 +445: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+01:02 +446: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+01:02 +447: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+01:03 +448: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+01:03 +449: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+01:04 +450: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+01:04 +451: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+01:04 +452: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+01:04 +453: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+01:04 +454: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+01:05 +455: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+01:05 +456: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+01:05 +457: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+01:05 +458: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+01:05 +459: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+01:06 +460: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+01:06 +461: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+01:06 +462: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+01:06 +463: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+01:06 +464: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+01:06 +465: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+01:06 +466: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+01:06 +467: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+01:06 +468: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+01:06 +469: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+01:06 +470: C:/dev/app_project/room_manager2/test/widgets/add_candidate_entry_sheet_url_visibility_test.dart: URLから追加入口は showUrlAddEntryPoint=false では非表示
+01:08 +471: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot shows post milestone notice when data matches
+01:09 +472: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:09 +473: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:09 +474: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:10 +475: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:10 +476: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:10 +477: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:10 +478: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:10 +479: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:11 +480: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:11 +481: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+01:11 +482: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+01:11 +483: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+01:12 +484: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+01:12 +485: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+01:12 +486: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **1518** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (1518 files)
+
+| File |
+|------|
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260606_001045.mp4` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_015.png` |
+| `../recordings/smoke_5c2b_20260608_003627/05_keyword_entered.xml` |
+| `../recordings/screenshots_20260531_041533/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_9.png` |
+| `../recordings/screenshots_20260507_135649/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260430_222855/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260502_232208/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260512_230434/terminal_output_20260512_230434.txt` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260512_213657/terminal_output_20260512_213657.txt` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_17.png` |
+| `../recordings/room_manager2_20260506_231456.mp4` |
+| `../recordings/room_manager2_20260507_112934.mp4` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/02_rakuten_screen.png` |
+| `../recordings/room_manager2_20260508_160339.mp4` |
+| `../recordings/screenshots_20260430_222855/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260512_105624/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260604_235636.mp4` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/keyword.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_5.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_40.png` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_112236/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_4.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_14.png` |
+| `../recordings/screenshots_20260606_224616/terminal_output_20260606_224616.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_26.png` |
+| `../recordings/ux6c_verify_20260610_001809/noHistory.logcat.txt` |
+| `../recordings\ux6d_verify_20260610_105834\1_normal_final_ui.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_1.xml` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_015.png` |
+| `../recordings/room_manager2_20260606_225459.mp4` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_11.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_22.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_43.xml` |
+| `../recordings/room_manager2_20260507_153320.mp4` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_23.png` |
+| `../recordings/screenshots/room_manager2_shot_037.png` |
+| `../recordings/screenshots_20260520_231239/terminal_output_20260520_231239.txt` |
+| `../recordings/room_manager2_20260603_003720.mp4` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_39.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_5.xml` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_25.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_24.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_4.xml` |
+| `../recordings/room_manager2_20260505_000545.mp4` |
+| `../recordings/screenshots_20260601_002004/terminal_output_20260601_002004.txt` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_014.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_4.xml` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_022.png` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260609_171245.mp4` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_007.png` |
+| `../recordings/screenshots/room_manager2_shot_060.png` |
+| `../recordings/screenshots_20260512_233657/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_43.png` |
+| `../recordings/screenshots_20260531_092600/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260506_234701.mp4` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_003.png` |
+| `../recordings/screenshots/room_manager2_shot_036.png` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260601_011650/terminal_output_20260601_011650.txt` |
+| `../recordings/screenshots_20260531_032231/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260602_225902/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_24.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_28.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_0.xml` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_009.png` |
+| `../recordings/screenshots/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260502_012126/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260519_234742/room_manager2_shot_001.png` |
+| `../recordings/screenshots/room_manager2_shot_065.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_24.xml` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260517_203947.mp4` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_20260608_003627/03_search_sheet.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_11.xml` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_021.png` |
+| `../recordings/room_manager2_20260516_225137.mp4` |
+| `../recordings/screenshots_20260518_010432/terminal_output_20260518_010432.txt` |
+| `../recordings/screenshots_20260531_041533/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260602_234746.mp4` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260531_041533/terminal_output_20260531_041533.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_13.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_26.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_2.xml` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_13.xml` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260607_000642/terminal_output_20260607_000642.txt` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_26.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_30.xml` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_010.png` |
+| `../recordings\ux6d_verify_20260610_105834\normal_contentdesc.xml` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_008.png` |
+| `../recordings/room_manager2_20260602_223911.mp4` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_35.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_19.png` |
+| `../recordings/room_manager2_20260606_233636.mp4` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_14.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_16.xml` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_015.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_5.png` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_9.png` |
+| `../recordings/screenshots_20260508_233453/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260512_092331/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260509_001039/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260505_004326.mp4` |
+| `../recordings/room_manager2_20260602_221346.mp4` |
+| `../recordings/screenshots/room_manager2_shot_016.png` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260601_002004.mp4` |
+| `../recordings/screenshots/room_manager2_shot_058.png` |
+| `../recordings/screenshots_20260507_143928/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260512_223516.mp4` |
+| `../recordings/room_manager2_20260609_110335.mp4` |
+| `../recordings/room_manager2_20260609_183537.mp4` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260517_004716/terminal_output_20260517_004716.txt` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260521_225524/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260522_231200/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260609_202850.mp4` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_006.png` |
+| `../recordings/screenshots/room_manager2_shot_024.png` |
+| `../recordings/screenshots_20260522_231200/terminal_output_20260522_231200.txt` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260602_223911/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260604_231236/terminal_output_20260604_231236.txt` |
+| `../recordings/screenshots_20260505_211608/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_0.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_21.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_33.png` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260516_225137/terminal_output_20260516_225137.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_14.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_23.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_2.xml` |
+| `../recordings/ui_main.xml` |
+| `../recordings/room_manager2_20260506_005456.mp4` |
+| `../recordings/screenshots/room_manager2_shot_063.png` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260522_212458/terminal_output_20260522_212458.txt` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260609_174423.mp4` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260531_092600/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_10.xml` |
+| `../recordings/screenshots/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260515_144420.mp4` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_0.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_9.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_2.xml` |
+| `../recordings\ux6d_verify_20260610_105834\done_contentdesc.xml` |
+| `../recordings/room_manager2_20260606_221609.mp4` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_016.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_8.xml` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_6.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_10.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260531_231251/terminal_output_20260531_231251.txt` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_final2/log_full.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_19.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_27.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_38.xml` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260507_112934/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_003.png` |
+| `../recordings/screenshots/room_manager2_shot_039.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_9.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_12.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_1.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_006.png` |
+| `../recordings/screenshots/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_23.xml` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_after_dismiss_ui.xml` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260602_215734/terminal_output_20260602_215734.txt` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_33.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/01_search_sheet.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_1.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_24.xml` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_004.png` |
+| `../recordings/screenshots/room_manager2_shot_074.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260512_233657/terminal_output_20260512_233657.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_34.xml` |
+| `../recordings/screenshots_20260607_000712/terminal_output_20260607_000712.txt` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260605_131615/terminal_output_20260605_131615.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_5.png` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_21.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260502_214818/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_9.xml` |
+| `../recordings/smoke_5c2b_final/result.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_4.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_18.xml` |
+| `../recordings/screenshots/room_manager2_shot_045.png` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_008.png` |
+| `../recordings/screenshots/room_manager2_shot_059.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_017.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_15.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_19.xml` |
+| `../recordings/screenshots_20260604_220129/terminal_output_20260604_220129.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_15.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_7.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_5.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_8.xml` |
+| `../recordings/screenshots/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260523_003540.mp4` |
+| `../recordings/room_manager2_20260507_174804.mp4` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_020.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/04_keyword_filled.png` |
+| `../recordings/screenshots_20260606_225459/terminal_output_20260606_225459.txt` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_007.png` |
+| `../recordings\ux6d_verify_20260610_105834\5_manual_dialog_ui.xml` |
+| `../recordings/screenshots_20260507_112934/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260522_001422.mp4` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_009.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_4.xml` |
+| `../recordings/room_manager2_20260516_002428.mp4` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260604_224547/terminal_output_20260604_224547.txt` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_6.xml` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_008.png` |
+| `../recordings/screenshots/room_manager2_shot_022.png` |
+| `../recordings/room_manager2_20260514_093320.mp4` |
+| `../recordings/screenshots_20260515_150729/room_manager2_shot_001.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_10.xml` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_15.png` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_009.png` |
+| `../recordings/room_manager2_20260609_131403.mp4` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_011.png` |
+| `../recordings/room_manager2_20260508_225208.mp4` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260522_231200.mp4` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260514_100339.mp4` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260519_002423/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260608_232236.mp4` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_0.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_0.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_2.png` |
+| `../recordings/screenshots/room_manager2_shot_027.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_3.xml` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260505_211608/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260512_115141/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260516_221820/terminal_output_20260516_221820.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_28.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_9.xml` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/01_detail_sheet.xml` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_015.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_29.xml` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_006.png` |
+| `../recordings/screenshots/room_manager2_shot_057.png` |
+| `../recordings/room_manager2_20260609_205302.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_6.xml` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260516_012320/terminal_output_20260516_012320.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_29.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_5.xml` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_final2/log.txt` |
+| `../recordings/room_manager2_20260606_231616.mp4` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/search_logcat.txt` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260522_224536.mp4` |
+| `../recordings/room_manager2_20260506_000510.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_10.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_39.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_005.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_3.xml` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_009.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_35.xml` |
+| `../recordings/room_manager2_20260512_095030.mp4` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_014.png` |
+| `../recordings/room_manager2_20260531_092600.mp4` |
+| `../recordings/screenshots/room_manager2_shot_069.png` |
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_27.xml` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_007.png` |
+| `../recordings/room_manager2_20260506_234254.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_11.xml` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_001.png` |
+| `../recordings/screenshots/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_3.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_012.png` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_after_analyze_ui.xml` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260522_215043/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260517_003313/terminal_output_20260517_003313.txt` |
+| `../recordings/screenshots_20260517_200959/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_8.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_30.png` |
+| `../recordings/room_manager2_20260504_222502.mp4` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_26.xml` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_0.xml` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260519_091002/terminal_output_20260519_091002.txt` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_31.png` |
+| `../recordings/smoke_5c2b_search4/log.txt` |
+| `../recordings/screenshots_20260430_224719/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260514_100339/terminal_output_20260514_100339.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_18.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_9.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_22.xml` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_013.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_1.xml` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260505_232717.mp4` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_17.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_11.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_23.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_005.png` |
+| `../recordings/screenshots/room_manager2_shot_061.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_18.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_9.xml` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_001.png` |
+| `../recordings\ux6d_verify_20260610_105834\manual_try_1.xml` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260502_214818/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260506_231252.mp4` |
+| `../recordings/room_manager2_20260512_092331.mp4` |
+| `../recordings/screenshots/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_11.xml` |
+| `../recordings/room_manager2_20260508_142433.mp4` |
+| `../recordings/room_manager2_20260505_011953.mp4` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_7.png` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_004.png` |
+| `../recordings/room_manager2_20260517_205029.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_3.xml` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_009.png` |
+| `../recordings/room_manager2_20260507_102049.mp4` |
+| `../recordings/screenshots/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_009.png` |
+| `../recordings/room_manager2_20260518_003555.mp4` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_006.png` |
+| `../recordings/phase5c2_mypage.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_29.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_013.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_7.xml` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/05_keyword_entered.png` |
+| `../recordings/room_manager2_20260509_202810.mp4` |
+| `../recordings/screenshots_20260501_002551/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260512_092331/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260512_115141.mp4` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260603_085952/terminal_output_20260603_085952.txt` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_014.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_5.xml` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_13.xml` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/smoke_logcat.txt` |
+| `../recordings/screenshots_20260531_041533/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260518_010432.mp4` |
+| `../recordings/screenshots/room_manager2_shot_062.png` |
+| `../recordings/screenshots_20260507_112934/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_202850/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260609_110335/terminal_output_20260609_110335.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_16.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_3.xml` |
+| `../recordings/screenshots/room_manager2_shot_038.png` |
+| `../recordings/screenshots_20260603_003720/terminal_output_20260603_003720.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_39.xml` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260512_205204/terminal_output_20260512_205204.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_31.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_44.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_009.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_17.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_16.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_36.png` |
+| `../recordings/screenshots/room_manager2_shot_040.png` |
+| `../recordings/screenshots/room_manager2_shot_072.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_0.png` |
+| `../recordings/screenshots_20260516_002428/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_009.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_12.png` |
+| `../recordings/room_manager2_20260507_133336.mp4` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260607_212124/terminal_output_20260607_212124.txt` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_27.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_38.png` |
+| `../recordings/screenshots_20260523_005843/terminal_output_20260523_005843.txt` |
+| `../recordings/screenshots/room_manager2_shot_055.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/02_rakuten_screen.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_21.xml` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260609_174423/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_32.xml` |
+| `../recordings\ux6d_verify_20260610_105834\1_normal.logcat.txt` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_008.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_1.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_2.png` |
+| `../recordings/ux6c_verify_20260610_001809/manualConflict_ui.xml` |
+| `../recordings/screenshots_20260531_233206/terminal_output_20260531_233206.txt` |
+| `../recordings/screenshots/room_manager2_shot_047.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_12.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_3.png` |
+| `../recordings/room_manager2_20260521_225524.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\5_manual_before_ui.xml` |
+| `../recordings/screenshots_20260520_231239/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_20.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_42.png` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_005.png` |
+| `../recordings/screenshots/room_manager2_shot_066.png` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260512_092331/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260514_212645/terminal_output_20260514_212645.txt` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_022.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260606_233457/terminal_output_20260606_233457.txt` |
+| `../recordings/smoke_5c2b_final/keyword.png` |
+| `../recordings/room_manager2_20260525_001328.mp4` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260603_001151/terminal_output_20260603_001151.txt` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260518_003555/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260520_231239/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_17.png` |
+| `../recordings/smoke_5c2b_search4/kw.png` |
+| `../recordings/screenshots_20260604_225515/terminal_output_20260604_225515.txt` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_10.xml` |
+| `../recordings/room_manager2_20260609_161416.mp4` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260519_002423/terminal_output_20260519_002423.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_34.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_18.png` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260522_133544.mp4` |
+| `../recordings/screenshots/room_manager2_shot_020.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_13.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_013.png` |
+| `../recordings/room_manager2_20260525_000852.mp4` |
+| `../recordings/screenshots_20260512_105624/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_004.png` |
+| `../recordings/room_manager2_20260522_212458.mp4` |
+| `../recordings/ui_results.xml` |
+| `../recordings/room_manager2_20260514_231903.mp4` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_22.png` |
+| `../recordings/screenshots/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260522_234835/terminal_output_20260522_234835.txt` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_34.xml` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_15.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_10.xml` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_004.png` |
+| `../recordings/ux6c_verify_20260610_001809/manualConflict_live.logcat` |
+| `../recordings/screenshots_20260608_232236/terminal_output_20260608_232236.txt` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_8.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_7.xml` |
+| `../recordings\ux6d_verify_20260610_105834\manual_dialog2.xml` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260522_215043/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_020.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260522_224843/terminal_output_20260522_224843.txt` |
+| `../recordings/screenshots_20260531_032231/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_40.xml` |
+| `../recordings/room_manager2_20260519_002423.mp4` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260505_225752.mp4` |
+| `../recordings/screenshots_20260604_235636/terminal_output_20260604_235636.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_16.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_14.xml` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search4/result.png` |
+| `../recordings/screenshots_20260605_233809/terminal_output_20260605_233809.txt` |
+| `../recordings/room_manager2_20260607_025914.mp4` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_017.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_8.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_20.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_9.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_7.xml` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/02_keyword_filled.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_1.xml` |
+| `../recordings\ux6d_verify_20260610_105834\busy_contentdesc.xml` |
+| `../recordings/screenshots/room_manager2_shot_019.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_019.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_005.png` |
+| `../recordings/screenshots/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_012.png` |
+| `../recordings/room_manager2_20260512_233657.mp4` |
+| `../recordings/screenshots_20260515_092612/terminal_output_20260515_092612.txt` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_15.xml` |
+| `../recordings/room_manager2_20260531_232356.mp4` |
+| `../recordings/screenshots/room_manager2_shot_023.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_5.xml` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260514_231903/terminal_output_20260514_231903.txt` |
+| `../recordings/screenshots_20260518_112236/terminal_output_20260518_112236.txt` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_019.png` |
+| `../recordings/screenshots/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_19.png` |
+| `../recordings/screenshots/room_manager2_shot_044.png` |
+| `../recordings/ui_res.xml` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_10.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_2.png` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_008.png` |
+| `../recordings/screenshots/room_manager2_shot_049.png` |
+| `../recordings/screenshots_20260525_000852/terminal_output_20260525_000852.txt` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260507_143928/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_3.xml` |
+| `../recordings/ux6c_verify_20260610_001809/noHistory_live.logcat` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_14.xml` |
+| `../recordings/screenshots_20260519_234742/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_13.xml` |
+| `../recordings/screenshots_20260531_041533/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_013.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_6.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_0.xml` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260507_112934/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_002.png` |
+| `../recordings/ui_search3.xml` |
+| `../recordings/screenshots_20260531_032231/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260606_225344/terminal_output_20260606_225344.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_5.png` |
+| `../recordings/screenshots_20260523_215320/terminal_output_20260523_215320.txt` |
+| `../recordings/screenshots_20260506_005456/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260518_231832/terminal_output_20260518_231832.txt` |
+| `../recordings/room_manager2_20260607_000642.mp4` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260512_215646/terminal_output_20260512_215646.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/03_search_sheet.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_10.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260513_002316/terminal_output_20260513_002316.txt` |
+| `../recordings/screenshots_20260502_231546/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260502_010138/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_010.png` |
+| `../recordings/screenshots/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_24.png` |
+| `../recordings/screenshots_20260606_082856/terminal_output_20260606_082856.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_19.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260531_092600/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_31.xml` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260507_143928.mp4` |
+| `../recordings/screenshots_20260512_223516/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260517_200959/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260609_174423/terminal_output_20260609_174423.txt` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260517_200959/terminal_output_20260517_200959.txt` |
+| `../recordings/screenshots_20260516_002428/terminal_output_20260516_002428.txt` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_010.png` |
+| `../recordings/ux6c_verify_20260610_001809/eligible_live.logcat` |
+| `../recordings/screenshots_20260516_002428/room_manager2_shot_005.png` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_before_tap_ui.xml` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260518_233059/terminal_output_20260518_233059.txt` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_3.png` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_10.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260517_200959/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260519_002423/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_28.xml` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_012.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_18.xml` |
+| `../recordings/smoke_5c2b_final/log.txt` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260514_094842/terminal_output_20260514_094842.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_7.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_20.png` |
+| `../recordings/screenshots_20260502_230810/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_015.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_3.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_17.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_1.xml` |
+| `../recordings/screenshots/room_manager2_shot_053.png` |
+| `../recordings/room_manager2_20260507_133003.mp4` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_1.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/04_keyword_filled.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_9.xml` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_009.png` |
+| `../recordings/screenshots/room_manager2_shot_050.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_010.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_5.xml` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_37.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_39.xml` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_016.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_20.xml` |
+| `../recordings\ux6d_verify_20260610_105834\2_auto_busy_final_ui.xml` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_0.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_22.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_22.xml` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260519_002423/room_manager2_shot_001.png` |
+| `../recordings/screenshots/room_manager2_shot_030.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260520_231239/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260530_045614/terminal_output_20260530_045614.txt` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260511_000451.mp4` |
+| `../recordings/screenshots/room_manager2_shot_011.png` |
+| `../recordings/room_manager2_20260508_162334.mp4` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_4.png` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260505_000211.mp4` |
+| `../recordings/room_manager2_20260607_212338.mp4` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_14.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260430_220337/room_manager2_S_shot_003.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_5.xml` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_012.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/03_keyword_sheet.png` |
+| `../recordings/room_manager2_20260531_041533.mp4` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260606_223747.mp4` |
+| `../recordings/screenshots_20260515_150729/terminal_output_20260515_150729.txt` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_004.png` |
+| `../recordings/room_manager2_20260518_233059.mp4` |
+| `../recordings/room_manager2_20260517_233724.mp4` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_17.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_41.xml` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260604_111245/terminal_output_20260604_111245.txt` |
+| `../recordings/screenshots_20260607_212338/terminal_output_20260607_212338.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_42.xml` |
+| `../recordings/screenshots/room_manager2_shot_071.png` |
+| `../recordings/ux6c_verify_20260610_001809/recentSync.logcat.txt` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_26.xml` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_016.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_29.xml` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260516_002428/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_0.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_25.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_11.xml` |
+| `../recordings/screenshots_20260513_002145/terminal_output_20260513_002145.txt` |
+| `../recordings/screenshots_20260430_220337/room_manager2_S_shot_002.png` |
+| `../recordings/room_manager2_20260604_214711.mp4` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260607_003619/terminal_output_20260607_003619.txt` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260609_174423/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_18.xml` |
+| `../recordings/screenshots_20260606_001045/terminal_output_20260606_001045.txt` |
+| `../recordings/screenshots_20260531_032231/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_012.png` |
+| `../recordings/screenshots/room_manager2_shot_032.png` |
+| `../recordings/screenshots/room_manager2_shot_073.png` |
+| `../recordings/screenshots_20260604_111442/terminal_output_20260604_111442.txt` |
+| `../recordings/screenshots_20260512_095030/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260512_233657/room_manager2_shot_004.png` |
+| `../recordings/room_manager2_20260525_003718.mp4` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_18.png` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260604_220038/terminal_output_20260604_220038.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_37.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_23.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260518_003555/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_16.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_27.png` |
+| `../recordings/screenshots_20260606_221609/terminal_output_20260606_221609.txt` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_show_final_ui.xml` |
+| `../recordings/screenshots_20260603_001151/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_34.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_6.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_37.xml` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260603_085952.mp4` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_3.xml` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260512_102603/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260502_230810/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_30.xml` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_7.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_6.xml` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_006.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_4.xml` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260512_205102/terminal_output_20260512_205102.txt` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260517_200959.mp4` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260524_235249/terminal_output_20260524_235249.txt` |
+| `../recordings/screenshots_20260522_215043/terminal_output_20260522_215043.txt` |
+| `../recordings/screenshots/room_manager2_shot_028.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_001.png` |
+| `../recordings/screenshots/room_manager2_shot_035.png` |
+| `../recordings/screenshots_20260501_002551/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_025.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260603_000725/terminal_output_20260603_000725.txt` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260606_220424/terminal_output_20260606_220424.txt` |
+| `../recordings/screenshots_20260507_143928/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_41.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_23.xml` |
+| `../recordings/room_manager2_20260509_001039.mp4` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_31.xml` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_008.png` |
+| `../recordings/room_manager2_20260603_085844.mp4` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_25.png` |
+| `../recordings/room_manager2_20260605_131615.mp4` |
+| `../recordings/screenshots_20260607_024616/terminal_output_20260607_024616.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_8.png` |
+| `../recordings/smoke_5c2b_20260608_003627/01_home.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_11.xml` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_004.png` |
+| `../recordings/room_manager2_20260508_142305.mp4` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/01_detail_sheet.png` |
+| `../recordings/phase5c2_home.xml` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_003.png` |
+| `../recordings/ADBKeyboard.apk` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_44.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/02_mypage.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_003.png` |
+| `../recordings\ux6d_verify_20260610_105834\5_manual.logcat.txt` |
+| `../recordings/room_manager2_20260607_205653.mp4` |
+| `../recordings/screenshots_20260607_024616/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_13.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_21.xml` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_007.png` |
+| `../recordings/room_manager2_20260505_010144.mp4` |
+| `../recordings/room_manager2_20260506_210800.mp4` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260603_085844/terminal_output_20260603_085844.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_36.xml` |
+| `../recordings/screenshots/room_manager2_shot_051.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_016.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_29.png` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_20.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_38.xml` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_004.png` |
+| `../recordings/ux6c_verify_20260610_001809/noticeIncreased.logcat.txt` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_0.xml` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260502_230810/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_20260608_003627/02_mypage.xml` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_23.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_7.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_28.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_30.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_14.xml` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_008.png` |
+| `../recordings/room_manager2_20260509_233314.mp4` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260519_234742/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260519_234742/terminal_output_20260519_234742.txt` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_8.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_9.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260606_223747/terminal_output_20260606_223747.txt` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260531_041533/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_29.png` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_003.png` |
+| `../recordings/screenshots/room_manager2_shot_041.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_011.png` |
+| `../recordings/room_manager2_20260604_224547.mp4` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_016.png` |
+| `../recordings/screenshots_20260512_215302/terminal_output_20260512_215302.txt` |
+| `../recordings/screenshots_20260606_231616/terminal_output_20260606_231616.txt` |
+| `../recordings/room_manager2_20260605_233809.mp4` |
+| `../recordings/room_manager2_20260507_150043.mp4` |
+| `../recordings/screenshots_20260516_220818/room_manager2_shot_002.png` |
+| `../recordings\ux6d_verify_20260610_105834\3_auto_done_final_ui.xml` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_014.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_21.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_2.png` |
+| `../recordings/screenshots/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_8.png` |
+| `../recordings/screenshots_20260512_215646/room_manager2_shot_001.png` |
+| `../recordings/ux6c_verify_20260610_001809/recentSync_live.logcat` |
+| `../recordings/room_manager2_20260519_234742.mp4` |
+| `../recordings/ui_search2.xml` |
+| `../recordings/screenshots_20260531_032231/terminal_output_20260531_032231.txt` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260604_214711/terminal_output_20260604_214711.txt` |
+| `../recordings/screenshots_20260609_171245/terminal_output_20260609_171245.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_4.xml` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260516_002428/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_18.png` |
+| `../recordings/room_manager2_20260516_220818.mp4` |
+| `../recordings/screenshots_20260512_205455/terminal_output_20260512_205455.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/02_keyword_filled.xml` |
+| `../recordings/screenshots_20260517_203947/terminal_output_20260517_203947.txt` |
+| `../recordings/screenshots_20260430_224719/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_012.png` |
+| `../recordings/screenshots_20260505_222549/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260522_215043/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260518_231832.mp4` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_018.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_4.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_1.xml` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_27.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/04_rakuten_search_screen.xml` |
+| `../recordings/screenshots_20260430_234612/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260518_204019/terminal_output_20260518_204019.txt` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_007.png` |
+| `../recordings/screenshots/room_manager2_shot_068.png` |
+| `../recordings/screenshots_20260502_231546/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_8.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_4.png` |
+| `../recordings/screenshots_20260521_232040/terminal_output_20260521_232040.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_4.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_016.png` |
+| `../recordings/screenshots_20260520_234840/terminal_output_20260520_234840.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/search_logcat.txt` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260525_000938/terminal_output_20260525_000938.txt` |
+| `../recordings/screenshots_20260509_001039/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_4.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/keyword.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_2.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_20.xml` |
+| `../recordings/screenshots/room_manager2_shot_026.png` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260607_025914/terminal_output_20260607_025914.txt` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260607_024616.mp4` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_11.xml` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260607_003619.mp4` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260602_223911/terminal_output_20260602_223911.txt` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_12.xml` |
+| `../recordings/screenshots_20260512_102603/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260602_234929.mp4` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_001.png` |
+| `../recordings/ux6c_verify_20260610_001809/eligible.logcat.txt` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260512_233657/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_1.xml` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_019.png` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_12.xml` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_008.png` |
+| `../recordings/screenshots/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260515_144420/terminal_output_20260515_144420.txt` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_3.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_017.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_10.xml` |
+| `../recordings/screenshots/room_manager2_shot_017.png` |
+| `../recordings\ux6d_verify_20260610_105834\3_auto_done.logcat.txt` |
+| `../recordings\ux6d_verify_20260610_105834\manual_try_0.xml` |
+| `../recordings/room_manager2_20260512_105624.mp4` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260609_172803/terminal_output_20260609_172803.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_19.png` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_3.png` |
+| `../recordings/screenshots_20260507_150131/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_024.png` |
+| `../recordings/room_manager2_20260606_220424.mp4` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260507_143928/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_013.png` |
+| `../recordings/ui_search.xml` |
+| `../recordings/screenshots_20260525_001328/terminal_output_20260525_001328.txt` |
+| `../recordings/screenshots_20260525_003718/terminal_output_20260525_003718.txt` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_20260608_003627/01_home.xml` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260516_220818/terminal_output_20260516_220818.txt` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_8.xml` |
+| `../recordings/room_manager2_20260603_000725.mp4` |
+| `../recordings/ux6c_verify_20260610_001809/notice_ui.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_7.xml` |
+| `../recordings/screenshots_20260522_215043/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260606_082856.mp4` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260512_223417/terminal_output_20260512_223417.txt` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_33.png` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_final2/result.png` |
+| `../recordings/room_manager2_20260604_111707.mp4` |
+| `../recordings/screenshots_20260505_222549/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_112236/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_24.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_12.xml` |
+| `../recordings/room_manager2_20260516_012320.mp4` |
+| `../recordings/screenshots_20260505_211608/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_12.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_017.png` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_007.png` |
+| `../recordings/room_manager2_20260522_215043.mp4` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_15.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_37.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/search_logcat.txt` |
+| `../recordings/room_manager2_20260603_010531.mp4` |
+| `../recordings/room_manager2_20260524_235249.mp4` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260531_092600/terminal_output_20260531_092600.txt` |
+| `../recordings\ux6d_verify_20260610_105834\2_auto_busy.logcat.txt` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_009.png` |
+| `../recordings/screenshots/room_manager2_shot_025.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260514_093320/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260519_234742/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260520_231239.mp4` |
+| `../recordings/screenshots_20260603_010440/terminal_output_20260603_010440.txt` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_013.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_13.png` |
+| `../recordings/screenshots/room_manager2_shot_043.png` |
+| `../recordings/screenshots_20260502_010138/room_manager2_shot_002.png` |
+| `../recordings/room_manager2_20260507_150131.mp4` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260507_135649/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_16.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_0.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_35.png` |
+| `../recordings/room_manager2_20260516_090413.mp4` |
+| `../recordings/smoke_5c2b_final2/before_search.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_7.png` |
+| `../recordings/screenshots_20260512_115141/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_014.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_1.png` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260607_205653/terminal_output_20260607_205653.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/04_rakuten_search_screen.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_3.xml` |
+| `../recordings/ui_clean.xml` |
+| `../recordings/screenshots_20260512_223516/terminal_output_20260512_223516.txt` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260517_233724/terminal_output_20260517_233724.txt` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260522_001422/terminal_output_20260522_001422.txt` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_205302/terminal_output_20260609_205302.txt` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260512_233657/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_21.png` |
+| `../recordings/screenshots_20260604_111707/terminal_output_20260604_111707.txt` |
+| `../recordings/room_manager2_20260518_113134.mp4` |
+| `../recordings/room_manager2_20260603_005616.mp4` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_7.xml` |
+| `../recordings/room_manager2_20260513_002145.mp4` |
+| `../recordings/screenshots_20260505_000545/room_manager2_shot_009.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_32.xml` |
+| `../recordings/ux6c_verify_20260610_001809/manualConflict.logcat.txt` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260503_004820/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_000510/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260505_222549/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_5.png` |
+| `../recordings/screenshots_20260523_005843/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_27.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_19.xml` |
+| `../recordings/room_manager2_20260508_233453.mp4` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_6.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_9.xml` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_008.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_8.xml` |
+| `../recordings/screenshots_20260607_000836/terminal_output_20260607_000836.txt` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_011.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_2.xml` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_4.xml` |
+| `../recordings/screenshots_20260514_231903/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_25.xml` |
+| `../recordings/screenshots_20260505_011953/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_005.png` |
+| `../recordings/room_manager2_20260531_233206.mp4` |
+| `../recordings/screenshots_20260505_010144/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_021.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_15.xml` |
+| `../recordings/screenshots_20260525_003718/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_005.png` |
+| `../recordings/screenshots/room_manager2_shot_048.png` |
+| `../recordings/screenshots_20260531_032231/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260609_161416/terminal_output_20260609_161416.txt` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260609_173009/terminal_output_20260609_173009.txt` |
+| `../recordings/screenshots_20260516_090413/terminal_output_20260516_090413.txt` |
+| `../recordings/screenshots_20260603_010531/terminal_output_20260603_010531.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/07_home_after_search.png` |
+| `../recordings/screenshots_20260430_230851/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260503_230914/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260609_174423/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_003.png` |
+| `../recordings/screenshots/room_manager2_shot_056.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260519_002423/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260508_225208/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_28.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_26.png` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_016.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_023.png` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260519_090910/terminal_output_20260519_090910.txt` |
+| `../recordings/screenshots_20260502_001725/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260515_144420/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260507_135649/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_2.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_11.png` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_after_restart_ui.xml` |
+| `../recordings/screenshots_20260502_214818/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_20260608_003627/07_home_after_search.xml` |
+| `../recordings/screenshots/room_manager2_shot_034.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_13.png` |
+| `../recordings/screenshots_20260516_221820/room_manager2_shot_007.png` |
+| `../recordings/ui_now.xml` |
+| `../recordings/screenshots_20260514_093320/terminal_output_20260514_093320.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_21.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_35.png` |
+| `../recordings/screenshots_20260607_021240/terminal_output_20260607_021240.txt` |
+| `../recordings/room_manager2_20260507_103209.mp4` |
+| `../recordings/screenshots/room_manager2_shot_018.png` |
+| `../recordings/screenshots_20260505_211608/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_1.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_008.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_6.xml` |
+| `../recordings/screenshots_20260516_220818/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_202850/terminal_output_20260609_202850.txt` |
+| `../recordings/room_manager2_20260602_215734.mp4` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_016.png` |
+| `../recordings\ux6d_verify_20260610_105834\2_auto_busy_scrolled_ui.xml` |
+| `../recordings/screenshots_20260604_221205/terminal_output_20260604_221205.txt` |
+| `../recordings/smoke_5c2b_search_20260608_004205/03_keyword_sheet.xml` |
+| `../recordings/screenshots_20260505_222549/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260507_112934/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_1.xml` |
+| `../recordings/room_manager2_20260602_225902.mp4` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260507_143928/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260602_234746/terminal_output_20260602_234746.txt` |
+| `../recordings/screenshots_20260517_200959/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260506_210800/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_003.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_5.xml` |
+| `../recordings/room_manager2_20260606_003014.mp4` |
+| `../recordings/screenshots_20260518_003555/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_11.png` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_6.png` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_010.png` |
+| `../recordings/ui_post.xml` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260512_095030/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260502_225707/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_17.xml` |
+| `../recordings/room_manager2_20260521_232040.mp4` |
+| `../recordings/screenshots_20260507_174804/room_manager2_shot_001.png` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_show.logcat.txt` |
+| `../recordings/screenshots_20260520_231239/room_manager2_shot_004.png` |
+| `../recordings/phase5c2_home_scrolled.xml` |
+| `../recordings/room_manager2_20260520_234840.mp4` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_007.png` |
+| `../recordings/ui_sr.xml` |
+| `../recordings/screenshots_20260503_000844/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260503_235033/room_manager2_shot_006.png` |
+| `../recordings\ux6d_verify_20260610_105834\1_normal_scrolled_ui.xml` |
+| `../recordings/screenshots_20260516_002428/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260514_100339/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260506_201831/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260521_225524/terminal_output_20260521_225524.txt` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260515_092612.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\summary.json` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_manual_2.xml` |
+| `../recordings/smoke_5c2b_final/log_full.txt` |
+| `../recordings/screenshots_20260520_231239/room_manager2_shot_001.png` |
+| `../recordings/room_manager2_20260603_001151.mp4` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260514_212645/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_28.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_25.xml` |
+| `../recordings/room_manager2_20260531_032231.mp4` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260531_092600/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260518_204019.mp4` |
+| `../recordings/screenshots_20260522_133544/terminal_output_20260522_133544.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_21.xml` |
+| `../recordings/screenshots/room_manager2_shot_042.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_5.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_2.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_20.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_4.xml` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_busy_11.xml` |
+| `../recordings/screenshots_20260507_135649/room_manager2_shot_004.png` |
+| `../recordings/screenshots/room_manager2_shot_046.png` |
+| `../recordings/screenshots_20260502_012126/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_6.xml` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260602_234929/terminal_output_20260602_234929.txt` |
+| `../recordings/room_manager2_20260507_135649.mp4` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_22.xml` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_36.xml` |
+| `../recordings/screenshots_20260522_224536/terminal_output_20260522_224536.txt` |
+| `../recordings/screenshots/room_manager2_shot_054.png` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260507_103209/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260522_132815/terminal_output_20260522_132815.txt` |
+| `../recordings/screenshots/room_manager2_shot_033.png` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_012.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_17.xml` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_38.png` |
+| `../recordings/room_manager2_20260609_173009.mp4` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_007.png` |
+| `../recordings/room_manager2_20260512_102603.mp4` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260517_200959/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260515_092612/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260504_222502/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260531_232356/terminal_output_20260531_232356.txt` |
+| `../recordings/room_manager2_20260507_110634.mp4` |
+| `../recordings/room_manager2_20260601_011650.mp4` |
+| `../recordings/screenshots_20260518_113134/terminal_output_20260518_113134.txt` |
+| `../recordings/screenshots_20260602_221346/terminal_output_20260602_221346.txt` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_015.png` |
+| `../recordings/screenshots_20260606_233636/terminal_output_20260606_233636.txt` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_14.png` |
+| `../recordings/screenshots_20260506_231456/room_manager2_shot_017.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_1.png` |
+| `../recordings/screenshots_20260512_102603/room_manager2_shot_002.png` |
+| `../recordings/screenshots/room_manager2_shot_029.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_010.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_36.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_19.xml` |
+| `../recordings/ux6c_verify_20260610_001809/noticeIncreased_live.logcat` |
+| `../recordings/room_manager2_20260604_221205.mp4` |
+| `../recordings/screenshots_20260525_000938/room_manager2_shot_001.png` |
+| `../recordings/phase5c2_search_sheet.xml` |
+| `../recordings/screenshots/room_manager2_shot_067.png` |
+| `../recordings/room_manager2_20260508_163213.mp4` |
+| `../recordings/room_manager2_20260514_212645.mp4` |
+| `../recordings/screenshots_20260609_173009/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_22.png` |
+| `../recordings/screenshots_20260525_001328/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260516_012320/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260518_003555/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_011.png` |
+| `../recordings/screenshots_20260523_003540/terminal_output_20260523_003540.txt` |
+| `../recordings/screenshots_20260609_183537/terminal_output_20260609_183537.txt` |
+| `../recordings\ux6d_verify_20260610_105834\4_notice_before_dismiss_ui.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_22.xml` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_005.png` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_normal_10.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_16.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_8.xml` |
+| `../recordings/screenshots_20260502_214818/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260502_231546/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_005.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_15.xml` |
+| `../recordings/screenshots/room_manager2_shot_021.png` |
+| `../recordings/room_manager2_20260605_102830.mp4` |
+| `../recordings\ux6d_verify_20260610_105834\scroll_done_0.xml` |
+| `../recordings/screenshots_20260507_133336/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260609_131403/terminal_output_20260609_131403.txt` |
+| `../recordings/screenshots/room_manager2_shot_070.png` |
+| `../recordings/screenshots_20260505_222549/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260501_091847/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260517_233724/room_manager2_shot_017.png` |
+| `../recordings/screenshots_20260609_161416/room_manager2_shot_003.png` |
+| `../recordings/room_manager2_20260604_231236.mp4` |
+| `../recordings/screenshots_20260522_133544/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_0.xml` |
+| `../recordings/screenshots/room_manager2_shot_064.png` |
+| `../recordings/screenshots_20260607_003551/terminal_output_20260607_003551.txt` |
+| `../recordings/screenshots_20260606_003014/terminal_output_20260606_003014.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_32.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_2.png` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260517_205029/terminal_output_20260517_205029.txt` |
+| `../recordings/screenshots_20260503_002221/room_manager2_shot_004.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_23.png` |
+| `../recordings/screenshots_20260505_004326/room_manager2_shot_004.png` |
+| `../recordings/screenshots_20260505_232717/room_manager2_shot_006.png` |
+| `../recordings/smoke_5c2b_20260608_003627/06_search_wait_10.xml` |
+| `../recordings/screenshots_20260505_225752/room_manager2_shot_003.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_32.png` |
+| `../recordings/screenshots/room_manager2_shot_009.png` |
+| `../recordings/screenshots_20260518_003555/terminal_output_20260518_003555.txt` |
+| `../recordings/screenshots_20260502_222455/room_manager2_shot_005.png` |
+| `../recordings/screenshots_20260523_003540/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_014.png` |
+| `../recordings/screenshots_20260602_225902/terminal_output_20260602_225902.txt` |
+| `../recordings/screenshots_20260506_234701/room_manager2_shot_013.png` |
+| `../recordings/screenshots_20260517_205029/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260603_005616/terminal_output_20260603_005616.txt` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_20.xml` |
+| `../recordings/screenshots_20260518_204019/room_manager2_shot_003.png` |
+| `../recordings/screenshots_20260518_112102/terminal_output_20260518_112102.txt` |
+| `../recordings/screenshots/room_manager2_shot_031.png` |
+| `../recordings/screenshots_20260502_214818/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260525_003718/room_manager2_shot_001.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_33.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_7.png` |
+| `../recordings/room_manager2_20260523_215320.mp4` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_6.png` |
+| `../recordings/screenshots/room_manager2_shot_052.png` |
+| `../recordings/screenshots_20260520_234840/room_manager2_shot_008.png` |
+| `../recordings/screenshots_20260605_102830/terminal_output_20260605_102830.txt` |
+| `../recordings/screenshots_20260606_223258/terminal_output_20260606_223258.txt` |
+| `../recordings/screenshots_20260518_113134/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260516_225137/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260521_232040/room_manager2_shot_007.png` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_3.xml` |
+| `../recordings/screenshots_20260523_215320/room_manager2_shot_002.png` |
+| `../recordings/screenshots_20260430_220337/room_manager2_SS_shot_001.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_009.png` |
+| `../recordings/smoke_5c2b_search_20260608_004205/01_search_sheet.xml` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_008.png` |
+| `../recordings/room_manager2_20260606_233457.mp4` |
+| `../recordings/screenshots_20260518_233059/room_manager2_shot_011.png` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_6.xml` |
+| `../recordings/smoke_5c2b_search_20260608_004205/05_wait_25.xml` |
+| `../recordings/screenshots_20260502_235541/room_manager2_shot_010.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_006.png` |
+| `../recordings/room_manager2_20260516_221820.mp4` |
+| `../recordings/screenshots_20260502_232208/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260508_160339/room_manager2_shot_006.png` |
+| `../recordings/screenshots_20260516_090413/room_manager2_shot_001.png` |
+| `../recordings/screenshots_20260609_171245/room_manager2_shot_007.png` |
+| `../recordings/screenshots_20260522_001422/room_manager2_shot_002.png` |
+| `../recordings/smoke_5c2b_20260608_003627/boot_2.xml` |
+| `../recordings/smoke_5c2b_search3_20260608_005349/wait_11.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_12.xml` |
+| `../recordings/smoke_5c2b_search2_20260608_004656/03_wait_16.png` |
+| `../recordings/screenshots_20260518_010432/room_manager2_shot_003.png` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\android\app\build.gradle.kts</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\agent-tools\cf467b9e-6d20-4ee6-a03c-690610fdaa1c.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **74** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (74 files)
+
+| File |
+|------|
+| `../.\recordings\ux6d_verify_20260610_105834\manual_dialog2.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\manual_try_1.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\manual_try_0.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\done_contentdesc.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\busy_contentdesc.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\normal_contentdesc.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_11.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_10.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_9.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_8.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_7.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_6.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_5.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_4.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_3.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_2.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_1.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_manual_0.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_11.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_10.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_9.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_8.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_7.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_6.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_5.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_4.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_3.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_2.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_1.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_done_0.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_11.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_10.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_9.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_8.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_7.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_6.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_5.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_4.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_3.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_2.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_1.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_busy_0.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_11.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_10.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_9.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_8.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_7.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_6.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_5.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_4.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_3.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_2.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_1.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\scroll_normal_0.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\2_auto_busy_scrolled_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\1_normal_scrolled_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\summary.json` |
+| `../.\recordings\ux6d_verify_20260610_105834\5_manual.logcat.txt` |
+| `../.\recordings\ux6d_verify_20260610_105834\5_manual_dialog_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\5_manual_before_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_after_restart_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_after_dismiss_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_before_dismiss_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_after_analyze_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_before_tap_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_show.logcat.txt` |
+| `../.\recordings\ux6d_verify_20260610_105834\4_notice_show_final_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\3_auto_done.logcat.txt` |
+| `../.\recordings\ux6d_verify_20260610_105834\3_auto_done_final_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\2_auto_busy.logcat.txt` |
+| `../.\recordings\ux6d_verify_20260610_105834\2_auto_busy_final_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\1_normal.logcat.txt` |
+| `../.\recordings\ux6d_verify_20260610_105834\1_normal_final_ui.xml` |
+| `../.\recordings\ux6d_verify_20260610_105834\flutter_build.log` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter devices 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter devices 2>&1
+```
+
+```
+Found 4 connected devices:
+  sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 15 (API 35) (emulator)
+  Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.26200.8655]
+  Chrome (web)                 • chrome        • web-javascript • Google Chrome 149.0.7827.53
+  Edge (web)                   • edge          • web-javascript • Microsoft Edge 149.0.4022.52
+
+Run "flutter emulators" to list and start any available device emulators.
+
+If you expected another device to be detected, please run "flutter doctor" to diagnose potential issues. You may also try increasing the time to wait for connected devices with the "--device-timeout" flag. Visit https://flutter.dev/setup/ for troubleshooting tips.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+flutter analyze がコード 1 で終了した。出力を確認する必要がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\357672.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6d_verify_20260610_105834\summary.json</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\terminals\\357672.txt",
+  "pattern": "error •|warning •|info •"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\terminals\\357672.txt",
+  "pattern": "error •|warning •|info •",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && if (Test-Path android\key.properties) { Write-Host "key.properties: EXISTS" } else { Write-Host "key.properties: MISSING" }</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && if (Test-Path android\key.properties) { Write-Host "key.properties: EXISTS" } else { Write-Host "key.properties: MISSING" }
+```
+
+```
+if: C:\Users\muram\AppData\Local\Temp\ps-script-4443ef9e-9726-4148-b85d-fdbdd721bc8c.ps1:122
+Line |
+ 122 |  cd c:\dev\app_project\room_manager2 &amp;&amp; if (Test-Path android\key.prop �c
+     |                                         ~~
+     | The term 'if' is not recognized as a name of a cmdlet, function, script file, or executable program. Check the
+     | spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+key.properties の PowerShell 構文を確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2; if (Test-Path android\key.properties) { Write-Host "key.properties: EXISTS" } else { Write-Host "key.properties: MISSING" }</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2; if (Test-Path android\key.properties) { Write-Host "key.properties: EXISTS" } else { Write-Host "key.properties: MISSING" }
+```
+
+```
+key.properties: EXISTS
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834",
+  "pattern": "反応を確認中|今すぐ反応を確認"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834",
+  "pattern": "反応を確認中|今すぐ反応を確認",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6c_verify_20260610_001809\noHistory.logcat.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **5** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (5 files)
+
+| File |
+|------|
+| `../recordings/phase5c2_home_scrolled.xml` |
+| `../recordings/phase5c2_home.xml` |
+| `../recordings/phase5c2_mypage.xml` |
+| `../tool/phase4_p2_device_verify.dart` |
+| `../recordings/phase5c2_search_sheet.xml` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6d_verify_20260610_105834\busy_contentdesc.xml</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6d_verify_20260610_105834\normal_contentdesc.xml</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6c_verify_20260610_001809",
+  "pattern": "noHistory|recentSync|started|completed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6c_verify_20260610_001809",
+  "pattern": "noHistory|recentSync|started|completed",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/manualConflict_live.logcat"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/eligible_live.logcat"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/noHistory_live.logcat"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/noticeIncreased.logcat.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/noticeIncreased_live.logcat"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/recentSync.logcat.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/noHistory.logcat.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/manualConflict.logcat.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/eligible.logcat.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/ux6c_verify_20260610_001809/recentSync_live.logcat"
+    }
+  ],
+  "totalFiles": 10,
+  "totalMatches": 10
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2; flutter build apk --profile --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2; flutter build apk --profile --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true 2>&1
+```
+
+```
+Running Gradle task 'assembleProfile'...                        
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 18548 bytes (98.9% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleProfile'...                          231.4s
+√ Built build\app\outputs\flutter-apk\app-profile.apk (78.0MB)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Profile APK のビルドに成功しました。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2; flutter build appbundle --release --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2; flutter build appbundle --release --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true 2>&1
+```
+
+```
+Running Gradle task 'bundleRelease'...                          
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 18548 bytes (98.9% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'bundleRelease'...                            223.5s
+√ Built build\app\outputs\bundle\release\app-release.aab (45.6MB)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": true,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_mypage.xml",
+  "pattern": "開発者向け|DevAutomation|デモ|URLから追加|DEMO|audit"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_mypage.xml",
+  "pattern": "開発者向け|DevAutomation|デモ|URLから追加|DEMO|audit",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\phase5c2_mypage.xml</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (0 files)
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ビルドが正常に完了した。次にエミュレータにプロファイルAPKをインストールし、adbによるスモークテストを実行する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2; adb -s emulator-5554 install -r build\app\outputs\flutter-apk\app-profile.apk 2>&1; adb -s emulator-5554 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1; Start-Sleep -Seconds 8; adb -s emulator-5554 shell uiautomator dump /sdcard/profile_smoke.xml 2>&1; adb -s emulator-5554 pull /sdcard/profile_smoke.xml recordings\profile_smoke_c3.xml 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2; adb -s emulator-5554 install -r build\app\outputs\flutter-apk\app-profile.apk 2>&1; adb -s emulator-5554 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1; Start-Sleep -Seconds 8; adb -s emulator-5554 shell uiautomator dump /sdcard/profile_smoke.xml 2>&1; adb -s emulator-5554 pull /sdcard/profile_smoke.xml recordings\profile_smoke_c3.xml 2>&1
+```
+
+```
+]633;C
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2; if (Test-Path build\app\outputs\bundle\release\app-release.aab) { Get-Item build\app\outputs\bundle\release\app-release.aab | Select-Object Name, Length, LastWriteTime }; jarsigner -verify -verbose build\app\outputs\bundle\release\app-release.aab 2>&1 | Select-Object -Last 15</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2; if (Test-Path build\app\outputs\bundle\release\app-release.aab) { Get-Item build\app\outputs\bundle\release\app-release.aab | Select-Object Name, Length, LastWriteTime }; jarsigner -verify -verbose build\app\outputs\bundle\release\app-release.aab 2>&1 | Select-Object -Last 15
+```
+
+```
+
+Name              Length LastWriteTime
+----              ------ -------------
+app-release.aab 47828559 2026/06/10 23:10:32
+- ������: "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown"
+    �_�C�W�F�X�g�E�A���S���Y��: SHA-256
+    �����A���S���Y��: SHA256withRSA�A2048�r�b�g�E�L�[
+
+jar�����؂���܂����B
+
+�x��: 
+����jar�ɂ́A�ؖ����&#96;�F�[���������ȃG���g�����܂܂�Ă��܂��B���R: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+����jar�ɂ́A�����҂̏ؖ��������ȏ�������Ă���G���g�����܂܂�Ă��܂��B 
+����jar�ɂ́A�^�C���X�^���v���Ȃ��������܂܂�Ă��܂��B�^�C���X�^���v���Ȃ��ƁA�����ꂩ�̏����ҏؖ����̗L���������(�������2053-08-22)���[�U�[�͂���jar�����؂ł��Ȃ��\��������܂��B
+POSIX�t�@�C�������܂���symlink(���邢�͂��̗���)�̑��������o����܂����B�������͂����̑����͖�������A�����ɂ���ĕی삳��܂���B
+
+�ڍׂ́A-verbose�����-certs�I�v�V�������g�p���čĎ��s���Ă��������B
+
+�����҂̏ؖ�����2053-08-22�Ɋ����؂�ɂȂ�܂��B
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "INTERNAL_RELEASE_AUTOMATION|kInternalRelease"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "INTERNAL_RELEASE_AUTOMATION|kInternalRelease",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib/config/dev_automation_config.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+エミュレータのインストールタスクを待っている。プロファイルスモークXMLを確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\dev_automation_config.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "別の候補を出す"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "別の候補を出す",
+  "topFiles": [
+    {
+      "matchCount": 16,
+      "uri": ".specstory/history/2026-06-09_12-16-38Z-home-screen-button-removal-and-ui-simplification.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory\\history\\2026-06-10_13-57-11Z-release-candidate-ux-verification.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": ".specstory/history/2026-06-09_08-21-54Z-ホーム画面「今日のroom運用」カードの方向性補正.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": ".specstory/history/2026-06-09_08-39-42Z-home-screen-milestone-ui-addition.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory/history/2026-06-09_12-31-23Z-反応確認自動化の調査と設計.md"
+    }
+  ],
+  "totalFiles": 5,
+  "totalMatches": 22
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\637646.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "別の候補を出す"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "別の候補を出す",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+エミュレータへの APK インストールが停止している。adb の応答不良またはエミュレータの遅延が原因と考えられる。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb devices 2>&1</summary>
+
+```bash
+adb devices 2>&1
+```
+
+```
+List of devices attached
+emulator-5554	device
+
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\637646.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+adb install が 78MB の APK でハングしている可能性がある。まだ出力がない。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb -s emulator-5554 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-profile.apk"</summary>
+
+```bash
+adb -s emulator-5554 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-profile.apk"
+```
+
+```
+]633;C
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ADB インストールが停止している。エミュレータ側の問題の可能性がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\55170.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "開発者向け|クローズドテスト|URLから|Demo|DEMO"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "開発者向け|クローズドテスト|URLから|Demo|DEMO",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\demo_mode.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ADB インストールが停止している。78MB の APK によるエミュレータ性能問題の可能性がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6d_verify_20260610_105834\5_manual_dialog_ui.xml</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "Platform\\.isAndroid|defaultTargetPlatform|TargetPlatform\\.android"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "Platform\\.isAndroid|defaultTargetPlatform|TargetPlatform\\.android",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/common_draggable_edge_fab.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **4** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2\recordings** (4 files)
+
+| File |
+|------|
+| `../recordings/phase5c2_home_scrolled.xml` |
+| `../recordings/phase5c2_mypage.xml` |
+| `../recordings/phase5c2_search_sheet.xml` |
+| `../recordings/phase5c2_home.xml` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\recordings\ux6d_verify_20260610_105834\5_manual.logcat.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ux6d の手動ダイアログ検証では、ボタンがスクロール範囲外にありタップできなかった。button_tapped: false が記録された。
+
+normal_contentdesc.xml で「今すぐ反応を確認」ボタンが存在し有効であることを確認した。手動ダイアログの確認ダイアログとログcat の grep を行う。Profile APK はビルド成功だがエミュレータインストールがセッション内で完了せず、物理端末への手動インストールを推奨する。コード監査で Profile モードが開発機能を正しくガードすることを確認した。kDebugMode と kReleaseMode はいずれも false である。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_home.xml",
+  "pattern": "開発者向け|URLから|デモ|Demo"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_home.xml",
+  "pattern": "開発者向け|URLから|デモ|Demo",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_search_sheet.xml",
+  "pattern": "開発者向け|URLから|デモ"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_search_sheet.xml",
+  "pattern": "開発者向け|URLから|デモ",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "onOpenDevAutomation|DevAutomationFlags"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "onOpenDevAutomation|DevAutomationFlags",
+  "topFiles": [
+    {
+      "matchCount": 7,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+manual_dialog2.xml の確認ダイアログテキストと eligible completion のログ出力を確認している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834\\manual_dialog2.xml",
+  "pattern": "確認|今すぐ反応"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834\\manual_dialog2.xml",
+  "pattern": "確認|今すぐ反応",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "recordings\\ux6d_verify_20260610_105834\\manual_dialog2.xml"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6c_verify_20260610_001809",
+  "pattern": "completed|noChange|increased"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6c_verify_20260610_001809",
+  "pattern": "completed|noChange|increased",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\pubspec.yaml</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "コードベース確認（UX改修・フラグ・導線）",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "flutter analyze / flutter test 実行",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "Profile APK ビルド確認",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Release AAB ビルド確認",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Dev/非公開機能の公開漏れコード監査",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "報告書作成（15セクション）",
+      "id": "6",
+      "status": "in_progress"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "コードベース確認（UX改修・フラグ・導線）",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "flutter analyze / flutter test 実行",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "Profile APK ビルド確認",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Release AAB ビルド確認",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Dev/非公開機能の公開漏れコード監査",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "報告書作成（15セクション）",
+      "id": "6",
+      "status": "pending"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+manual_dialog2 のダイアログ内容を詳しく確認する。以前のフェーズで既にプロフィール記録があるかも調べる。
+
+手動確認ダイアログの検証スクリプト誤判定はバグではなく B カテゴリの検証ギャップと判断した。デバッグ端末の実機確認とプロフィール APK（78MB）のコード監査結果を含め、15 セクションの日本語レポートを整備している。プロフィール APK はエミュレータインストールタイムアウトで検証できていないが、コード監査とフェーズ5c2記録から開発漏洩はない。
+
+リリース AAB（45.6MB）は jarsigner で署名検証済み。flutter analyze は info 5 件のみでエラーなし。flutter test は 486 件すべて通過。コード変更は不要。リリース判断は「GO」。ただしプロフィールエミュレータスモーク未検証、手動ダイアログタップの再検証漏れ、自動反応確認の自然データ end-to-end 未確認が残る。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\common_draggable_edge_fab.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_home.xml",
+  "pattern": "おすすめコレを見る|おすすめを見る"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\phase5c2_home.xml",
+  "pattern": "おすすめコレを見る|おすすめを見る",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "コードベース確認（UX改修・フラグ・導線）",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "flutter analyze / flutter test 実行",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "Profile APK ビルド確認",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Release AAB ビルド確認",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Dev/非公開機能の公開漏れコード監査",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "報告書作成（15セクション）",
+      "id": "6",
+      "status": "completed"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "コードベース確認（UX改修・フラグ・導線）",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "flutter analyze / flutter test 実行",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "Profile APK ビルド確認",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Release AAB ビルド確認",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Dev/非公開機能の公開漏れコード監査",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "報告書作成（15セクション）",
+      "id": "6",
+      "status": "in_progress"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\common_draggable_edge_fab.dart",
+  "pattern": "Platform\\.isAndroid|defaultTargetPlatform"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\common_draggable_edge_fab.dart",
+  "pattern": "Platform\\.isAndroid|defaultTargetPlatform",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\common_draggable_edge_fab.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+defaultTargetPlatform を使ったクロスプラットフォームパターンを確認した。iOS 移植に適している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834",
+  "pattern": "反応を確認|キャンセル|確認します"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\recordings\\ux6d_verify_20260610_105834",
+  "pattern": "反応を確認|キャンセル|確認します",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "recordings\\ux6d_verify_20260610_105834\\summary.json"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ux6d で手動ダイアログの検証が完了しなかった。ボタンタップに失敗した。</details></think>
+
+_**Agent (default)**_
+
+# Phase C3 / Release Candidate 最終確認報告
+
+## 1. 実施概要
+
+| 項目 | 結果 |
+|------|------|
+| コード監査（UX改修・フラグ・導線） | 完了 |
+| Debug 実機確認 | 本日の記録 `recordings/ux6d_verify_20260610_105834`（実機 SXILHMB270711564）+ `ux6c_verify_20260610_001809` を再確認 |
+| `flutter analyze` | 完了（info 5件、error/warning 0） |
+| `flutter test` | **486件すべて成功** |
+| Profile APK ビルド | **成功**（78.0MB） |
+| Release AAB ビルド | **成功**（45.6MB） |
+| Profile エミュレータ実機スモーク | **未完了**（`adb install` がタイムアウト） |
+| コード修正 | **なし**（新規 error なし） |
+
+ビルドコマンド（profile / release 共通）:
+
+```bash
+--dart-define=PRODUCT_CATALOG_ENABLED=true
+--dart-define=SHOP_CATALOG_ENABLED=true
+```
+
+含めていない define: `DEV_AUTOMATION_ENABLED`, `SHOW_URL_ADD_ENTRY_POINT`, `DEMO_MODE`, `CATALOG_AUDIT_LOGS`
+
+---
+
+## 2. Debug 実機確認結果
+
+**データソース:** `recordings/ux6d_verify_20260610_105834/summary.json`（2026-06-10 11:07、実機）
+
+### ホーム
+
+| 確認項目 | 結果 | 根拠 |
+|----------|------|------|
+| 主CTA「おすすめコレを見る」 | ✅ | `pendingCount=10` → ラベル「おすすめコレを見る」 |
+| 未確認件数が主役になりすぎない | ✅ | 主CTAが大きく、「未確認 10件」は補助表示 |
+| 「今日の小さな目標」 | ✅ | マイルストーン 1/5/10/20 チップ表示 |
+| 投稿しすぎ防止の目安（補助） | ✅ | CTA下に配置、「参考値です…」注記あり |
+| お知らせカード 1件 | ✅ | 「反応がありました」1件のみ |
+| 閉じられる | ✅ | `4_notice_dismiss`: before=true → after=false |
+| 閉じた通知が当日再表示されない | ✅ | `4_notice_restart`: after_restart_has_card=false |
+| 「今すぐ反応を確認」表示 | ✅ | `normal_contentdesc.xml`: Button enabled |
+| 自動確認中「反応を確認中…」disabled | ✅ | `busy_contentdesc.xml`: `enabled=false` |
+| 自動確認で SnackBar/Dialog なし | ✅ | 全 auto シナリオ `dialog_snack: []` |
+
+### おすすめ / ROOMコレ / 分析 / マイページ
+
+| 領域 | 結果 | 備考 |
+|------|------|------|
+| おすすめ画面 | ✅（間接） | 主CTA遷移・分析タブからの入口はコード＋既存記録で確認 |
+| ROOMコレ | ✅ | 候補17件・コレ済46件・評価表示 trace 正常 |
+| ROOMデータ更新 | ⚠️ 一部 | 手動ボタン表示は確認済み。**確認ダイアログのタップは自動化未完了**（後述） |
+| 分析タブ | ✅ | 「分析で見る」→ 反応セクションまで遷移・スクロール確認 |
+| マイページ | ✅（コード） | DevAutomation は `kDebugMode` 条件のみ表示 |
+
+### 未確認（実機・今回）
+
+- **手動「今すぐ反応を確認」→ 確認ダイアログ**: `5_manual_confirm` で `button_tapped: false`（スクロール不足の可能性）。ボタン自体は UI dump で確認済み。
+- **おすすめ画面の再生成導線**: コード上は `TodayRecommendationsScreen` に残存。今回の実機記録では未タップ。
+
+---
+
+## 3. Profile APK 確認結果
+
+| 項目 | 結果 |
+|------|------|
+| ビルド | ✅ `build/app/outputs/flutter-apk/app-profile.apk`（78.0MB） |
+| エミュレータへの install + スモーク | ❌ `adb install` が 5分以上ハング（エミュレータ `emulator-5554` は接続確認済み） |
+| コード監査（非公開機能ゲート） | ✅ profile では `kDebugMode=false` のため Dev/Demo/URL追加はすべて非表示 |
+
+**推奨:** 提出前に実機へ `app-profile.apk` を手動インストールし、主要タブの目視スモークを1回実施してください。
+
+---
+
+## 4. Release AAB ビルド結果
+
+| 項目 | 結果 |
+|------|------|
+| 出力 | ✅ `build/app/outputs/bundle/release/app-release.aab`（45.8MB） |
+| ビルドエラー | なし |
+| 署名 | ✅ `jarsigner -verify` 成功（自己署名アップロードキー、有効期限 2053-08-22） |
+| Play Console 形式 | ✅ AAB として生成・署名済み |
+
+`android/key.properties` は存在し、release signing config が適用されています。
+
+---
+
+## 5. Dev / 非公開機能の公開漏れ確認
+
+| 機能 | profile / release（define なし） | ゲート |
+|------|----------------------------------|--------|
+| DevAutomation | ❌ 非表示 | `DevAutomationFlags.isEnabled` = debug+define または内部 release トークン |
+| 自動検証画面 | ❌ 到達不可 | `ensureDevAutomationAvailable()` |
+| URLから追加 | ❌ 非表示 | `showUrlAddEntryPoint` = `kDebugMode && define` |
+| DEMO_MODE 表示 | ❌ 非表示 | `kClosedTestDemoAvailable` = `DEMO_MODE` define のみ |
+| Catalog audit logs | ❌ 出力なし | `kDebugMode && CATALOG_AUDIT_LOGS` |
+| 内部検証トークン UI | ❌ 非表示 | `INTERNAL_RELEASE_AUTOMATION_*` 未指定時は false |
+
+`phase5c2_home.xml` / `phase5c2_mypage.xml` / `phase5c2_search_sheet.xml` にも該当文言なし。
+
+---
+
+## 6. 自動反応確認の確認結果
+
+**データソース:** `ux6c_verify_20260610_001809` + `ux6d_verify_20260610_105834`
+
+| 条件 | 結果 | logcat |
+|------|------|--------|
+| 履歴なし → 実行されない | ✅ | `skipped reason=noHistory` |
+| 4時間未満 → recentSync | ✅ | `skipped reason=recentSync` |
+| 条件充足 → started → completed | ✅ | `started` → `completed noChange` |
+| 自動実行時 SnackBar/Dialog なし | ✅ | 全シナリオ `dialog_snack: []` |
+| 確認中「反応を確認中…」 | ✅ | `busy_contentdesc.xml` |
+| 完了後「今すぐ反応を確認」に戻る | ✅ | `done_contentdesc.xml` / `normal_contentdesc.xml` |
+| 反応増加時のみ通知 | ✅ | `4_notice_show` で「反応がありました」表示 |
+| 増加なしでは通知なし | ✅ | `3_auto_done`（noChange）に通知カードなし |
+
+**注記:** 自然データでの増加検知 end-to-end は、通知表示シナリオ（`4_notice_show`）で間接確認。専用の長時間実機テストは未実施。
+
+---
+
+## 7. お知らせカード確認結果
+
+| 項目 | 結果 |
+|------|------|
+| 1件のみ表示 | ✅ 優先度: マイルストーン > 反応増加 > おすすめ確認済み |
+| 閉じる操作 | ✅ `dismiss_tapped: true` |
+| 当日非再表示 | ✅ dismiss 後・再起動後とも非表示 |
+| 「分析で見る」遷移 | ✅ 分析サブタブ + 反応セクションへスクロール |
+| dismiss 永続化 | ✅ `HomeInAppNoticeDismissStore`（日付スコープ） |
+
+ユニットテスト: `test/widgets/home_in_app_notice_card_test.dart` もパス。
+
+---
+
+## 8. 主要導線確認結果
+
+| 導線 | 結果 |
+|------|------|
+| ホーム主CTA → おすすめ | ✅ |
+| ホームから「別の候補を出す」削除 | ✅ `lib/` に該当文言なし |
+| おすすめ画面の再生成 | ✅ コード上 `_regenerate()` 等は画面側に残存 |
+| ROOMコレ候補/コレ済 | ✅ |
+| 候補→コレ済操作 | ✅（既存フロー、今回の記録で一覧表示確認） |
+| 分析タブ | ✅ |
+| マイページ初期設定表示 | ✅（コード + オンボーディングログ） |
+| 手動反応確認（補助導線） | ✅ ボタン表示・補助文言あり |
+
+---
+
+## 9. flutter analyze 結果
+
+**5 issues（すべて info、error 0 / warning 0）**
+
+| ファイル | 内容 | 分類 |
+|----------|------|------|
+| `today_recommendations_screen.dart:114,115,150` | `use_build_context_synchronously` | 既存 info |
+| `tool/phase4_p2_device_verify.dart:1` | `unnecessary_import` | ツール用・既存 |
+| `tool/phase4_p2_device_verify.dart:11` | `unintended_html_in_doc_comment` | ツール用・既存 |
+
+**新規 error: なし → 修正不要**
+
+---
+
+## 10. flutter test 結果
+
+```
+01:12 +486: All tests passed!
+```
+
+関連テストも含めすべて成功:
+- `home_auto_reaction_sync_test.dart`
+- `home_in_app_notice_card_test.dart`
+- `room_sync_reaction_button_test.dart`
+- `add_candidate_entry_sheet_url_visibility_test.dart`
+- `dev_automation_config_test.dart`
+
+---
+
+## 11. 既知課題一覧
+
+### A: リリース前に必ず直す
+
+**該当なし**（ビルド成功・テスト全パス・新規 analyze error なし）
+
+### B: クローズドテストでは許容、次回対応
+
+| 課題 | 内容 |
+|------|------|
+| Profile APK 実機スモーク未完了 | 今セッションのエミュレータ install がタイムアウト。提出前に実機で1回確認推奨 |
+| 手動反応確認ダイアログ | ux6d 自動化でタップ未完了（ボタン表示は確認済み） |
+| 手動ボタンの完全非表示 | 意図的に保留（今回も表示維持） |
+| 自動反応確認の自然データ e2e | 増加シナリオは間接確認のみ |
+| 反応通知の直接商品遷移 | 未実装（分析タブ遷移のみ） |
+| Push 通知 | 未実装 |
+| 取り込み busy 中の反応ボタンラベル | 反応同期のみ「反応を確認中…」、取り込み busy 中は disabled だが手動ラベルのまま |
+
+### C: 将来改善
+
+| 課題 | 内容 |
+|------|------|
+| iOS 移植時の追加確認 | Android 実機検証が主。`defaultTargetPlatform` 利用は適切 |
+| 既存 analyze info 5件 | 機能影響なし |
+| `today_recommendations_screen` の BuildContext 警告 | リファクタ候補 |
+
+---
+
+## 12. リリース前に必ず直すべき項目
+
+現時点で **ブロッカーなし**。
+
+提出直前の推奨チェック（5分程度）:
+1. 実機へ `app-profile.apk` をインストール
+2. 主要5タブを開く
+3. マイページに DevAutomation / デモ / URL追加が出ないことを目視確認
+
+---
+
+## 13. クローズドテストで許容できる項目
+
+- 手動「今すぐ反応を確認」ボタンの表示継続（補助導線として意図的）
+- 反応通知から商品詳細への直接遷移なし（「分析で見る」のみ）
+- Push 通知なし（アプリ内通知カードで代替）
+- 自動反応確認の長時間自然データ検証の不足
+- analyze info 5件（error ではない）
+
+---
+
+## 14. iOS 移植監査メモ
+
+| 観点 | 状態 |
+|------|------|
+| Android 固有処理の新規追加 | なし（今回の改修範囲） |
+| プラットフォーム分岐 | `common_draggable_edge_fab.dart` は `defaultTargetPlatform` 使用（適切） |
+| dart-define フラグ | プラットフォーム非依存の compile-time 定数 |
+| SharedPreferences 永続化 | iOS でも動作する標準 API |
+| 要確認（移植時） | ROOM 同期・楽天 API・通知（将来 Push）・実機での自動反応タイミング |
+
+---
+
+## 15. Google Play クローズドテスト提出へ進めるかの判断
+
+### 判断: **進められる（条件付き GO）**
+
+**根拠:**
+- Release AAB ビルド・署名ともに成功
+- `flutter test` 486件すべてパス
+- `flutter analyze` に error/warning なし
+- UX改修の主要項目は本日の実機記録（ux6d/ux6c）で確認済み
+- 非公開機能の公開漏れはコード監査上なし
+
+**提出前の最終アクション（推奨）:**
+1. 実機へ `app-profile.apk` をインストールして5分スモーク
+2. `app-release.aab` を Play Console 内部テスト/クローズドテストへアップロード
+3. 手動「今すぐ反応を確認」→ 確認ダイアログの目視確認（ux6d で未完了の1点）
+
+**今回のコード変更: なし**（安定性確認のみ、バグ修正の必要なし）
+
+---
+
+_**User**_
+
+<system_notification>
+The following task has finished. If you were already aware, ignore this notification and do not restate prior responses.
+
+<task>
+kind: shell
+status: error
+task_id: 55170
+title: Install profile APK on emulator
+detail: exit_code=1
+output_path: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\55170.txt
+</task>
+</system_notification>
+<user_query>Briefly inform the user about the task result and perform any follow-up actions (if needed). If there's no follow-ups needed, don't explicitly say that.</user_query>
+
+---
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\55170.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The ADB installation failed because the ADB daemon crashed and disconnected. The connection to port 5037 was lost.</details></think>
+
+_**Agent (default)**_
+
+Profile APK のエミュレータインストールは ADB デーモンの切断で失敗しました。ADB を再起動して再試行します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb kill-server 2>&1; Start-Sleep -Seconds 2; adb start-server 2>&1; adb devices 2>&1</summary>
+
+```bash
+adb kill-server 2>&1; Start-Sleep -Seconds 2; adb start-server 2>&1; adb devices 2>&1
+```
+
+```
+List of devices attached
+emulator-5554	offline
+emulator-5556	offline
+
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Profile APK のエミュレータへのインストールは **失敗**しました。原因は APK ではなく、インストール中に ADB デーモンが切断されたことです（`protocol fault` / `connection reset`、その後 `tcp:5037` 接続拒否）。
+
+ADB を再起動したところ、エミュレータはいずれも `offline` のままでした。この環境では Profile スモークの自動インストールは再試行できません。
+
+**Profile APK 自体はビルド済み**です（`build/app/outputs/flutter-apk/app-profile.apk`）。提出前の確認は、実機への手動インストールで主要タブの目視スモークをお願いします。Release AAB のビルド・署名は問題なく完了しています。
+
+---
+
+_**User**_
+
+<system_notification>
+The following task has finished. If you were already aware, ignore this notification and do not restate prior responses.
+
+<task>
+kind: shell
+status: error
+task_id: 637646
+title: Install profile APK on emulator and dump UI
+detail: exit_code=1
+output_path: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\637646.txt
+</task>
+</system_notification>
+<user_query>Briefly inform the user about the task result and perform any follow-up actions (if needed). If there's no follow-ups needed, don't explicitly say that.</user_query>
+
+---
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\637646.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Profile APK のエミュレータ向けスモーク（インストール → 起動 → UI ダンプ）は **完了していません**。
+
+`adb install` の段階で ADB デーモンが切断され（`protocol fault` / `connection reset`）、その後の起動・`uiautomator dump` も `device offline` で失敗しました。APK のビルド不具合ではなく、エミュレータ／ADB 接続側の問題です。
+
+Profile 確認は、実機へ `build/app/outputs/flutter-apk/app-profile.apk` を手動インストールして行ってください。
