@@ -167,5 +167,87 @@ void main() {
         isNot(AdMobConfig.testAndroidBannerAdUnitId),
       );
     });
+
+    test('production today recommendation banner is configured with non-test unit ID',
+        () {
+      expect(
+        AdMobConfig.isProductionAndroidTodayRecommendationBannerAdUnitIdConfigured,
+        isTrue,
+      );
+      expect(
+        AdMobConfig.productionAndroidTodayRecommendationBannerAdUnitId,
+        isNotEmpty,
+      );
+      expect(
+        AdMobConfig.productionAndroidTodayRecommendationBannerAdUnitId,
+        isNot(AdMobConfig.testAndroidTodayRecommendationBannerAdUnitId),
+      );
+    });
+  });
+
+  group('resolveTodayRecommendationSummaryBannerAdUnitId', () {
+    const testAndroid = 'ca-app-pub-3940256099942544/6300978111';
+    const testIos = 'ca-app-pub-3940256099942544/2934735716';
+    const prodAndroid = 'ca-app-pub-1111111111111111/2222222222';
+    const prodIos = 'ca-app-pub-3333333333333333/4444444444';
+
+    test('null environment returns null', () {
+      expect(
+        resolveTodayRecommendationSummaryBannerAdUnitId(
+          environment: null,
+          isAndroid: true,
+          isIos: false,
+          testAndroidBannerAdUnitId: testAndroid,
+          testIosBannerAdUnitId: testIos,
+          productionAndroidBannerAdUnitId: prodAndroid,
+          productionIosBannerAdUnitId: prodIos,
+        ),
+        isNull,
+      );
+    });
+
+    test('test environment on android returns test android unit', () {
+      expect(
+        resolveTodayRecommendationSummaryBannerAdUnitId(
+          environment: AdMobEnvironment.test,
+          isAndroid: true,
+          isIos: false,
+          testAndroidBannerAdUnitId: testAndroid,
+          testIosBannerAdUnitId: testIos,
+          productionAndroidBannerAdUnitId: prodAndroid,
+          productionIosBannerAdUnitId: prodIos,
+        ),
+        testAndroid,
+      );
+    });
+
+    test('production environment on android returns production android unit', () {
+      expect(
+        resolveTodayRecommendationSummaryBannerAdUnitId(
+          environment: AdMobEnvironment.production,
+          isAndroid: true,
+          isIos: false,
+          testAndroidBannerAdUnitId: testAndroid,
+          testIosBannerAdUnitId: testIos,
+          productionAndroidBannerAdUnitId: prodAndroid,
+          productionIosBannerAdUnitId: prodIos,
+        ),
+        prodAndroid,
+      );
+    });
+
+    test('release without today recommendation production ID returns null env',
+        () {
+      expect(
+        resolveAdMobEnvironment(
+          useProductionAdIds: true,
+          productionAndroidBannerConfigured: false,
+          productionIosBannerConfigured: false,
+          isAndroid: true,
+          isIos: false,
+        ),
+        isNull,
+      );
+    });
   });
 }

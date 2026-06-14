@@ -32,10 +32,24 @@ abstract final class AdMobConfig {
   static const String testIosBannerAdUnitId =
       'ca-app-pub-3940256099942544/2934735716';
 
+  /// おすすめコレ画面下部バナー用 Google 公式テスト ID（Android）。
+  static const String testAndroidTodayRecommendationBannerAdUnitId =
+      testAndroidBannerAdUnitId;
+
+  /// おすすめコレ画面下部バナー用 Google 公式テスト ID（iOS）。
+  static const String testIosTodayRecommendationBannerAdUnitId =
+      testIosBannerAdUnitId;
+
   // --- 本番 ID（AdMob 管理画面の実値を入れる。ダミー値は入れない） ---
 
   static const String productionAndroidBannerAdUnitId =
       'ca-app-pub-3311460421786551/5377056540';
+
+  /// おすすめコレ画面下部バナー用本番 ID（AdMob 管理画面で作成後に設定）。
+  static const String productionAndroidTodayRecommendationBannerAdUnitId =
+      'ca-app-pub-3311460421786551/5377056540';
+
+  static const String productionIosTodayRecommendationBannerAdUnitId = '';
 
   // TODO(Monetization-6A): iOS 対応時に Info.plist の GADApplicationIdentifier と
   // 本番バナー広告ユニット ID を設定する。
@@ -48,6 +62,17 @@ abstract final class AdMobConfig {
   /// iOS 本番バナー広告ユニット ID が利用可能か。
   static bool get isProductionIosBannerAdUnitIdConfigured =>
       kReleaseAdMobIdsEnabled && productionIosBannerAdUnitId.isNotEmpty;
+
+  /// Android おすすめコレ下部バナー本番 ID が利用可能か。
+  static bool
+      get isProductionAndroidTodayRecommendationBannerAdUnitIdConfigured =>
+          kReleaseAdMobIdsEnabled &&
+          productionAndroidTodayRecommendationBannerAdUnitId.isNotEmpty;
+
+  /// iOS おすすめコレ下部バナー本番 ID が利用可能か。
+  static bool get isProductionIosTodayRecommendationBannerAdUnitIdConfigured =>
+      kReleaseAdMobIdsEnabled &&
+      productionIosTodayRecommendationBannerAdUnitId.isNotEmpty;
 
   /// 現ビルドで広告ロードに使う環境。未設定 release では `null`（ロードしない）。
   static AdMobEnvironment? resolveEnvironment() {
@@ -71,6 +96,33 @@ abstract final class AdMobConfig {
       testIosBannerAdUnitId: testIosBannerAdUnitId,
       productionAndroidBannerAdUnitId: productionAndroidBannerAdUnitId,
       productionIosBannerAdUnitId: productionIosBannerAdUnitId,
+    );
+  }
+
+  /// おすすめコレ画面下部バナー用の広告ユニット ID。
+  static String? todayRecommendationSummaryBannerAdUnitId() {
+    return resolveTodayRecommendationSummaryBannerAdUnitId(
+      environment: resolveTodayRecommendationBannerEnvironment(),
+      isAndroid: Platform.isAndroid,
+      isIos: Platform.isIOS,
+      testAndroidBannerAdUnitId: testAndroidTodayRecommendationBannerAdUnitId,
+      testIosBannerAdUnitId: testIosTodayRecommendationBannerAdUnitId,
+      productionAndroidBannerAdUnitId:
+          productionAndroidTodayRecommendationBannerAdUnitId,
+      productionIosBannerAdUnitId: productionIosTodayRecommendationBannerAdUnitId,
+    );
+  }
+
+  /// おすすめコレ下部バナー用の AdMob 実行環境。
+  static AdMobEnvironment? resolveTodayRecommendationBannerEnvironment() {
+    return resolveAdMobEnvironment(
+      useProductionAdIds: kReleaseMode && !kProfileMode,
+      productionAndroidBannerConfigured:
+          isProductionAndroidTodayRecommendationBannerAdUnitIdConfigured,
+      productionIosBannerConfigured:
+          isProductionIosTodayRecommendationBannerAdUnitIdConfigured,
+      isAndroid: Platform.isAndroid,
+      isIos: Platform.isIOS,
     );
   }
 
@@ -108,6 +160,32 @@ AdMobEnvironment? resolveAdMobEnvironment({
 
 /// 単体テスト用の純粋関数。
 String? resolveHomeBottomBannerAdUnitId({
+  required AdMobEnvironment? environment,
+  required bool isAndroid,
+  required bool isIos,
+  required String testAndroidBannerAdUnitId,
+  required String testIosBannerAdUnitId,
+  required String productionAndroidBannerAdUnitId,
+  required String productionIosBannerAdUnitId,
+}) {
+  if (environment == null) {
+    return null;
+  }
+  if (isAndroid) {
+    return environment == AdMobEnvironment.production
+        ? productionAndroidBannerAdUnitId
+        : testAndroidBannerAdUnitId;
+  }
+  if (isIos) {
+    return environment == AdMobEnvironment.production
+        ? productionIosBannerAdUnitId
+        : testIosBannerAdUnitId;
+  }
+  return null;
+}
+
+/// 単体テスト用の純粋関数。
+String? resolveTodayRecommendationSummaryBannerAdUnitId({
   required AdMobEnvironment? environment,
   required bool isAndroid,
   required bool isIos,
