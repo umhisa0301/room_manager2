@@ -5,7 +5,7 @@ import '../../config/admob_config.dart';
 import 'ad_placeholder_slot.dart';
 import 'monetization_ad_placement.dart';
 
-/// homeBottomBanner 用の AdMob バナー広告枠。
+/// バナー配置（homeBottomBanner / todayRecommendationSummaryBanner）用 AdMob 枠。
 class AdMobBannerAdSlot extends StatefulWidget {
   const AdMobBannerAdSlot({
     super.key,
@@ -37,6 +37,20 @@ class AdMobBannerAdSlotState extends State<AdMobBannerAdSlot> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadAd());
   }
 
+  String get _placementLogLabel => widget.placement.name;
+
+  String? _resolveAdUnitId() {
+    switch (widget.placement) {
+      case MonetizationAdPlacement.homeBottomBanner:
+        return AdMobConfig.homeBottomBannerAdUnitId();
+      case MonetizationAdPlacement.todayRecommendationSummaryBanner:
+        return AdMobConfig.todayRecommendationSummaryBannerAdUnitId();
+      case MonetizationAdPlacement.rakutenSearchNativeList:
+      case MonetizationAdPlacement.rewardedRecommendationRefresh:
+        return null;
+    }
+  }
+
   Future<void> _loadAd() async {
     if (_disposed || !mounted) {
       return;
@@ -45,10 +59,12 @@ class AdMobBannerAdSlotState extends State<AdMobBannerAdSlot> {
       return;
     }
 
-    final adUnitId = AdMobConfig.homeBottomBannerAdUnitId();
-    if (adUnitId == null) {
+    debugPrint('[ADMOB] $_placementLogLabel banner load requested');
+
+    final adUnitId = _resolveAdUnitId();
+    if (adUnitId == null || adUnitId.isEmpty) {
       debugPrint(
-        '[ADMOB] banner load skipped env=${AdMobConfig.environmentLogLabel}',
+        '[ADMOB] $_placementLogLabel skipped: ad unit id is empty',
       );
       if (mounted) {
         setState(() => _loadFailed = true);
@@ -78,13 +94,16 @@ class AdMobBannerAdSlotState extends State<AdMobBannerAdSlot> {
               ad.dispose();
               return;
             }
+            debugPrint('[ADMOB] $_placementLogLabel banner loaded');
             setState(() {
               _bannerAd = ad as BannerAd;
               _isLoaded = true;
             });
           },
           onAdFailedToLoad: (ad, error) {
-            debugPrint('[ADMOB] banner load failed ${error.message}');
+            debugPrint(
+              '[ADMOB] $_placementLogLabel banner failed to load',
+            );
             ad.dispose();
             if (!mounted || _disposed) {
               return;
@@ -95,7 +114,7 @@ class AdMobBannerAdSlotState extends State<AdMobBannerAdSlot> {
       );
       await bannerAd.load();
     } catch (error) {
-      debugPrint('[ADMOB] banner load failed $error');
+      debugPrint('[ADMOB] $_placementLogLabel banner failed to load');
       bannerAd?.dispose();
       if (!mounted || _disposed) {
         return;

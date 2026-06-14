@@ -67,5 +67,37 @@ void main() {
       expect(hasShrink || hasPlaceholder, isTrue);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets(
+      'todayRecommendationSummaryBanner shows fallback on load failure',
+      (tester) async {
+        await tester.pumpWidget(
+          _wrap(
+            const AdMobBannerAdSlot(
+              placement:
+                  MonetizationAdPlacement.todayRecommendationSummaryBanner,
+              loadAdForTesting: true,
+            ),
+          ),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 1));
+
+        final hasPlaceholder = find
+            .byKey(
+              const Key(
+                'monetization_ad_slot_todayRecommendationSummaryBanner',
+              ),
+            )
+            .evaluate()
+            .isNotEmpty;
+        final hasShrink =
+            tester.getSize(find.byType(AdMobBannerAdSlot)) == Size.zero ||
+                hasPlaceholder;
+
+        expect(hasShrink || hasPlaceholder, isTrue);
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }

@@ -31,9 +31,18 @@ void main() {
       );
     });
 
-    test('non-home placements stay placeholder when ads enabled', () {
+    test('todayRecommendationSummaryBanner uses admobBanner when ads enabled', () {
+      expect(
+        resolveMonetizationAdContent(
+          placement: MonetizationAdPlacement.todayRecommendationSummaryBanner,
+          adsEnabled: true,
+        ),
+        MonetizationAdContentKind.admobBanner,
+      );
+    });
+
+    test('other non-home placements stay placeholder when ads enabled', () {
       for (final placement in [
-        MonetizationAdPlacement.todayRecommendationSummaryBanner,
         MonetizationAdPlacement.rakutenSearchNativeList,
         MonetizationAdPlacement.rewardedRecommendationRefresh,
       ]) {

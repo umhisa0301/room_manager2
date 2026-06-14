@@ -15,7 +15,8 @@ MonetizationAdContentKind resolveMonetizationAdContent({
   if (!adsEnabled) {
     return MonetizationAdContentKind.none;
   }
-  if (placement == MonetizationAdPlacement.homeBottomBanner) {
+  if (placement == MonetizationAdPlacement.homeBottomBanner ||
+      placement == MonetizationAdPlacement.todayRecommendationSummaryBanner) {
     return MonetizationAdContentKind.admobBanner;
   }
   return MonetizationAdContentKind.placeholder;

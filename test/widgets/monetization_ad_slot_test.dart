@@ -96,27 +96,21 @@ void main() {
       expect(find.text('Sponsored placeholder'), findsNothing);
     });
 
-    testWidgets('todayRecommendationSummaryBanner shows expected copy', (
-      tester,
-    ) async {
+    testWidgets('todayRecommendationSummaryBanner routes to AdMob banner slot',
+        (tester) async {
       await tester.pumpWidget(
         _wrap(
           const MonetizationAdSlot(
             placement:
                 MonetizationAdPlacement.todayRecommendationSummaryBanner,
             adsEnabledOverride: true,
+            loadAdMobForTesting: false,
           ),
         ),
       );
 
-      expect(
-        find.byKey(
-          const Key('monetization_ad_slot_todayRecommendationSummaryBanner'),
-        ),
-        findsOneWidget,
-      );
-      expect(find.text('広告枠'), findsOneWidget);
-      expect(find.text('広告が表示されます'), findsOneWidget);
+      expect(find.byType(AdMobBannerAdSlot), findsOneWidget);
+      expect(find.text('広告枠'), findsNothing);
     });
 
     testWidgets('rakutenSearchNativeList shows native placeholder with ad label',

@@ -1,0 +1,95 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-14 21:49:40
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: release
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260614_214940.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260614_214940.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260614_214940.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260614_214940.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260614_214940.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260614_214940
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260614_214940\terminal_output_20260614_214940.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 18228).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --release
+
+Flutter started (release). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in release mode...
+Running Gradle task 'assembleRelease'...                        
+D/FlutterJNI(20376): Beginning load of flutter...
+D/FlutterJNI(20376): flutter (null) was loaded normally!
+I/flutter (20376): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (20376): SOUND PRELOAD COMPLETE
+I/flutter (20376): [Ads] MobileAds.instance.initialize() starting...
+I/flutter (20376): [Ads] MobileAds initialization finished.
+I/flutter (20376): [Ads] RequestConfiguration.testDeviceIds applied (debug only, 1 id(s))
+I/flutter (20376): [Ads] adapter "com.google.android.gms.ads.MobileAds" state=AdapterInitializationState.ready description=
+I/flutter (20376): [BannerAd] HINT Android 本番: AndroidManifest の APPLICATION_ID と この広告ユニットが AdMob 上の同じ「Android アプリ」に紐づいているか確認。
+I/flutter (20376): [BannerAd] load START gen=1 platform=Android useTestAd=false adUnitId=ca-app-pub-3311460421786551/7528764204
+I/flutter (20376): [BannerAd] anchored adaptive width=411
+I/flutter (20376): [BannerAd] calling ad.load() adUnitId=ca-app-pub-3311460421786551/7528764204
+I/flutter (20376): [BannerAd] ad size resolved w=411 h=64 adUnitId=ca-app-pub-3311460421786551/7528764204
+I/flutter (20376): [BannerAd] onAdLoaded SUCCESS gen=1 adUnitId=ca-app-pub-3311460421786551/7528764204 size=411x64
+D/FlutterJNI(20728): Beginning load of flutter...
+D/FlutterJNI(20728): flutter (null) was loaded normally!
+I/flutter (20728): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (20728): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (20728): [MONETIZATION_FLAGS] monetization=true ads=true subscription=false freeLimits=false pro=false
+I/flutter (20728): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (20728): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (20728): [ADMOB] initialization started
+I/flutter (20728): [ADMOB] initialization completed
+I/flutter (20728): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (20728): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (20728): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (20728): [AUTO_REACTION_SYNC] scheduled
+I/flutter (20728): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20728): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (20728): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (20728): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20728): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (20728): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20728): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (20728): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (20728): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
