@@ -44,6 +44,7 @@ import 'navigation/app_shell_controller.dart';
 import 'models/genre_master.dart';
 import 'config/debug_log_flags.dart';
 import 'config/monetization_config.dart';
+import 'config/monetization_plan_config.dart';
 import 'config/room_import_enrichment_verify_config.dart';
 import 'services/admob_initializer.dart';
 import 'utils/room_sync_log.dart';
@@ -71,6 +72,9 @@ void main() async {
       'summary=${DebugLogFlags.kDebugLogSummaryEnabled}',
     );
     debugPrint(MonetizationFlags.debugLogLine);
+    debugPrint(
+      monetizationPlanDebugLogLine(resolvePlanLimitsForCurrentUser()),
+    );
   }
   roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);
   final prefs = await SharedPreferences.getInstance();

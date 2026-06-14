@@ -88,6 +88,15 @@ class MonetizationFlagSnapshot {
   final bool isSubscriptionEnabled;
   final bool isFreePlanLimitsEnabled;
   final bool isProPlanEnabled;
+
+  /// コンパイル時 [MonetizationFlags] と同値のスナップショット。
+  static MonetizationFlagSnapshot fromCompileTime() => MonetizationFlagSnapshot(
+        isMonetizationEnabled: MonetizationFlags.isMonetizationEnabled,
+        isAdsEnabled: MonetizationFlags.isAdsEnabled,
+        isSubscriptionEnabled: MonetizationFlags.isSubscriptionEnabled,
+        isFreePlanLimitsEnabled: MonetizationFlags.isFreePlanLimitsEnabled,
+        isProPlanEnabled: MonetizationFlags.isProPlanEnabled,
+      );
 }
 
 /// dart-define 生値から派生フラグを算出する純粋関数（単体テスト用）。

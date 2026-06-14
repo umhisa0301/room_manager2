@@ -133,4 +133,23 @@ void main() {
       expect(line, contains('pro='));
     });
   });
+
+  group('MonetizationFlagSnapshot.fromCompileTime', () {
+    test('matches resolveMonetizationFlags for current compile-time defines', () {
+      final expected = resolveMonetizationFlags(
+        monetizationEnabled: MonetizationConfig.kMonetizationDartDefineEnabled,
+        adsEnabled: MonetizationConfig.kAdsDartDefineEnabled,
+        subscriptionEnabled: MonetizationConfig.kSubscriptionDartDefineEnabled,
+        freePlanLimitsEnabled:
+            MonetizationConfig.kFreePlanLimitsDartDefineEnabled,
+        proPlanEnabled: MonetizationConfig.kProPlanDartDefineEnabled,
+      );
+      final snapshot = MonetizationFlagSnapshot.fromCompileTime();
+      expect(snapshot.isMonetizationEnabled, expected.isMonetizationEnabled);
+      expect(snapshot.isAdsEnabled, expected.isAdsEnabled);
+      expect(snapshot.isSubscriptionEnabled, expected.isSubscriptionEnabled);
+      expect(snapshot.isFreePlanLimitsEnabled, expected.isFreePlanLimitsEnabled);
+      expect(snapshot.isProPlanEnabled, expected.isProPlanEnabled);
+    });
+  });
 }
