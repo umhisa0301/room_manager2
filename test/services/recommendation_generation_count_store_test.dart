@@ -54,41 +54,5 @@ void main() {
         0,
       );
     });
-
-    test('readTodayRefreshCount returns 0 when no data', () async {
-      expect(
-        await RecommendationGenerationCountStore.readTodayRefreshCount(),
-        0,
-      );
-    });
-
-    test('incrementTodayRefreshCount increases count for same day', () async {
-      final now = DateTime(2026, 6, 15, 10);
-      expect(
-        await RecommendationGenerationCountStore.incrementTodayRefreshCount(
-          now: now,
-        ),
-        1,
-      );
-      expect(
-        await RecommendationGenerationCountStore.readTodayRefreshCount(
-          now: now,
-        ),
-        1,
-      );
-    });
-
-    test('readTodayRefreshCount resets when date changes', () async {
-      final yesterday = DateTime(2026, 6, 14, 20);
-      await RecommendationGenerationCountStore.incrementTodayRefreshCount(
-        now: yesterday,
-      );
-      expect(
-        await RecommendationGenerationCountStore.readTodayRefreshCount(
-          now: DateTime(2026, 6, 15, 8),
-        ),
-        0,
-      );
-    });
   });
 }

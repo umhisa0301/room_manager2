@@ -28,7 +28,6 @@ import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import '../services/recommendation_generation_limit.dart';
-import '../services/recommendation_refresh_limit.dart';
 import 'rakuten_managed_product_provider.dart';
 
 enum TodayRecommendationGenerationStatus {
@@ -350,24 +349,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
       bundleBefore: _bundle,
       todayLocalDateKey: todayKey,
     );
-    final countsAsManualRefresh = isManualRecommendationRefresh(
-      manual: manual,
-      bundleBefore: _bundle,
-      todayLocalDateKey: todayKey,
-    );
     if (countsAsPrimaryGeneration) {
       final limitState =
           await resolveRecommendationGenerationAvailabilityForToday(now: now);
       if (!limitState.allowed) {
         _guard('skipReason=monetizationDailyLimit');
-        return;
-      }
-    }
-    if (countsAsManualRefresh) {
-      final refreshState =
-          await resolveRecommendationRefreshAvailabilityForToday(now: now);
-      if (!refreshState.allowed) {
-        _guard('skipReason=monetizationRefreshDailyLimit');
         return;
       }
     }
@@ -408,9 +394,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
                 : TodayRecommendationGenerationStatus.ready);
       if (countsAsPrimaryGeneration) {
         await recordSuccessfulRecommendationGeneration(now: now);
-      }
-      if (countsAsManualRefresh) {
-        await recordSuccessfulRecommendationRefresh(now: now);
       }
     } catch (e, st) {
       if (kDebugMode) {
