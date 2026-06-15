@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
 import '../services/recommendation_generation_limit.dart';
-import '../services/recommendation_refresh_limit.dart';
+import '../services/batch_candidate_add_availability.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
@@ -114,6 +114,11 @@ class _TodayRecommendationsScreenState
     List<TodayRecommendationEntry> selectable,
   ) async {
     if (_isBulkAdding || _selectedProductIds.isEmpty) return;
+    final batchAddState = resolveBatchCandidateAddAvailability();
+    if (!batchAddState.allowed) {
+      _showBatchAddLockedMessage(context, batchAddState);
+      return;
+    }
     final bulkCtl = context.read<BulkOperationStateController>();
     if (bulkCtl.isRoomTourSearchBlocking) {
       bulkCtl.guardBlockingOperations(context);
@@ -224,12 +229,6 @@ class _TodayRecommendationsScreenState
       _showGenerationLimitMessage(context, state);
       return;
     }
-    if (guard.contains('monetizationRefreshDailyLimit')) {
-      final state = await resolveRecommendationRefreshAvailabilityForToday();
-      if (!mounted) return;
-      _showRefreshLimitMessage(context, state);
-      return;
-    }
     if (guard.contains('manualCooldown') ||
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
@@ -255,14 +254,14 @@ class _TodayRecommendationsScreenState
     );
   }
 
-  void _showRefreshLimitMessage(
+  void _showBatchAddLockedMessage(
     BuildContext context,
-    RecommendationRefreshLimitState state,
+    BatchCandidateAddAvailabilityState state,
   ) {
-    final body = buildRecommendationRefreshLimitBlockedBody(state);
+    final body = buildBatchCandidateAddLockedBody(state);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        key: const Key('today_recommendation_refresh_limit_snackbar'),
+        key: const Key('today_recommendation_bulk_add_locked_snackbar'),
         content: Text(body),
         duration: const Duration(seconds: 6),
       ),
@@ -357,6 +356,9 @@ class _TodayRecommendationsScreenState
               );
             }
             final regenerateUi = rec.regenerateButtonUiState();
+            final batchAddState = resolveBatchCandidateAddAvailability();
+            final bulkSelectAllowed =
+                batchAddState.allowed && selectable.isNotEmpty;
             rec.logRegenerateButtonState(trigger: 'resultRender');
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (mounted) _syncRegenerateUiRefresh();
@@ -365,40 +367,22 @@ class _TodayRecommendationsScreenState
               key: const Key('today_recommendation_result_area'),
               child: Column(
               children: [
-                FutureBuilder<RecommendationRefreshLimitState>(
-                  future: resolveRecommendationRefreshAvailabilityForToday(),
-                  builder: (context, refreshSnapshot) {
-                    final refreshState = refreshSnapshot.data;
-                    final refreshBlocked = refreshState != null &&
-                        refreshState.limitsEnforcementEnabled &&
-                        !refreshState.allowed;
-                    final effectiveUi = refreshBlocked && regenerateUi.canPress
-                        ? RegenerateButtonUiState(
-                            canPress: false,
-                            showCooldownMessage: false,
-                            waitLabel: '',
-                            blockReason: 'refreshDailyLimit',
-                            needsPeriodicRefresh: false,
-                          )
-                        : regenerateUi;
-                    return _SummaryCard(
-                      total: bundle.entries.length,
-                      pending: rec.pendingCount,
-                      completed: rec.isCompleted,
-                      uiState: effectiveUi,
-                      refreshState: refreshState,
-                      onRegenerate: _regenerate,
-                    );
-                  },
+                _SummaryCard(
+                  total: bundle.entries.length,
+                  pending: rec.pendingCount,
+                  completed: rec.isCompleted,
+                  uiState: regenerateUi,
+                  onRegenerate: _regenerate,
                 ),
                 const MonetizationAdSlot(
                   placement: MonetizationAdPlacement
                       .todayRecommendationSummaryBanner,
                 ),
-                if (selectable.isNotEmpty)
+                if (bulkSelectAllowed)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: SearchBulkSelectionHeader(
+                      key: const Key('today_recommendation_bulk_selection_header'),
                       screen: 'todayRecommendations',
                       selectedCount: _selectedProductIds.length,
                       totalSelectable: selectable.length,
@@ -423,6 +407,20 @@ class _TodayRecommendationsScreenState
                         }
                       },
                     ),
+                  )
+                else if (selectable.isNotEmpty &&
+                    batchAddState.limitsEnforcementEnabled &&
+                    !batchAddState.allowed)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                    child: Text(
+                      batchCandidateAddLockedMessage(),
+                      key: const Key('today_recommendation_bulk_add_locked_hint'),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.35,
+                          ),
+                    ),
                   ),
                 Expanded(
                   child: ListView.builder(
@@ -445,8 +443,9 @@ class _TodayRecommendationsScreenState
                         padding: const EdgeInsets.only(bottom: 8),
                         child: _RecommendationCard(
                           entry: row.entry!,
-                          bulkSelectEnabled: row.entry!.decision ==
-                              TodayRecommendationDecision.pending,
+                          bulkSelectEnabled: bulkSelectAllowed &&
+                              row.entry!.decision ==
+                                  TodayRecommendationDecision.pending,
                           isSelected: _selectedProductIds
                               .contains(row.entry!.item.productId),
                           onToggleSelected: () {
@@ -464,12 +463,13 @@ class _TodayRecommendationsScreenState
                     },
                   ),
                 ),
-                if (_selectedProductIds.isNotEmpty)
+                if (_selectedProductIds.isNotEmpty && batchAddState.allowed)
                   SafeArea(
                     top: false,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
                       child: AppPrimaryButton(
+                        key: const Key('today_recommendation_bulk_add_button'),
                         label: _isBulkAdding
                             ? '追加中…（$_bulkProcessed/$_bulkTotal）'
                             : 'まとめて候補に追加（${_selectedProductIds.length}件）',
@@ -580,7 +580,6 @@ class _SummaryCard extends StatelessWidget {
     required this.completed,
     required this.uiState,
     required this.onRegenerate,
-    this.refreshState,
   });
 
   final int total;
@@ -588,13 +587,9 @@ class _SummaryCard extends StatelessWidget {
   final bool completed;
   final RegenerateButtonUiState uiState;
   final VoidCallback onRegenerate;
-  final RecommendationRefreshLimitState? refreshState;
 
   @override
   Widget build(BuildContext context) {
-    final refreshBlocked = refreshState != null &&
-        refreshState!.limitsEnforcementEnabled &&
-        !refreshState!.allowed;
     return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -616,17 +611,6 @@ class _SummaryCard extends StatelessWidget {
               height: 1.35,
             ),
           ),
-          if (refreshState != null &&
-              refreshState!.limitsEnforcementEnabled) ...[
-            const SizedBox(height: 6),
-            Text(
-              recommendationRefreshUsageLabel(refreshState!),
-              key: const Key('today_recommendation_refresh_usage'),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-            ),
-          ],
           if (uiState.showCooldownMessage) ...[
             const SizedBox(height: 6),
             Text(
@@ -635,16 +619,6 @@ class _SummaryCard extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,
-                  ),
-            ),
-          ] else if (refreshBlocked) ...[
-            const SizedBox(height: 6),
-            Text(
-              recommendationRefreshLimitBlockedMessage(refreshState!.plan),
-              key: const Key('today_recommendation_refresh_limit_message'),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
                   ),
             ),
           ],
