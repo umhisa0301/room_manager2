@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
+import '../services/recommendation_generation_limit.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
@@ -174,6 +175,12 @@ class _TodayRecommendationsScreenState
     );
     if (!mounted) return;
     final guard = recommender.lastGuardReason ?? '';
+    if (guard.contains('monetizationDailyLimit')) {
+      final state = await resolveRecommendationGenerationAvailabilityForToday();
+      if (!mounted) return;
+      _showGenerationLimitMessage(context, state);
+      return;
+    }
     if (guard.contains('manualCooldown') ||
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
@@ -183,6 +190,20 @@ class _TodayRecommendationsScreenState
           : status.userFacingWaitLabel;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     }
+  }
+
+  void _showGenerationLimitMessage(
+    BuildContext context,
+    RecommendationGenerationLimitState state,
+  ) {
+    final body = buildRecommendationGenerationLimitBlockedBody(state);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        key: const Key('today_recommendation_generation_limit_snackbar'),
+        content: Text(body),
+        duration: const Duration(seconds: 6),
+      ),
+    );
   }
 
   @override
@@ -231,6 +252,7 @@ class _TodayRecommendationsScreenState
                       ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
                       : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
                   actions: [
+                    const _GenerationLimitUsageLine(),
                     AppPrimaryButton(
                       key: const Key('today_recommendation_generate_button'),
                       label: '今日のおすすめを作る',
@@ -961,6 +983,34 @@ class _Thumb extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _GenerationLimitUsageLine extends StatelessWidget {
+  const _GenerationLimitUsageLine();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<RecommendationGenerationLimitState>(
+      future: resolveRecommendationGenerationAvailabilityForToday(),
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+        if (state == null || !state.limitsEnforcementEnabled) {
+          return const SizedBox.shrink();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Text(
+            recommendationGenerationUsageLabel(state),
+            key: const Key('today_recommendation_generation_usage'),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
     );
   }
 }
