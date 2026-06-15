@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
 import '../services/recommendation_generation_limit.dart';
+import '../services/recommendation_refresh_limit.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
@@ -223,6 +224,12 @@ class _TodayRecommendationsScreenState
       _showGenerationLimitMessage(context, state);
       return;
     }
+    if (guard.contains('monetizationRefreshDailyLimit')) {
+      final state = await resolveRecommendationRefreshAvailabilityForToday();
+      if (!mounted) return;
+      _showRefreshLimitMessage(context, state);
+      return;
+    }
     if (guard.contains('manualCooldown') ||
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
@@ -242,6 +249,20 @@ class _TodayRecommendationsScreenState
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         key: const Key('today_recommendation_generation_limit_snackbar'),
+        content: Text(body),
+        duration: const Duration(seconds: 6),
+      ),
+    );
+  }
+
+  void _showRefreshLimitMessage(
+    BuildContext context,
+    RecommendationRefreshLimitState state,
+  ) {
+    final body = buildRecommendationRefreshLimitBlockedBody(state);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        key: const Key('today_recommendation_refresh_limit_snackbar'),
         content: Text(body),
         duration: const Duration(seconds: 6),
       ),
@@ -344,12 +365,31 @@ class _TodayRecommendationsScreenState
               key: const Key('today_recommendation_result_area'),
               child: Column(
               children: [
-                _SummaryCard(
-                  total: bundle.entries.length,
-                  pending: rec.pendingCount,
-                  completed: rec.isCompleted,
-                  uiState: regenerateUi,
-                  onRegenerate: _regenerate,
+                FutureBuilder<RecommendationRefreshLimitState>(
+                  future: resolveRecommendationRefreshAvailabilityForToday(),
+                  builder: (context, refreshSnapshot) {
+                    final refreshState = refreshSnapshot.data;
+                    final refreshBlocked = refreshState != null &&
+                        refreshState.limitsEnforcementEnabled &&
+                        !refreshState.allowed;
+                    final effectiveUi = refreshBlocked && regenerateUi.canPress
+                        ? RegenerateButtonUiState(
+                            canPress: false,
+                            showCooldownMessage: false,
+                            waitLabel: '',
+                            blockReason: 'refreshDailyLimit',
+                            needsPeriodicRefresh: false,
+                          )
+                        : regenerateUi;
+                    return _SummaryCard(
+                      total: bundle.entries.length,
+                      pending: rec.pendingCount,
+                      completed: rec.isCompleted,
+                      uiState: effectiveUi,
+                      refreshState: refreshState,
+                      onRegenerate: _regenerate,
+                    );
+                  },
                 ),
                 const MonetizationAdSlot(
                   placement: MonetizationAdPlacement
@@ -540,6 +580,7 @@ class _SummaryCard extends StatelessWidget {
     required this.completed,
     required this.uiState,
     required this.onRegenerate,
+    this.refreshState,
   });
 
   final int total;
@@ -547,9 +588,13 @@ class _SummaryCard extends StatelessWidget {
   final bool completed;
   final RegenerateButtonUiState uiState;
   final VoidCallback onRegenerate;
+  final RecommendationRefreshLimitState? refreshState;
 
   @override
   Widget build(BuildContext context) {
+    final refreshBlocked = refreshState != null &&
+        refreshState!.limitsEnforcementEnabled &&
+        !refreshState!.allowed;
     return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -571,6 +616,17 @@ class _SummaryCard extends StatelessWidget {
               height: 1.35,
             ),
           ),
+          if (refreshState != null &&
+              refreshState!.limitsEnforcementEnabled) ...[
+            const SizedBox(height: 6),
+            Text(
+              recommendationRefreshUsageLabel(refreshState!),
+              key: const Key('today_recommendation_refresh_usage'),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+          ],
           if (uiState.showCooldownMessage) ...[
             const SizedBox(height: 6),
             Text(
@@ -579,6 +635,16 @@ class _SummaryCard extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ] else if (refreshBlocked) ...[
+            const SizedBox(height: 6),
+            Text(
+              recommendationRefreshLimitBlockedMessage(refreshState!.plan),
+              key: const Key('today_recommendation_refresh_limit_message'),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
                   ),
             ),
           ],
