@@ -27,6 +27,7 @@ import '../utils/today_recommendation_catalog.dart';
 import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
+import '../services/recommendation_generation_limit.dart';
 import 'rakuten_managed_product_provider.dart';
 
 enum TodayRecommendationGenerationStatus {
@@ -65,6 +66,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
   DateTime? _lastRegenerateAt;
   bool _lastRateLimitFailure = false;
   String? _lastGuardReason;
+  Timer? _regenerateCooldownTimer;
   static const Duration _recentEnsureWindow = Duration(seconds: 3);
   static const Duration _manualRegenerateCooldown =
       RecommendCooldownPolicy.manualRegenerateCooldown;
@@ -93,43 +95,33 @@ class TodayRecommendationProvider extends ChangeNotifier {
   RecommendRegenerateCooldownStatus manualRegenerateCooldownStatus({
     DateTime? now,
   }) {
-    final clock = now ?? DateTime.now();
-    if (_lastRateLimitFailure && isInCooldown && _cooldownUntil != null) {
-      final remaining = _cooldownUntil!.difference(clock);
-      if (remaining > Duration.zero) {
-        return RecommendRegenerateCooldownStatus(
-          canRegenerate: false,
-          cooldownMinutes: _rateLimitCooldown.inMinutes,
-          remainingSeconds: remaining.inSeconds,
-          remainingLabel:
-              RecommendCooldownPolicy.remainingMinutesLabel(remaining),
-          guardReason: 'rateLimitCooldown',
-          nextAvailableAt: _cooldownUntil,
-        );
-      }
-    }
-    if (_lastRegenerateAt != null) {
-      final elapsed = clock.difference(_lastRegenerateAt!);
-      final remaining = _manualRegenerateCooldown - elapsed;
-      if (remaining > Duration.zero) {
-        return RecommendRegenerateCooldownStatus(
-          canRegenerate: false,
-          cooldownMinutes: _manualRegenerateCooldown.inMinutes,
-          remainingSeconds: remaining.inSeconds,
-          remainingLabel:
-              RecommendCooldownPolicy.remainingMinutesLabel(remaining),
-          guardReason: 'manualCooldown',
-          nextAvailableAt: _lastRegenerateAt!.add(_manualRegenerateCooldown),
-        );
-      }
-    }
-    return RecommendRegenerateCooldownStatus(
-      canRegenerate: true,
-      cooldownMinutes: _manualRegenerateCooldown.inMinutes,
-      remainingSeconds: 0,
-      remainingLabel: '',
-      guardReason: '',
+    return RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus(
+      clock: now ?? DateTime.now(),
+      lastRegenerateAt: _lastRegenerateAt,
+      rateLimitCooldownUntil: _cooldownUntil,
+      lastRateLimitFailure: _lastRateLimitFailure,
     );
+  }
+
+  void _syncRegenerateCooldownTimer() {
+    _regenerateCooldownTimer?.cancel();
+    _regenerateCooldownTimer = null;
+    final status = manualRegenerateCooldownStatus();
+    if (status.canRegenerate) return;
+
+    final waitSeconds = status.remainingSeconds <= 0
+        ? 1
+        : (status.remainingSeconds <= 30 ? status.remainingSeconds + 1 : 30);
+    _regenerateCooldownTimer = Timer(Duration(seconds: waitSeconds), () {
+      notifyListeners();
+      _syncRegenerateCooldownTimer();
+    });
+  }
+
+  @override
+  void dispose() {
+    _regenerateCooldownTimer?.cancel();
+    super.dispose();
   }
 
   int get totalCount => _bundle?.entries.length ?? 0;
@@ -269,6 +261,20 @@ class TodayRecommendationProvider extends ChangeNotifier {
       _guard('skipReason=cooldown');
       return;
     }
+    final todayKey = _localDateKey(now);
+    final countsAsPrimaryGeneration = isPrimaryRecommendationGeneration(
+      manual: manual,
+      bundleBefore: _bundle,
+      todayLocalDateKey: todayKey,
+    );
+    if (countsAsPrimaryGeneration) {
+      final limitState =
+          await resolveRecommendationGenerationAvailabilityForToday(now: now);
+      if (!limitState.allowed) {
+        _guard('skipReason=monetizationDailyLimit');
+        return;
+      }
+    }
     _lastRegenerateAt = now;
     _isLoading = true;
     _errorMessage = null;
@@ -304,6 +310,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
           : (generated.entries.length < 10
                 ? TodayRecommendationGenerationStatus.partialSuccess
                 : TodayRecommendationGenerationStatus.ready);
+      if (countsAsPrimaryGeneration) {
+        await recordSuccessfulRecommendationGeneration(now: now);
+      }
     } catch (e, st) {
       if (kDebugMode) {
         importantDebugLog('[TodayRecommendation] regenerateToday failed: $e');
@@ -343,6 +352,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+      _syncRegenerateCooldownTimer();
     }
   }
 
