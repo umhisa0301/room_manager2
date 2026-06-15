@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,15 +35,17 @@ class TodayRecommendationsScreen extends StatefulWidget {
 }
 
 class _TodayRecommendationsScreenState
-    extends State<TodayRecommendationsScreen> {
+    extends State<TodayRecommendationsScreen> with WidgetsBindingObserver {
   final Set<String> _selectedProductIds = <String>{};
   bool _isBulkAdding = false;
   int _bulkProcessed = 0;
   int _bulkTotal = 0;
+  Timer? _regenerateUiRefreshTimer;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.skipInitialEnsure) {
         importantDebugLog('[RECOMMEND_GUARD] skipReason=recentEnsure');
@@ -50,6 +54,44 @@ class _TodayRecommendationsScreenState
       recommendAuditLog('[RECOMMEND_TRIGGER] source=screenOpen');
       _ensureToday();
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _regenerateUiRefreshTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _syncRegenerateUiRefresh(immediateSetState: true);
+    }
+  }
+
+  void _syncRegenerateUiRefresh({bool immediateSetState = false}) {
+    if (!mounted) return;
+    final rec = context.read<TodayRecommendationProvider>();
+    rec.logRegenerateButtonState(trigger: 'screenSync');
+    final ui = rec.regenerateButtonUiState();
+    _regenerateUiRefreshTimer?.cancel();
+    _regenerateUiRefreshTimer = null;
+    if (!ui.needsPeriodicRefresh) {
+      if (immediateSetState) setState(() {});
+      return;
+    }
+    _regenerateUiRefreshTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      final latest = context.read<TodayRecommendationProvider>();
+      latest.logRegenerateButtonState(trigger: 'screenTicker');
+      setState(() {});
+      if (!latest.regenerateButtonUiState().needsPeriodicRefresh) {
+        _regenerateUiRefreshTimer?.cancel();
+        _regenerateUiRefreshTimer = null;
+      }
+    });
+    if (immediateSetState) setState(() {});
   }
 
   Future<void> _ensureToday() async {
@@ -293,6 +335,11 @@ class _TodayRecommendationsScreenState
                 'bulkButtonVisible=${_selectedProductIds.isNotEmpty}',
               );
             }
+            final regenerateUi = rec.regenerateButtonUiState();
+            rec.logRegenerateButtonState(trigger: 'resultRender');
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) _syncRegenerateUiRefresh();
+            });
             return KeyedSubtree(
               key: const Key('today_recommendation_result_area'),
               child: Column(
@@ -301,7 +348,7 @@ class _TodayRecommendationsScreenState
                   total: bundle.entries.length,
                   pending: rec.pendingCount,
                   completed: rec.isCompleted,
-                  cooldown: rec.manualRegenerateCooldownStatus(),
+                  uiState: regenerateUi,
                   onRegenerate: _regenerate,
                 ),
                 const MonetizationAdSlot(
@@ -491,19 +538,18 @@ class _SummaryCard extends StatelessWidget {
     required this.total,
     required this.pending,
     required this.completed,
-    required this.cooldown,
+    required this.uiState,
     required this.onRegenerate,
   });
 
   final int total;
   final int pending;
   final bool completed;
-  final RecommendRegenerateCooldownStatus cooldown;
+  final RegenerateButtonUiState uiState;
   final VoidCallback onRegenerate;
 
   @override
   Widget build(BuildContext context) {
-    final canRegenerate = cooldown.canRegenerate && !completed;
     return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -527,10 +573,10 @@ class _SummaryCard extends StatelessWidget {
               height: 1.35,
             ),
           ),
-          if (!cooldown.canRegenerate && cooldown.userFacingWaitLabel.isNotEmpty) ...[
+          if (uiState.showCooldownMessage) ...[
             const SizedBox(height: 6),
             Text(
-              cooldown.userFacingWaitLabel,
+              uiState.waitLabel,
               key: const Key('today_recommendation_skip_message'),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
@@ -543,7 +589,7 @@ class _SummaryCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: AppSecondaryButton(
               label: '今日の候補を再生成',
-              onPressed: canRegenerate ? onRegenerate : null,
+              onPressed: uiState.canPress ? onRegenerate : null,
               icon: const Icon(Icons.refresh_rounded),
             ),
           ),

@@ -49,6 +49,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
        _searchRepository = searchRepository,
        _productCatalogRepository = productCatalogRepository {
     _bundle = _repository.load();
+    _seedRegenerateCooldownFromBundle();
   }
 
   final TodayRecommendationRepository _repository;
@@ -67,7 +68,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
   bool _lastRateLimitFailure = false;
   String? _lastGuardReason;
   Timer? _regenerateCooldownTimer;
+  String? _lastRegenerateButtonLogSignature;
+  DateTime? _lastRegenerateButtonLogAt;
   static const Duration _recentEnsureWindow = Duration(seconds: 3);
+  static const Duration _regenerateButtonLogMinInterval = Duration(seconds: 30);
   static const Duration _manualRegenerateCooldown =
       RecommendCooldownPolicy.manualRegenerateCooldown;
   static const Duration _recentGenerateCooldown =
@@ -103,19 +107,96 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
+  RegenerateButtonUiState regenerateButtonUiState({DateTime? now}) {
+    final cooldown = manualRegenerateCooldownStatus(now: now);
+    return RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+      cooldown: cooldown,
+      completed: isCompleted,
+      isLoading: _isLoading,
+    );
+  }
+
+  void logRegenerateButtonState({String trigger = 'ui'}) {
+    if (!kDebugMode) return;
+    final cooldown = manualRegenerateCooldownStatus();
+    final ui = regenerateButtonUiState();
+    final signature =
+        '${ui.canPress}|${ui.blockReason}|${cooldown.remainingSeconds}|'
+        '$isCompleted|$_isLoading|$totalCount|${totalCount - pendingCount}';
+    final now = DateTime.now();
+    if (_lastRegenerateButtonLogSignature == signature &&
+        _lastRegenerateButtonLogAt != null &&
+        now.difference(_lastRegenerateButtonLogAt!) <
+            _regenerateButtonLogMinInterval) {
+      return;
+    }
+    _lastRegenerateButtonLogSignature = signature;
+    _lastRegenerateButtonLogAt = now;
+    debugPrint(
+      '[REGENERATE_BUTTON] trigger=$trigger '
+      'canRegenerate=${ui.canPress} '
+      'cooldownCanRegenerate=${cooldown.canRegenerate} '
+      'completed=$isCompleted '
+      'guardReason=${ui.blockReason} '
+      'remainingMs=${cooldown.remainingSeconds * 1000} '
+      'isLoading=$_isLoading '
+      'hasBundle=${_bundle != null} '
+      'candidates=$totalCount '
+      'completedCount=${totalCount - pendingCount} '
+      'lastRegenerateAt=${_lastRegenerateAt?.toIso8601String() ?? '-'} '
+      'bundleGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? '-'}',
+    );
+  }
+
+  void _seedRegenerateCooldownFromBundle() {
+    final bundle = _bundle;
+    if (bundle == null || bundle.entries.isEmpty) return;
+    final todayKey = _localDateKey(DateTime.now());
+    if (bundle.localDateKey != todayKey) return;
+
+    final generatedAt = bundle.generatedAt;
+    final elapsed = DateTime.now().difference(generatedAt);
+    if (elapsed >= _manualRegenerateCooldown && !_lastRateLimitFailure) return;
+
+    if (_lastRegenerateAt == null ||
+        generatedAt.isAfter(_lastRegenerateAt!)) {
+      _lastRegenerateAt = generatedAt;
+    }
+    _syncRegenerateCooldownTimer();
+  }
+
   void _syncRegenerateCooldownTimer() {
     _regenerateCooldownTimer?.cancel();
     _regenerateCooldownTimer = null;
     final status = manualRegenerateCooldownStatus();
     if (status.canRegenerate) return;
 
-    final waitSeconds = status.remainingSeconds <= 0
-        ? 1
-        : (status.remainingSeconds <= 30 ? status.remainingSeconds + 1 : 30);
-    _regenerateCooldownTimer = Timer(Duration(seconds: waitSeconds), () {
+    final wait = _regenerateCooldownTimerDelay(status);
+    _regenerateCooldownTimer = Timer(wait, () {
       notifyListeners();
       _syncRegenerateCooldownTimer();
     });
+  }
+
+  Duration _regenerateCooldownTimerDelay(RecommendRegenerateCooldownStatus status) {
+    final nextAt = status.nextAvailableAt;
+    if (nextAt != null) {
+      final remaining = nextAt.difference(DateTime.now());
+      if (remaining <= Duration.zero) {
+        return const Duration(milliseconds: 100);
+      }
+      if (remaining < const Duration(seconds: 1)) {
+        return remaining;
+      }
+      if (remaining <= const Duration(seconds: 30)) {
+        return remaining;
+      }
+      return const Duration(seconds: 30);
+    }
+    final waitSeconds = status.remainingSeconds <= 0
+        ? 1
+        : (status.remainingSeconds <= 30 ? status.remainingSeconds + 1 : 30);
+    return Duration(seconds: waitSeconds);
   }
 
   @override
@@ -137,6 +218,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         : (_bundle!.entries.isEmpty
               ? TodayRecommendationGenerationStatus.empty
               : TodayRecommendationGenerationStatus.ready);
+    _seedRegenerateCooldownFromBundle();
     notifyListeners();
   }
 
@@ -351,6 +433,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
       }
     } finally {
       _isLoading = false;
+      final generatedAt = _bundle?.generatedAt;
+      if (generatedAt != null && (_bundle?.entries.isNotEmpty ?? false)) {
+        _lastRegenerateAt = generatedAt;
+      }
       notifyListeners();
       _syncRegenerateCooldownTimer();
     }

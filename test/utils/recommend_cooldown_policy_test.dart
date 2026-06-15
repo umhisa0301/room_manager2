@@ -90,4 +90,97 @@ void main() {
       expect(status.userFacingWaitLabel, 'まもなく再生成できます');
     });
   });
+
+  group('RecommendCooldownPolicyUi.resolveRegenerateButtonUiState', () {
+    test('cooldown elapsed enables button when not completed', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: true,
+        cooldownMinutes: 5,
+        remainingSeconds: 0,
+        remainingLabel: '',
+        guardReason: '',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: false,
+        isLoading: false,
+      );
+      expect(ui.canPress, isTrue);
+      expect(ui.showCooldownMessage, isFalse);
+      expect(ui.blockReason, 'none');
+      expect(ui.needsPeriodicRefresh, isFalse);
+    });
+
+    test('active cooldown disables button and shows wait label', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: false,
+        cooldownMinutes: 5,
+        remainingSeconds: 240,
+        remainingLabel: '4分',
+        guardReason: 'manualCooldown',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: false,
+        isLoading: false,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.showCooldownMessage, isTrue);
+      expect(ui.waitLabel, 'あと約4分後に再生成できます');
+      expect(ui.needsPeriodicRefresh, isTrue);
+    });
+
+    test('completed blocks button without cooldown message', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: true,
+        cooldownMinutes: 5,
+        remainingSeconds: 0,
+        remainingLabel: '',
+        guardReason: '',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: true,
+        isLoading: false,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.showCooldownMessage, isFalse);
+      expect(ui.blockReason, 'completed');
+    });
+
+    test('completed with active cooldown still prioritizes completed', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: false,
+        cooldownMinutes: 5,
+        remainingSeconds: 240,
+        remainingLabel: '4分',
+        guardReason: 'manualCooldown',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: true,
+        isLoading: false,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.showCooldownMessage, isFalse);
+      expect(ui.blockReason, 'completed');
+    });
+
+    test('loading blocks button', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: true,
+        cooldownMinutes: 5,
+        remainingSeconds: 0,
+        remainingLabel: '',
+        guardReason: '',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: false,
+        isLoading: true,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.blockReason, 'loading');
+    });
+  });
 }

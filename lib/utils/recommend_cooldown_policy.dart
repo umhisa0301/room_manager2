@@ -82,3 +82,63 @@ class RecommendRegenerateCooldownStatus {
     return 'あと約$remainingLabel後に再生成できます';
   }
 }
+
+/// 再生成ボタン UI の活性/文言を一箇所で解決する。
+class RegenerateButtonUiState {
+  const RegenerateButtonUiState({
+    required this.canPress,
+    required this.showCooldownMessage,
+    required this.waitLabel,
+    required this.blockReason,
+    required this.needsPeriodicRefresh,
+  });
+
+  final bool canPress;
+  final bool showCooldownMessage;
+  final String waitLabel;
+  final String blockReason;
+  final bool needsPeriodicRefresh;
+}
+
+extension RecommendCooldownPolicyUi on RecommendCooldownPolicy {
+  static RegenerateButtonUiState resolveRegenerateButtonUiState({
+    required RecommendRegenerateCooldownStatus cooldown,
+    required bool completed,
+    required bool isLoading,
+  }) {
+    if (isLoading) {
+      return const RegenerateButtonUiState(
+        canPress: false,
+        showCooldownMessage: false,
+        waitLabel: '',
+        blockReason: 'loading',
+        needsPeriodicRefresh: false,
+      );
+    }
+    if (completed) {
+      return const RegenerateButtonUiState(
+        canPress: false,
+        showCooldownMessage: false,
+        waitLabel: '',
+        blockReason: 'completed',
+        needsPeriodicRefresh: false,
+      );
+    }
+    if (!cooldown.canRegenerate) {
+      return RegenerateButtonUiState(
+        canPress: false,
+        showCooldownMessage: cooldown.userFacingWaitLabel.isNotEmpty,
+        waitLabel: cooldown.userFacingWaitLabel,
+        blockReason: cooldown.guardReason.isEmpty ? 'cooldown' : cooldown.guardReason,
+        needsPeriodicRefresh: true,
+      );
+    }
+    return const RegenerateButtonUiState(
+      canPress: true,
+      showCooldownMessage: false,
+      waitLabel: '',
+      blockReason: 'none',
+      needsPeriodicRefresh: false,
+    );
+  }
+}
