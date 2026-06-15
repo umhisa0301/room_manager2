@@ -98,6 +98,17 @@ class RegenerateButtonUiState {
   final String waitLabel;
   final String blockReason;
   final bool needsPeriodicRefresh;
+
+  /// サマリーカードの説明文（completed 状態の案内をクールダウンと整合）。
+  String summaryBodyText({required bool completed}) {
+    if (!completed) {
+      return '今日チェックしたい商品です。候補・コレ済は除外しています';
+    }
+    if (canPress) {
+      return 'すべて確認済みです。新しい候補を見たい場合は再生成できます。';
+    }
+    return 'すべて確認済みです。';
+  }
 }
 
 extension RecommendCooldownPolicyUi on RecommendCooldownPolicy {
@@ -112,15 +123,6 @@ extension RecommendCooldownPolicyUi on RecommendCooldownPolicy {
         showCooldownMessage: false,
         waitLabel: '',
         blockReason: 'loading',
-        needsPeriodicRefresh: false,
-      );
-    }
-    if (completed) {
-      return const RegenerateButtonUiState(
-        canPress: false,
-        showCooldownMessage: false,
-        waitLabel: '',
-        blockReason: 'completed',
         needsPeriodicRefresh: false,
       );
     }

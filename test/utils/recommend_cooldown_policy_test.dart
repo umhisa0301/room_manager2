@@ -130,7 +130,7 @@ void main() {
       expect(ui.needsPeriodicRefresh, isTrue);
     });
 
-    test('completed blocks button without cooldown message', () {
+    test('completed with cooldown elapsed enables button', () {
       const cooldown = RecommendRegenerateCooldownStatus(
         canRegenerate: true,
         cooldownMinutes: 5,
@@ -143,12 +143,17 @@ void main() {
         completed: true,
         isLoading: false,
       );
-      expect(ui.canPress, isFalse);
+      expect(ui.canPress, isTrue);
       expect(ui.showCooldownMessage, isFalse);
-      expect(ui.blockReason, 'completed');
+      expect(ui.blockReason, 'none');
+      expect(ui.needsPeriodicRefresh, isFalse);
+      expect(
+        ui.summaryBodyText(completed: true),
+        'すべて確認済みです。新しい候補を見たい場合は再生成できます。',
+      );
     });
 
-    test('completed with active cooldown still prioritizes completed', () {
+    test('completed with active cooldown disables button and shows wait label', () {
       const cooldown = RecommendRegenerateCooldownStatus(
         canRegenerate: false,
         cooldownMinutes: 5,
@@ -162,8 +167,45 @@ void main() {
         isLoading: false,
       );
       expect(ui.canPress, isFalse);
-      expect(ui.showCooldownMessage, isFalse);
-      expect(ui.blockReason, 'completed');
+      expect(ui.showCooldownMessage, isTrue);
+      expect(ui.waitLabel, 'あと約4分後に再生成できます');
+      expect(ui.blockReason, 'manualCooldown');
+      expect(ui.needsPeriodicRefresh, isTrue);
+      expect(ui.summaryBodyText(completed: true), 'すべて確認済みです。');
+    });
+
+    test('completed with rate limit cooldown disables button', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: false,
+        cooldownMinutes: 12,
+        remainingSeconds: 600,
+        remainingLabel: '10分',
+        guardReason: 'rateLimitCooldown',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: true,
+        isLoading: false,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.blockReason, 'rateLimitCooldown');
+    });
+
+    test('completed while loading disables button', () {
+      const cooldown = RecommendRegenerateCooldownStatus(
+        canRegenerate: true,
+        cooldownMinutes: 5,
+        remainingSeconds: 0,
+        remainingLabel: '',
+        guardReason: '',
+      );
+      final ui = RecommendCooldownPolicyUi.resolveRegenerateButtonUiState(
+        cooldown: cooldown,
+        completed: true,
+        isLoading: true,
+      );
+      expect(ui.canPress, isFalse);
+      expect(ui.blockReason, 'loading');
     });
 
     test('loading blocks button', () {

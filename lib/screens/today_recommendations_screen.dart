@@ -565,9 +565,7 @@ class _SummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            completed
-                ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
-                : '今日チェックしたい商品です。候補・コレ済は除外しています',
+            uiState.summaryBodyText(completed: completed),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,

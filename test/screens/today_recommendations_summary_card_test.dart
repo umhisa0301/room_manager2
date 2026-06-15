@@ -64,14 +64,14 @@ void main() {
     expect(find.text('あと約4分後に再生成できます'), findsOneWidget);
   });
 
-  testWidgets('completed state disables button without cooldown message', (
+  testWidgets('completed with cooldown elapsed enables button and regeneratable hint', (
     tester,
   ) async {
     const uiState = RegenerateButtonUiState(
-      canPress: false,
+      canPress: true,
       showCooldownMessage: false,
       waitLabel: '',
-      blockReason: 'completed',
+      blockReason: 'none',
       needsPeriodicRefresh: false,
     );
     await tester.pumpWidget(
@@ -90,9 +90,44 @@ void main() {
     final button = tester.widget<AppSecondaryButton>(
       find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
     );
+    expect(button.onPressed, isNotNull);
+    expect(find.textContaining('翌日'), findsNothing);
+    expect(
+      find.text('すべて確認済みです。新しい候補を見たい場合は再生成できます。'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('completed during cooldown disables button with wait label', (
+    tester,
+  ) async {
+    const uiState = RegenerateButtonUiState(
+      canPress: false,
+      showCooldownMessage: true,
+      waitLabel: 'あと約4分後に再生成できます',
+      blockReason: 'manualCooldown',
+      needsPeriodicRefresh: true,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: _TestSummaryCard(
+            total: 10,
+            pending: 0,
+            completed: true,
+            uiState: uiState,
+          ),
+        ),
+      ),
+    );
+
+    final button = tester.widget<AppSecondaryButton>(
+      find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
+    );
     expect(button.onPressed, isNull);
-    expect(find.textContaining('あと約'), findsNothing);
-    expect(find.textContaining('翌日'), findsOneWidget);
+    expect(find.text('あと約4分後に再生成できます'), findsOneWidget);
+    expect(find.textContaining('翌日'), findsNothing);
+    expect(find.text('すべて確認済みです。'), findsOneWidget);
   });
 }
 
@@ -116,11 +151,7 @@ class _TestSummaryCard extends StatelessWidget {
         Text(
           completed ? '本日のおすすめはチェック完了です' : '本日のおすすめ $total件（未処理 $pending件）',
         ),
-        Text(
-          completed
-              ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
-              : '今日チェックしたい商品です。候補・コレ済は除外しています',
-        ),
+        Text(uiState.summaryBodyText(completed: completed)),
         if (uiState.showCooldownMessage)
           Text(
             uiState.waitLabel,

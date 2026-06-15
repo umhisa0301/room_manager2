@@ -134,7 +134,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _lastRegenerateButtonLogAt = now;
     debugPrint(
       '[REGENERATE_BUTTON] trigger=$trigger '
-      'canRegenerate=${ui.canPress} '
+      'canPress=${ui.canPress} '
       'cooldownCanRegenerate=${cooldown.canRegenerate} '
       'completed=$isCompleted '
       'guardReason=${ui.blockReason} '
