@@ -168,10 +168,26 @@ MonetizationPlan clampMonetizationPlan(
   return plan;
 }
 
-/// 将来の Billing 実装差し替え口。現時点では常に free。
+/// Billing 未接続時の購入済みプラン解決。現時点では常に free。
+///
+/// 将来の Billing 接続時は [resolvePurchasedMonetizationPlanFromEntitlement] を
+/// 呼び出すよう差し替える。
 MonetizationPlan resolvePurchasedMonetizationPlan() => MonetizationPlan.free;
 
+/// [PurchaseEntitlement] を受け取って購入済みプランを解決する差し替え口。
+///
+/// Billing 接続前でも単体テストで basicActive / proActive を検証できる。
+/// NOTE: このファイルから services/ への依存を避けるため、引数は
+/// [MonetizationPlan] に解決済みの値（entitlement.resolvedPlan）を渡す設計にする。
+MonetizationPlan resolvePurchasedMonetizationPlanFromResolvedPlan(
+  MonetizationPlan resolvedPlan,
+) =>
+    resolvedPlan;
+
 /// 現在の実効プランを解決する。
+///
+/// [purchasedPlanOverride] に [PurchaseEntitlement.resolvedPlan] を渡すことで
+/// Billing 接続後の状態をシミュレートできる。
 MonetizationPlan resolveCurrentMonetizationPlan({
   MonetizationFlagSnapshot? flags,
   MonetizationPlan? purchasedPlanOverride,
