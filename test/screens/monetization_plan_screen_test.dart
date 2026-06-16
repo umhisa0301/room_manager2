@@ -51,6 +51,16 @@ void main() {
       expect(find.text('無料版'), findsWidgets);
     });
 
+    testWidgets('shows Free and Basic plan cards', (tester) async {
+      await pumpPlanScreen(tester, flags: _allOnFlags());
+
+      expect(find.byKey(const Key('monetization_plan_free_card')), findsOneWidget);
+      expect(find.byKey(const Key('monetization_plan_basic_card')), findsOneWidget);
+      expect(find.text('0円'), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.freePlanTagline), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.basicPlanTagline), findsOneWidget);
+    });
+
     testWidgets('shows preparing notice instead of purchase button', (
       tester,
     ) async {
@@ -61,6 +71,21 @@ void main() {
       expect(find.byKey(const Key('monetization_plan_basic_coming_soon')), findsOneWidget);
       expect(find.text('今すぐ購入'), findsNothing);
       expect(find.text('購入する'), findsNothing);
+    });
+
+    testWidgets('coming soon button shows snackbar without purchase', (
+      tester,
+    ) async {
+      await pumpPlanScreen(tester, flags: _allOnFlags());
+
+      await tester.tap(find.byKey(const Key('monetization_plan_basic_coming_soon')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(
+        find.text(MonetizationPlanDisplayCopy.preparingSnackBarMessage),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows basic planned monthly price', (tester) async {
@@ -109,13 +134,23 @@ void main() {
         findsWidgets,
       );
       expect(
-        find.text(formatFeatureAvailability(free.advancedRakutenSearchSortEnabled)),
+        find.text(formatAdvancedRakutenSearchComparisonValue(free)),
         findsWidgets,
       );
       expect(
-        find.text(formatFeatureAvailability(basic.advancedRakutenSearchSortEnabled)),
+        find.text(formatAdvancedRakutenSearchComparisonValue(basic)),
         findsWidgets,
       );
+    });
+
+    testWidgets('comparison table omits non-differentiating keyword search rows', (
+      tester,
+    ) async {
+      await pumpPlanScreen(tester, flags: _allOnFlags());
+
+      expect(find.text('通常キーワード検索'), findsNothing);
+      expect(find.text('1件ずつ候補追加'), findsNothing);
+      expect(find.byKey(const Key('monetization_plan_free_footnote')), findsOneWidget);
     });
 
     testWidgets('shows subdued pro teaser', (tester) async {
@@ -148,6 +183,8 @@ void main() {
   group('buildFreeBasicComparisonLines', () {
     test('reflects MonetizationPlanLimits values', () {
       final lines = buildFreeBasicComparisonLines();
+      expect(lines.length, 7);
+
       final roomLine = lines.firstWhere(
         (line) => line.label == 'ROOMデータ更新 / 管理商品数',
       );
@@ -159,6 +196,27 @@ void main() {
       );
       expect(genLine.freeValue, '1日1回');
       expect(genLine.basicValue, '1日5回');
+
+      final refreshLine = lines.firstWhere(
+        (line) => line.label == 'おすすめコレ再生成',
+      );
+      expect(refreshLine.freeValue, '1日1回');
+      expect(refreshLine.basicValue, '1日5回');
+
+      final rakutenLine = lines.firstWhere(
+        (line) => line.label == '楽天検索の詳細条件',
+      );
+      expect(rakutenLine.freeValue, '通常検索のみ');
+      expect(rakutenLine.basicValue, '価格・並び順・詳細条件');
+    });
+
+    test('uses short availability markers for batch add', () {
+      final lines = buildFreeBasicComparisonLines();
+      final batchLine = lines.firstWhere(
+        (line) => line.label == 'おすすめコレ一括追加',
+      );
+      expect(batchLine.freeValue, '×');
+      expect(batchLine.basicValue, '○');
     });
   });
 }

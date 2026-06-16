@@ -7,6 +7,11 @@ abstract final class MonetizationPlanDisplayCopy {
   static const String subscriptionPreparingNotice =
       'アプリ内課金は現在準備中です。Basicプランは近日対応予定です。';
   static const String basicComingSoonLabel = '近日対応予定';
+  static const String preparingSnackBarMessage = '現在準備中です';
+  static const String freePlanTagline = 'お試しプラン';
+  static const String basicPlanTagline = 'よく使う人向け';
+  static const String freePlanFootnote =
+      '無料版でも通常キーワード検索・1件ずつ候補追加は使えます';
 }
 
 /// プラン比較表の1行。
@@ -20,6 +25,17 @@ class MonetizationPlanFeatureLine {
   final String label;
   final String freeValue;
   final String basicValue;
+}
+
+/// プランカード内の機能箇条書き1行。
+class MonetizationPlanCardFeature {
+  const MonetizationPlanCardFeature({
+    required this.text,
+    this.muted = false,
+  });
+
+  final String text;
+  final bool muted;
 }
 
 /// 画面表示用のプラン名。
@@ -43,18 +59,28 @@ String formatRoomImportLimitDisplay(int? limit) {
 /// 1日回数制限の表示文言。
 String formatDailyCountDisplay(int count) => '1日$count回';
 
-/// 機能の利用可否表示。
-String formatFeatureAvailability(bool enabled) => enabled ? '利用可' : '利用不可';
+/// 機能の利用可否表示（比較表向け・短縮）。
+String formatFeatureAvailability(bool enabled) => enabled ? '○' : '×';
 
 /// 広告表示の文言（Basic は未実装のため「予定」付き）。
 String formatAdsDisplayForPlan(MonetizationPlan plan, MonetizationPlanLimits limits) {
   if (limits.adsRemoved) {
-    return plan == MonetizationPlan.basic ? '広告なし（予定）' : '広告なし';
+    return plan == MonetizationPlan.basic ? 'なし（予定）' : 'なし';
   }
-  return '広告あり';
+  return 'あり';
 }
 
-/// free / basic の差分比較行を [MonetizationPlanLimits] から生成する。
+/// 楽天検索の詳細条件の比較表表示。
+String formatAdvancedRakutenSearchComparisonValue(
+  MonetizationPlanLimits limits,
+) {
+  if (limits.advancedRakutenSearchSortEnabled) {
+    return '価格・並び順・詳細条件';
+  }
+  return '通常検索のみ';
+}
+
+/// free / basic の主要差分比較行を [MonetizationPlanLimits] から生成する。
 List<MonetizationPlanFeatureLine> buildFreeBasicComparisonLines({
   MonetizationPlanLimits freeLimits = kFreeMonetizationPlanLimits,
   MonetizationPlanLimits basicLimits = kBasicMonetizationPlanLimits,
@@ -93,38 +119,78 @@ List<MonetizationPlanFeatureLine> buildFreeBasicComparisonLines({
     ),
     MonetizationPlanFeatureLine(
       label: '楽天検索の詳細条件',
-      freeValue:
-          formatFeatureAvailability(freeLimits.advancedRakutenSearchSortEnabled),
-      basicValue:
-          formatFeatureAvailability(basicLimits.advancedRakutenSearchSortEnabled),
-    ),
-    const MonetizationPlanFeatureLine(
-      label: '通常キーワード検索',
-      freeValue: '利用可',
-      basicValue: '利用可',
-    ),
-    const MonetizationPlanFeatureLine(
-      label: '1件ずつ候補追加',
-      freeValue: '利用可',
-      basicValue: '利用可',
+      freeValue: formatAdvancedRakutenSearchComparisonValue(freeLimits),
+      basicValue: formatAdvancedRakutenSearchComparisonValue(basicLimits),
     ),
   ];
 }
 
-/// 無料版プランの機能一覧（単独表示用）。
+/// 無料版プランカードの機能箇条書き。
+List<MonetizationPlanCardFeature> buildFreePlanCardFeatures({
+  MonetizationPlanLimits limits = kFreeMonetizationPlanLimits,
+}) {
+  return [
+    MonetizationPlanCardFeature(
+      text: formatAdsDisplayForPlan(MonetizationPlan.free, limits) == 'あり'
+          ? '広告あり'
+          : '広告なし',
+    ),
+    MonetizationPlanCardFeature(
+      text:
+          'ROOMデータ更新 / 管理商品数: ${formatRoomImportLimitDisplay(limits.roomImportLimitPerRun)}',
+    ),
+    MonetizationPlanCardFeature(
+      text:
+          'おすすめコレ生成 / 再生成: 各${formatDailyCountDisplay(limits.dailyRecommendationLimit)}',
+    ),
+    const MonetizationPlanCardFeature(
+      text: '一括追加・詳細検索はBasic向け',
+      muted: true,
+    ),
+  ];
+}
+
+/// Basicプランカードの機能箇条書き。
+List<MonetizationPlanCardFeature> buildBasicPlanCardFeatures({
+  MonetizationPlanLimits limits = kBasicMonetizationPlanLimits,
+}) {
+  return [
+    MonetizationPlanCardFeature(
+      text: limits.adsRemoved ? '広告なし（予定）' : '広告あり',
+    ),
+    MonetizationPlanCardFeature(
+      text:
+          'ROOMデータ更新 / 管理商品数: ${formatRoomImportLimitDisplay(limits.roomImportLimitPerRun)}',
+    ),
+    MonetizationPlanCardFeature(
+      text:
+          'おすすめコレ生成 / 再生成: 各${formatDailyCountDisplay(limits.dailyRecommendationLimit)}',
+    ),
+    MonetizationPlanCardFeature(
+      text: limits.batchCandidateAddEnabled ? '一括追加が使える' : '一括追加は利用不可',
+    ),
+    MonetizationPlanCardFeature(
+      text: limits.advancedRakutenSearchSortEnabled
+          ? '価格・並び順などの詳細検索が使える'
+          : '詳細検索は利用不可',
+    ),
+  ];
+}
+
+/// 無料版プランの機能一覧（単独表示用・後方互換）。
 List<String> buildFreePlanSummaryLines({
   MonetizationPlanLimits limits = kFreeMonetizationPlanLimits,
 }) {
-  return buildFreeBasicComparisonLines(freeLimits: limits, basicLimits: limits)
-      .map((line) => '${line.label}：${line.freeValue}')
+  return buildFreePlanCardFeatures(limits: limits)
+      .map((feature) => feature.text)
       .toList(growable: false);
 }
 
-/// Basicプランの機能一覧（単独表示用）。
+/// Basicプランの機能一覧（単独表示用・後方互換）。
 List<String> buildBasicPlanSummaryLines({
   MonetizationPlanLimits limits = kBasicMonetizationPlanLimits,
 }) {
-  return buildFreeBasicComparisonLines(freeLimits: limits, basicLimits: limits)
-      .map((line) => '${line.label}：${line.basicValue}')
+  return buildBasicPlanCardFeatures(limits: limits)
+      .map((feature) => feature.text)
       .toList(growable: false);
 }
