@@ -169,3 +169,46 @@ W/WindowOnBackDispatcher( 3915): Set 'android:enableOnBackInvokedCallback="true"
 [SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260616_161854\room_manager2_shot_002.png
 [SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260616_161854\room_manager2_shot_003.png
 [SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260616_161854\room_manager2_shot_004.png
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260616_161854.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260616_161854.mp4 (0 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260616_161854
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260616_161854\terminal_output_20260616_161854.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260616_161854.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260616_161854.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260616_161854.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260616_161854.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260616_161854.log
+
+Done.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
