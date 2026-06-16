@@ -13,6 +13,7 @@ import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
 import '../services/room_import_collects_policy.dart';
+import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/home_post_milestone.dart';
@@ -723,6 +724,20 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
   Future<void> _handleImport(BuildContext context) async {
     if (!hasRoomProfileUrl) return;
+    final importState = resolveRoomImportAvailabilityFromItems(
+      items: context.read<RakutenManagedProductProvider>().items,
+    );
+    if (!importState.allowed) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            key: const Key('room_import_limit_blocked_snackbar'),
+            content: Text(buildRoomImportLimitBlockedBody(importState)),
+          ),
+        );
+      }
+      return;
+    }
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -871,6 +886,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
+        final roomImportState = resolveRoomImportAvailabilityFromItems(
+          items: context.watch<RakutenManagedProductProvider>().items,
+        );
         final syncBusy =
             ctl.isRunning ||
             bulk.isMetadataEnriching ||
@@ -954,6 +972,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
         final canRunPrimary = hasRoomProfileUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
+        final importButtonEnabled =
+            showImportButton && roomImportState.allowed;
         final showReactionButtonSlot =
             hasRoomProfileUrl && importedDoneCount > 0 && (syncBusy || canRunPrimary);
         final reactionButtonEnabled = canRunPrimary && !syncBusy;
@@ -973,9 +993,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=import visible=$showImportButton '
-          'enabled=$showImportButton '
+          'enabled=$importButtonEnabled '
           'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
-          'reason=${syncBusy ? 'busy' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready'))}',
+          'reason=${syncBusy ? 'busy' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : (!roomImportState.allowed ? 'roomImportLimitReached' : 'ready')))}',
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=reaction visible=$showReactionButton '
@@ -1239,28 +1259,42 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     },
                   ),
                   if (showImportButton) ...[
+                    if (roomImportState.limitsEnforcementEnabled &&
+                        !roomImportState.unlimited &&
+                        roomImportState.allowed) ...[
+                      Text(
+                        roomImportLimitUsageHint(roomImportState) ??
+                            roomImportLimitTrialHint(),
+                        style: _HomeUi.tapHint(context),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                     DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.accentPrimary.withValues(
-                              alpha: 0.18,
-                            ),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        boxShadow: importButtonEnabled
+                            ? [
+                                BoxShadow(
+                                  color: AppColors.accentPrimary.withValues(
+                                    alpha: 0.18,
+                                  ),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ]
+                            : const [],
                       ),
                       child: FilledButton(
                         key: const Key('room_import_entry_button'),
-                        onPressed: () {
-                          RoomSyncButtonVisibility.logIdleVisible(
-                            screen: 'home',
-                            button: 'import',
-                          );
-                          _handleImport(context);
-                        },
+                        onPressed: importButtonEnabled
+                            ? () {
+                                RoomSyncButtonVisibility.logIdleVisible(
+                                  screen: 'home',
+                                  button: 'import',
+                                );
+                                _handleImport(context);
+                              }
+                            : null,
                         style: FilledButton.styleFrom(
                           foregroundColor: AppColors.textOnAccent,
                           backgroundColor: AppColors.accentPrimary,
@@ -1279,12 +1313,20 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    Text(
-                      importedDoneCount > 0
-                          ? 'ROOMに投稿済みの商品をアプリに追加します。'
-                          : '過去のROOM投稿をコレ済に追加します。',
-                      style: _HomeUi.tapHint(context),
-                    ),
+                    if (roomImportState.limitsEnforcementEnabled &&
+                        !roomImportState.allowed)
+                      Text(
+                        roomImportLimitBlockedMessage(),
+                        key: const Key('room_import_limit_locked_hint'),
+                        style: _HomeUi.tapHint(context),
+                      )
+                    else
+                      Text(
+                        importedDoneCount > 0
+                            ? 'ROOMに投稿済みの商品をアプリに追加します。'
+                            : '過去のROOM投稿をコレ済に追加します。',
+                        style: _HomeUi.tapHint(context),
+                      ),
                   ],
                   if (showReactionButtonSlot) ...[
                     const SizedBox(height: 10),

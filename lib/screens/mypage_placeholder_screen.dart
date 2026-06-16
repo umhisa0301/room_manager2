@@ -15,6 +15,7 @@ import '../repository/easy_initial_setup_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
+import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../utils/app_input_limits.dart';
@@ -1013,6 +1014,20 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
   Future<void> _handleImport(BuildContext context) async {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
+    final importState = resolveRoomImportAvailabilityFromItems(
+      items: context.read<RakutenManagedProductProvider>().items,
+    );
+    if (!importState.allowed) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            key: const Key('room_import_limit_blocked_snackbar'),
+            content: Text(buildRoomImportLimitBlockedBody(importState)),
+          ),
+        );
+      }
+      return;
+    }
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -1159,6 +1174,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
               e.roomUrl.trim().isNotEmpty,
         )
         .length;
+    final roomImportState = resolveRoomImportAvailabilityFromItems(
+      items: context.watch<RakutenManagedProductProvider>().items,
+    );
 
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
@@ -1227,6 +1245,8 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 
         final canRunPrimary = hasUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
+        final importButtonEnabled =
+            showImportButton && roomImportState.allowed;
         final showReactionButton =
             showImportButton && importedDoneCount > 0;
         final showAnalysisLink = !syncBusy && hasUrl;
@@ -1239,9 +1259,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         );
         roomSyncButtonRenderDecisionLog(
           'screen=myPage button=import visible=$showImportButton '
-          'enabled=$showImportButton '
+          'enabled=$importButtonEnabled '
           'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
-          'reason=${syncBusy ? 'busy' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready'))}',
+          'reason=${syncBusy ? 'busy' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : (!roomImportState.allowed ? 'roomImportLimitReached' : 'ready')))}',
         );
         roomSyncButtonRenderDecisionLog(
           'screen=myPage button=reaction visible=$showReactionButton '
@@ -1463,20 +1483,47 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                     },
                   ),
                   if (showImportButton) ...[
+                    if (roomImportState.limitsEnforcementEnabled &&
+                        !roomImportState.unlimited &&
+                        roomImportState.allowed) ...[
+                      Text(
+                        roomImportLimitUsageHint(roomImportState) ??
+                            roomImportLimitTrialHint(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.35,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                     FilledButton(
-                      onPressed: () {
-                        RoomSyncButtonVisibility.logIdleVisible(
-                          screen: 'myPage',
-                          button: 'import',
-                        );
-                        _handleImport(context);
-                      },
+                      onPressed: importButtonEnabled
+                          ? () {
+                              RoomSyncButtonVisibility.logIdleVisible(
+                                screen: 'myPage',
+                                button: 'import',
+                              );
+                              _handleImport(context);
+                            }
+                          : null,
                       child: Text(
                         importedDoneCount > 0
                             ? '投稿済み商品を取り込む'
                             : 'ROOM投稿を取り込む',
                       ),
                     ),
+                    if (roomImportState.limitsEnforcementEnabled &&
+                        !roomImportState.allowed) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        roomImportLimitBlockedMessage(),
+                        key: const Key('room_import_limit_locked_hint'),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.35,
+                            ),
+                      ),
+                    ],
                   ],
                   if (showReactionButton) ...[
                     const SizedBox(height: 10),

@@ -28,7 +28,8 @@ class MonetizationPlanLimits {
   final int dailyRecommendationLimit;
   final int dailyRecommendationRefreshLimit;
   final bool batchCandidateAddEnabled;
-  final int roomImportLimitPerRun;
+  /// 無料版の累計管理商品上限。null は無制限（basic / pro）。
+  final int? roomImportLimitPerRun;
   final bool reactionAnalyticsDetailEnabled;
   final bool advancedRakutenSearchSortEnabled;
 
@@ -112,7 +113,7 @@ const MonetizationPlanLimits kBasicMonetizationPlanLimits = MonetizationPlanLimi
   dailyRecommendationLimit: 5,
   dailyRecommendationRefreshLimit: 5,
   batchCandidateAddEnabled: true,
-  roomImportLimitPerRun: 30,
+  roomImportLimitPerRun: null,
   reactionAnalyticsDetailEnabled: true,
   advancedRakutenSearchSortEnabled: true,
   aiCommentGenerationEnabled: false,
@@ -126,7 +127,7 @@ const MonetizationPlanLimits kProMonetizationPlanLimits = MonetizationPlanLimits
   dailyRecommendationLimit: 10,
   dailyRecommendationRefreshLimit: 10,
   batchCandidateAddEnabled: true,
-  roomImportLimitPerRun: 50,
+  roomImportLimitPerRun: null,
   reactionAnalyticsDetailEnabled: true,
   advancedRakutenSearchSortEnabled: true,
   aiCommentGenerationEnabled: false,

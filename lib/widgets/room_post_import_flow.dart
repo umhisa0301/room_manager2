@@ -15,6 +15,7 @@ import '../repository/room_sync_cursor_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_enrichment_cooldown_store.dart';
+import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
@@ -312,6 +313,20 @@ abstract final class RoomPostImportFlow {
       return null;
     }
 
+    final managedItems = context.read<RakutenManagedProductProvider>().items;
+    final importAvailability = resolveRoomImportAvailabilityFromItems(
+      items: managedItems,
+    );
+    if (!importAvailability.allowed) {
+      roomImportUiLog('phase=blocked reason=room_import_limit_reached');
+      return null;
+    }
+    final limit = resolveRoomImportBatchSize(importAvailability);
+    if (limit <= 0) {
+      roomImportUiLog('phase=blocked reason=room_import_batch_size_zero');
+      return null;
+    }
+
     final repo = context.read<RakutenManagedProductRepository>();
     final cursorRepo = context.read<RoomSyncCursorRepository>();
     final searchRepo = context.read<RakutenSearchRepository>();
@@ -322,7 +337,6 @@ abstract final class RoomPostImportFlow {
       productCatalogRepository: catalogRepo,
       roomSyncCursorRepository: cursorRepo,
     );
-    final limit = RoomImportLimitPolicy.effectiveBatchLimit();
 
     var lastCompleted = 0;
     var lastTotal = 0;

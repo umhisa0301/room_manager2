@@ -33,7 +33,7 @@ void main() {
       expect(limits.dailyRecommendationLimit, 5);
       expect(limits.dailyRecommendationRefreshLimit, 5);
       expect(limits.batchCandidateAddEnabled, isTrue);
-      expect(limits.roomImportLimitPerRun, 30);
+      expect(limits.roomImportLimitPerRun, isNull);
       expect(limits.reactionAnalyticsDetailEnabled, isTrue);
       expect(limits.advancedRakutenSearchSortEnabled, isTrue);
       expect(limits.aiCommentGenerationEnabled, isFalse);
@@ -48,7 +48,7 @@ void main() {
       expect(limits.dailyRecommendationLimit, 10);
       expect(limits.dailyRecommendationRefreshLimit, 10);
       expect(limits.batchCandidateAddEnabled, isTrue);
-      expect(limits.roomImportLimitPerRun, 50);
+      expect(limits.roomImportLimitPerRun, isNull);
       expect(limits.reactionAnalyticsDetailEnabled, isTrue);
       expect(limits.advancedRakutenSearchSortEnabled, isTrue);
       expect(limits.aiCommentGenerationEnabled, isFalse);

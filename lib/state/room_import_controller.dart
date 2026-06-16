@@ -11,7 +11,7 @@ import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../services/room_import_collects_policy.dart';
-import '../services/room_import_limit_policy.dart';
+import '../services/room_import_limit.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_reaction_sync_history_store.dart';
 import '../services/room_profile_url_validation_service.dart';
@@ -131,6 +131,21 @@ class RoomImportController extends ChangeNotifier {
     );
     if (profile.isEmpty) return null;
 
+    final managedProv = context.read<RakutenManagedProductProvider>();
+    final importAvailability = resolveRoomImportAvailabilityFromItems(
+      items: managedProv.items,
+    );
+    if (!canRefreshRoomData(importAvailability)) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(buildRoomImportLimitBlockedBody(importAvailability)),
+          ),
+        );
+      }
+      return null;
+    }
+
     final bulk = _bulkOperationState;
     if (bulk != null) {
       if (bulk.isRoomReactionSyncRunning) {
@@ -221,8 +236,11 @@ class RoomImportController extends ChangeNotifier {
           result.newlyImportedProductIds.isNotEmpty &&
           context.mounted) {
         final idsCsv = result.newlyImportedProductIds.join(',');
+        final enrichLimit = resolveRoomImportPostBatchEnrichLimit(
+          importAvailability,
+        );
         roomImportInitialEnrichStartLog(
-          'importedProductIds=$idsCsv limit=${RoomImportLimitPolicy.freeBatchLimit}',
+          'importedProductIds=$idsCsv limit=$enrichLimit',
         );
         final sw = Stopwatch()..start();
         final searchRepo = context.read<RakutenSearchRepository>();
@@ -235,7 +253,7 @@ class RoomImportController extends ChangeNotifier {
         );
         _setUiPhase(RoomImportUiPhase.checkingProductInfo);
         final er = await svc.enrichRoomImportedProducts(
-          limit: RoomImportLimitPolicy.freeBatchLimit,
+          limit: enrichLimit,
           applyPostImportAutoCap: true,
           manualSessionPacing: true,
           restrictToProductIdsInOrder: result.newlyImportedProductIds,
