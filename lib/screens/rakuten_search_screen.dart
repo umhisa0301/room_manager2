@@ -29,6 +29,7 @@ import '../widgets/shop_discovery_pool_supplement_cards.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
+import '../services/batch_candidate_add_availability.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -1445,7 +1446,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     Widget? emptyPreferredFilteredOut,
     Widget? emptyGenericFilteredOut,
   }) {
-    final bulkBar = _selectedProductIds.isNotEmpty;
+    final batchAddState = resolveBatchCandidateAddAvailability();
+    if (kDebugMode) {
+      importantDebugLog(
+        '[MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch '
+        'allowed=${batchAddState.allowed} plan=${batchAddState.plan.name}',
+      );
+    }
+    final selectableCount = orderedResults
+        .where((e) => _isSelectableForBulk(e, managed))
+        .length;
+    final bulkCheckboxPhaseVisible = _bulkCheckboxVisible(search);
+    final bulkSelectAllowed = batchAddState.allowed &&
+        selectableCount > 0 &&
+        bulkCheckboxPhaseVisible;
+    final bulkBar =
+        batchAddState.allowed && _selectedProductIds.isNotEmpty;
     final bottomPad = _listBottomPaddingForResults(
       context,
       bulkBarVisible: bulkBar,
@@ -1456,7 +1472,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       resultCount: orderedResults.length,
       listBottomPadding: bottomPad,
       bottomActionBarVisible: bulkBar,
-      hasBulkHeader: _bulkCheckboxVisible(search),
+      hasBulkHeader: bulkSelectAllowed,
       resultSurfaceMaxHeight: _lastResultSurfaceMaxHeight,
       phase: 'result',
     );
@@ -1488,12 +1504,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
           ),
-        if (_bulkCheckboxVisible(search))
+        if (bulkSelectAllowed)
           _buildBulkSelectionHeaderRow(
             context,
             search,
             managed,
             orderedResults,
+          )
+        else if (selectableCount > 0 &&
+            bulkCheckboxPhaseVisible &&
+            batchAddState.limitsEnforcementEnabled &&
+            !batchAddState.allowed)
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              RakutenSearchScreenUi.screenPadH,
+              0,
+              RakutenSearchScreenUi.screenPadH,
+              8,
+            ),
+            child: Text(
+              batchCandidateAddLockedMessage(),
+              key: const Key('rakuten_search_bulk_add_locked_hint'),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                  ),
+            ),
           ),
         Expanded(
           child: _buildResultsListOnly(
@@ -1503,6 +1539,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             orderedResults: orderedResults,
             scrollController: scrollController,
             bottomPad: bottomPad,
+            bulkSelectEnabled: bulkSelectAllowed,
             keywordPreferredFilteredAllOut: keywordPreferredFilteredAllOut,
             emptyPreferredFilteredOut: emptyPreferredFilteredOut,
             emptyGenericFilteredOut: emptyGenericFilteredOut,
@@ -1525,6 +1562,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required List<RakutenSearchItem> orderedResults,
     required ScrollController scrollController,
     required double bottomPad,
+    required bool bulkSelectEnabled,
     bool keywordPreferredFilteredAllOut = false,
     Widget? emptyPreferredFilteredOut,
     Widget? emptyGenericFilteredOut,
@@ -1587,7 +1625,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               item: item,
               localStatus: managed.statusForProduct(item.productId),
               isRegistering: managed.isRegistering(item.productId),
-              selectionMode: _bulkCheckboxVisible(search),
+              selectionMode: bulkSelectEnabled,
               isSelected: _selectedProductIds.contains(item.productId),
               isSelectionEnabled: isSelectable && !_isBulkRegistering,
               selectionDisabledLabel: _selectionDisabledReason(item, managed),
@@ -1640,6 +1678,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           RakutenSearchScreenUi.gapFloatingBarPad,
         ),
         child: AppPrimaryButton(
+          key: const Key('rakuten_search_bulk_add_button'),
           label: _isBulkRegistering
               ? '追加中…（$_bulkRegisterProcessed/$_bulkRegisterTotal）'
               : 'まとめて候補に追加（${_selectedProductIds.length}件）',
@@ -4624,11 +4663,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         search.results.isNotEmpty;
   }
 
+  void _showBatchAddLockedMessage(
+    BuildContext context,
+    BatchCandidateAddAvailabilityState state,
+  ) {
+    final body = buildBatchCandidateAddLockedBody(state);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        key: const Key('rakuten_search_bulk_add_locked_snackbar'),
+        content: Text(body),
+        duration: const Duration(seconds: 6),
+      ),
+    );
+  }
+
   Future<void> _bulkRegisterCandidates(
     RakutenManagedProductProvider managed,
     List<RakutenSearchItem> source,
   ) async {
     if (_isBulkRegistering || _selectedProductIds.isEmpty) return;
+    final batchAddState = resolveBatchCandidateAddAvailability();
+    if (!batchAddState.allowed) {
+      if (mounted) {
+        _showBatchAddLockedMessage(context, batchAddState);
+      }
+      return;
+    }
     bulkRegisterStartLog(
       mode: 'candidate',
       selectedCount: _selectedProductIds.length,
@@ -5005,6 +5065,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         4,
       ),
       child: SearchBulkSelectionHeader(
+        key: const Key('rakuten_search_bulk_selection_header'),
         screen: _selectionScreenTag(),
         selectedCount: _selectedProductIds.length,
         totalSelectable: selectableCount,
