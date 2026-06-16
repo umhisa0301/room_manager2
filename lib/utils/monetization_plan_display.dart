@@ -1,4 +1,6 @@
+import '../config/billing_product_config.dart';
 import '../config/monetization_plan_config.dart';
+import '../services/billing_product_service.dart';
 
 /// プラン表示画面向けの文言・フォーマット（課金商品IDは含まない）。
 abstract final class MonetizationPlanDisplayCopy {
@@ -6,10 +8,14 @@ abstract final class MonetizationPlanDisplayCopy {
   static const String basicPriceAmount = '500';
   static const String freePriceAmount = '0';
   static const String proPlannedMonthlyPriceLabel = '月額900円（予定）';
+  static const String proPriceAmount = '900';
   static const String subscriptionPreparingNotice =
       'アプリ内課金は現在準備中です。Basicプランは近日対応予定です。';
   static const String basicComingSoonLabel = '近日対応予定';
   static const String preparingSnackBarMessage = '現在準備中です';
+  static const String billingStatusChecking = '商品情報を確認中';
+  static const String billingStatusFetchFailed = '商品情報を取得できませんでした';
+  static const String basicPriceLoadingLabel = '価格確認中';
   static const String freePlanTagline = 'お試しプラン';
   static const String basicPlanTagline = 'よく使う人向け';
   static const String basicRecommendedLabel = 'おすすめ';
@@ -203,3 +209,112 @@ bool shouldEmphasizeBasicComparisonValue(String value) {
 
 /// 比較表の無料版列値を控えめにするか。
 bool shouldMuteFreeComparisonValue(String value) => value == '×';
+
+/// プラン価格の表示ソース。
+enum MonetizationPlanPriceSource {
+  loading,
+  store,
+  planned,
+}
+
+/// プラン価格表示用の解決結果。
+class MonetizationPlanPriceDisplay {
+  const MonetizationPlanPriceDisplay({
+    required this.label,
+    required this.source,
+    this.showMonthlyPrefix = false,
+    this.showPlannedSuffix = false,
+    this.useStorePriceFormat = false,
+  });
+
+  final String label;
+  final MonetizationPlanPriceSource source;
+  final bool showMonthlyPrefix;
+  final bool showPlannedSuffix;
+
+  /// true のとき [label] をそのまま表示（ストアのローカライズ価格）。
+  final bool useStorePriceFormat;
+}
+
+/// Basic プランの価格表示を解決する。
+MonetizationPlanPriceDisplay resolveBasicPlanPriceDisplay({
+  required bool isLoading,
+  BillingProductQueryResult? queryResult,
+}) {
+  if (isLoading) {
+    return const MonetizationPlanPriceDisplay(
+      label: MonetizationPlanDisplayCopy.basicPriceLoadingLabel,
+      source: MonetizationPlanPriceSource.loading,
+      showMonthlyPrefix: true,
+    );
+  }
+
+  final basic = queryResult?.basic;
+  if (basic != null && basic.available) {
+    return MonetizationPlanPriceDisplay(
+      label: basic.price,
+      source: MonetizationPlanPriceSource.store,
+      useStorePriceFormat: true,
+    );
+  }
+
+  return const MonetizationPlanPriceDisplay(
+    label: MonetizationPlanDisplayCopy.basicPriceAmount,
+    source: MonetizationPlanPriceSource.planned,
+    showMonthlyPrefix: true,
+    showPlannedSuffix: true,
+  );
+}
+
+/// Pro プラン（ティザー）の価格ラベルを解決する。
+String resolveProPlanPriceLabel({
+  required bool isLoading,
+  BillingProductQueryResult? queryResult,
+}) {
+  if (isLoading) {
+    return MonetizationPlanDisplayCopy.billingStatusChecking;
+  }
+
+  final pro = queryResult?.pro;
+  if (pro != null && pro.available) {
+    return pro.price;
+  }
+
+  return MonetizationPlanDisplayCopy.proPlannedMonthlyPriceLabel;
+}
+
+/// 商品照会の UI ステータス文言。表示不要なら null。
+String? resolveBillingStatusMessage({
+  required bool isLoading,
+  BillingProductQueryResult? queryResult,
+}) {
+  if (isLoading) {
+    return MonetizationPlanDisplayCopy.billingStatusChecking;
+  }
+  if (queryResult == null) {
+    return null;
+  }
+  if (!queryResult.available) {
+    return MonetizationPlanDisplayCopy.billingStatusFetchFailed;
+  }
+  if (queryResult.basic == null && queryResult.pro == null) {
+    return MonetizationPlanDisplayCopy.billingStatusFetchFailed;
+  }
+  return null;
+}
+
+/// 商品照会を行うべきか（プラン画面向け）。
+bool shouldQueryBillingProducts({
+  required bool monetizationEnabled,
+  required bool subscriptionEnabled,
+}) {
+  return monetizationEnabled && subscriptionEnabled;
+}
+
+/// テスト用: 照会スキップ時のフォールバック結果。
+BillingProductQueryResult createPlannedFallbackBillingQueryResult() {
+  return BillingProductQueryResult.fromProducts(
+    products: const [],
+    notFoundIds: BillingProductConfig.allProductIds,
+  );
+}

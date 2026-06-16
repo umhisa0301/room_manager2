@@ -2,22 +2,40 @@ import 'package:flutter/material.dart';
 
 import '../config/monetization_config.dart';
 import '../config/monetization_plan_config.dart';
+import '../services/billing_product_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/monetization_plan_display.dart';
 import '../widgets/app_card.dart';
 
 /// プラン内容の案内画面（課金処理は行わない）。
-class MonetizationPlanScreen extends StatelessWidget {
+class MonetizationPlanScreen extends StatefulWidget {
   const MonetizationPlanScreen({
     super.key,
     this.flags,
     this.purchasedPlanOverride,
+    this.billingProductService,
+    this.billingQueryResultOverride,
+    this.skipBillingQuery = false,
   });
 
   /// テスト用。未指定時はコンパイル時フラグ。
   final MonetizationFlagSnapshot? flags;
   final MonetizationPlan? purchasedPlanOverride;
 
+  /// テスト・差し替え用の商品照会サービス。
+  final BillingProductService? billingProductService;
+
+  /// テスト用。指定時は照会を行わずこの結果を使う。
+  final BillingProductQueryResult? billingQueryResultOverride;
+
+  /// テスト用。true のとき商品照会をスキップする。
+  final bool skipBillingQuery;
+
+  @override
+  State<MonetizationPlanScreen> createState() => _MonetizationPlanScreenState();
+}
+
+class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
   static const double _screenPadH = AppDimensions.screenPaddingH;
   static const double _gap = AppDimensions.spacingMd;
   static const double _wideLayoutBreakpoint = 520;
@@ -28,17 +46,68 @@ class MonetizationPlanScreen extends StatelessWidget {
   static const Color _basicColumnBg = Color(0xFFFFF8FB);
   static const Color _stripeEven = Color(0xFFF8F8FA);
 
+  bool _billingQueryLoading = false;
+  BillingProductQueryResult? _billingQueryResult;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeBillingQuery();
+  }
+
+  void _initializeBillingQuery() {
+    if (widget.billingQueryResultOverride != null) {
+      _billingQueryResult = widget.billingQueryResultOverride;
+      return;
+    }
+    if (widget.skipBillingQuery) {
+      _billingQueryResult = createPlannedFallbackBillingQueryResult();
+      return;
+    }
+
+    final snapshot = widget.flags ?? MonetizationFlagSnapshot.fromCompileTime();
+    if (!shouldQueryBillingProducts(
+      monetizationEnabled: snapshot.isMonetizationEnabled,
+      subscriptionEnabled: snapshot.isSubscriptionEnabled,
+    )) {
+      _billingQueryResult = createPlannedFallbackBillingQueryResult();
+      return;
+    }
+
+    _billingQueryLoading = true;
+    final service = widget.billingProductService ?? BillingProductService();
+    service.queryProducts().then((result) {
+      if (!mounted) return;
+      setState(() {
+        _billingQueryLoading = false;
+        _billingQueryResult = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final snapshot = flags ?? MonetizationFlagSnapshot.fromCompileTime();
+    final snapshot = widget.flags ?? MonetizationFlagSnapshot.fromCompileTime();
     final currentPlan = resolveCurrentMonetizationPlan(
       flags: snapshot,
-      purchasedPlanOverride: purchasedPlanOverride,
+      purchasedPlanOverride: widget.purchasedPlanOverride,
     );
     final comparisonLines = buildFreeBasicComparisonLines();
     final freeFeatures = buildFreePlanCardFeatures();
     final basicFeatures = buildBasicPlanCardFeatures();
     final showCurrentOnFree = currentPlan == MonetizationPlan.free;
+    final basicPriceDisplay = resolveBasicPlanPriceDisplay(
+      isLoading: _billingQueryLoading,
+      queryResult: _billingQueryResult,
+    );
+    final proPriceLabel = resolveProPlanPriceLabel(
+      isLoading: _billingQueryLoading,
+      queryResult: _billingQueryResult,
+    );
+    final billingStatusMessage = resolveBillingStatusMessage(
+      isLoading: _billingQueryLoading,
+      queryResult: _billingQueryResult,
+    );
 
     return Scaffold(
       key: const Key('monetization_plan_screen'),
@@ -54,7 +123,11 @@ class MonetizationPlanScreen extends StatelessWidget {
             AppDimensions.spacingLg,
           ),
           children: [
-            _PreparingNoticeBanner(),
+            const _PreparingNoticeBanner(),
+            if (billingStatusMessage != null) ...[
+              const SizedBox(height: 8),
+              _BillingStatusLine(message: billingStatusMessage),
+            ],
             const SizedBox(height: _gap),
             LayoutBuilder(
               builder: (context, constraints) {
@@ -65,7 +138,10 @@ class MonetizationPlanScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: _BasicPlanCard(features: basicFeatures),
+                        child: _BasicPlanCard(
+                          features: basicFeatures,
+                          priceDisplay: basicPriceDisplay,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -79,7 +155,10 @@ class MonetizationPlanScreen extends StatelessWidget {
                 }
                 return Column(
                   children: [
-                    _BasicPlanCard(features: basicFeatures),
+                    _BasicPlanCard(
+                      features: basicFeatures,
+                      priceDisplay: basicPriceDisplay,
+                    ),
                     const SizedBox(height: 12),
                     _FreePlanCard(
                       features: freeFeatures,
@@ -92,7 +171,7 @@ class MonetizationPlanScreen extends StatelessWidget {
             const SizedBox(height: _gap),
             _CoreComparisonSection(lines: comparisonLines),
             const SizedBox(height: _gap),
-            const _ProPlanTeaserCard(),
+            _ProPlanTeaserCard(priceLabel: proPriceLabel),
           ],
         ),
       ),
@@ -101,6 +180,8 @@ class MonetizationPlanScreen extends StatelessWidget {
 }
 
 class _PreparingNoticeBanner extends StatelessWidget {
+  const _PreparingNoticeBanner();
+
   @override
   Widget build(BuildContext context) {
     return AppCard(
@@ -133,28 +214,58 @@ class _PreparingNoticeBanner extends StatelessWidget {
   }
 }
 
+class _BillingStatusLine extends StatelessWidget {
+  const _BillingStatusLine({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      message,
+      key: const Key('monetization_plan_billing_status'),
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: AppColors.textTertiary,
+            height: 1.35,
+          ),
+    );
+  }
+}
+
 class _PlanPriceDisplay extends StatelessWidget {
   const _PlanPriceDisplay({
-    required this.amount,
-    this.showMonthlyPrefix = false,
-    this.showPlannedSuffix = false,
+    required this.priceDisplay,
     this.accentColor,
     this.priceKey,
   });
 
-  final String amount;
-  final bool showMonthlyPrefix;
-  final bool showPlannedSuffix;
+  final MonetizationPlanPriceDisplay priceDisplay;
   final Color? accentColor;
   final Key? priceKey;
 
   @override
   Widget build(BuildContext context) {
     final color = accentColor ?? AppColors.textPrimary;
+
+    if (priceDisplay.useStorePriceFormat) {
+      return Text(
+        priceDisplay.label,
+        key: priceKey,
+        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+              fontSize: 32,
+              fontWeight: FontWeight.w900,
+              color: color,
+              height: 1.1,
+              letterSpacing: -0.5,
+            ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showMonthlyPrefix)
+        if (priceDisplay.showMonthlyPrefix)
           Text(
             '月額',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -168,32 +279,36 @@ class _PlanPriceDisplay extends StatelessWidget {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              amount,
+              priceDisplay.label,
               key: priceKey,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    fontSize: 36,
+                    fontSize: priceDisplay.source == MonetizationPlanPriceSource.loading
+                        ? 22
+                        : 36,
                     fontWeight: FontWeight.w900,
                     color: color,
                     height: 1.05,
                     letterSpacing: -0.5,
                   ),
             ),
-            Text(
-              '円',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: color,
-                  ),
-            ),
-            if (showPlannedSuffix) ...[
-              const SizedBox(width: 4),
+            if (priceDisplay.source != MonetizationPlanPriceSource.loading) ...[
               Text(
-                '（予定）',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      fontWeight: FontWeight.w600,
+                '円',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: color,
                     ),
               ),
+              if (priceDisplay.showPlannedSuffix) ...[
+                const SizedBox(width: 4),
+                Text(
+                  '（予定）',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ],
             ],
           ],
         ),
@@ -246,7 +361,10 @@ class _FreePlanCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           const _PlanPriceDisplay(
-            amount: MonetizationPlanDisplayCopy.freePriceAmount,
+            priceDisplay: MonetizationPlanPriceDisplay(
+              label: MonetizationPlanDisplayCopy.freePriceAmount,
+              source: MonetizationPlanPriceSource.planned,
+            ),
             priceKey: Key('monetization_plan_free_price'),
           ),
           const SizedBox(height: 12),
@@ -269,9 +387,13 @@ class _FreePlanCard extends StatelessWidget {
 }
 
 class _BasicPlanCard extends StatelessWidget {
-  const _BasicPlanCard({required this.features});
+  const _BasicPlanCard({
+    required this.features,
+    required this.priceDisplay,
+  });
 
   final List<MonetizationPlanCardFeature> features;
+  final MonetizationPlanPriceDisplay priceDisplay;
 
   void _onComingSoonTap(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -287,8 +409,8 @@ class _BasicPlanCard extends StatelessWidget {
     return AppCard(
       key: const Key('monetization_plan_basic_card'),
       padding: EdgeInsets.zero,
-      backgroundColor: MonetizationPlanScreen._basicAccentBg,
-      borderColor: MonetizationPlanScreen._basicAccentBorder,
+      backgroundColor: _MonetizationPlanScreenState._basicAccentBg,
+      borderColor: _MonetizationPlanScreenState._basicAccentBorder,
       elevated: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -329,10 +451,8 @@ class _BasicPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 _PlanPriceDisplay(
-                  amount: MonetizationPlanDisplayCopy.basicPriceAmount,
-                  showMonthlyPrefix: true,
-                  showPlannedSuffix: true,
-                  accentColor: MonetizationPlanScreen._basicAccentText,
+                  priceDisplay: priceDisplay,
+                  accentColor: _MonetizationPlanScreenState._basicAccentText,
                   priceKey: const Key('monetization_plan_basic_price'),
                 ),
                 const SizedBox(height: 12),
@@ -347,9 +467,9 @@ class _BasicPlanCard extends StatelessWidget {
                   key: const Key('monetization_plan_basic_coming_soon'),
                   onPressed: () => _onComingSoonTap(context),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: MonetizationPlanScreen._basicAccentText,
+                    foregroundColor: _MonetizationPlanScreenState._basicAccentText,
                     side: BorderSide(
-                      color: MonetizationPlanScreen._basicAccentBorder,
+                      color: _MonetizationPlanScreenState._basicAccentBorder,
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -404,8 +524,8 @@ class _PlanTaglineChip extends StatelessWidget {
         ),
       _PlanChipVariant.recommendedMuted => (
           const Color(0xFFFFE8F2),
-          MonetizationPlanScreen._basicAccentBorder,
-          MonetizationPlanScreen._basicAccentText,
+          _MonetizationPlanScreenState._basicAccentBorder,
+          _MonetizationPlanScreenState._basicAccentText,
         ),
     };
 
@@ -451,7 +571,7 @@ class _PlanFeatureRow extends StatelessWidget {
               color: feature.muted
                   ? AppColors.textTertiary
                   : (accent
-                      ? MonetizationPlanScreen._basicAccentText
+                      ? _MonetizationPlanScreenState._basicAccentText
                       : AppColors.textSecondary),
             ),
           ),
@@ -564,7 +684,7 @@ class _ComparisonRow extends StatelessWidget {
         ? Colors.transparent
         : (rowIndex.isEven
             ? Colors.white
-            : MonetizationPlanScreen._stripeEven);
+            : _MonetizationPlanScreenState._stripeEven);
 
     final labelStyle = isHeader
         ? headerStyle
@@ -584,11 +704,11 @@ class _ComparisonRow extends StatelessWidget {
 
     TextStyle basicStyle(bool emphasized) => isHeader
         ? headerStyle!.copyWith(
-            color: MonetizationPlanScreen._basicAccentText,
+            color: _MonetizationPlanScreenState._basicAccentText,
           )
         : Theme.of(context).textTheme.bodySmall!.copyWith(
               color: emphasized
-                  ? MonetizationPlanScreen._basicAccentText
+                  ? _MonetizationPlanScreenState._basicAccentText
                   : AppColors.textPrimary,
               fontWeight: emphasized ? FontWeight.w800 : FontWeight.w500,
               height: 1.3,
@@ -622,7 +742,7 @@ class _ComparisonRow extends StatelessWidget {
               decoration: isHeader
                   ? null
                   : BoxDecoration(
-                      color: MonetizationPlanScreen._basicColumnBg,
+                      color: _MonetizationPlanScreenState._basicColumnBg,
                       borderRadius: BorderRadius.circular(6),
                     ),
               child: Text(
@@ -639,7 +759,9 @@ class _ComparisonRow extends StatelessWidget {
 }
 
 class _ProPlanTeaserCard extends StatelessWidget {
-  const _ProPlanTeaserCard();
+  const _ProPlanTeaserCard({required this.priceLabel});
+
+  final String priceLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -648,7 +770,7 @@ class _ProPlanTeaserCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       backgroundColor: AppColors.surfaceVariant.withValues(alpha: 0.35),
       child: Text(
-        'Proプラン（今後追加予定）・${MonetizationPlanDisplayCopy.proPlannedMonthlyPriceLabel}・AIコメント生成などを検討中',
+        'Proプラン（今後追加予定）・$priceLabel・AIコメント生成などを検討中',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textTertiary,
               height: 1.4,

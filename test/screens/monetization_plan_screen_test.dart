@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:room_manager2/config/billing_product_config.dart';
 import 'package:room_manager2/config/monetization_config.dart';
 import 'package:room_manager2/config/monetization_plan_config.dart';
 import 'package:room_manager2/screens/monetization_plan_screen.dart';
+import 'package:room_manager2/services/billing_product_service.dart';
 import 'package:room_manager2/utils/monetization_plan_display.dart';
 
 MonetizationFlagSnapshot _allOnFlags() => resolveMonetizationFlags(
@@ -34,10 +39,17 @@ void main() {
     Future<void> pumpPlanScreen(
       WidgetTester tester, {
       MonetizationFlagSnapshot? flags,
+      BillingProductQueryResult? billingQueryResultOverride,
+      bool skipBillingQuery = true,
     }) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: MonetizationPlanScreen(flags: flags),
+          home: MonetizationPlanScreen(
+            flags: flags,
+            billingQueryResultOverride: billingQueryResultOverride ??
+                createPlannedFallbackBillingQueryResult(),
+            skipBillingQuery: skipBillingQuery,
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -202,6 +214,70 @@ void main() {
       expect(find.byKey(const Key('monetization_plan_screen')), findsOneWidget);
       expect(find.text('無料版'), findsWidgets);
     });
+
+    testWidgets('shows store price when billing query returns basic product', (
+      tester,
+    ) async {
+      await pumpPlanScreen(
+        tester,
+        flags: _allOnFlags(),
+        billingQueryResultOverride: BillingProductQueryResult.fromProducts(
+          products: [
+            BillingProductDetails(
+              productId: BillingProductConfig.basicMonthlyProductId,
+              title: 'Basic',
+              description: 'desc',
+              price: '¥500',
+              rawPrice: 500,
+              currencyCode: 'JPY',
+            ),
+          ],
+        ),
+      );
+
+      expect(find.text('¥500'), findsOneWidget);
+      expect(find.text('（予定）'), findsNothing);
+    });
+
+    testWidgets('shows planned price when billing products are not found', (
+      tester,
+    ) async {
+      await pumpPlanScreen(
+        tester,
+        flags: _allOnFlags(),
+        billingQueryResultOverride: createPlannedFallbackBillingQueryResult(),
+      );
+
+      expect(find.text(MonetizationPlanDisplayCopy.basicPriceAmount), findsOneWidget);
+      expect(find.text('（予定）'), findsOneWidget);
+      expect(
+        find.text(MonetizationPlanDisplayCopy.billingStatusFetchFailed),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('shows checking status while billing query is loading', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MonetizationPlanScreen(
+            flags: _allOnFlags(),
+            skipBillingQuery: false,
+            billingProductService: BillingProductService(
+              gateway: _NeverCompletingGateway(),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        find.text(MonetizationPlanDisplayCopy.billingStatusChecking),
+        findsOneWidget,
+      );
+      expect(find.text(MonetizationPlanDisplayCopy.basicPriceLoadingLabel), findsOneWidget);
+    });
   });
 
   group('buildFreeBasicComparisonLines', () {
@@ -243,4 +319,14 @@ void main() {
       expect(batchLine.basicValue, '○');
     });
   });
+}
+
+class _NeverCompletingGateway implements InAppPurchaseGateway {
+  @override
+  Future<bool> isAvailable() async => true;
+
+  @override
+  Future<ProductDetailsResponse> queryProductDetails(Set<String> productIds) {
+    return Completer<ProductDetailsResponse>().future;
+  }
 }

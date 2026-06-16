@@ -2,9 +2,9 @@
 
 ## 概要
 
-このドキュメントは Google Play Billing 導入前の課金商品情報と、次フェーズで行うべき作業を整理する。
+このドキュメントは Google Play Billing 導入に関する課金商品情報と、フェーズごとの作業を整理する。
 
-**Phase 9B 時点では Google Play Billing / in_app_purchase は未導入。**  
+**Phase 9C 時点で `in_app_purchase` による商品照会を導入済み。**  
 実際の購入処理・復元・レシート検証は次フェーズ以降で実装する。
 
 ---
@@ -32,16 +32,46 @@ BillingProductConfig.basicMonthlyProductId  // 'room_manager_basic_monthly'
 BillingProductConfig.proMonthlyProductId    // 'room_manager_pro_monthly'
 ```
 
+### Phase 9C で追加したサービス
+
+```dart
+// lib/services/billing_product_service.dart
+BillingProductService().queryProducts()  // 商品照会のみ（購入処理なし）
+```
+
+- `BillingProductConfig.allProductIds` を `queryProductDetails` で照会
+- 取得結果は `BillingProductQueryResult` としてプラン画面に渡す
+- 購入ボタンは有効化していない（「近日対応予定」のまま）
+
 ---
 
-## 次フェーズ（Phase 9C以降）で行う作業
+## Play Console 側の作業（コード外・次に必要）
 
-1. `in_app_purchase` パッケージを `pubspec.yaml` に追加
-2. Play Console で定期購入商品を上記IDで作成
-3. `BillingService` または相当クラスを実装（商品照会・購入・復元）
-4. `PurchaseEntitlement` に実購入情報を詰めて `resolveCurrentMonetizationPlan` に接続
+1. **定期購入商品を作成する**
+   - Basic monthly product ID: `room_manager_basic_monthly`
+   - Pro monthly product ID: `room_manager_pro_monthly`
+   - 商品種別: 定期購入（サブスクリプション）
+2. 内部テスト / クローズドテストトラックへ公開
+3. ライセンステスト用アカウントを設定
+
+### 商品未作成時の挙動
+
+- 商品照会は空または `notFoundIDs` になる可能性がある
+- アプリはクラッシュせず、予定価格（月額500円・900円（予定））へフォールバックする
+- 「現在準備中です」「近日対応予定」表示を維持する
+- 実購入テストは次フェーズ以降
+
+---
+
+## 次フェーズ（Phase 9D以降）で行う作業
+
+1. サブスク購入処理（`buyNonConsumable` 等）の実装
+2. 購入復元処理
+3. `PurchaseDetails` から `PurchaseEntitlement` への反映
+4. `resolveCurrentMonetizationPlan` への実購入状態接続
 5. 購入状態の永続化（SharedPreferences または Firestore）
-6. `adsRemoved` と広告表示制御を接続（Phase 9D 以降）
+6. レシート検証・サーバー検証
+7. `adsRemoved` と広告表示制御を接続
 
 ---
 
