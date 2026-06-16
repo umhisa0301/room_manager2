@@ -43,22 +43,49 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('renders plan screen with current free plan', (tester) async {
+    testWidgets('renders plan screen with current free plan chip', (tester) async {
       await pumpPlanScreen(tester, flags: _allOnFlags());
 
       expect(find.byKey(const Key('monetization_plan_screen')), findsOneWidget);
       expect(find.byKey(const Key('monetization_plan_current_label')), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.currentPlanChipLabel), findsOneWidget);
       expect(find.text('無料版'), findsWidgets);
+      expect(find.text('現在のプラン'), findsNothing);
     });
 
-    testWidgets('shows Free and Basic plan cards', (tester) async {
+    testWidgets('shows Basic card before Free card', (tester) async {
+      await pumpPlanScreen(tester, flags: _allOnFlags());
+
+      final basic = find.byKey(const Key('monetization_plan_basic_card'));
+      final free = find.byKey(const Key('monetization_plan_free_card'));
+      expect(basic, findsOneWidget);
+      expect(free, findsOneWidget);
+
+      final basicPos = tester.getTopLeft(basic);
+      final freePos = tester.getTopLeft(free);
+      final basicComesFirst = basicPos.dy < freePos.dy ||
+          (basicPos.dy == freePos.dy && basicPos.dx < freePos.dx);
+      expect(basicComesFirst, isTrue);
+    });
+
+    testWidgets('shows recommended label on Basic card', (tester) async {
+      await pumpPlanScreen(tester, flags: _allOnFlags());
+
+      expect(find.byKey(const Key('monetization_plan_basic_recommended')), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.basicRecommendedLabel), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.basicPlanTagline), findsOneWidget);
+    });
+
+    testWidgets('shows Free and Basic plan cards with prices', (tester) async {
       await pumpPlanScreen(tester, flags: _allOnFlags());
 
       expect(find.byKey(const Key('monetization_plan_free_card')), findsOneWidget);
       expect(find.byKey(const Key('monetization_plan_basic_card')), findsOneWidget);
-      expect(find.text('0円'), findsOneWidget);
+      expect(find.byKey(const Key('monetization_plan_free_price')), findsOneWidget);
+      expect(find.byKey(const Key('monetization_plan_basic_price')), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.freePriceAmount), findsOneWidget);
+      expect(find.text(MonetizationPlanDisplayCopy.basicPriceAmount), findsOneWidget);
       expect(find.text(MonetizationPlanDisplayCopy.freePlanTagline), findsOneWidget);
-      expect(find.text(MonetizationPlanDisplayCopy.basicPlanTagline), findsOneWidget);
     });
 
     testWidgets('shows preparing notice instead of purchase button', (
@@ -88,19 +115,14 @@ void main() {
       );
     });
 
-    testWidgets('shows basic planned monthly price', (tester) async {
-      await pumpPlanScreen(tester, flags: _allOnFlags());
-
-      expect(find.byKey(const Key('monetization_plan_basic_price')), findsOneWidget);
-      expect(find.text(MonetizationPlanDisplayCopy.basicPlannedMonthlyPriceLabel), findsOneWidget);
-    });
-
     testWidgets('shows free vs basic comparison from limits', (tester) async {
       await pumpPlanScreen(tester, flags: _allOnFlags());
 
       final free = kFreeMonetizationPlanLimits;
       final basic = kBasicMonetizationPlanLimits;
 
+      expect(find.text('ROOM更新'), findsOneWidget);
+      expect(find.text('詳細検索'), findsOneWidget);
       expect(
         find.text(formatRoomImportLimitDisplay(free.roomImportLimitPerRun)),
         findsWidgets,
@@ -134,11 +156,11 @@ void main() {
         findsWidgets,
       );
       expect(
-        find.text(formatAdvancedRakutenSearchComparisonValue(free)),
+        find.text(formatFeatureAvailability(free.advancedRakutenSearchSortEnabled)),
         findsWidgets,
       );
       expect(
-        find.text(formatAdvancedRakutenSearchComparisonValue(basic)),
+        find.text(formatFeatureAvailability(basic.advancedRakutenSearchSortEnabled)),
         findsWidgets,
       );
     });
@@ -150,6 +172,8 @@ void main() {
 
       expect(find.text('通常キーワード検索'), findsNothing);
       expect(find.text('1件ずつ候補追加'), findsNothing);
+      expect(find.text('おすすめコレ一括追加'), findsNothing);
+      expect(find.text('楽天検索の一括追加'), findsNothing);
       expect(find.byKey(const Key('monetization_plan_free_footnote')), findsOneWidget);
     });
 
@@ -181,39 +205,39 @@ void main() {
   });
 
   group('buildFreeBasicComparisonLines', () {
-    test('reflects MonetizationPlanLimits values', () {
+    test('reflects MonetizationPlanLimits values with six rows', () {
       final lines = buildFreeBasicComparisonLines();
-      expect(lines.length, 7);
+      expect(lines.length, 6);
 
       final roomLine = lines.firstWhere(
-        (line) => line.label == 'ROOMデータ更新 / 管理商品数',
+        (line) => line.label == 'ROOM更新',
       );
       expect(roomLine.freeValue, formatRoomImportLimitDisplay(10));
       expect(roomLine.basicValue, '上限なし');
 
       final genLine = lines.firstWhere(
-        (line) => line.label == 'おすすめコレ生成',
+        (line) => line.label == 'おすすめ生成',
       );
       expect(genLine.freeValue, '1日1回');
       expect(genLine.basicValue, '1日5回');
 
       final refreshLine = lines.firstWhere(
-        (line) => line.label == 'おすすめコレ再生成',
+        (line) => line.label == 'おすすめ再生成',
       );
       expect(refreshLine.freeValue, '1日1回');
       expect(refreshLine.basicValue, '1日5回');
 
-      final rakutenLine = lines.firstWhere(
-        (line) => line.label == '楽天検索の詳細条件',
+      final detailLine = lines.firstWhere(
+        (line) => line.label == '詳細検索',
       );
-      expect(rakutenLine.freeValue, '通常検索のみ');
-      expect(rakutenLine.basicValue, '価格・並び順・詳細条件');
+      expect(detailLine.freeValue, '×');
+      expect(detailLine.basicValue, '○');
     });
 
     test('uses short availability markers for batch add', () {
       final lines = buildFreeBasicComparisonLines();
       final batchLine = lines.firstWhere(
-        (line) => line.label == 'おすすめコレ一括追加',
+        (line) => line.label == '一括追加',
       );
       expect(batchLine.freeValue, '×');
       expect(batchLine.basicValue, '○');
