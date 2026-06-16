@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^6.3.2
   webview_flutter: ^4.10.0
   google_mobile_ads: ^7.0.0
+  in_app_purchase: ^3.2.3
 
 dev_dependencies:
   flutter_test:
