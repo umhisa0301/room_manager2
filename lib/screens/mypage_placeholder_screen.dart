@@ -47,6 +47,7 @@ import '../widgets/app_text_field.dart';
 import 'closed_test_demo_screen.dart';
 import 'dev_automation_screen.dart';
 import 'easy_initial_setup_screen.dart';
+import 'monetization_plan_screen.dart';
 import 'saved_shops_screen.dart';
 
 /// マイページ：設定・状態確認のハブ（ホームの行動・おすすめ導線はここでは持たない）。
@@ -204,6 +205,12 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
   }
 
+  void _openMonetizationPlan(BuildContext context) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(builder: (_) => const MonetizationPlanScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomPad = MediaQuery.paddingOf(context).bottom + _navReserve;
@@ -334,6 +341,7 @@ class MypagePlaceholderScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: _gap),
                         MyPageSettingsSection(
+                          onOpenPlan: () => _openMonetizationPlan(context),
                           onOpenDemo: kClosedTestDemoAvailable
                               ? () => _openClosedTestDemo(context)
                               : null,
@@ -1653,11 +1661,13 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 class MyPageSettingsSection extends StatelessWidget {
   const MyPageSettingsSection({
     super.key,
+    required this.onOpenPlan,
     this.onOpenDemo,
     this.onOpenDevAutomation,
     required this.onOpenInitialSetup,
   });
 
+  final VoidCallback onOpenPlan;
   final VoidCallback? onOpenDemo;
   final VoidCallback? onOpenDevAutomation;
   final VoidCallback onOpenInitialSetup;
@@ -1683,6 +1693,59 @@ class MyPageSettingsSection extends StatelessWidget {
             icon: Icons.settings_outlined,
           ),
           const SizedBox(height: 10),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              key: const Key('mypage_plan_entry'),
+              onTap: onOpenPlan,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.card_membership_outlined,
+                      size: 22,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'プランを見る',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '無料版とBasicプランの違い',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  height: 1.3,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.textSecondary,
+                      size: 22,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
           if (onOpenDemo != null) ...[
             AppSecondaryButton(
               label: 'クローズドテスト用デモを見る',

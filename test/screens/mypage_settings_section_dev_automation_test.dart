@@ -12,6 +12,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MyPageSettingsSection(
+              onOpenPlan: () {},
               onOpenInitialSetup: () {},
             ),
           ),
@@ -28,6 +29,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MyPageSettingsSection(
+              onOpenPlan: () {},
               onOpenDevAutomation: () {},
               onOpenInitialSetup: () {},
             ),
@@ -45,6 +47,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MyPageSettingsSection(
+              onOpenPlan: () {},
               onOpenDevAutomation: DevAutomationFlags.isEnabled ? () {} : null,
               onOpenInitialSetup: () {},
             ),
