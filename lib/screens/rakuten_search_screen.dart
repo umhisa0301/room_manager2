@@ -30,6 +30,7 @@ import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
 import '../services/batch_candidate_add_availability.dart';
+import '../services/rakuten_search_condition_availability.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -354,6 +355,137 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     };
   }
 
+  RakutenSearchAdvancedConditionScope _advancedConditionScope() {
+    if (_savedShopKeywordEntryEffective) {
+      return RakutenSearchAdvancedConditionScope.savedShopKeyword;
+    }
+    if (_mode == _RakutenSearchMode.genre) {
+      return RakutenSearchAdvancedConditionScope.genreExplore;
+    }
+    return RakutenSearchAdvancedConditionScope.productKeyword;
+  }
+
+  RakutenSearchConditionAvailabilityState _advancedSearchAvailability() {
+    return resolveRakutenSearchConditionAvailability();
+  }
+
+  bool _canUseAdvancedRakutenSearchConditions() {
+    return _advancedSearchAvailability().allowed;
+  }
+
+  RakutenKeywordSearchSortMode _effectiveKeywordSort() {
+    if (_canUseAdvancedRakutenSearchConditions()) return _keywordSort;
+    return rakutenKeywordSearchDefaultSortMode;
+  }
+
+  RakutenKeywordSearchSortMode _effectiveGenreSort() {
+    if (_canUseAdvancedRakutenSearchConditions()) return _genreExploreSort;
+    return rakutenKeywordSearchDefaultSortMode;
+  }
+
+  RakutenProductSearchCondition _guardSearchConditionForPlan(
+    RakutenProductSearchCondition condition,
+  ) {
+    final availability = _advancedSearchAvailability();
+    if (kDebugMode && !availability.allowed) {
+      importantDebugLog(
+        '[MONETIZATION_LIMIT] advancedRakutenSearch allowed=false '
+        'plan=${availability.plan.name}',
+      );
+    }
+    return guardRakutenSearchConditionForPlan(
+      condition: condition,
+      advancedAllowed: availability.allowed,
+      scope: _advancedConditionScope(),
+    );
+  }
+
+  Widget _buildAdvancedSearchLockedHint(BuildContext context) {
+    return Container(
+      key: const Key('rakuten_search_advanced_conditions_locked_hint'),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: HomeScreenColors.roomContentWellFill,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            rakutenSearchConditionLockedMessage(),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.4,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            rakutenSearchConditionLockedBasicHint(),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.35,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLockedSortControl(BuildContext context, {bool compact = false}) {
+    final label = rakutenKeywordSearchSortHeaderLabel(
+      rakutenKeywordSearchDefaultSortMode,
+    );
+    final labelStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: HomeScreenColors.footnoteMuted,
+          fontWeight: FontWeight.w700,
+          fontSize: compact ? 10.5 : null,
+        );
+    return Row(
+      key: const Key('rakuten_search_sort_locked_hint'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.lock_outline_rounded,
+          size: compact ? 14 : 16,
+          color: HomeScreenColors.footnoteMuted,
+        ),
+        SizedBox(width: compact ? 2 : 4),
+        Text(label, style: labelStyle),
+      ],
+    );
+  }
+
+  Widget _buildAdvancedSearchFieldsSection({
+    required BuildContext context,
+    required bool advancedAllowed,
+    required List<Widget> fields,
+  }) {
+    if (advancedAllowed) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: fields,
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildAdvancedSearchLockedHint(context),
+        const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0.45,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: fields,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   RakutenSearchUiSnapshot _captureUiSnapshot() {
     final key = _modeCacheKey();
     final shared = (
@@ -579,18 +711,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchSessionCache.modeSavedShop:
         return _buildProductCondition(context);
       case RakutenSearchSessionCache.modeGenre:
-        return RakutenProductSearchCondition(
-          keyword: _genreController.text,
-          minPrice: _parseInt(_minPriceController.text),
-          maxPrice: _parseInt(_maxPriceController.text),
-          excludeKeyword: _excludeKeywordController.text,
-          minReviewCount: _parseInt(_minReviewCountController.text),
-          minReviewAverage: _parseDouble(_minReviewAverageController.text),
-          minCommentCount: _parseInt(_minCommentCountController.text),
-          shopCode: null,
-          genreId: _selectedGenreId,
-          sort: _apiSortParamForMode(_genreExploreSort),
-        ).normalized();
+        return _guardSearchConditionForPlan(
+          RakutenProductSearchCondition(
+            keyword: _genreController.text,
+            minPrice: _parseInt(_minPriceController.text),
+            maxPrice: _parseInt(_maxPriceController.text),
+            excludeKeyword: _excludeKeywordController.text,
+            minReviewCount: _parseInt(_minReviewCountController.text),
+            minReviewAverage: _parseDouble(_minReviewAverageController.text),
+            minCommentCount: _parseInt(_minCommentCountController.text),
+            shopCode: null,
+            genreId: _selectedGenreId,
+            sort: _apiSortParamForMode(_effectiveGenreSort()),
+          ).normalized(),
+        );
       case RakutenSearchSessionCache.modeShopDiscovery:
         final keyword = _shopDiscoveryKeywordController.text.trim();
         final genreId = _selectedDiscoveryGenreId;
@@ -614,8 +748,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   String _currentSearchKeyForModeKey(BuildContext context, String modeKey) {
     final sort = switch (modeKey) {
-      RakutenSearchSessionCache.modeGenre => _genreExploreSort,
-      _ => _keywordSort,
+      RakutenSearchSessionCache.modeGenre => _effectiveGenreSort(),
+      _ => _effectiveKeywordSort(),
     };
     return buildSearchResultSearchKey(
       ownerMode: modeKey,
@@ -637,8 +771,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
     final condition = _conditionForModeCacheKey(context, modeKey);
     final sort = switch (modeKey) {
-      RakutenSearchSessionCache.modeGenre => _genreExploreSort,
-      _ => _keywordSort,
+      RakutenSearchSessionCache.modeGenre => _effectiveGenreSort(),
+      _ => _effectiveKeywordSort(),
     };
     return SearchResultEnvelope(
       ownerMode: modeKey,
@@ -1349,13 +1483,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     SavedShopProvider savedProv,
   ) {
     final sortMode = _mode == _RakutenSearchMode.genre
-        ? _genreExploreSort
-        : _keywordSort;
-    final onSort = _mode == _RakutenSearchMode.genre
-        ? (RakutenKeywordSearchSortMode next) =>
-              _onGenreSortChanged(context, next)
-        : (RakutenKeywordSearchSortMode next) =>
-              _onKeywordSortChanged(context, next);
+        ? _effectiveGenreSort()
+        : _effectiveKeywordSort();
+    final onSort = _canUseAdvancedRakutenSearchConditions()
+        ? (_mode == _RakutenSearchMode.genre
+              ? (RakutenKeywordSearchSortMode next) =>
+                    _onGenreSortChanged(context, next)
+              : (RakutenKeywordSearchSortMode next) =>
+                    _onKeywordSortChanged(context, next))
+        : null;
     return Wrap(
       spacing: 6,
       runSpacing: 4,
@@ -1373,11 +1509,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ),
         ),
         if (_sortLivesInResultsHeader(search))
-          _buildResultSortActionChip(
-            context,
-            value: sortMode,
-            onSortSelected: onSort,
-          ),
+          onSort != null
+              ? _buildResultSortActionChip(
+                  context,
+                  value: sortMode,
+                  onSortSelected: onSort,
+                )
+              : _buildLockedSortControl(context, compact: true),
         OutlinedButton.icon(
           onPressed: _isBulkRegistering
               ? null
@@ -2345,6 +2483,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   bool _validateDetailSearchForm({VoidCallback? refreshSheet}) {
+    if (!_canUseAdvancedRakutenSearchConditions()) {
+      refreshSheet?.call();
+      return true;
+    }
     setState(() => _detailSearchAutovalidate = true);
     final ok = _detailSearchFormKey.currentState?.validate() ?? true;
     refreshSheet?.call();
@@ -2363,6 +2505,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
       if (kwErr != null) return kwErr;
     }
+    if (!_canUseAdvancedRakutenSearchConditions()) return null;
     return RakutenKeywordDetailConditionsValidation.validateAll(
       minPriceText: _minPriceController.text,
       maxPriceText: _maxPriceController.text,
@@ -2374,6 +2517,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   /// ジャンル検索：詳細条件フィールドのみ検証（キーワード主入力は別）。
   String? _validateGenreDetailInputs() {
+    if (!_canUseAdvancedRakutenSearchConditions()) return null;
     return RakutenKeywordDetailConditionsValidation.validateAll(
       minPriceText: _minPriceController.text,
       maxPriceText: _maxPriceController.text,
@@ -2633,9 +2777,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       minCommentCount: _parseInt(_minCommentCountController.text),
       shopCode: _effectiveShopCodeForApi(context),
       genreId: _savedShopKeywordEntryEffective ? null : _productDetailGenreId,
-      sort: _apiSortParamForMode(_keywordSort),
+      sort: _apiSortParamForMode(_effectiveKeywordSort()),
     ).normalized();
-    return _sanitizeConditionForActiveMode(context, raw);
+    return _guardSearchConditionForPlan(
+      _sanitizeConditionForActiveMode(context, raw),
+    );
   }
 
   /// 保存ショップモード専用: 保存済ショップに存在する [shopId] だけを API の shopCode として渡す。
@@ -3116,12 +3262,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (!_sortLivesInResultsHeader(search)) ...[
           Align(
             alignment: Alignment.centerRight,
-            child: _buildResultSortControl(
-              context,
-              value: _keywordSort,
-              resultsScrollController: _keywordResultsScrollController,
-              onSortSelected: (next) => _onKeywordSortChanged(context, next),
-            ),
+            child: _canUseAdvancedRakutenSearchConditions()
+                ? _buildResultSortControl(
+                    context,
+                    value: _keywordSort,
+                    resultsScrollController: _keywordResultsScrollController,
+                    onSortSelected: (next) =>
+                        _onKeywordSortChanged(context, next),
+                  )
+                : _buildLockedSortControl(context),
           ),
           SizedBox(height: RakutenSearchScreenUi.gapSortToFields),
         ],
@@ -3159,12 +3308,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (!_sortLivesInResultsHeader(search)) ...[
           Align(
             alignment: Alignment.centerRight,
-            child: _buildResultSortControl(
-              context,
-              value: _genreExploreSort,
-              resultsScrollController: _genreResultsScrollController,
-              onSortSelected: (next) => _onGenreSortChanged(context, next),
-            ),
+            child: _canUseAdvancedRakutenSearchConditions()
+                ? _buildResultSortControl(
+                    context,
+                    value: _genreExploreSort,
+                    resultsScrollController: _genreResultsScrollController,
+                    onSortSelected: (next) =>
+                        _onGenreSortChanged(context, next),
+                  )
+                : _buildLockedSortControl(context),
           ),
           SizedBox(height: RakutenSearchScreenUi.gapSortToFields),
         ],
@@ -3739,144 +3891,157 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                             RakutenSearchScreenUi.sheetBlockGap,
                                       ),
                                     ],
-                                    RakutenSearchPriceRangeRow(
-                                      minPriceController: _minPriceController,
-                                      maxPriceController: _maxPriceController,
-                                      autovalidateMode:
-                                          _detailSearchAutovalidateMode,
-                                      onFieldChanged: () {
-                                        setModalState(() {});
-                                        _detailSearchFormKey.currentState
-                                            ?.validate();
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height:
-                                          RakutenSearchScreenUi.sheetBlockGap,
-                                    ),
-                                    AppTextField(
-                                      // 共通AppTextFieldへ置換: 除外ワード入力。
-                                      controller: _excludeKeywordController,
-                                      onChanged: (_) => setModalState(() {}),
-                                      labelText: '除外ワード（任意）',
-                                      hintText: '中古 訳あり',
-                                      prefixIcon: const Icon(
-                                        Icons.block_outlined,
-                                      ),
-                                      maxLength:
-                                          AppInputLimits.searchKeywordMax,
-                                      inputFormatters:
-                                          AppInputLimits.singleLineKeywordFormatters(),
-                                      autovalidateMode:
-                                          _detailSearchAutovalidateMode,
-                                      validator:
-                                          _detailSearchExcludeKeywordValidator,
-                                    ),
-                                    const SizedBox(
-                                      height:
-                                          RakutenSearchScreenUi.sheetBlockGap,
-                                    ),
-                                    RakutenSearchMinReviewDropdownRow(
-                                      selectedReviewCount:
-                                          _keywordSheetSelectedReviewCount(),
-                                      selectedReviewAverage:
-                                          _keywordSheetSelectedReviewAverage(),
-                                      onReviewCountChanged: (v) {
-                                        setState(() {
-                                          _minReviewCountController.text =
-                                              v == null ? '' : '$v';
-                                        });
-                                        setModalState(() {});
-                                      },
-                                      onReviewAverageChanged: (v) {
-                                        setState(() {
-                                          _minReviewAverageController.text =
-                                              v == null
-                                              ? ''
-                                              : v.toStringAsFixed(1);
-                                        });
-                                        setModalState(() {});
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height:
-                                          RakutenSearchScreenUi.sheetBlockGap,
-                                    ),
-                                    AppTextField(
-                                      // 共通AppTextFieldへ置換: 最低コメント数入力。
-                                      controller: _minCommentCountController,
-                                      keyboardType: TextInputType.number,
-                                      maxLength:
-                                          AppInputLimits.countFieldMaxDigits,
-                                      inputFormatters:
-                                          AppInputLimits.countDigitsFormatters(),
-                                      autovalidateMode:
-                                          _detailSearchAutovalidateMode,
-                                      validator:
-                                          _detailSearchMinCommentValidator,
-                                      onChanged: (_) => setModalState(() {}),
-                                      labelText: '最低コメント数（任意）',
-                                      hintText: '30',
-                                      prefixIcon: const Icon(
-                                        Icons.comment_outlined,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height:
-                                          RakutenSearchScreenUi.sheetBlockGap,
-                                    ),
-                                    Consumer<SavedShopProvider>(
-                                      builder: (context, savedProv, _) {
-                                        final shops =
-                                            _sanitizedSavedShopsForSearch(
-                                              savedProv.shops,
-                                            );
-                                        return RakutenSearchSavedShopPicker(
-                                          shops: shops,
-                                          selectedShopCode: _selectedShopCode,
-                                          onShopChanged: (value) {
-                                            _setSelectedShopCode(
-                                              context,
-                                              value,
-                                            );
+                                    _buildAdvancedSearchFieldsSection(
+                                      context: sheetContext,
+                                      advancedAllowed:
+                                          _canUseAdvancedRakutenSearchConditions(),
+                                      fields: [
+                                        RakutenSearchPriceRangeRow(
+                                          minPriceController:
+                                              _minPriceController,
+                                          maxPriceController:
+                                              _maxPriceController,
+                                          autovalidateMode:
+                                              _detailSearchAutovalidateMode,
+                                          onFieldChanged: () {
+                                            setModalState(() {});
+                                            _detailSearchFormKey.currentState
+                                                ?.validate();
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: RakutenSearchScreenUi
+                                              .sheetBlockGap,
+                                        ),
+                                        AppTextField(
+                                          controller: _excludeKeywordController,
+                                          onChanged: (_) =>
+                                              setModalState(() {}),
+                                          labelText: '除外ワード（任意）',
+                                          hintText: '中古 訳あり',
+                                          prefixIcon: const Icon(
+                                            Icons.block_outlined,
+                                          ),
+                                          maxLength:
+                                              AppInputLimits.searchKeywordMax,
+                                          inputFormatters: AppInputLimits
+                                              .singleLineKeywordFormatters(),
+                                          autovalidateMode:
+                                              _detailSearchAutovalidateMode,
+                                          validator:
+                                              _detailSearchExcludeKeywordValidator,
+                                        ),
+                                        const SizedBox(
+                                          height: RakutenSearchScreenUi
+                                              .sheetBlockGap,
+                                        ),
+                                        RakutenSearchMinReviewDropdownRow(
+                                          selectedReviewCount:
+                                              _keywordSheetSelectedReviewCount(),
+                                          selectedReviewAverage:
+                                              _keywordSheetSelectedReviewAverage(),
+                                          onReviewCountChanged: (v) {
+                                            setState(() {
+                                              _minReviewCountController.text =
+                                                  v == null ? '' : '$v';
+                                            });
                                             setModalState(() {});
                                           },
-                                          onNavigateToSavedShops: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            Navigator.of(sheetContext).pop();
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback((_) {
-                                                  if (!screenContext.mounted) {
-                                                    return;
-                                                  }
-                                                  Navigator.of(
-                                                    screenContext,
-                                                  ).push(
-                                                    MaterialPageRoute<void>(
-                                                      builder: (_) =>
-                                                          const SavedShopsScreen(),
-                                                    ),
-                                                  );
-                                                });
+                                          onReviewAverageChanged: (v) {
+                                            setState(() {
+                                              _minReviewAverageController.text =
+                                                  v == null
+                                                  ? ''
+                                                  : v.toStringAsFixed(1);
+                                            });
+                                            setModalState(() {});
                                           },
-                                        );
-                                      },
+                                        ),
+                                        const SizedBox(
+                                          height: RakutenSearchScreenUi
+                                              .sheetBlockGap,
+                                        ),
+                                        AppTextField(
+                                          controller: _minCommentCountController,
+                                          keyboardType: TextInputType.number,
+                                          maxLength: AppInputLimits
+                                              .countFieldMaxDigits,
+                                          inputFormatters: AppInputLimits
+                                              .countDigitsFormatters(),
+                                          autovalidateMode:
+                                              _detailSearchAutovalidateMode,
+                                          validator:
+                                              _detailSearchMinCommentValidator,
+                                          onChanged: (_) =>
+                                              setModalState(() {}),
+                                          labelText: '最低コメント数（任意）',
+                                          hintText: '30',
+                                          prefixIcon: const Icon(
+                                            Icons.comment_outlined,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: RakutenSearchScreenUi
+                                              .sheetBlockGap,
+                                        ),
+                                        Consumer<SavedShopProvider>(
+                                          builder: (context, savedProv, _) {
+                                            final shops =
+                                                _sanitizedSavedShopsForSearch(
+                                                  savedProv.shops,
+                                                );
+                                            return RakutenSearchSavedShopPicker(
+                                              shops: shops,
+                                              selectedShopCode: _selectedShopCode,
+                                              onShopChanged: (value) {
+                                                _setSelectedShopCode(
+                                                  context,
+                                                  value,
+                                                );
+                                                setModalState(() {});
+                                              },
+                                              onNavigateToSavedShops: () {
+                                                FocusManager
+                                                    .instance
+                                                    .primaryFocus
+                                                    ?.unfocus();
+                                                Navigator.of(sheetContext).pop();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                      if (!screenContext
+                                                          .mounted) {
+                                                        return;
+                                                      }
+                                                      Navigator.of(
+                                                        screenContext,
+                                                      ).push(
+                                                        MaterialPageRoute<void>(
+                                                          builder: (_) =>
+                                                              const SavedShopsScreen(),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        if (_mode ==
+                                            _RakutenSearchMode.product) ...[
+                                          const SizedBox(
+                                            height: RakutenSearchScreenUi
+                                                .sheetBlockGap,
+                                          ),
+                                          RakutenSearchGenreDrilldownRow(
+                                            selectedGenreId:
+                                                _productDetailGenreId,
+                                            onGenreChanged: (value) {
+                                              _setProductDetailGenreId(value);
+                                              setModalState(() {});
+                                            },
+                                          ),
+                                        ],
+                                      ],
                                     ),
-                                    if (_mode ==
-                                        _RakutenSearchMode.product) ...[
-                                      const SizedBox(
-                                        height:
-                                            RakutenSearchScreenUi.sheetBlockGap,
-                                      ),
-                                      RakutenSearchGenreDrilldownRow(
-                                        selectedGenreId: _productDetailGenreId,
-                                        onGenreChanged: (value) {
-                                          _setProductDetailGenreId(value);
-                                          setModalState(() {});
-                                        },
-                                      ),
-                                    ],
                                   ],
                                 ),
                               ),
@@ -4464,20 +4629,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       return;
     }
     _logSearchModeStateAudit(event: 'beforeSearch', context: context);
-    final condition = _sanitizeConditionForActiveMode(
-      context,
-      RakutenProductSearchCondition(
-        keyword: _genreController.text,
-        minPrice: _parseInt(_minPriceController.text),
-        maxPrice: _parseInt(_maxPriceController.text),
-        excludeKeyword: _excludeKeywordController.text,
-        minReviewCount: _parseInt(_minReviewCountController.text),
-        minReviewAverage: _parseDouble(_minReviewAverageController.text),
-        minCommentCount: _parseInt(_minCommentCountController.text),
-        shopCode: null,
-        genreId: _selectedGenreId,
-        sort: _apiSortParamForMode(_genreExploreSort),
-      ).normalized(),
+    final condition = _guardSearchConditionForPlan(
+      _sanitizeConditionForActiveMode(
+        context,
+        RakutenProductSearchCondition(
+          keyword: _genreController.text,
+          minPrice: _parseInt(_minPriceController.text),
+          maxPrice: _parseInt(_maxPriceController.text),
+          excludeKeyword: _excludeKeywordController.text,
+          minReviewCount: _parseInt(_minReviewCountController.text),
+          minReviewAverage: _parseDouble(_minReviewAverageController.text),
+          minCommentCount: _parseInt(_minCommentCountController.text),
+          shopCode: null,
+          genreId: _selectedGenreId,
+          sort: _apiSortParamForMode(_effectiveGenreSort()),
+        ).normalized(),
+      ),
     );
     if (kDebugMode) {
       importantDebugLog(
@@ -4893,6 +5060,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenKeywordSearchSortMode next,
   ) {
+    if (!_canUseAdvancedRakutenSearchConditions()) return;
     final normalized = normalizeRakutenKeywordSearchSortMode(next);
     if (_keywordSort == normalized) return;
     setState(() => _keywordSort = normalized);
@@ -4908,6 +5076,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenKeywordSearchSortMode next,
   ) {
+    if (!_canUseAdvancedRakutenSearchConditions()) return;
     final normalized = normalizeRakutenKeywordSearchSortMode(next);
     if (_genreExploreSort == normalized) return;
     setState(() => _genreExploreSort = normalized);
