@@ -161,3 +161,581 @@ E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
 E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
 E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
 I/flutter ( 9756): [AUTO_REACTION_SYNC] skipped reason=noHistory
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_001.png
+W/o.room_manager2( 9756): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2( 9756): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_002.png
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_003.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_004.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=genreSearch event=restore resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=genreSearch event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:47993c7d: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9d7bb02f: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9d7bb02f: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:47993c7d: onShown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_005.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:e537ac8c: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:e537ac8c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/flutter ( 9756): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 9756): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 9756): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 9756): [Rakuten] keyword search execute keyword="水筒" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=367 savedShopExcludeSet=1 
+I/flutter ( 9756): [SEARCH_EXECUTE_TRACE] sessionId=3 mode=product keyword="水筒" selectedShopCode=- genreId=- startedAt=2026-06-17T10:13:02.299657
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:853940ee: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@9ad71eb
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:ddc12841: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:853940ee: onHidden
+I/flutter ( 9756): [Rakuten] response status=200 page=1 bytes=228829
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=784 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=0/100 dropReg=29 dropDup=0 dropAppFilter=1 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=2 bytes=232526
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=6/100 dropReg=24 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=429 success=true
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=3 bytes=238981
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=452 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=36/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=4 bytes=232559
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=355 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=30 visible=66/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=5 bytes=197020
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=200 rawCount=30 durationMs=398 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=5 raw=30 parsed=30 visible=94/100 dropReg=0 dropDup=0 dropAppFilter=2 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=6 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=6&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=6 bytes=211909
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=6 statusCode=200 rawCount=30 durationMs=433 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=6 raw=30 parsed=6 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=6 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 9756): [SEARCH_FETCH_100_AUDIT] mode=product keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=6 pagesSucceeded=6 pagesFailed=0 rawTotal=180 excludedCandidate=53 excludedDone=0 excludedSafety=3 excludedDuplicate=0 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 9756): [RakutenGenre][SUMMARY] total=156 resolved=156 unresolved=0 usedMaster=156 rawGenreNameEmpty=156
+I/flutter ( 9756): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=3 activeRequestId=3 accepted=true reason=currentSession
+I/flutter ( 9756): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter ( 9756): [SEARCH_API_RESULT_APPLY] sessionId=3 activeSessionId=3 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 9756): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 9756): [GenreMaster] search prefetch skip resolvedLocally=29
+I/flutter ( 9756): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter ( 9756): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_006.png
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_007.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=clearProvider resultCount=0
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:5e61e5eb: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:5e61e5eb: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:4cf4d9ac: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@f943363
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:f8c970d3: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:4cf4d9ac: onHidden
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:a1f30f69: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:a1f30f69: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:be962598: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@8cfbcd5
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:7cdda533: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:be962598: onHidden
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9313c25d: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9313c25d: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:18b42932: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@40e2224
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:65462ba2: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:18b42932: onHidden
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_008.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=genreSearch event=restore resultCount=0
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_009.png
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_010.png
+I/flutter ( 9756): [GENRE_SEARCH_UI_UNIFIED] oldGenreAreaVisible=false drilldownGenreAreaVisible=true label=ジャンルを選ぶ
+I/flutter ( 9756): [GENRE_PICKER_MODE] screen=searchCondition selectionMode=single usesCheckbox=false usesRadio=false
+I/flutter ( 9756): [GENRE_SELECTION_WIDGET_AUDIT] screen=searchCondition multiSelect=false widget=checkbox valid=true
+I/flutter ( 9756): [GENRE_TREE_OPEN] rootCount=39 source=searchCondition
+I/flutter ( 9756): [GENRE_DISPLAY_ORDER] source=searchCondition count=39 first=レディースファッション,メンズファッション,キッズ・ベビー・マタニティ,バッグ・小物・ブランド雑貨,靴
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_011.png
+I/flutter ( 9756): [GENRE_TREE_NAVIGATE] fromGenreId=(root) toGenreId=100371 depth=1 childrenCount=20
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_012.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:e6fa7936: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:e6fa7936: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:fe2c1bad: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@7c191bc
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:bccb087d: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:fe2c1bad: onHidden
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:dbf7fab9: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:dbf7fab9: onShown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_013.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:2650eed9: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@e505c54
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:cbd5d6f: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:2650eed9: onHidden
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_014.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:61c9ed7: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:61c9ed7: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:27d0dcb6: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@1d9763e
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:1008c2d9: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:27d0dcb6: onHidden
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=genreSearch event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_015.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_016.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=clearProvider resultCount=0
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 9756): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9eb8d2e9: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9eb8d2e9: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:404acc0d: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@e18cc31
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:35d0ade: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:404acc0d: onHidden
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_017.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:99336ada: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9e076cbd: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:9e076cbd: onShown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_018.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:401c89b0: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@d7bd069
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:6a12bf07: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:401c89b0: onHidden
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:60731611: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:60731611: onShown
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:f16d2336: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@d6469c6
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:bdd548ea: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:f16d2336: onHidden
+I/flutter ( 9756): [Rakuten] response status=200 page=1 bytes=202526
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=1 statusCode=200 rawCount=30 durationMs=558 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 9756): [Rakuten] response status=200 page=2 bytes=198617
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=2 statusCode=200 rawCount=30 durationMs=366 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=60/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 9756): [Rakuten] response status=200 page=3 bytes=212108
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=3 statusCode=200 rawCount=30 durationMs=463 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=90/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 9756): [Rakuten] response status=200 page=4 bytes=223562
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=4 statusCode=200 rawCount=30 durationMs=406 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=11 visible=100/100 dropReg=0 dropDup=1 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 9756): [SEARCH_FETCH_100_AUDIT] mode=shopDiscovery keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=1 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 9756): [RakutenGenre][SUMMARY] total=101 resolved=101 unresolved=0 usedMaster=101 rawGenreNameEmpty=101
+I/flutter ( 9756): [SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=7 activeRequestId=7 accepted=true reason=currentSession
+I/flutter ( 9756): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter ( 9756): [SEARCH_API_RESULT_APPLY] sessionId=7 activeSessionId=7 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 9756): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 9756): [GenreMaster] search prefetch skip resolvedLocally=5
+I/flutter ( 9756): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=100
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_019.png
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=clearProvider resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=0
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=restore resultCount=0
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:f16e3fed: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:f16e3fed: onShown
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_VALIDATION] shopSelected=true keyword=さかな normalizedKeyword=さかな valid=true reason=ok
+I/flutter ( 9756): [Rakuten] keyword search execute keyword="さかな" genreId=- genreName(lookup)=- shopCode=heiwaya shopName(saved lookup)=平和屋 hits=30 excludeRegistered=367 savedShopExcludeSet=0 
+I/flutter ( 9756): [SAVED_SHOP_SEARCH] apiShopCode=heiwaya keyword="さかな" itemCode=-
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_LIFECYCLE] requestId=9 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+I/flutter ( 9756): [SEARCH_EXECUTE_TRACE] sessionId=9 mode=savedShop keyword="さかな" selectedShopCode=heiwaya genreId=- startedAt=2026-06-17T10:15:15.364982
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_LIFECYCLE] requestId=9 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_LIFECYCLE] requestId=9 event=start shopCode=heiwaya keyword="さかな" genreId=- resultCount=- errorType=- errorMessage=-
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:747466a3: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@e20e677
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:8ba1dcbb: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:747466a3: onHidden
+I/flutter ( 9756): [Rakuten] response status=200 page=1 bytes=169278
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=savedShop page=1 statusCode=200 rawCount=30 durationMs=413 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=429 page=2 bytes=128
+I/flutter ( 9756): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter ( 9756): [RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=1000 page=2
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=2 bytes=160635
+I/flutter ( 9756): [RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=true statusCode=200
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=savedShop page=2 statusCode=200 rawCount=30 durationMs=1473 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=60/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=429 page=3 bytes=128
+I/flutter ( 9756): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter ( 9756): [RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=1000 page=3
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=3 bytes=164262
+I/flutter ( 9756): [RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=3 success=true statusCode=200
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=savedShop page=3 statusCode=200 rawCount=30 durationMs=1444 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=85/100 dropReg=0 dropDup=5 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=さかな genreId=- shopCode=heiwaya itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%81%95%E3%81%8B%E3%81%AA&shopCode=heiwaya&sort=-reviewCount
+I/flutter ( 9756): [Rakuten] response status=200 page=4 bytes=143557
+I/flutter ( 9756): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=savedShop page=4 statusCode=200 rawCount=27 durationMs=234 success=true
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion page=4 raw=27 parsed=23 visible=100/100 dropReg=0 dropDup=8 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9756): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 9756): [SEARCH_FETCH_100_AUDIT] mode=savedShop keyword=さかな genreId=- shopCode=heiwaya targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=117 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=13 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 9756): [RakutenGenre][SUMMARY] total=113 resolved=113 unresolved=0 usedMaster=113 rawGenreNameEmpty=113
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_API_RESPONSE] shopCode=heiwaya keyword="さかな" genreId=- displayCount=100 stopReason=reachedTarget pagesFailed=0
+I/flutter ( 9756): [SEARCH_REQUEST_RACE_GUARD] mode=savedShop requestId=9 activeRequestId=9 accepted=true reason=currentSession
+I/flutter ( 9756): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=3
+I/flutter ( 9756): [SEARCH_API_RESULT_APPLY] sessionId=9 activeSessionId=9 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_LIFECYCLE] requestId=9 event=success shopCode=heiwaya keyword="さかな" genreId=- resultCount=100 errorType=- errorMessage=-
+I/flutter ( 9756): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 9756): [GenreMaster] search prefetch skip resolvedLocally=5
+I/flutter ( 9756): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=savedShop attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=save resultCount=100
+I/flutter ( 9756): [PRODUCT_SAFETY_FILTER] source=savedShopSearch totalItems=0 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_EXECUTE] shopCode=heiwaya keyword="さかな" genreId=- minPrice=- maxPrice=- resultCount=100 success=true error=-
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_EXECUTE] shopCode=heiwaya keyword="さかな" genreId=- minPrice=- maxPrice=- resultCount=100 success=true error=-
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_020.png
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_EXECUTE] shopCode=heiwaya keyword="さかな" genreId=- minPrice=- maxPrice=- resultCount=100 success=true error=-
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+I/flutter ( 9756): [SAVED_SHOP_SEARCH_EXECUTE] shopCode=heiwaya keyword="さかな" genreId=- minPrice=- maxPrice=- resultCount=100 success=true error=-
+I/flutter ( 9756): [MONETIZATION_LIMIT] batchCandidateAdd surface=rakutenSearch allowed=true plan=free
+I/flutter ( 9756): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=save resultCount=100
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=50 filter= tab=done
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9756): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_021.png
+I/flutter ( 9756): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_022.png
+I/flutter ( 9756): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter ( 9756): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter ( 9756): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_023.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_024.png
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_025.png
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:96b5dae4: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 9756): showSoftInput() view=io.flutter.embedding.android.FlutterView{a2b718a VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring on
+D/InsetsController( 9756): show(ime(), fromIme=true)
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:96b5dae4: onShown
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:47f10d24: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 9756): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 9756): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@208943865 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@6c3a268
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:782d06cc: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 9756): com.stepbytestudio.room_manager2:47f10d24: onHidden
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_026.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_027.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_028.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_029.png
+I/flutter ( 9756): [ROOM_REACTION_ANALYTICS_NO_SIDE_EFFECT] candidateCount=317 doneCount=50 todayAppCollectCount=0 todayRoomImportCount=0 importedFromRoomCount=50 message=noMutation
+I/flutter ( 9756): [ROOM_REACTION_TREND_RENDER] target=reactionOnly itemsWithReaction=46 genreRows=5 shopRows=5 unknownGenreCount=1 unknownShopCount=1
+I/flutter ( 9756): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=46 itemsWithComment=2 topGenres=ドレス,コーヒー飲料,お茶飲料,シャツ・ブラウス,ネックレス・ペンダント topShops=パーティードレス通販 GIRL,静岡県牧之原市,ドリンク屋【水・ソフトドリンク】,ハニーキューブ,楽天24 ドリンク館 historyLoaded=false
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ROOM_REACTION_ANALYTICS_HISTORY] loaded=true topReactedProducts=0 deltaLikeItems=0 deltaCommentItems=0
+I/flutter ( 9756): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=46 itemsWithComment=2 topGenres=ドレス,コーヒー飲料,お茶飲料,シャツ・ブラウス,ネックレス・ペンダント topShops=パーティードレス通販 GIRL,静岡県牧之原市,ドリンク屋【水・ソフトドリンク】,ハニーキューブ,楽天24 ドリンク館 historyLoaded=true
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ROOMコレ][surface] tab=done surface=loading
+I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter ( 9756): [ROOMコレ][surface] tab=done surface=ok_list
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_030.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_031.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_032.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_033.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_034.png
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_035.png
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_036.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_037.png
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_038.png
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_039.png
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_040.png
+I/flutter ( 9756): [INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=false treePickerVisible=true reason=avoidDuplicateGenreSelectionArea
+I/flutter ( 9756): [GENRE_PICKER_MODE] screen=initialSetup selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter ( 9756): [GENRE_SELECTION_WIDGET_AUDIT] screen=initialSetup multiSelect=true widget=checkbox valid=true
+I/flutter ( 9756): [GENRE_TREE_OPEN] rootCount=39 source=initialSetup
+I/flutter ( 9756): [GENRE_DISPLAY_ORDER] source=initialSetup count=39 first=レディースファッション,メンズファッション,キッズ・ベビー・マタニティ,バッグ・小物・ブランド雑貨,靴
+I/flutter ( 9756): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=1 maxSelectable=3
+I/flutter ( 9756): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_041.png
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100371 postStyles=balance recommendationStarted=true recommendationCount=0 savedShopCount=1 shopSaved=false failedReason=
+I/flutter ( 9756): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=shopRecommend
+I/flutter ( 9756): [INITIAL_SETUP_SHOP_RECOMMEND_GENRE] genreId=100371 genreName=レディースファッション fallbackUsed=false fallbackReason=lastInSavedList
+I/flutter ( 9756): [INITIAL_SETUP_GENRE_BINDING] selectedGenreIds=100371 selectedGenreNames=レディースファッション shopRecommendGenreId=100371 shopRecommendGenreName=レディースファッション source=initialSetup matched=true reason=lastInSavedList
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100371 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&genreId=100371
+I/flutter ( 9756): [Rakuten] response status=200 page=1 bytes=114058
+I/flutter ( 9756): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100371 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&genreId=100371
+I/flutter ( 9756): [Rakuten] response status=200 page=2 bytes=111924
+I/flutter ( 9756): [Rakuten] page=2 parsedItems=30 / raw=30
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&genreId=100371
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100371 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] response status=200 page=3 bytes=127019
+I/flutter ( 9756): [Rakuten] page=3 parsedItems=30 / raw=30
+I/flutter ( 9756): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100371 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9756): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9756): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&genreId=100371
+I/flutter ( 9756): [Rakuten] response status=200 page=4 bytes=115045
+I/flutter ( 9756): [Rakuten] page=4 parsedItems=30 / raw=30
+I/flutter ( 9756): [Rakuten] repository search total mapped=120
+I/flutter ( 9756): [Rakuten] genreSearch mapped item count=120
+I/flutter ( 9756): [Rakuten] genreSearch before filter count=120
+I/flutter ( 9756): [Rakuten] genreSearch after filter count=120
+I/flutter ( 9756): [SEARCH_FETCH_100_AUDIT] mode=productSearch keyword= genreId=100371 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=4 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=120 stopReason=completed
+I/flutter ( 9756): [RakutenGenre][SUMMARY] total=120 resolved=120 unresolved=0 usedMaster=120 rawGenreNameEmpty=120
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] shopName=フクワウチ imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/page-to-sell-a-used/cabinet/211025a/1110210001632_1.jpg?_ex=128x128 reason=balance
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] shopName=フロントップ楽天市場店 imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/frontop/cabinet/09573857/tb1100201_0.jpg?_ex=128x128 reason=balance
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] shopName=トミーショップ 楽天市場店 imageCount=2 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/tomy-shopr/cabinet/12550825/alb2543200zxdm_0.jpg?_ex=128x128 reason=balance
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] shopName=モズラボ imageCount=2 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/mzymzy/cabinet/11994648/alb3980516ejpq_1.jpg?_ex=128x128 reason=balance
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] shopName=花りぼん imageCount=2 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/hanahana-ribbon/cabinet/12246987/alb95043_0.jpg?_ex=128x128 reason=balance
+I/flutter ( 9756): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100371 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=1 shopSaved=false failedReason=
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_042.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_043.png
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_044.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_045.png
+W/WindowOnBackDispatcher( 9756): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher( 9756): OnBackInvokedCallback is not enabled for the application.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\room_manager2_shot_046.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_100807.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_100807.mp4 (255188 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_100807\terminal_output_20260617_100807.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_100807.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_100807.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_100807.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_100807.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_100807.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
