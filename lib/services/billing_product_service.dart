@@ -124,7 +124,7 @@ class BillingProductService {
       final storeAvailable = await _gateway.isAvailable();
       if (!storeAvailable) {
         if (kDebugMode) {
-          debugPrint('[BILLING_PRODUCT] unavailable');
+          debugPrint('[BILLING_PRODUCT] query unavailable');
         }
         return BillingProductQueryResult.unavailable();
       }
@@ -139,8 +139,11 @@ class BillingProductService {
 
       if (kDebugMode) {
         debugPrint(
-          '[BILLING_PRODUCT] query completed found=${products.length} notFound=${response.notFoundIDs.length}',
+          '[BILLING_PRODUCT] query completed found=${products.length} notFound=${response.notFoundIDs.length} available=true',
         );
+        if (response.error != null) {
+          debugPrint('[BILLING_PRODUCT] query store error present');
+        }
       }
 
       return BillingProductQueryResult.fromProducts(
