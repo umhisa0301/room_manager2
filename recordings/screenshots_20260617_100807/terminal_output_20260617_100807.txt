@@ -59,3 +59,29 @@ Streaming flutter logs below...
 Launching lib\main.dart on SHG08 in debug mode...
 Running Gradle task 'assembleDebug'...                            196.7s
 √ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...          10.5s
+D/FlutterJNI( 9756): Beginning load of flutter...
+D/FlutterJNI( 9756): flutter (null) was loaded normally!
+I/flutter ( 9756): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 9756): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter ( 9756): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter ( 9756): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter ( 9756): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter ( 9756): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 9756): [ADMOB] initialization skipped ads=false
+I/flutter ( 9756): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter ( 9756): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter ( 9756): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9756): [ROOMコレ][surface] tab=done surface=ok_list
+Syncing files to device SHG08...                                
+I/flutter ( 9756): [AUTO_REACTION_SYNC] scheduled
+I/Choreographer( 9756): Skipped 206 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
+I/flutter ( 9756): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=50 filter= tab=done
+I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
+I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
