@@ -17,8 +17,9 @@ import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/home_post_milestone.dart';
-import '../utils/today_recommendation_ui_tags.dart';
+import '../models/room_activity_event.dart';
 import '../state/room_activity_event_provider.dart';
+import '../utils/room_reaction_status_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/saved_shop_provider.dart';
@@ -49,8 +50,14 @@ import '../widgets/monetization/monetization_ad_slot.dart';
 abstract final class _HomeUi {
   const _HomeUi._();
 
-  /// 主要ブロック同士（CTA・セクション・グループ）
-  static const double gapSection = 16;
+  /// 主要ブロック同士（カード間）
+  static const double gapSection = 14;
+
+  /// 白カード内 padding
+  static const EdgeInsets homeCardPadding = EdgeInsets.all(16);
+
+  /// ホーム白カードの角丸
+  static const double homeCardRadius = 20;
 
   /// ホーム ListView の左右（アプリ全体の [AppDimensions.screenPaddingH] より一段狭めて表示領域を確保）
   static const double screenPaddingH = 10;
@@ -133,11 +140,63 @@ abstract final class _HomeUi {
 
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: HomeScreenColors.cardShadowColor,
+      color: Colors.black.withValues(alpha: 0.05),
       offset: const Offset(0, 2),
       blurRadius: 10,
     ),
   ];
+
+  /// ホーム5ブロック共通の白カード装飾
+  static BoxDecoration homeCardDecoration() {
+    return BoxDecoration(
+      color: HomeScreenColors.homeCardFill,
+      borderRadius: BorderRadius.circular(homeCardRadius),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
+      boxShadow: cardShadow,
+    );
+  }
+
+  static TextStyle homeCardTitle(BuildContext context) {
+    return sectionTitle(context).copyWith(
+      fontSize: 19,
+      fontWeight: FontWeight.w800,
+      color: const Color(0xFF111827),
+      letterSpacing: -0.2,
+    );
+  }
+
+  static TextStyle homeCardSubtitle(BuildContext context) {
+    return sectionBody(context).copyWith(
+      fontSize: 13.5,
+      color: const Color(0xFF6B7280),
+      height: 1.35,
+    );
+  }
+
+  static TextStyle homeMetricLabel(BuildContext context) {
+    return tapHint(context).copyWith(
+      fontSize: 12.5,
+      fontWeight: FontWeight.w600,
+      color: const Color(0xFF6B7280),
+    );
+  }
+
+  static TextStyle homeMetricValue(BuildContext context) {
+    return bodyEmphasis(context).copyWith(
+      fontSize: 24,
+      fontWeight: FontWeight.w800,
+      color: const Color(0xFF111827),
+      height: 1.1,
+    );
+  }
+
+  static TextStyle homeFootnote(BuildContext context) {
+    return tapHint(context).copyWith(
+      fontSize: 12.5,
+      color: const Color(0xFF9CA3AF),
+      fontWeight: FontWeight.w500,
+    );
+  }
 
   /// 楽天で検索：説明＋CTA を1ブロックに（先頭単独ボタンの唐突感を抑える）
   static BoxDecoration searchEntrySectionDecoration() {
@@ -259,6 +318,7 @@ class HomePlaceholderScreen extends StatefulWidget {
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   DateTime? _lastAutoRegenerateTriedAt;
   int _reactionNoticeRefreshNonce = 0;
+  bool _isHomeRefreshing = false;
   static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
@@ -276,7 +336,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
             .tickSlowRoomMetadataEnrichmentIfNeeded(context),
       );
       homeSectionOrderLog(
-        'todayRoomOperation,roomColleManagement,roomSync,recentCandidates',
+        'todayRoomStatus,todayRoomWork,recentCandidates,todayGoal,dataUpdate',
       );
       unknownFloatingButtonAuditLog(
         screen: 'home',
@@ -321,6 +381,33 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       trigger: 'refresh',
     );
     _guard('skipReason=refreshDoesNotForceRegenerate');
+  }
+
+  Future<void> _handleHomeLatestRefresh(BuildContext context) async {
+    if (_isHomeRefreshing) return;
+    setState(() => _isHomeRefreshing = true);
+    var hadError = false;
+    try {
+      await _refreshHome();
+      if (!mounted) return;
+      setState(() => _reactionNoticeRefreshNonce++);
+      // TODO: 確認ダイアログなしで投稿取り込み＋反応確認を連続実行する場合はここに追加
+    } catch (_) {
+      hadError = true;
+    } finally {
+      if (mounted) setState(() => _isHomeRefreshing = false);
+    }
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          hadError
+              ? '一部の情報を更新できませんでした。時間をおいて再試行してください。'
+              : '最新の状態に更新しました',
+        ),
+      ),
+    );
   }
 
   void _openRoomList(
@@ -483,8 +570,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       events: actProvider.events,
                       now: now,
                     );
-                    final nTodayDone = collectLimit.todayCount;
-                    final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
                     final recentCandidates =
                         RakutenRoomHomeStats.candidatesNewestFirst(
                           items,
@@ -497,18 +582,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       now.day,
                     );
 
-                    final kpiProducts = items
-                        .map(RoomKpiProductRecord.fromManagedProduct)
-                        .toList(growable: false);
-                    final kpi = RoomKpiCalculator.calculate(
-                      products: kpiProducts,
-                      events: actProvider.events,
-                      now: now,
-                    );
-                    final hasTodaySuggestions = recProvider.totalCount > 0;
-                    final todayDoneCountForRec =
-                        (recProvider.totalCount - recProvider.pendingCount)
-                            .clamp(0, recProvider.totalCount);
                     final milestonePostCount =
                         RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
                           items,
@@ -523,6 +596,18 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               e.roomUrl.trim().isNotEmpty,
                         )
                         .length;
+
+                    final todayCandidateAddedCount =
+                        _countTodayCandidateAdded(
+                          actProvider.events,
+                          todayLocalDay,
+                        );
+                    final todayRoomPostCount = milestonePostCount;
+                    // TODO: 反応あり件数を「直近同期での変化件数」に置き換える（現状は反応取得済み商品の累計）
+                    final reactionCount =
+                        roomReactionAnalyticsHomeCtaCount(items);
+                    final unconfirmedReactionCount =
+                        _countUnconfirmedReactions(items);
 
                     return RefreshIndicator(
                       onRefresh: _refreshHome,
@@ -547,114 +632,67 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               ),
                               _HomeMomentumHeader(displayName: displayName),
                               SizedBox(height: _HomeUi.gapSection),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  _HomeTodayProgressCard(
-                                    kpi: kpi,
-                                    collectLimit: collectLimit,
-                                    candidateCount: nCandidate,
-                                    totalCount: recProvider.totalCount,
-                                    pendingCount: recProvider.pendingCount,
-                                    isCompleted: recProvider.isCompleted,
-                                    isLoading: recProvider.isLoading,
-                                    generationStatus:
-                                        recProvider.generationStatus,
-                                    hasTodaySuggestions: hasTodaySuggestions,
-                                    todayDoneCountForRec: todayDoneCountForRec,
-                                    milestonePostCount: milestonePostCount,
-                                    recTotalCount: recProvider.totalCount,
-                                    recommendationHintLine:
-                                        todayRecommendationHomeHintLine(
-                                          bundle: recProvider.bundle,
-                                          isLoading: recProvider.isLoading,
-                                          postStyleKeys: userProfileProvider
-                                              .profile
-                                              .postStyleList,
-                                        ),
-                                    recommendationStatusMessage:
-                                        recProvider.totalCount > 0
-                                        ? '今日は${recProvider.totalCount}件のおすすめを用意しました'
-                                        : recProvider.totalCount == 0 &&
-                                              (recProvider.generationStatus ==
-                                                      TodayRecommendationGenerationStatus
-                                                          .failedRateLimit ||
-                                                  recProvider.generationStatus ==
-                                                      TodayRecommendationGenerationStatus
-                                                          .failedApiError ||
-                                                  recProvider.generationStatus ==
-                                                      TodayRecommendationGenerationStatus
-                                                          .empty)
-                                        ? 'おすすめを準備できませんでした'
-                                        : null,
-                                    onOpenSearch: () {
-                                      _trace('trigger=cta');
-                                      _trace('action=openSearch');
-                                      openRakutenSearchScreen(context);
-                                    },
-                                    onOpenCandidates: () => _openRoomList(
-                                      context,
-                                      initialTabIndex: 0,
-                                    ),
-                                    onOpenActivity: () =>
-                                        _openActivity(context),
-                                    onPrimaryRecommendations: () =>
-                                        _openTodayRecommendations(context),
-                                  ),
-                                  HomeInAppNoticeSlot(
-                                    milestonePostCount: milestonePostCount,
-                                    recPendingCount: recProvider.pendingCount,
-                                    recTotalCount: recProvider.totalCount,
-                                    recIsLoading:
-                                        recProvider.isLoading ||
-                                        recProvider.generationStatus ==
-                                            TodayRecommendationGenerationStatus
-                                                .loading,
-                                    reactionHistoryRefreshNonce:
-                                        _reactionNoticeRefreshNonce,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: _HomeUi.gapSection),
-                              _RoomManagementSection(
+                              _TodayRoomStatusCard(
+                                todayCandidateAddedCount:
+                                    todayCandidateAddedCount,
+                                todayRoomPostCount: todayRoomPostCount,
+                                pendingCandidateCount: nCandidate,
+                                reactionCount: reactionCount,
                                 candidateTotal: nCandidate,
                                 doneTotal: nDone,
-                                todayDoneCount: nTodayDone,
-                                lastDoneAt: lastDone,
-                                onCandidateTap: () =>
-                                    _openRoomList(context, initialTabIndex: 0),
-                                onDoneTap: () =>
-                                    _openRoomList(context, initialTabIndex: 1),
-                                onTodayTap: () => _openRoomList(
-                                  context,
-                                  initialTabIndex: 1,
-                                  doneFilterLocalDay: todayLocalDay,
-                                ),
-                                onLastCollectTap: () => _openActivity(context),
+                                isRefreshing: _isHomeRefreshing,
+                                reactionHistoryRefreshNonce:
+                                    _reactionNoticeRefreshNonce,
+                                onRefresh: () =>
+                                    _handleHomeLatestRefresh(context),
+                              ),
+                              HomeInAppNoticeSlot(
+                                milestonePostCount: milestonePostCount,
+                                recPendingCount: recProvider.pendingCount,
+                                recTotalCount: recProvider.totalCount,
+                                recIsLoading:
+                                    recProvider.isLoading ||
+                                    recProvider.generationStatus ==
+                                        TodayRecommendationGenerationStatus
+                                            .loading,
+                                reactionHistoryRefreshNonce:
+                                    _reactionNoticeRefreshNonce,
                               ),
                               SizedBox(height: _HomeUi.gapSection),
-                              _HomeRoomPostImportSection(
-                                hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
-                                importedDoneCount: roomImportedDoneCount,
-                                onOpenRoomUrl: () =>
-                                    _openRoomUrlEditSheet(context),
-                                onReactionSyncCompleted: () => setState(
-                                  () => _reactionNoticeRefreshNonce++,
+                              _TodayRoomWorkCard(
+                                pendingCandidateCount: nCandidate,
+                                isRecommendationLoading:
+                                    recProvider.isLoading ||
+                                    recProvider.generationStatus ==
+                                        TodayRecommendationGenerationStatus
+                                            .loading,
+                                onOpenRecommendations: () =>
+                                    _openTodayRecommendations(context),
+                                onOpenPendingCandidates: () => _openRoomList(
+                                  context,
+                                  initialTabIndex: 0,
                                 ),
-                                onOpenReactionAnalytics: () {
-                                  logRoomReactionAnalyticsNavigation(
-                                    from: 'homeRoomSyncCard',
-                                    to: 'analysis',
-                                    reason: 'showReactionAnalytics',
-                                    scrollToRoomReactionSection: true,
-                                  );
-                                  context
-                                      .read<AppShellController>()
-                                      .openActivityTab(
-                                        subTabIndex: 1,
-                                        scrollToRoomReactionSection: true,
-                                      );
+                                onOpenSearch: () {
+                                  _trace('trigger=cta');
+                                  _trace('action=openSearch');
+                                  openRakutenSearchScreen(context);
                                 },
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
+                              _RecentCandidatesCard(
+                                candidates: recentCandidates,
+                                candidateTotalCount: nCandidate,
+                                onOpenCandidateTap: (productId) =>
+                                    _openRoomList(
+                                      context,
+                                      focusCandidateProductId: productId,
+                                    ),
+                                onOpenFullList: () => _openRoomList(context),
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
+                              _TodayGoalCard(
+                                postCount: milestonePostCount,
+                                collectLimit: collectLimit,
                               ),
                               _HomeLimitAlertCard(
                                 collectLimit: collectLimit,
@@ -666,15 +704,34 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 onActivity: () => _openActivity(context),
                               ),
                               SizedBox(height: _HomeUi.gapSection),
-                              _RecentCandidatesHomeSection(
-                                candidates: recentCandidates,
-                                candidateTotalCount: nCandidate,
-                                onOpenCandidateTap: (productId) =>
-                                    _openRoomList(
-                                      context,
-                                      focusCandidateProductId: productId,
-                                    ),
-                                onOpenFullList: () => _openRoomList(context),
+                              _DataUpdateCard(
+                                hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
+                                importedDoneCount: roomImportedDoneCount,
+                                unconfirmedReactionCount:
+                                    unconfirmedReactionCount,
+                                reactionHistoryRefreshNonce:
+                                    _reactionNoticeRefreshNonce,
+                                onOpenRoomUrl: () =>
+                                    _openRoomUrlEditSheet(context),
+                                onBatchRefresh: () =>
+                                    _handleHomeLatestRefresh(context),
+                                onOpenSyncHistory: () {
+                                  logRoomReactionAnalyticsNavigation(
+                                    from: 'homeDataUpdateCard',
+                                    to: 'analysis',
+                                    reason: 'openSyncHistory',
+                                    scrollToRoomReactionSection: true,
+                                  );
+                                  context
+                                      .read<AppShellController>()
+                                      .openActivityTab(
+                                        subTabIndex: 1,
+                                        scrollToRoomReactionSection: true,
+                                      );
+                                },
+                                onReactionSyncCompleted: () => setState(
+                                  () => _reactionNoticeRefreshNonce++,
+                                ),
                               ),
                               SizedBox(height: _HomeUi.gapSection),
                               const MonetizationAdSlot(
@@ -693,33 +750,567 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-String _formatSyncHistoryTime(String iso) {
+String _formatSyncHistoryTimeShort(String iso) {
   try {
     final dt = DateTime.parse(iso).toLocal();
-    final m = dt.month.toString().padLeft(2, '0');
-    final d = dt.day.toString().padLeft(2, '0');
     final h = dt.hour.toString().padLeft(2, '0');
     final min = dt.minute.toString().padLeft(2, '0');
-    return '${dt.year}/$m/$d $h:$min';
+    return '$h:$min';
   } catch (_) {
     return '未確認';
   }
 }
 
-/// ホーム：ROOM同期（取り込み・反応数・メンテナンス）。
-class _HomeRoomPostImportSection extends StatelessWidget {
-  const _HomeRoomPostImportSection({
+int _countTodayCandidateAdded(
+  List<RoomActivityEvent> events,
+  DateTime todayLocalDay,
+) {
+  final tomorrow = todayLocalDay.add(const Duration(days: 1));
+  return events
+      .where(
+        (e) =>
+            e.type == RoomActivityEventType.candidateAdded &&
+            !e.createdAt.isBefore(todayLocalDay) &&
+            e.createdAt.isBefore(tomorrow),
+      )
+      .length;
+}
+
+int _countUnconfirmedReactions(List<RakutenManagedProduct> items) {
+  var n = 0;
+  for (final e in items) {
+    if (RoomReactionStatusDisplay.chipLabelForProduct(e) == '未確認') {
+      n++;
+    }
+  }
+  return n;
+}
+
+/// 1. 今日のROOM状況
+class _TodayRoomStatusCard extends StatelessWidget {
+  const _TodayRoomStatusCard({
+    required this.todayCandidateAddedCount,
+    required this.todayRoomPostCount,
+    required this.pendingCandidateCount,
+    required this.reactionCount,
+    required this.candidateTotal,
+    required this.doneTotal,
+    required this.isRefreshing,
+    required this.reactionHistoryRefreshNonce,
+    required this.onRefresh,
+  });
+
+  final int todayCandidateAddedCount;
+  final int todayRoomPostCount;
+  final int pendingCandidateCount;
+  final int reactionCount;
+  final int candidateTotal;
+  final int doneTotal;
+  final bool isRefreshing;
+  final int reactionHistoryRefreshNonce;
+  final VoidCallback onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.homeCardDecoration(),
+      padding: _HomeUi.homeCardPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text('今日のROOM状況', style: _HomeUi.homeCardTitle(context)),
+              ),
+              Semantics(
+                label: 'ホーム 最新化',
+                button: true,
+                child: TextButton.icon(
+                  onPressed: isRefreshing ? null : onRefresh,
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF6B7280),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    minimumSize: const Size(0, 36),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  icon: isRefreshing
+                      ? const SizedBox(
+                          width: 14,
+                          height: 14,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.refresh_rounded, size: 16),
+                  label: Text(
+                    isRefreshing ? '更新中...' : '最新化',
+                    style: _HomeUi.tapHint(context).copyWith(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF6B7280),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          FutureBuilder<RoomReactionSyncHistoryEntry?>(
+            key: ValueKey<int>(reactionHistoryRefreshNonce),
+            future: RoomReactionSyncHistoryStore.loadLatest(),
+            builder: (context, snap) {
+              final last = snap.data;
+              final label = last == null
+                  ? '最終確認：未確認'
+                  : '最終確認：${_formatSyncHistoryTimeShort(last.syncedAtIso)}';
+              return Padding(
+                padding: const EdgeInsets.only(top: 2, bottom: 12),
+                child: Text(label, style: _HomeUi.homeFootnote(context)),
+              );
+            },
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: _HomeStatusMetricCell(
+                  label: '候補追加',
+                  value: '$todayCandidateAddedCount件',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _HomeStatusMetricCell(
+                  label: 'ROOM投稿',
+                  value: '$todayRoomPostCount件',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _HomeStatusMetricCell(
+                  label: '投稿待ち',
+                  value: '$pendingCandidateCount件',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _HomeStatusMetricCell(
+                  label: '反応あり',
+                  value: '$reactionCount件',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '全体：候補$candidateTotal件 / 投稿済$doneTotal件',
+            style: _HomeUi.homeFootnote(context),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeStatusMetricCell extends StatelessWidget {
+  const _HomeStatusMetricCell({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: _HomeUi.homeMetricLabel(context)),
+        const SizedBox(height: 4),
+        Text(value, style: _HomeUi.homeMetricValue(context)),
+      ],
+    );
+  }
+}
+
+/// 2. 今日のROOM作業
+class _TodayRoomWorkCard extends StatelessWidget {
+  const _TodayRoomWorkCard({
+    required this.pendingCandidateCount,
+    required this.isRecommendationLoading,
+    required this.onOpenRecommendations,
+    required this.onOpenPendingCandidates,
+    required this.onOpenSearch,
+  });
+
+  final int pendingCandidateCount;
+  final bool isRecommendationLoading;
+  final VoidCallback onOpenRecommendations;
+  final VoidCallback onOpenPendingCandidates;
+  final VoidCallback onOpenSearch;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.homeCardDecoration(),
+      padding: _HomeUi.homeCardPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('今日のROOM作業', style: _HomeUi.homeCardTitle(context)),
+          const SizedBox(height: 6),
+          Text(
+            'おすすめから候補を追加して、ROOM投稿まで進めましょう。',
+            style: _HomeUi.homeCardSubtitle(context),
+          ),
+          const SizedBox(height: 14),
+          Semantics(
+            label: 'ホーム おすすめコレを見る',
+            button: true,
+            child: _HomeHeroCtaButton(
+              icon: Icons.auto_awesome_rounded,
+              label: isRecommendationLoading ? '準備中...' : '✨ おすすめコレを見る',
+              onPressed: isRecommendationLoading ? null : onOpenRecommendations,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            '投稿待ち候補：$pendingCandidateCount件',
+            style: _HomeUi.homeCardSubtitle(context),
+          ),
+          const SizedBox(height: 8),
+          Semantics(
+            label: 'ホーム 投稿待ち候補を見る',
+            button: true,
+            child: _HomeSubNavButton(
+              label: '投稿待ち候補を見る',
+              onPressed: onOpenPendingCandidates,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text('もっと追加したいとき', style: _HomeUi.homeCardSubtitle(context)),
+          const SizedBox(height: 8),
+          Semantics(
+            label: 'ホーム 商品を探す',
+            button: true,
+            child: _HomeSubNavButton(label: '商品を探す', onPressed: onOpenSearch),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeSubNavButton extends StatelessWidget {
+  const _HomeSubNavButton({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 46,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color(0xFF374151),
+          backgroundColor: Colors.white,
+          side: const BorderSide(color: Color(0xFFE5E7EB)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(child: Text(label, textAlign: TextAlign.center)),
+            const Icon(Icons.chevron_right_rounded, size: 22),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 4. 今日の目標
+class _TodayGoalCard extends StatelessWidget {
+  const _TodayGoalCard({
+    required this.postCount,
+    required this.collectLimit,
+  });
+
+  final int postCount;
+  final RoomCollectPostLimitSnapshot collectLimit;
+
+  @override
+  Widget build(BuildContext context) {
+    final snapshot = HomePostMilestoneSnapshot.fromPostCount(
+      postCount,
+      useCalendarDayLabel: true,
+    );
+    final target = snapshot.nextMilestone ?? HomePostMilestoneSnapshot.milestones.last;
+    final showPaceWarning =
+        collectLimit.isAnyLimitReached ||
+        collectLimit.isHourlyWarning ||
+        collectLimit.isDailyWarning;
+
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.homeCardDecoration(),
+      padding: _HomeUi.homeCardPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('今日の目標', style: _HomeUi.homeCardTitle(context)),
+          const SizedBox(height: 10),
+          Text(
+            'ROOM投稿 $postCount / $target件',
+            style: _HomeUi.bodyEmphasis(context).copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF111827),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            snapshot.hintMessage,
+            style: _HomeUi.homeCardSubtitle(context),
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: snapshot.segmentProgress,
+              minHeight: 4,
+              backgroundColor: HomeScreenColors.progressTrack,
+              color: AppColors.accentPrimary.withValues(alpha: 0.85),
+            ),
+          ),
+          const SizedBox(height: 12),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              const chipGap = 6.0;
+              final chipWidth =
+                  (constraints.maxWidth -
+                      (HomePostMilestoneSnapshot.milestones.length - 1) *
+                          chipGap) /
+                  HomePostMilestoneSnapshot.milestones.length;
+              return Row(
+                children: [
+                  for (var i = 0;
+                      i < HomePostMilestoneSnapshot.milestones.length;
+                      i++) ...[
+                    if (i > 0) const SizedBox(width: chipGap),
+                    _HomeGoalSelectChip(
+                      label: '${HomePostMilestoneSnapshot.milestones[i]}件',
+                      selected:
+                          snapshot.nextMilestone ==
+                          HomePostMilestoneSnapshot.milestones[i],
+                      reached: snapshot.isMilestoneReached(
+                        HomePostMilestoneSnapshot.milestones[i],
+                      ),
+                      width: chipWidth,
+                    ),
+                  ],
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 10),
+          if (showPaceWarning) ...[
+            _CollectLimitProgressLine(
+              title: '直近24時間',
+              usedCount: collectLimit.todayCount,
+              limit: RoomCollectPostLimitSnapshot.dailyLimit,
+              state: collectLimit.dailyBarState,
+              rightLabel: 'あと${collectLimit.dailyRemaining}',
+              compact: true,
+            ),
+            const SizedBox(height: 6),
+            _CollectLimitProgressLine(
+              title: 'この1時間',
+              usedCount: collectLimit.hourCount,
+              limit: RoomCollectPostLimitSnapshot.hourlyLimit,
+              state: collectLimit.hourlyBarState,
+              rightLabel: 'あと${collectLimit.hourlyRemaining}',
+              footnote: collectLimit.isHourlyReached
+                  ? collectLimit.recoveryFootnote(DateTime.now())
+                  : null,
+              compact: true,
+            ),
+          ] else
+            Text(
+              collectLimit.todayCount <= 0 &&
+                      collectLimit.hourCount <= 0
+                  ? 'ROOM上限まで余裕があります'
+                  : '投稿ペース：問題ありません',
+              style: _HomeUi.homeFootnote(context),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeGoalSelectChip extends StatelessWidget {
+  const _HomeGoalSelectChip({
+    required this.label,
+    required this.selected,
+    required this.reached,
+    required this.width,
+  });
+
+  final String label;
+  final bool selected;
+  final bool reached;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    final fill = selected
+        ? AppColors.accentPrimary
+        : (reached
+              ? AppColors.accentLight.withValues(alpha: 0.55)
+              : Colors.white);
+    final border = selected
+        ? AppColors.accentPrimary
+        : const Color(0xFFE5E7EB);
+    final fg = selected
+        ? Colors.white
+        : (reached
+              ? AppColors.accentPrimary
+              : const Color(0xFF6B7280));
+
+    return Semantics(
+      label: 'ホーム 今日の目標 $label',
+      button: true,
+      child: Container(
+        width: width,
+        height: 34,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: fill,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: border),
+        ),
+        child: Text(
+          label,
+          style: _HomeUi.tapHint(context).copyWith(
+            fontSize: 12.5,
+            fontWeight: FontWeight.w800,
+            color: fg,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 3. 最近追加した候補（カード化）
+class _RecentCandidatesCard extends StatelessWidget {
+  const _RecentCandidatesCard({
+    required this.candidates,
+    required this.candidateTotalCount,
+    required this.onOpenCandidateTap,
+    required this.onOpenFullList,
+  });
+
+  final List<RakutenManagedProduct> candidates;
+  final int candidateTotalCount;
+  final void Function(String productId) onOpenCandidateTap;
+  final VoidCallback onOpenFullList;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasMore = candidateTotalCount > candidates.length;
+
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.homeCardDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: _HomeUi.homeCardPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '最近追加した候補',
+                  style: _HomeUi.homeCardTitle(context),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  candidateTotalCount == 0
+                      ? '追加すると表示されます'
+                      : '直近3件・タップでROOMコレへ',
+                  style: _HomeUi.homeCardSubtitle(context),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: _RecentCandidatesPanel(
+              embedInUnifiedSection: true,
+              compactPreview: true,
+              candidates: candidates,
+              onOpenCandidateTap: onOpenCandidateTap,
+            ),
+          ),
+          Semantics(
+            label: 'ホーム 最近追加した候補をすべて見る',
+            button: true,
+            child: _HomeCollectionListLink(
+              embeddedInSection: true,
+              onPressed: onOpenFullList,
+              title: hasMore ? 'すべて見る' : 'コレ一覧を開く',
+              hint: hasMore
+                  ? '候補 $candidateTotalCount 件・ROOMコレへ'
+                  : 'ROOMコレの一覧へ',
+              leadingIcon: hasMore
+                  ? Icons.view_list_outlined
+                  : Icons.playlist_add_check_outlined,
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+}
+
+/// 5. データ更新（取り込み・反応確認をコンパクトに）
+class _DataUpdateCard extends StatelessWidget {
+  const _DataUpdateCard({
     required this.hasRoomProfileUrl,
     required this.importedDoneCount,
+    required this.unconfirmedReactionCount,
+    required this.reactionHistoryRefreshNonce,
     required this.onOpenRoomUrl,
-    required this.onOpenReactionAnalytics,
+    required this.onBatchRefresh,
+    required this.onOpenSyncHistory,
     this.onReactionSyncCompleted,
   });
 
   final bool hasRoomProfileUrl;
   final int importedDoneCount;
+  final int unconfirmedReactionCount;
+  final int reactionHistoryRefreshNonce;
   final VoidCallback onOpenRoomUrl;
-  final VoidCallback onOpenReactionAnalytics;
+  final VoidCallback onBatchRefresh;
+  final VoidCallback onOpenSyncHistory;
   final VoidCallback? onReactionSyncCompleted;
 
   Future<void> _handleImport(BuildContext context) async {
@@ -981,7 +1572,6 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             ? RoomSyncCardCopy.reactionCheckBusyLabel
             : RoomSyncCardCopy.manualReactionCheckLabel;
         final showReactionButton = showReactionButtonSlot;
-        final showAnalysisLink = !syncBusy && hasRoomProfileUrl;
         roomSyncCardUxRenderLog(
           state: syncCardState,
           showImportButton: showImportButton,
@@ -1076,37 +1666,23 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
         return Container(
           width: double.infinity,
-          decoration: _HomeUi.searchEntrySectionDecoration(),
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+          decoration: _HomeUi.homeCardDecoration(),
+          padding: _HomeUi.homeCardPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                RoomSyncCardCopy.title,
-                style: _HomeUi.sectionTitle(context).copyWith(
-                  color: HomeScreenColors.accentSectionHeading,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+              Text('データ更新', style: _HomeUi.homeCardTitle(context)),
               const SizedBox(height: 10),
-              Text(
-                RoomSyncCardCopy.subtitle,
-                style: _HomeUi.sectionBody(context),
-              ),
-              const SizedBox(height: 14),
               if (!hasRoomProfileUrl) ...[
                 Text(
                   key: const Key('room_import_not_configured_message'),
                   'ROOMプロフィールURLを登録すると同期できます',
-                  style: _HomeUi.bodyEmphasis(
-                    context,
-                  ).copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                  style: _HomeUi.homeCardSubtitle(context),
                 ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: onOpenRoomUrl,
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
+                  icon: const Icon(Icons.link_rounded, size: 18),
                   label: const Text('ROOMプロフィールを登録'),
                 ),
               ] else ...[
@@ -1121,38 +1697,23 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(fontWeight: FontWeight.w800),
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'この間、検索や候補追加は一時停止されます。完了までしばらくお待ちください。',
-                          style: _HomeUi.tapHint(
-                            context,
-                          ).copyWith(fontSize: 13, height: 1.35),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          busyLead,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: HomeScreenColors.bodyOnSection,
-                              ),
-                        ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
+                        Text(busyLead, style: _HomeUi.homeCardSubtitle(context)),
+                        const SizedBox(height: 8),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(999),
                           child: LinearProgressIndicator(
-                            minHeight: 8,
+                            minHeight: 6,
                             value: busyProgress,
                             backgroundColor: HomeScreenColors.progressTrack,
                             color: AppColors.accentPrimary,
                           ),
                         ),
-                        const SizedBox(height: 14),
                       ],
                     ),
                   ),
                   if (showReactionButtonSlot) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     RoomSyncReactionButton(
                       screen: 'home',
                       enabled: false,
@@ -1161,130 +1722,93 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ),
                   ],
                 ] else ...[
-                  if (actionLocked && !syncBusy) ...[
-                    Text(
-                      bulk.blockingRoomTourUserMessage ??
-                          BulkOperationStateController.blockingSnackMessage,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.35,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                  if (importedDoneCount > 0) ...[
-                    FutureBuilder<RoomReactionSyncHistoryEntry?>(
-                      future: RoomReactionSyncHistoryStore.loadLatest(),
-                      builder: (context, snap) {
-                        final last = snap.data;
-                        final lastLabel = last == null
-                            ? '前回確認：未確認'
-                            : '前回確認：${_formatSyncHistoryTime(last.syncedAtIso)}';
-                        return Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: HomeScreenColors.deckFill,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: HomeScreenColors.deckOutline,
+                  FutureBuilder<RoomReactionSyncHistoryEntry?>(
+                    key: ValueKey<int>(reactionHistoryRefreshNonce),
+                    future: RoomReactionSyncHistoryStore.loadLatest(),
+                    builder: (context, snap) {
+                      final last = snap.data;
+                      final lastLabel = last == null
+                          ? '最終確認：未確認'
+                          : '最終確認：${_formatSyncHistoryTimeShort(last.syncedAtIso)}';
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(lastLabel, style: _HomeUi.homeCardSubtitle(context)),
+                          if (unconfirmedReactionCount > 0) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '反応未確認：$unconfirmedReactionCount件',
+                              style: _HomeUi.homeCardSubtitle(context),
                             ),
+                          ],
+                          const SizedBox(height: 4),
+                          Text(
+                            '自動確認：一定時間ごとに確認',
+                            style: _HomeUi.homeFootnote(context),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '取り込み済み：$importedDoneCount件',
-                                style: Theme.of(context).textTheme.titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w800),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                lastLabel,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(color: AppColors.textSecondary),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ] else ...[
-                    Text(
-                      'まだROOM投稿を取り込んでいません',
-                      style: _HomeUi.bodyEmphasis(
-                        context,
-                      ).copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      RoomSyncCardCopy.emptyImportHint,
-                      style: _HomeUi.tapHint(context),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-                  Consumer<RakutenManagedProductProvider>(
-                    builder: (context, managed, _) {
-                      final showLink =
-                          showAnalysisLink &&
-                          roomReactionAnalyticsHomeShowCta(managed.items);
-                      if (!showLink) return const SizedBox.shrink();
-                      roomSyncButtonRenderDecisionLog(
-                        'screen=home button=analysis visible=true enabled=true '
-                        'label=${RoomSyncCardCopy.analysisTabHint} reason=textLinkOnly',
-                      );
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                            onPressed: onOpenReactionAnalytics,
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: Text(
-                              '${RoomSyncCardCopy.analysisTabHint} ＞',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: AppColors.accentPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ),
-                        ),
+                        ],
                       );
                     },
                   ),
-                  if (showImportButton) ...[
-                    if (roomImportState.limitsEnforcementEnabled &&
-                        !roomImportState.unlimited &&
-                        roomImportState.allowed) ...[
-                      Text(
-                        roomImportLimitUsageHint(roomImportState) ??
-                            roomImportLimitTrialHint(),
-                        style: _HomeUi.tapHint(context),
+                  if (actionLocked && !syncBusy) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      bulk.blockingRoomTourUserMessage ??
+                          BulkOperationStateController.blockingSnackMessage,
+                      style: _HomeUi.homeFootnote(context),
+                    ),
+                  ],
+                  if (importedDoneCount <= 0) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'まだROOM投稿を取り込んでいません',
+                      style: _HomeUi.homeCardSubtitle(context),
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Semantics(
+                          label: 'ホーム まとめて更新',
+                          button: true,
+                          child: OutlinedButton(
+                            onPressed: canRunPrimary ? onBatchRefresh : null,
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(0, 44),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: const Text('まとめて更新'),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Semantics(
+                          label: 'ホーム 同期履歴を見る',
+                          button: true,
+                          child: OutlinedButton(
+                            onPressed: onOpenSyncHistory,
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(0, 44),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: const Text('同期履歴'),
+                          ),
+                        ),
+                      ),
                     ],
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: importButtonEnabled
-                            ? [
-                                BoxShadow(
-                                  color: AppColors.accentPrimary.withValues(
-                                    alpha: 0.18,
-                                  ),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ]
-                            : const [],
-                      ),
-                      child: FilledButton(
+                  ),
+                  if (showImportButton) ...[
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 44,
+                      child: OutlinedButton(
                         key: const Key('room_import_entry_button'),
                         onPressed: importButtonEnabled
                             ? () {
@@ -1295,41 +1819,16 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                                 _handleImport(context);
                               }
                             : null,
-                        style: FilledButton.styleFrom(
-                          foregroundColor: AppColors.textOnAccent,
-                          backgroundColor: AppColors.accentPrimary,
-                          elevation: 0,
-                          minimumSize: const Size(double.infinity, 52),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          textStyle: AppTextStyles.button.copyWith(
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
                         child: Text(
-                          importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む',
+                          importedDoneCount > 0
+                              ? '投稿済み商品を取り込む'
+                              : 'ROOM投稿を取り込む',
                         ),
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    if (roomImportState.limitsEnforcementEnabled &&
-                        !roomImportState.allowed)
-                      Text(
-                        roomImportLimitBlockedMessage(),
-                        key: const Key('room_import_limit_locked_hint'),
-                        style: _HomeUi.tapHint(context),
-                      )
-                    else
-                      Text(
-                        importedDoneCount > 0
-                            ? 'ROOMに投稿済みの商品をアプリに追加します。'
-                            : '過去のROOM投稿をコレ済に追加します。',
-                        style: _HomeUi.tapHint(context),
-                      ),
                   ],
                   if (showReactionButtonSlot) ...[
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     RoomSyncReactionButton(
                       screen: 'home',
                       enabled: reactionButtonEnabled,
@@ -1343,17 +1842,6 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                               _handleReactionSync(context);
                             }
                           : null,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      RoomSyncCardCopy.autoReactionCheckHint,
-                      style: _HomeUi.tapHint(context),
-                    ),
-                  ] else if (showImportButton) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      RoomSyncCardCopy.combinedFooterHint,
-                      style: _HomeUi.tapHint(context),
                     ),
                   ],
                   if (showRoomSyncMaintenanceDebugUi) ...[
@@ -2395,12 +2883,19 @@ class _HomeMomentumHeader extends StatelessWidget {
             nameLine,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
-              color: HomeScreenColors.titlePrimary,
+              fontSize: 21,
+              color: const Color(0xFF111827),
               height: 1.2,
             ),
           ),
           const SizedBox(height: 4),
-          Text(subLine, style: _HomeUi.sectionBody(context)),
+          Text(
+            subLine,
+            style: _HomeUi.sectionBody(context).copyWith(
+              fontSize: 14.5,
+              color: const Color(0xFF6B7280),
+            ),
+          ),
         ],
       ),
     );
@@ -2644,7 +3139,7 @@ class _HomeCollectionListLink extends StatelessWidget {
               border: Border(
                 top: BorderSide(color: _HomeUi.dividerLineColor()),
               ),
-              color: HomeScreenColors.recentFooterRowFill,
+              color: const Color(0xFFF9FAFB),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -3086,9 +3581,11 @@ class _RecentCandidateTile extends StatelessWidget {
           onTap: onTap,
           splashColor: HomeScreenColors.inkNeutralSplash,
           highlightColor: HomeScreenColors.inkNeutralHighlight,
-          child: Padding(
-            padding: contentPadding,
-            child: Row(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: Padding(
+              padding: contentPadding,
+              child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _thumb(thumbSize),
@@ -3132,6 +3629,7 @@ class _RecentCandidateTile extends StatelessWidget {
                   size: 20,
                 ),
               ],
+            ),
             ),
           ),
         ),

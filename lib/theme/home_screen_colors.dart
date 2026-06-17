@@ -21,11 +21,14 @@ abstract final class HomeScreenColors {
   HomeScreenColors._();
 
   // --- 1. 画面土台 ---
-  /// ホームのみキャンバスをわずかに沈め、カード面との差をはっきりさせる（アプリ共通背景は変えない）
-  static Color get canvas => Color.alphaBlend(
-    AppColors.textPrimary.withValues(alpha: 0.028),
-    AppColors.background,
-  );
+  /// ホーム画面の背景（カード白面とのコントラスト用）
+  static const Color canvas = Color(0xFFF6F7F9);
+
+  /// ホームカード面
+  static const Color homeCardFill = Color(0xFFFFFFFF);
+
+  /// ホームカード枠線
+  static const Color homeCardBorder = Color(0xFFE5E7EB);
 
   // --- 2. セクションのまとまり（基調）---
   static Color get groupedSectionFill => Color.alphaBlend(
