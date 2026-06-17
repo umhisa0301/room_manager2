@@ -85,3 +85,79 @@ I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=50 filt
 I/flutter ( 9756): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
 I/flutter ( 9756): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
 I/flutter ( 9756): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/WebViewFactory( 9756): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders( 9756): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 9756): Loading /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 9756): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 9756): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 9756): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader( 9756): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+I/cr_LibraryLoader( 9756): Successfully loaded native library
+I/cr_CachingUmaRecorder( 9756): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 9756): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 9756): #registerProvider() provider:WV.wk@8b8f36d isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 9756): #setManagerAndSource() 0
+I/cr_DisplayManager( 9756): Is Display Topology available: false
+I/cr_CombinedPProvider( 9756): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 9756): Compat change id reported: 183155436; UID 10506; state: ENABLED
+I/cr_AppResProvider( 9756): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 9756): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 9756): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 9756): #flushPolicies()
+W/chromium( 9756): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 68724951
+D/CompatibilityChangeReporter( 9756): Compat change id reported: 214741472; UID 10506; state: ENABLED
+I/CameraManagerGlobal( 9756): Connecting to camera service
+D/CompatibilityChangeReporter( 9756): Compat change id reported: 171228096; UID 10506; state: ENABLED
+Syncing files to device SHG08...                                   400ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:55051/_QJb1c3CABg=/
+I/PlatformViewsController( 9756): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 9756): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 9756): Compat change id reported: 236825255; UID 10506; state: ENABLED
+W/libc    ( 9756): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9756): type=1400 audit(0.0:83826): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter( 9756): Compat change id reported: 193247900; UID 10506; state: ENABLED
+I/Choreographer( 9756): Skipped 60 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 9756): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9756): type=1400 audit(0.0:83827): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 9756): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 9756): Build Date              : 08/23/22
+I/AdrenoVK-0( 9756): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 9756): Local Branch            : 
+I/AdrenoVK-0( 9756): Remote Branch           : 
+I/AdrenoVK-0( 9756): Remote Branch           : 
+I/AdrenoVK-0( 9756): Reconstruct Branch      : 
+I/AdrenoVK-0( 9756): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 9756): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 9756): Davey! duration=1066ms; Flags=1, FrameTimelineVsyncId=51580426, IntendedVsync=670466976651244, Vsync=670467976651204, InputEventId=0, HandleInputStart=670467987257829, AnimationStart=670467987259964, PerformTraversalsStart=670467987287620, DrawStart=670467999596110, FrameDeadline=670466993317910, FrameInterval=670467986877048, FrameStartTime=16666666, SyncQueued=670468034689600, SyncStart=670468034775329, IssueDrawCommandsStart=670468035292620, SwapBuffers=670468041113766, FrameCompleted=670468042984548, DequeueBufferDuration=2323177, QueueBufferDuration=1540886, GpuCompleted=670468042120068, SwapBuffersCompleted=670468042984548, DisplayPresentTime=0, CommandSubmissionCompleted=670468041113766, 
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+D/ProfileInstaller( 9756): Installing profile for com.stepbytestudio.room_manager2
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:55051/_QJb1c3CABg=/
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9756): updateAcquireFence: Did not find frame.
+I/flutter ( 9756): [AUTO_REACTION_SYNC] skipped reason=noHistory
