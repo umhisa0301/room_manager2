@@ -1,0 +1,378 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-21 01:27:37
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260621_012737.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260621_012737.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260621_012737.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260621_012737.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260621_012737.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_012737
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_012737\terminal_output_20260621_012737.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 9420).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                              3.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.6s
+D/FlutterJNI(28218): Beginning load of flutter...
+D/FlutterJNI(28218): flutter (null) was loaded normally!
+I/flutter (28218): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (28218): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (28218): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (28218): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (28218): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+Syncing files to device SHG08...                                    75ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:58986/3tnBfmXW5EU=/
+I/flutter (28218): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (28218): [ADMOB] initialization skipped ads=false
+I/flutter (28218): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (28218): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (28218): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (28218): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during performLayout():
+BoxConstraints forces an infinite height.
+These invalid constraints were provided to RenderConstrainedBox's layout() function by the following
+function, which probably computed the invalid constraints in question:
+  ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+The offending constraints were:
+  BoxConstraints(0.0<=w<=Infinity, h=Infinity)
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///C:/dev/app_project/room_manager2/lib/screens/products_placeholder_screen.dart:2184:24
+
+When the exception was thrown, this was the stack:
+#0      BoxConstraints.debugAssertIsValid.<anonymous closure>.throwError (package:flutter/src/rendering/box.dart:549:9)
+#1      BoxConstraints.debugAssertIsValid.<anonymous closure> (package:flutter/src/rendering/box.dart:614:11)
+#2      BoxConstraints.debugAssertIsValid (package:flutter/src/rendering/box.dart:619:6)
+#3      RenderObject.layout (package:flutter/src/rendering/object.dart:2662:19)
+#4      ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#5      RenderFlex._computeSizes (package:flutter/src/rendering/flex.dart:1161:28)
+#6      RenderFlex.performLayout (package:flutter/src/rendering/flex.dart:1257:32)
+#7      RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#8      RenderPadding.performLayout (package:flutter/src/rendering/shifted_box.dart:243:12)
+#9      RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#10     ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#11     RenderFlex._computeSizes (package:flutter/src/rendering/flex.dart:1161:28)
+#12     RenderFlex.performLayout (package:flutter/src/rendering/flex.dart:1257:32)
+#13     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#14     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#15     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#16     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#17     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#18     RenderPadding.performLayout (package:flutter/src/rendering/shifted_box.dart:243:12)
+#19     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#20     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#21     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1122:7)
+#22     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#23     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#24     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#25     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#26     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#27     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#29     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#30     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#31     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#32     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#33     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#34     ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#28     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#35     RenderStack._computeSize (package:flutter/src/rendering/stack.dart:645:43)
+#36     RenderStack.performLayout (package:flutter/src/rendering/stack.dart:672:12)
+#37     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#38     ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#39     RenderStack._computeSize (package:flutter/src/rendering/stack.dart:645:43)
+#40     RenderStack.performLayout (package:flutter/src/rendering/stack.dart:672:12)
+#41     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#42     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#43     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1122:7)
+#44     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#45     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#46     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#47     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#48     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#49     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#50     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#51     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#52     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#53     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#54     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#55     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#56     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#57     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#58     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#59     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#60     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#61     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#62     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#63     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#64     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#65     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#66     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#67     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#68     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#72     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#73     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#75     _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1085:13)
+#76     _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1430:9)
+#77     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#78     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#84     ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#85     RenderStack._computeSize (package:flutter/src/rendering/stack.dart:645:43)
+#86     RenderStack.performLayout (package:flutter/src/rendering/stack.dart:672:12)
+#87     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#88     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#89     RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2762:7)
+#103    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#104    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2610:7)
+#105    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1157:18)
+#106    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:15)
+#107    RendererBinding.drawFrame (package:flutter/src/rendering/binding.dart:629:23)
+#108    WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1261:13)
+#109    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#110    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#111    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#112    SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1057:9)
+#113    PlatformDispatcher.scheduleWarmUpFrame.<anonymous closure> (dart:ui/platform_dispatcher.dart:886:16)
+#117    _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:193:12)
+(elided 3 frames from class _Timer and dart:async-patch)
+
+The following RenderObject was being processed when the exception was fired: RenderFlex#d4982 relayoutBoundary=up11 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE:
+  creator: Row ← Padding ← Column ← Listener ← _GestureSemantics ← RawGestureDetector ←
+    GestureDetector ← MediaQuery ← Padding ← SafeArea ← KeyedSubtree-[GlobalKey#d0837] ← _BodyBuilder
+    ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=379.4, 0.0<=h<=Infinity)
+  size: MISSING
+  direction: horizontal
+  mainAxisAlignment: start
+  crossAxisAlignment: stretch
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+This RenderObject had the following descendants (showing up to depth 5):
+    child 1: RenderSemanticsAnnotations#215e1 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+      child: RenderConstrainedBox#08700 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+        child: RenderSemanticsAnnotations#80ea5 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+          child: RenderMouseRegion#b04da NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+            child: RenderTapRegion#8c875 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+    child 2: RenderConstrainedBox#fbc6c NEEDS-LAYOUT NEEDS-PAINT
+    child 3: RenderConstrainedBox#dcaff NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+      child: RenderSemanticsAnnotations#c2927 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+        child: RenderSemanticsAnnotations#15262 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+          child: _RenderInputPadding#2aa9a NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+            child: RenderConstrainedBox#2cad0 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+  mainAxisSize: max
+Another exception was thrown: RenderBox was not laid out: RenderFlex#d4982 relayoutBoundary=up11 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+Another exception was thrown: RenderBox was not laid out: RenderPadding#84429 relayoutBoundary=up10 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+Another exception was thrown: RenderBox was not laid out: RenderFlex#25892 relayoutBoundary=up9 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+Another exception was thrown: RenderBox was not laid out: RenderPointerListener#9e08c relayoutBoundary=up8 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+Another exception was thrown: RenderBox was not laid out: RenderSemanticsGestureHandler#20966 relayoutBoundary=up7 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+Another exception was thrown: RenderBox was not laid out: RenderPadding#cf7b3 relayoutBoundary=up6 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+I/flutter (28218): [AUTO_REACTION_SYNC] scheduled
+I/Choreographer(28218): Skipped 198 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:58986/3tnBfmXW5EU=/
+I/flutter (28218): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (28218): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/flutter (28218): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (28218): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (28218): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (28218): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (28218): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/WebViewFactory(28218): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(28218): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/nativeloader(28218): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(28218): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(28218): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(28218): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/chromium(28218): [0621/012800.731353:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(28218): Successfully loaded native library
+I/cr_CachingUmaRecorder(28218): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(28218): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(28218): #registerProvider() provider:WV.wk@a523add isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(28218): #setManagerAndSource() 0
+I/cr_policy(28218): registerReceiver succeeded after 4ms
+I/cr_DisplayManager(28218): Is Display Topology available: false
+I/cr_CombinedPProvider(28218): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(28218): Compat change id reported: 183155436; UID 10506; state: ENABLED
+I/cr_AppResProvider(28218): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(28218): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(28218): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(28218): #flushPolicies()
+W/chromium(28218): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 75906610
+D/CompatibilityChangeReporter(28218): Compat change id reported: 214741472; UID 10506; state: ENABLED
+I/flutter (28218): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/cr_AppResProvider(28218): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(28218): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(28218): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(28218): #flushPolicies()
+I/CameraManagerGlobal(28218): Connecting to camera service
+D/CompatibilityChangeReporter(28218): Compat change id reported: 171228096; UID 10506; state: ENABLED
+D/CompatibilityChangeReporter(28218): Compat change id reported: 193247900; UID 10506; state: ENABLED
+I/PlatformViewsController(28218): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(28218): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(28218): Compat change id reported: 236825255; UID 10506; state: ENABLED
+W/libc    (28218): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(28218): type=1400 audit(0.0:11922): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+I/Choreographer(28218): Skipped 49 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2(28218): type=1400 audit(0.0:11923): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (28218): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/AdrenoVK-0(28218): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(28218): Build Date              : 08/23/22
+I/AdrenoVK-0(28218): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(28218): Local Branch            : 
+I/AdrenoVK-0(28218): Remote Branch           : 
+I/AdrenoVK-0(28218): Remote Branch           : 
+I/AdrenoVK-0(28218): Reconstruct Branch      : 
+I/AdrenoVK-0(28218): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(28218): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(28218): Davey! duration=873ms; Flags=1, FrameTimelineVsyncId=28741250, IntendedVsync=92658652409222, Vsync=92659469260194, InputEventId=0, HandleInputStart=92659485160901, AnimationStart=92659485162151, PerformTraversalsStart=92659485185380, DrawStart=92659494152411, FrameDeadline=92658669075888, FrameInterval=92659484866370, FrameStartTime=16666666, SyncQueued=92659519089286, SyncStart=92659519753557, IssueDrawCommandsStart=92659520569130, SwapBuffers=92659525124182, FrameCompleted=92659526284130, DequeueBufferDuration=2302500, QueueBufferDuration=837709, GpuCompleted=92659526148089, SwapBuffersCompleted=92659526284130, DisplayPresentTime=0, CommandSubmissionCompleted=92659525124182, 
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(28218): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(28218): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(28218): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+E/FrameEvents(28218): updateAcquireFence: Did not find frame.
+I/flutter (28218): [AUTO_REACTION_SYNC] skipped reason=recentSync
+W/o.room_manager2(28218): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(28218): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (28218): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (28218): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (28218): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260621_012737.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260621_012737.mp4 (0 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_012737
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_012737\terminal_output_20260621_012737.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260621_012737.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260621_012737.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260621_012737.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260621_012737.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260621_012737.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
