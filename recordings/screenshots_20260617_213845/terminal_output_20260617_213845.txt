@@ -1,0 +1,302 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-17 21:38:45
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: emulator-5558
+Device manufacturer: Google
+Device model: sdk_gphone64_x86_64
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : emulator-5558
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_213845.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_213845.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_213845.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_213845.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_213845.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213845
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213845\terminal_output_20260617_213845.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 26372).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d emulator-5558 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...                             15.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...       
+F/bluetooth(25572): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting Controller
+F/bluetooth(25572): system/gd/hci/hci_layer.cc:70 abort_after_time_out: Done waiting for debug information after HCI timeout (LE_READ_BUFFER_SIZE_V2(0x2060))
+F/crash_dump64(25753): crash_dump.cpp:688] failed to seize pseudothread: failed to attach to thread 25750: No such process
+Installing build\app\outputs\flutter-apk\app-debug.apk...         138.5s
+F/bluetooth(25951): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting Controller
+D/FlutterJNI(26077): Beginning load of flutter...
+D/FlutterJNI(26077): flutter (null) was loaded normally!
+I/flutter (26077): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+E/AndroidRuntime(25156): FATAL EXCEPTION: main
+E/AndroidRuntime(25156): Process: com.google.android.apps.wellbeing, PID: 25156
+E/AndroidRuntime(25156): nux: 
+E/AndroidRuntime(25156): 	at tk_trace.handleBroadcast(Unknown Source:0)
+E/AndroidRuntime(25156): 	at tk_trace.Broadcast to com.google.android.apps.wellbeing.common.receiver.coalescedreceivers.PackageFullyRemovedCoalescedBroadcast_Receiver android.intent.action.PACKAGE_FULLY_REMOVED(Unknown Source:0)
+E/AndroidRuntime(25156): Caused by: osm: Timed out (timeout delayed by 10440 ms after scheduled time): rrk@6897919[status=PENDING, delegate=[osj@dc45dde[status=PENDING]]]
+Syncing files to device sdk gphone64 x86 64...                     159ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on sdk gphone64 x86 64 is available at: http://127.0.0.1:55918/4GpskhlK4Kk=/
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.googlemobileads.usermessagingplatform.UserMessagingPlatformManager.onMethodCall(io.flutter.plugin.common.MethodCall, io.flutter.plugin.common.MethodChannel$Result) took 185.445ms (2674.64 bytecodes/s) (14520B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.inapppurchase.InAppPurchasePlugin.setUpMethodChannel(io.flutter.plugin.common.BinaryMessenger, android.content.Context) took 151.028ms (158.91 bytecodes/s) (2920B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.inapppurchase.Messages$InAppPurchaseCallbackApi.lambda$onBillingServiceDisconnected$0(io.flutter.plugins.inapppurchase.Messages$VoidResult, java.lang.String, java.lang.Object) took 159.651ms (331.97 bytecodes/s) (3368B approximate peak alloc)
+W/o.room_manager2(26077): Verification of io.flutter.plugins.inapppurchase.Messages$PlatformBillingResult io.flutter.plugins.inapppurchase.MethodCallHandlerImpl.launchBillingFlow(io.flutter.plugins.inapppurchase.Messages$PlatformBillingFlowParams) took 240.600ms (1891.10 bytecodes/s) (11904B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.sharedpreferences.Messages$SharedPreferencesApi.setUp(io.flutter.plugin.common.BinaryMessenger, java.lang.String, io.flutter.plugins.sharedpreferences.Messages$SharedPreferencesApi) took 299.412ms (1376.03 bytecodes/s) (11464B approximate peak alloc)
+W/o.room_manager2(26077): Verification of android.os.Bundle io.flutter.plugins.urllauncher.UrlLauncher.extractBundle(java.util.Map) took 103.470ms (347.93 bytecodes/s) (2944B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.lang.String io.flutter.plugins.urllauncher.UrlLauncher.lambda$new$0(android.content.Context, android.content.Intent) took 138.366ms (122.86 bytecodes/s) (2664B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.webviewflutter.AndroidWebkitLibraryPigeonProxyApiRegistrar.<init>(io.flutter.plugin.common.BinaryMessenger) took 105.123ms (342.46 bytecodes/s) (3008B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.webviewflutter.AndroidWebkitLibraryPigeonProxyApiRegistrar.setUp() took 660.478ms (398.20 bytecodes/s) (10232B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.lang.Object io.flutter.plugins.webviewflutter.AndroidWebkitLibraryPigeonCodec.readValueOfType(byte, java.nio.ByteBuffer) took 100.853ms (1457.56 bytecodes/s) (5512B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.webviewflutter.AndroidWebkitLibraryPigeonProxyApiBaseCodec.writeValue(java.io.ByteArrayOutputStream, java.lang.Object) took 230.247ms (3869.75 bytecodes/s) (35160B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.webviewflutter.PigeonApiWebView$Companion.setUpMessageHandlers(io.flutter.plugin.common.BinaryMessenger, io.flutter.plugins.webviewflutter.PigeonApiWebView) took 185.259ms (3967.42 bytecodes/s) (20656B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.plugins.webviewflutter.PigeonApiWebViewClient.$r8$lambda$LZEMFUypvil4CPcZrVJyIj7SKt8(kotlin.jvm.functions.Function1, java.lang.String, java.lang.Object) took 242.864ms (16.47 bytecodes/s) (2120B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.embedding.android.FlutterSurfaceView$1.surfaceChanged(android.view.SurfaceHolder, int, int, int) took 100.995ms (207.93 bytecodes/s) (2624B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void io.flutter.embedding.android.FlutterView.attachToFlutterEngine(io.flutter.embedding.engine.FlutterEngine) took 167.384ms (2419.57 bytecodes/s) (11920B approximate peak alloc)
+W/o.room_manager2(26077): Verification of io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper io.flutter.embedding.android.FlutterView.createWindowInfoRepo() took 109.253ms (219.67 bytecodes/s) (2976B approximate peak alloc)
+W/o.room_manager2(26077): Verification of boolean io.flutter.embedding.android.FlutterView.dispatchKeyEvent(android.view.KeyEvent) took 129.964ms (438.58 bytecodes/s) (3560B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.util.List io.flutter.embedding.engine.renderer.FlutterRenderer$ViewportMetrics.access$1100(io.flutter.embedding.engine.renderer.FlutterRenderer$ViewportMetrics) took 292.557ms (10.25 bytecodes/s) (2112B approximate peak alloc)
+W/o.room_manager2(26077): Verification of boolean io.flutter.embedding.android.KeyEmbedderResponder.handleEventImpl(android.view.KeyEvent, io.flutter.embedding.android.KeyboardManager$Responder$OnKeyEventHandledCallback) took 145.516ms (2405.23 bytecodes/s) (10000B approximate peak alloc)
+W/o.room_manager2(26077): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/o.room_manager2(26077): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/o.room_manager2(26077): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/o.room_manager2(26077): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+W/HWUI    (26077): Unknown dataspace 0
+I/o.room_manager2(26077): WaitForGcToComplete blocked ProfileSaver on None for 71.880ms
+I/flutter (26077): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (26077): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (26077): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (26077): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+The Flutter DevTools debugger and profiler on sdk gphone64 x86 64 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:55918/4GpskhlK4Kk=/
+D/ProfileInstaller(26077): Installing profile for com.stepbytestudio.room_manager2
+W/o.room_manager2(26077): Verification of java.lang.Object androidx.concurrent.futures.AbstractResolvableFuture.getFutureValue(com.google.common.util.concurrent.ListenableFuture) took 222.725ms (534.29 bytecodes/s) (4976B approximate peak alloc)
+W/o.room_manager2(26077): Verification of boolean androidx.concurrent.futures.AbstractResolvableFuture$SafeAtomicHelper.casListeners(androidx.concurrent.futures.AbstractResolvableFuture, androidx.concurrent.futures.AbstractResolvableFuture$Listener, androidx.concurrent.futures.AbstractResolvableFuture$Listener) took 840.415ms (8.33 bytecodes/s) (2408B approximate peak alloc)
+I/Choreographer(26077): Skipped 1168 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2(26077): Verification of void androidx.profileinstaller.ProfileVerifier$Api33Impl.<init>() took 265.831ms (15.05 bytecodes/s) (2136B approximate peak alloc)
+W/o.room_manager2(26077): Verification of androidx.profileinstaller.ProfileVerifier$Cache androidx.profileinstaller.ProfileVerifier$Cache.readFromFile(java.io.File) took 439.718ms (106.89 bytecodes/s) (3336B approximate peak alloc)
+W/o.room_manager2(26077): Verification of boolean androidx.window.layout.WindowInfoTracker$Companion.access$getDEBUG$p() took 451.188ms (6.65 bytecodes/s) (1992B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void androidx.window.layout.WindowInfoTracker$Companion.overrideDecorator(androidx.window.layout.WindowInfoTrackerDecorator) took 366.086ms (21.85 bytecodes/s) (2296B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.reflect.KType kotlin.jvm.internal.Reflection.mutableCollectionType(kotlin.reflect.KType) took 135.186ms (51.78 bytecodes/s) (2208B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.reflect.KTypeParameter kotlin.jvm.internal.Reflection.typeParameter(java.lang.Object, java.lang.String, kotlin.reflect.KVariance, boolean) took 148.523ms (47.13 bytecodes/s) (2320B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.lang.String kotlin.collections.ArraysKt___ArraysJvmKt.contentToString(byte[]) took 114.181ms (87.58 bytecodes/s) (2352B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.util.List kotlin.TuplesKt.toList(kotlin.Triple) took 102.471ms (253.73 bytecodes/s) (2632B approximate peak alloc)
+W/o.room_manager2(26077): Verification of androidx.window.layout.adapter.WindowBackend androidx.window.layout.WindowInfoTracker$Companion$extensionBackend$2.invoke() took 447.294ms (149.79 bytecodes/s) (4296B approximate peak alloc)
+I/WindowExtensionsImpl(26077): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+W/o.room_manager2(26077): Verification of void androidx.window.java.core.CallbackToFlowAdapter.disconnect(androidx.core.util.Consumer) took 179.828ms (250.24 bytecodes/s) (3248B approximate peak alloc)
+W/o.room_manager2(26077): Verification of android.content.Context androidx.core.content.ContextCompat.getContextForLanguage(android.content.Context) took 182.040ms (208.74 bytecodes/s) (2888B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.coroutines.Continuation kotlin.coroutines.jvm.internal.ContinuationImpl.intercepted() took 115.600ms (320.07 bytecodes/s) (3112B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlin.coroutines.jvm.internal.ContinuationImpl.releaseIntercepted() took 174.509ms (189.10 bytecodes/s) (2984B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlinx.coroutines.flow.Flow kotlinx.coroutines.flow.FlowKt.buffer(kotlinx.coroutines.flow.Flow, int) took 109.034ms (45.86 bytecodes/s) (2120B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.Dispatchers.shutdown() took 109.231ms (100.70 bytecodes/s) (2240B approximate peak alloc)
+W/o.room_manager2(26077): Verification of boolean kotlin.ranges.RangesKt___RangesKt.contains(kotlin.ranges.CharRange, java.lang.Character) took 106.845ms (196.55 bytecodes/s) (2640B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.internal.LockFreeTaskQueue.set_cur$volatile(java.lang.Object) took 140.900ms (21.29 bytecodes/s) (2080B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlinx.coroutines.internal.LockFreeTaskQueueCore kotlinx.coroutines.internal.LockFreeTaskQueueCore.allocateNextCopy(long) took 118.182ms (871.53 bytecodes/s) (4184B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.util.List kotlinx.coroutines.internal.FastServiceLoader.parse(java.net.URL) took 318.936ms (470.31 bytecodes/s) (5680B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.android.HandlerContext.<init>(android.os.Handler, java.lang.String, boolean) took 115.056ms (252.05 bytecodes/s) (2864B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.coroutines.CoroutineContext kotlinx.coroutines.CoroutineContextKt.foldCopies(kotlin.coroutines.CoroutineContext, kotlin.coroutines.CoroutineContext, boolean) took 107.157ms (606.58 bytecodes/s) (3248B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.coroutines.Continuation kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsJvmKt.createCoroutineFromSuspendFunction$IntrinsicsKt__IntrinsicsJvmKt(kotlin.coroutines.Continuation, kotlin.jvm.functions.Function1) took 120.465ms (207.53 bytecodes/s) (2880B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.coroutines.Continuation kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsJvmKt.createSimpleCoroutineForSuspendFunction$IntrinsicsKt__IntrinsicsJvmKt(kotlin.coroutines.Continuation) took 163.301ms (146.97 bytecodes/s) (2784B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.DispatchedTask.handleFatalException$kotlinx_coroutines_core(java.lang.Throwable) took 560.336ms (82.09 bytecodes/s) (2960B approximate peak alloc)
+W/HWUI    (26077): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    (26077): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4(26077): mapper 4.x is not supported
+I/o.room_manager2(26077): Compiler allocated 5174KB to compile void android.view.ViewRootImpl.performTraversals()
+F/bluetooth(26463): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting HciHal
+I/o.room_manager2(26077): WaitForGcToComplete blocked ProfileSaver on None for 206.543ms
+F/bluetooth(26463): system/gd/hci/hci_layer.cc:70 abort_after_time_out: Done waiting for debug information after HCI timeout (LE_SET_EVENT_MASK(0x2001))
+I/o.room_manager2(26077): Compiler allocated 5417KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter (26077): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (26077): [ADMOB] initialization skipped ads=false
+I/flutter (26077): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+W/o.room_manager2(26077): Verification of java.lang.Object kotlinx.coroutines.flow.internal.ChannelFlow$collectToFun$1.invoke(kotlinx.coroutines.channels.ProducerScope, kotlin.coroutines.Continuation) took 198.678ms (65.43 bytecodes/s) (2352B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.jvm.functions.Function3 kotlinx.coroutines.channels.BufferedChannel.bindCancellationFun(kotlin.jvm.functions.Function1, java.lang.Object) took 176.296ms (34.03 bytecodes/s) (2320B approximate peak alloc)
+W/o.room_manager2(26077): Verification of kotlin.reflect.KFunction kotlinx.coroutines.channels.BufferedChannelKt.createSegmentFunction() took 236.599ms (21.13 bytecodes/s) (2200B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.CancellableContinuationKt.disposeOnCancellation(kotlinx.coroutines.CancellableContinuation, kotlinx.coroutines.DisposableHandle) took 129.944ms (84.65 bytecodes/s) (2312B approximate peak alloc)
+W/o.room_manager2(26077): Verification of java.lang.Object kotlinx.coroutines.CancellableContinuationKt.suspendCancellableCoroutine(kotlin.jvm.functions.Function1, kotlin.coroutines.Continuation) took 182.614ms (180.71 bytecodes/s) (2800B approximate peak alloc)
+W/o.room_manager2(26077): Verification of void kotlinx.coroutines.CancellableContinuationImpl.detachChild$kotlinx_coroutines_core() took 131.091ms (152.57 bytecodes/s) (2592B approximate peak alloc)
+I/Choreographer(26077): Skipped 9552 frames!  The application may be doing too much work on its main thread.
+E/SurfaceSyncGroup(26077): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#1) as ready
+E/SurfaceSyncGroup(26077): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#2) as ready
+I/HWUI    (26077): Davey! duration=162413ms; Flags=1, FrameTimelineVsyncId=287362, IntendedVsync=39612264667534, Vsync=39771464661166, InputEventId=0, HandleInputStart=39771712265700, AnimationStart=39771722455500, PerformTraversalsStart=39771723740800, DrawStart=39772281515900, FrameDeadline=39612281334200, FrameInterval=39771479443900, FrameStartTime=16666666, SyncQueued=39772281750400, SyncStart=39772527237800, IssueDrawCommandsStart=39772531952500, SwapBuffers=39774367208700, FrameCompleted=39774923902200, DequeueBufferDuration=282907800, QueueBufferDuration=67029100, GpuCompleted=39774458899600, SwapBuffersCompleted=39774923902200, DisplayPresentTime=0, CommandSubmissionCompleted=39774367208700, 
+I/o.room_manager2(26077): WaitForGcToComplete blocked ProfileSaver on None for 216.849ms
+I/WebViewFactory(26077): Loading com.google.android.webview version 148.0.7778.217 (code 777821708)
+W/ResourcesManager(26077): Found a null ResourcesImpl, skipped.
+V/ResourcesManager(26077): The following library key has been added: ResourcesKey{ mHash=e8e723fd mResDir=null mSplitDirs=[] mOverlayDirs=[/product/overlay/EmulationPixel8a/EmulationPixel8aOverlay.apk,/product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk,/data/resource-cache/com.android.systemui-neutral-2tlm.frro,/data/resource-cache/com.android.systemui-accent-gI43.frro,/data/resource-cache/com.android.systemui-dynamic-9TIc.frro] mLibDirs=[/data/app/~~Ql-xZF9DoVgmUqEWIIebZw==/com.google.android.webview-lZlYQFXzKv3Nng_26XVR0A==/base.apk,/system/framework/android.test.base.jar,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v35 mCompatInfo={420dpi always-compat} mLoaders=[]}
+E/AndroidRuntime(26884): FATAL EXCEPTION: main
+E/AndroidRuntime(26884): Process: com.google.android.gms, PID: 26884
+E/AndroidRuntime(26884): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26566): FATAL EXCEPTION: GmsDynamite
+E/AndroidRuntime(26566): Process: com.google.android.contactkeys, PID: 26566
+E/AndroidRuntime(24104): FATAL EXCEPTION: fg
+E/AndroidRuntime(24104): Process: com.google.android.providers.media.module, PID: 24104
+E/AndroidRuntime(24104): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(24919): FATAL EXCEPTION: GoogleApiHandler
+E/AndroidRuntime(24919): Process: com.google.android.apps.messaging, PID: 24919
+E/AndroidRuntime(24919): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26566): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26894): FATAL EXCEPTION: ActivityPreload
+E/AndroidRuntime(26894): Process: com.android.chrome, PID: 26894
+E/AndroidRuntime(26894): DeadSystemException: The system died; earlier logs will point to the root cause
+D/ActivityThread(26077): Too many transaction errors, throttling freezer binder callback.
+E/AndroidRuntime(23530): FATAL EXCEPTION: SysUiBg
+E/AndroidRuntime(23530): Process: com.android.systemui, PID: 23530
+E/AndroidRuntime(23530): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26923): FATAL EXCEPTION: main
+E/AndroidRuntime(26923): Process: com.google.android.gms.persistent, PID: 26923
+E/AndroidRuntime(26923): DeadSystemException: The system died; earlier logs will point to the root cause
+F/o.room_manager2(26077): java_vm_ext.cc:598] JNI DETECTED ERROR IN APPLICATION: JNI NewStringUTF called with pending exception android.os.DeadSystemRuntimeException: android.os.DeadSystemException
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.ActivityThread$2.onTransactionError(int, int, int, int) (ActivityThread.java:7562)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:787)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:586)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.IActivityManager$Stub$Proxy.addPackageDependency(java.lang.String) (IActivityManager.java:7590)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.LoadedApk.createOrUpdateClassLoaderLocked(java.util.List) (LoadedApk.java:879)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.ClassLoader android.app.LoadedApk.getClassLoader() (LoadedApk.java:1134)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.ClassLoader android.app.ContextImpl.getClassLoader() (ContextImpl.java:522)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.Class android.webkit.WebViewFactory.getProviderClass() (WebViewFactory.java:563)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebViewFactoryProvider android.webkit.WebViewFactory.getProvider() (WebViewFactory.java:362)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebStorage android.webkit.WebStorage.getInstance() (WebStorage.java:183)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebStorage io.flutter.plugins.webviewflutter.WebStorageProxyApi.instance() (WebStorageProxyApi.java:24)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion.setUpMessageHandlers$lambda$1$lambda$0(io.flutter.plugins.webviewflutter.PigeonApiWebStorage, java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (AndroidWebkitLibrary.g.kt:4942)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion.$r8$lambda$pXO8HWoVPftVavlMrAhAEvezILI(io.flutter.plugins.webviewflutter.PigeonApiWebStorage, java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (AndroidWebkitLibrary.g.kt:-1)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion$$ExternalSyntheticLambda0.onMessage(java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (D8$$SyntheticClass:0)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugin.common.BasicMessageChannel$IncomingMessageHandler.onMessage(java.nio.ByteBuffer, io.flutter.plugin.common.BinaryMessenger$BinaryReply) (BasicMessageChannel.java:261)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger.invokeHandler(io.flutter.embedding.engine.dart.DartMessenger$HandlerInfo, java.nio.ByteBuffer, int) (DartMessenger.java:292)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger.lambda$dispatchMessageToQueue$0$io-flutter-embedding-engine-dart-DartMessenger(java.lang.String, int, io.flutter.embedding.engine.dart.DartMessenger$HandlerInfo, java.nio.ByteBuffer, long) (DartMessenger.java:319)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger$$ExternalSyntheticLambda0.run() (D8$$SyntheticClass:0)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Handler.handleCallback(android.os.Message) (Handler.java:959)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Handler.dispatchMessage(android.os.Message) (Handler.java:100)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.Looper.loopOnce(android.os.Looper, long, int) (Looper.java:232)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Looper.loop() (Looper.java:317)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.ActivityThread.main(java.lang.String[]) (ActivityThread.java:8705)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[]) (Method.java:-2)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run() (RuntimeInit.java:580)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void com.android.internal.os.ZygoteInit.main(java.lang.String[]) (ZygoteInit.java:886)
+F/o.room_manager2(26077): java_vm_ext.cc:598] Caused by: android.os.DeadSystemException: 
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.ActivityThread$2.onTransactionError(int, int, int, int) (ActivityThread.java:7562)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Binder.transactionCallback(int, int, int, int) (Binder.java:787)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:-2)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.BinderProxy.transact(int, android.os.Parcel, android.os.Parcel, int) (BinderProxy.java:586)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.IActivityManager$Stub$Proxy.addPackageDependency(java.lang.String) (IActivityManager.java:7590)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.LoadedApk.createOrUpdateClassLoaderLocked(java.util.List) (LoadedApk.java:879)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.ClassLoader android.app.LoadedApk.getClassLoader() (LoadedApk.java:1134)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.ClassLoader android.app.ContextImpl.getClassLoader() (ContextImpl.java:522)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.Class android.webkit.WebViewFactory.getProviderClass() (WebViewFactory.java:563)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebViewFactoryProvider android.webkit.WebViewFactory.getProvider() (WebViewFactory.java:362)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebStorage android.webkit.WebStorage.getInstance() (WebStorage.java:183)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at android.webkit.WebStorage io.flutter.plugins.webviewflutter.WebStorageProxyApi.instance() (WebStorageProxyApi.java:24)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion.setUpMessageHandlers$lambda$1$lambda$0(io.flutter.plugins.webviewflutter.PigeonApiWebStorage, java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (AndroidWebkitLibrary.g.kt:4942)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion.$r8$lambda$pXO8HWoVPftVavlMrAhAEvezILI(io.flutter.plugins.webviewflutter.PigeonApiWebStorage, java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (AndroidWebkitLibrary.g.kt:-1)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugins.webviewflutter.PigeonApiWebStorage$Companion$$ExternalSyntheticLambda0.onMessage(java.lang.Object, io.flutter.plugin.common.BasicMessageChannel$Reply) (D8$$SyntheticClass:0)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.plugin.common.BasicMessageChannel$IncomingMessageHandler.onMessage(java.nio.ByteBuffer, io.flutter.plugin.common.BinaryMessenger$BinaryReply) (BasicMessageChannel.java:261)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger.invokeHandler(io.flutter.embedding.engine.dart.DartMessenger$HandlerInfo, java.nio.ByteBuffer, int) (DartMessenger.java:292)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger.lambda$dispatchMessageToQueue$0$io-flutter-embedding-engine-dart-DartMessenger(java.lang.String, int, io.flutter.embedding.engine.dart.DartMessenger$HandlerInfo, java.nio.ByteBuffer, long) (DartMessenger.java:319)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void io.flutter.embedding.engine.dart.DartMessenger$$ExternalSyntheticLambda0.run() (D8$$SyntheticClass:0)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Handler.handleCallback(android.os.Message) (Handler.java:959)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Handler.dispatchMessage(android.os.Message) (Handler.java:100)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at boolean android.os.Looper.loopOnce(android.os.Looper, long, int) (Looper.java:232)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.os.Looper.loop() (Looper.java:317)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void android.app.ActivityThread.main(java.lang.String[]) (ActivityThread.java:8705)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[]) (Method.java:-2)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run() (RuntimeInit.java:580)
+F/o.room_manager2(26077): java_vm_ext.cc:598]   at void com.android.internal.os.ZygoteInit.main(java.lang.String[]) (ZygoteInit.java:886)
+F/o.room_manager2(26077): java_vm_ext.cc:598] 
+F/o.room_manager2(26077): java_vm_ext.cc:598]     in call to NewStringUTF
+F/o.room_manager2(26077): java_vm_ext.cc:598]     from boolean android.os.BinderProxy.transactNative(int, android.os.Parcel, android.os.Parcel, int)
+E/AndroidRuntime(26894): FATAL EXCEPTION: main
+E/AndroidRuntime(26894): Process: com.android.chrome, PID: 26894
+E/AndroidRuntime(26894): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26588): FATAL EXCEPTION: main
+E/AndroidRuntime(26588): Process: com.android.phone, PID: 26588
+E/AndroidRuntime(26588): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26953): FATAL EXCEPTION: main
+E/AndroidRuntime(26953): Process: com.android.vending:background, PID: 26953
+E/AndroidRuntime(26953): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(26906): FATAL EXCEPTION: main
+E/AndroidRuntime(26906): Process: com.android.vending, PID: 26906
+E/AndroidRuntime(26906): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(24126): FATAL EXCEPTION: GoogleApiHandler
+E/AndroidRuntime(24126): Process: com.google.android.googlequicksearchbox:interactor, PID: 24126
+E/AndroidRuntime(24126): DeadSystemException: The system died; earlier logs will point to the root cause
+E/AndroidRuntime(27017): FATAL EXCEPTION: main
+E/AndroidRuntime(27017): Process: com.google.android.as, PID: 27017
+E/AndroidRuntime(27017): DeadSystemException: The system died; earlier logs will point to the root cause
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] Remote recorded video was not found at /sdcard/Movies/play_demo.mp4 (pull skipped).
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213845
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213845\terminal_output_20260617_213845.txt
+Video                    : (not pulled - remote file missing)
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_213845.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_213845.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_213845.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_213845.log
+
+Done (video not found on device).
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

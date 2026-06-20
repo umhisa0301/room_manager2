@@ -1,0 +1,67 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-17 21:35:41
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: emulator-5558
+Device manufacturer: Google
+Device model: sdk_gphone64_x86_64
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : emulator-5558
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_213541.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_213541.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_213541.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_213541.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_213541.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213541
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_213541\terminal_output_20260617_213541.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 24096).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d emulator-5558 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...                          
+F/crash_dump64(23830): crash_dump.cpp:627] failed to attach to thread 174: Permission denied
+F/bluetooth(23721): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting Controller
+F/bluetooth(24046): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting Controller
+F/crash_dump64(24710): crash_dump.cpp:627] failed to attach to thread 174: Permission denied
+F/crash_dump64(24731): crash_dump.cpp:627] failed to attach to thread 183: Permission denied
+F/bluetooth(24555): system/gd/stack_manager.cc:57 StartUp: Can't start stack, last instance: starting Controller
+Running Gradle task 'assembleDebug'...                             89.4s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.

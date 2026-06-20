@@ -1,0 +1,985 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-17 13:57:55
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_135755.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_135755.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_135755.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_135755.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_135755.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755\terminal_output_20260617_135755.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 24124).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             50.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.1s
+D/FlutterJNI(17764): Beginning load of flutter...
+D/FlutterJNI(17764): flutter (null) was loaded normally!
+I/flutter (17764): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (17764): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (17764): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (17764): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (17764): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (17764): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (17764): [ADMOB] initialization skipped ads=false
+Syncing files to device SHG08...                                   120ms
+
+r Hot reload. 
+R Hot restart.
+Flutter run key commands.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:59282/7Mpq5aaFU4g=/
+I/flutter (17764): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (17764): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (17764): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (17764): [AUTO_REACTION_SYNC] scheduled
+I/Choreographer(17764): Skipped 202 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:59282/7Mpq5aaFU4g=/
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=50 filter= tab=done
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=50 filter= tab=
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/WebViewFactory(17764): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders(17764): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(17764): Loading /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(17764): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(17764): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(17764): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader(17764): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+I/chromium(17764): [0617/135907.415447:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(17764): Successfully loaded native library
+I/cr_CachingUmaRecorder(17764): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(17764): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(17764): #registerProvider() provider:WV.wk@4390ba2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(17764): #setManagerAndSource() 0
+I/cr_DisplayManager(17764): Is Display Topology available: false
+I/cr_CombinedPProvider(17764): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(17764): Compat change id reported: 183155436; UID 10506; state: ENABLED
+I/cr_AppResProvider(17764): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(17764): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(17764): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(17764): #flushPolicies()
+W/chromium(17764): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 68724951
+D/CompatibilityChangeReporter(17764): Compat change id reported: 214741472; UID 10506; state: ENABLED
+I/CameraManagerGlobal(17764): Connecting to camera service
+D/CompatibilityChangeReporter(17764): Compat change id reported: 171228096; UID 10506; state: ENABLED
+I/PlatformViewsController(17764): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(17764): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(17764): Compat change id reported: 236825255; UID 10506; state: ENABLED
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(17764): type=1400 audit(0.0:85033): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(17764): Compat change id reported: 193247900; UID 10506; state: ENABLED
+I/Choreographer(17764): Skipped 78 frames!  The application may be doing too much work on its main thread.
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(17764): type=1400 audit(0.0:85034): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(17764): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(17764): Build Date              : 08/23/22
+I/AdrenoVK-0(17764): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(17764): Local Branch            : 
+I/AdrenoVK-0(17764): Remote Branch           : 
+I/AdrenoVK-0(17764): Remote Branch           : 
+I/AdrenoVK-0(17764): Reconstruct Branch      : 
+I/AdrenoVK-0(17764): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(17764): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(17764): Davey! duration=1363ms; Flags=1, FrameTimelineVsyncId=52279425, IntendedVsync=684091441015750, Vsync=684092741015698, InputEventId=0, HandleInputStart=684092742205600, AnimationStart=684092742207423, PerformTraversalsStart=684092742235340, DrawStart=684092755914663, FrameDeadline=684091457682416, FrameInterval=684092741375288, FrameStartTime=16666666, SyncQueued=684092789916329, SyncStart=684092790486329, IssueDrawCommandsStart=684092791447683, SwapBuffers=684092803641694, FrameCompleted=684092804888569, DequeueBufferDuration=2537656, QueueBufferDuration=877083, GpuCompleted=684092804692058, SwapBuffersCompleted=684092804888569, DisplayPresentTime=0, CommandSubmissionCompleted=684092803641694, 
+D/ProfileInstaller(17764): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17764): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [AUTO_REACTION_SYNC] skipped reason=noHistory
+W/o.room_manager2(17764): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(17764): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=0 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(17764): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(17764): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (17764): [TODAY_RECOMMEND_SELECT_ALL] checked=true selected=10
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=10 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [TODAY_RECOMMEND_BULK_ADD_START] selected=10
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=10 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=clairmode:10005955 pending=317→318 done=50→50
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/clairmode/85839068/
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/clairmode/85839068/
+W/cr_media(17764): BLUETOOTH_CONNECT permission is missing.
+W/cr_media(17764): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media(17764): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/Choreographer(17764): Skipped 32 frames!  The application may be doing too much work on its main thread.
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=9 selected=10 alreadyAdded=1 skipped=0
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=1 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+W/VideoCapabilities(17764): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities(17764): Unsupported mime image/vnd.android.heic
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=clairmode:10000456 pending=318→319 done=50→50
+I/Choreographer(17764): Skipped 30 frames!  The application may be doing too much work on its main thread.
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/clairmode/10000456/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=8 selected=10 alreadyAdded=2 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=2 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=antiqua-a:10031796 pending=319→320 done=50→50
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/antiqua-a/na-00521/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=7 selected=10 alreadyAdded=3 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=3 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=absorb:10000630 pending=320→321 done=50→50
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/absorb/10000630/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=6 selected=10 alreadyAdded=4 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=4 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=akuse-one:10017502 pending=321→322 done=50→50
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/Choreographer(17764): Skipped 116 frames!  The application may be doing too much work on its main thread.
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/akuse-one/f380-f382-lt/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=5 selected=10 alreadyAdded=5 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=5 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=id-id:10000334 pending=322→323 done=50→50
+I/Choreographer(17764): Skipped 75 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(17764): Davey! duration=1271ms; Flags=0, FrameTimelineVsyncId=52283040, IntendedVsync=684877158344721, Vsync=684878411401671, InputEventId=702563322, HandleInputStart=684878414875665, AnimationStart=684878414877592, PerformTraversalsStart=684878416695873, DrawStart=684878416916394, FrameDeadline=684877175011387, FrameInterval=684878414569415, FrameStartTime=16710028, SyncQueued=684878426576134, SyncStart=684878451099884, IssueDrawCommandsStart=684878451209832, SwapBuffers=684878452101498, FrameCompleted=684878453890300, DequeueBufferDuration=32604, QueueBufferDuration=1195625, GpuCompleted=684878453348582, SwapBuffersCompleted=684878453890300, DisplayPresentTime=0, CommandSubmissionCompleted=684878452101498, 
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/id-id/9902/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=4 selected=10 alreadyAdded=6 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=6 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=absorb:10001133 pending=323→324 done=50→50
+I/chromium(17764): [INFO:CONSOLE:0] "Mixed Content: The page at 'https://item.rakuten.co.jp/clairmode/85839068/' was loaded over HTTPS, but requested an insecure frame 'http://www.rakuten.co.jp/clairmode'. This request has been blocked; the content must be served over HTTPS.", source: https://www.rakuten.ne.jp/gold/clairmode/google/tracking.html (0)
+I/Choreographer(17764): Skipped 38 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=clairmode%3A10005955&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/clairmode/10000456/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/cr_MediaCodecBridge(17764): create MediaCodec video decoder, mime video/avc, decoder name c2.qti.avc.decoder, block_model=false
+W/Chrome_InProcGp(17764): type=1400 audit(0.0:85067): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CCodec  (17764): allocate(c2.qti.avc.decoder)
+I/Codec2Client(17764): Available Codec2 services: "default" "software"
+I/CCodec  (17764): setting up 'default' as default (vendor) store
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/absorb/10001133/
+I/CCodec  (17764): Created component [c2.qti.avc.decoder]
+D/CCodecConfig(17764): read media type: video/avc
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_luma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_chroma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_luma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_chroma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_luma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_chroma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_luma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_chroma
+D/ReflectedParamUpdater(17764): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater(17764): ignored struct field vendor.qti-ext-dec-panscan.window
+D/CCodecConfig(17764): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig(17764): ignoring local param default.color (0x5200180b) as it is already supported
+D/CCodecConfig(17764): ignoring local param raw.hdr-static-info (0xd200180a) as it is already supported
+I/CCodecConfig(17764): query failed after returning 17 values (BAD_INDEX)
+D/CCodecConfig(17764): c2 config diff is Dict {
+D/CCodecConfig(17764):   c2::i32 algo.priority.value = 0
+D/CCodecConfig(17764):   c2::float algo.rate.value = 30
+D/CCodecConfig(17764):   c2::u32 algo.secure-mode.value = 0
+D/CCodecConfig(17764):   c2::float coded.frame-rate.value = 30
+D/CCodecConfig(17764):   c2::u32 coded.pl.level = 0
+D/CCodecConfig(17764):   c2::u32 coded.pl.profile = 20484
+D/CCodecConfig(17764):   c2::u32 coded.vui.color.matrix = 255
+D/CCodecConfig(17764):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig(17764):   c2::u32 coded.vui.color.range = 0
+D/CCodecConfig(17764):   c2::u32 coded.vui.color.transfer = 255
+D/CCodecConfig(17764):   c2::u32 default.color.matrix = 0
+D/CCodecConfig(17764):   c2::u32 default.color.primaries = 0
+D/CCodecConfig(17764):   c2::u32 default.color.range = 0
+D/CCodecConfig(17764):   c2::u32 default.color.transfer = 0
+D/CCodecConfig(17764):   c2::u32 input.buffers.max-size.value = 3133440
+D/CCodecConfig(17764):   c2::u32 input.delay.value = 0
+D/CCodecConfig(17764):   string input.media-type.value = "video/avc"
+D/CCodecConfig(17764):   c2::u32 output.delay.value = 1
+D/CCodecConfig(17764):   string output.media-type.value = "video/raw"
+D/CCodecConfig(17764):   c2::u32 raw.color.matrix = 255
+D/CCodecConfig(17764):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig(17764):   c2::u32 raw.color.range = 0
+D/CCodecConfig(17764):   c2::u32 raw.color.transfer = 255
+D/CCodecConfig(17764):   c2::float raw.hdr-static-info.mastering.blue.x = 0
+D/CCodecConfig(17764):   c2::float raw.hdr-static-info.mastering.blue.y = 0
+D/CCodecConfig(17764):   c2::float raw.hdr-static-info.mastering.gre
+W/ColorUtils(17764): expected specified color aspects (0:0:255:255)
+I/MediaCodec(17764): MediaCodec will operate in async mode
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/ThreadPoolForeg(17764): type=1400 audit(0.0:85068): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/MediaCodec(17764): flushMediametrics
+D/SurfaceUtils(17764): connecting to surface 0xb4000075469ba280, reason connectToSurface
+I/MediaCodec(17764): [c2.qti.avc.decoder] setting surface generation to 18190337
+D/SurfaceUtils(17764): disconnecting from surface 0xb4000075469ba280, reason connectToSurface(reconnect)
+D/SurfaceUtils(17764): connecting to surface 0xb4000075469ba280, reason connectToSurface(reconnect)
+D/CCodec  (17764): [c2.qti.avc.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig(17764): no c2 equivalents for native-window
+D/CCodecConfig(17764): no c2 equivalents for flags
+D/CCodecConfig(17764): c2 config diff is   c2::u32 raw.max-size.height = 720
+D/CCodecConfig(17764):   c2::u32 raw.max-size.width = 406
+D/CCodecConfig(17764):   c2::u32 raw.size.height = 720
+D/CCodecConfig(17764):   c2::u32 raw.size.width = 406
+W/Codec2Client(17764): query -- param skipped: index = 1107298332.
+D/CCodec  (17764): client requested max input size 224640, which is smaller than what component recommended (3133440); overriding with component recommendation.
+W/CCodec  (17764): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  (17764): encoding statistics level = 0
+D/CCodec  (17764): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  (17764):   int32_t feature-secure-playback = 0
+D/CCodec  (17764):   int32_t frame-rate = 30
+D/CCodec  (17764):   int32_t height = 720
+D/CCodec  (17764):   int32_t max-input-size = 3133440
+D/CCodec  (17764):   string mime = "video/avc"
+D/CCodec  (17764):   int32_t priority = 0
+D/CCodec  (17764):   int32_t profile = 8
+D/CCodec  (17764):   int32_t width = 406
+D/CCodec  (17764):   Rect crop(0, 0, 405, 719)
+D/CCodec  (17764): }
+D/CCodec  (17764): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  (17764):   int32_t android._color-format = 0
+D/CCodec  (17764):   int32_t android._video-scaling = 1
+D/CCodec  (17764):   int32_t android._dataspace = 281346048
+D/CCodec  (17764):   int32_t color-standard = 130820
+D/CCodec  (17764):   int32_t color-range = 2
+D/CCodec  (17764):   int32_t color-transfer = 65791
+D/CCodec  (17764):   int32_t sar-height = 1
+D/CCodec  (17764):   int32_t rotation-degrees = 0
+D/CCodec  (17764):   Buffer hdr-static-info = {
+D/CCodec  (17764):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodec  (17764):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodec  (17764):   }
+D/CCodec  (17764):   int32_t sar-width = 1
+D/CCodec  (17764):   Rect crop(0, 0, 405, 719)
+D/CCodec  (17764):   int32_t width = 406
+D/CCodec  (17764):   int32_t feature-secure-playback = 0
+D/CCodec  (17764):   int32_t frame-rate = 30
+D/CCodec  (17764):   int32_t height = 720
+D/CCodec  (17764):   int32_t max-height = 720
+D/CCodec  (17764):   int32_t max-width = 406
+D/CCodec  (17764):   string mime = "video/raw"
+D/CCodec  (17764):   int32_t priority = 0
+D/CCodec  (17764):   int32_t color-format = 2130708361
+D/CCodec  (17764): }
+I/CCodecConfig(17764): query failed after returning 17 values (BAD_INDEX)
+D/MediaCodec(17764): keep callback message for reclaim
+W/Codec2Client(17764): query -- param skipped: index = 1342179345.
+W/Codec2Client(17764): query -- param skipped: index = 2415921170.
+W/Codec2Client(17764): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Query input allocators returned 0 params => BAD_INDEX (6)
+D/C2Store (17764): Using ION
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Created input block pool with allocatorID 16 => poolID 17 - OK (0)
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] start: max output delay 12
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Query output allocators returned 0 params => BAD_INDEX (6)
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Created output block pool with allocatorID 18 => poolID 82 - OK
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Configured output block pool ids 82 => OK
+D/Codec2-OutputBufferQueue(17764): remote graphic buffer migration 0/0
+D/Codec2Client(17764): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client(17764): setOutputSurface -- generation=18190337 consumer usage=0x900
+D/Codec2Client(17764): Surface configure completed
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] start: updating output delay 1
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+D/CCodecConfig(17764): c2 config diff is   c2::u32 output.delay.value = 10
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] onWorkDone: updating output delay 10
+I/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] onWorkDone: updating max output delay 17
+D/Codec2-OutputBufferQueue(17764): set max dequeue count 17 from update
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] Ignoring stale input buffer done callback: last flush index = 0, frameIndex = 0
+W/cr_MediaCodecBridge(17764): Releasing: c2.qti.avc.decoder
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/SurfaceUtils(17764): connecting to surface 0xb400007546905330, reason connectToSurface
+I/MediaCodec(17764): [c2.qti.avc.decoder] setting surface generation to 18190338
+D/SurfaceUtils(17764): disconnecting from surface 0xb400007546905330, reason connectToSurface(reconnect)
+D/SurfaceUtils(17764): connecting to surface 0xb400007546905330, reason connectToSurface(reconnect)
+W/MediaCodec_loop(17764): type=1400 audit(0.0:85069): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/Codec2-OutputBufferQueue(17764): remote graphic buffer migration 0/0
+D/Codec2Client(17764): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client(17764): setOutputSurface -- generation=18190338 consumer usage=0x900
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 13 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 14 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 15 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 16 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 17 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/Codec2Client(17764): Surface configure completed
+D/SurfaceUtils(17764): disconnecting from surface 0xb4000075469ba280, reason disconnectFromSurface
+W/BufferQueueProducer(17764): [ImageReader-1x1f22u256m2-17764-0](id:456400000004,api:3,p:17764,c:17764) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel(17764): [c2.qti.avc.decoder#78] MediaCodec discarded an unknown buffer
+W/cr_MediaCodecBridge(17764): Codec released
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 0 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 13 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 14 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 15 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 16 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 17 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(17764): [MediaCodec.release](id:456400000005,api:3,p:17764,c:17764) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+I/hw-BpHwBinder(17764): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils(17764): disconnecting from surface 0xb400007546905330, reason disconnectFromSurface
+D/MediaCodec(17764): flushMediametrics
+D/MediaCodec(17764): flushMediametrics
+W/MediaCodec(17764): no metrics handle found
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=3 selected=10 alreadyAdded=7 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=7 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=ka-sannoshiki:10000094 pending=324→325 done=50→50
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+W/o.room_manager2(17764): Cleared Reference was only reachable from finalizer (only reported once)
+I/chromium(17764): [INFO:CONSOLE:1997] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/clairmode/10000456/ (1997)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/ka-sannoshiki/9335/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=2 selected=10 alreadyAdded=8 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=8 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=mountaingoat:10008401 pending=325→326 done=50→50
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/mountaingoat/all-264/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=clairmode%3A10000456&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/antiqua-a/na-00521/
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=1 selected=10 alreadyAdded=9 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=false guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=9 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=ablana:10000187 pending=326→327 done=50→50
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/ablana/ab-outletbox01/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/Choreographer(17764): Skipped 37 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [TODAY_RECOMMEND_BULK_ADD_RESULT] success=10 alreadyAdded=0 failed=0
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=0 selected=0 alreadyAdded=10 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=true guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=10 completedCount=10 lastRegenerateAt=- bundleGeneratedAt=2026-06-17T00:40:05.673098
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/Choreographer(17764): Skipped 31 frames!  The application may be doing too much work on its main thread.
+I/chromium(17764): [INFO:CONSOLE:1286] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/antiqua-a/na-00521/ (1286)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=antiqua-a%3A10031796&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/absorb/10000630/
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 167
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 175
+D/BufferPoolAccessor2.0(17764): bufferpool2 0xb400007476a498f8 : 0(0 size) total buffers - 0(0 size) used buffers - 0/4 (recycle/alloc) - 1/2 (fetch/transfer)
+D/BufferPoolAccessor2.0(17764): evictor expired: 1, evicted: 1
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1684] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/absorb/10000630/ (1684)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:365] "[object Object]", source: https://www.rakuten.ne.jp/gold/absorb/tj/dp/live/ (365)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=absorb%3A10000630&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/akuse-one/f380-f382-lt/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1306] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/akuse-one/f380-f382-lt/ (1306)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1308] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/akuse-one/f380-f382-lt/ (1308)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=akuse-one%3A10017502&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/id-id/9902/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:2023] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/id-id/9902/ (2023)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:2025] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/id-id/9902/ (2025)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=327 done=50 filter= tab=
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=id-id%3A10000334&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/absorb/10001133/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1699] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/absorb/10001133/ (1699)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium(17764): [INFO:CONSOLE:365] "[object Object]", source: https://www.rakuten.ne.jp/gold/absorb/tj/dp/live/ (365)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/chromium(17764): [INFO:CONSOLE:1701] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/absorb/10001133/ (1701)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=absorb%3A10001133&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/ka-sannoshiki/9335/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1867] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/ka-sannoshiki/9335/ (1867)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/chromium(17764): [INFO:CONSOLE:1869] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/ka-sannoshiki/9335/ (1869)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=ka-sannoshiki%3A10000094&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/mountaingoat/all-264/
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1224] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/mountaingoat/all-264/ (1224)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/chromium(17764): [INFO:CONSOLE:365] "[object Object]", source: https://www.rakuten.ne.jp/gold/mountaingoat/tj/dp/live/ (365)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=mountaingoat%3A10008401&scid=we_room_upc60
+I/flutter (17764): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/ablana/ab-outletbox01/
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_FAILED
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 1953
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 1955
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 1957
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 1959
+W/chromium(17764): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 1961
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:1518] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/ablana/ab-outletbox01/ (1518)
+I/chromium(17764): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:0] "Refused to execute script from 'https://www.rakuten.ne.jp/gold/ablana/js/jquery-1.11.3.min' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.", source: https://www.rakuten.ne.jp/gold/ablana/header.html (0)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/flutter (17764): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=ablana%3A10000187&scid=we_room_upc60
+I/chromium(17764): [INFO:CONSOLE:0] "Refused to execute script from 'https://www.rakuten.ne.jp/gold/ablana/js/jquery-1.11.3.min' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.", source: https://www.rakuten.ne.jp/gold/ablana/footer.html (0)
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/chromium(17764): [INFO:CONSOLE:0] "Access to font at 'https://fonts.gstatic.com/ea/notosansjapanese/v6/NotoSansJP-Regular.woff2' from origin 'https://www.rakuten.ne.jp' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.", source: https://www.rakuten.ne.jp/gold/ablana/header.html (0)
+I/chromium(17764): [INFO:CONSOLE:0] "Access to font at 'https://fonts.gstatic.com/ea/notosansjapanese/v6/NotoSansJP-Regular.woff' from origin 'https://www.rakuten.ne.jp' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.", source: https://www.rakuten.ne.jp/gold/ablana/header.html (0)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:0] "Access to font at 'https://fonts.gstatic.com/ea/notosansjapanese/v6/NotoSansJP-Regular.otf' from origin 'https://www.rakuten.ne.jp' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.", source: https://www.rakuten.ne.jp/gold/ablana/header.html (0)
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/chromium(17764): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter (17764): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=0 selected=0 alreadyAdded=10 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(17764): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(17764): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=0 selected=0 alreadyAdded=10 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(17764): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(17764): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/chromium(17764): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium(17764): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium(17764): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTkwYWY0Y2Q1MA.js (1)
+I/chromium(17764): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium(17764): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium(17764): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTkwYWY0Y2Q1OQ.js (1)
+I/flutter (17764): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=recommend
+I/flutter (17764): [GENRE_PREF_MISMATCH] savedGenreId=100371 usedGenreId=300011 savedName=レディースファッション usedName=ロック・ポップス reason=historyGenreNotInFavorites source=recommend
+I/flutter (17764): [GENRE_PREF_MISMATCH] savedGenreId=100371 usedGenreId=406390 savedName=レディースファッション usedName=本棚 reason=historyGenreNotInFavorites source=recommend
+I/flutter (17764): [GENRE_PREF_MISMATCH] savedGenreId=100371 usedGenreId=300339 savedName=レディースファッション usedName=ロック・ポップス reason=historyGenreNotInFavorites source=recommend
+I/flutter (17764): [GENRE_PREF_MISMATCH] savedGenreId=100371 usedGenreId=100040 savedName=レディースファッション usedName=ノートPC reason=historyGenreNotInFavorites source=recommend
+I/flutter (17764): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=レディースファッション genreId=100371 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (17764): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (17764): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9%E3%83%95%E3%82%A1%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3&minReviewCount=10&minReviewAverage=3.6&genreId=100371&sort=-reviewCount
+I/flutter (17764): [Rakuten] response status=200 page=4 bytes=229530
+I/flutter (17764): [Rakuten] page=4 parsedItems=30 / raw=30
+I/flutter (17764): [Rakuten] repository search total mapped=30
+I/flutter (17764): [Rakuten] genreSearch mapped item count=30
+I/flutter (17764): [Rakuten] genreSearch before filter count=30
+I/flutter (17764): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (17764): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (17764): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=1 executedFavoriteGenrePlans=1 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=assistSkippedSufficientFinalItems
+I/flutter (17764): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=10 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=206440:4|502556:1|206471:1|303656:1|566028:1|101801:1|553029:1 shopDistribution=clair mode(クレアモード):2|アジアン & カジュアル マーライ:1|antiqua(アンティカ):1|レディースファッション Le futur:1|アクセONE:1|ニッセン 楽天市場店:1|さわやか家族:1|ベビー服とルームウェアのHishop:1|closet Coro color:1
+I/flutter (17764): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=1 executedFavoriteGenrePlans=1 apiCalls=1 pagesUsed=4 rawItems=28 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=1 excludedZeroReview=1 finalItems=10 fallbackUsed=false assistPlanUsed=false
+I/flutter (17764): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution=100371:10 finalShopDistribution=clair mode(クレアモード):2|アジアン & カジュアル マーライ:1|antiqua(アンティカ):1|レディースファッション Le futur:1|アクセONE:1|ニッセン 楽天市場店:1|さわやか家族:1|ベビー服とルームウェアのHishop:1|closet Coro color:1
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=299000 isLoading=false hasBundle=true candidates=10 completedCount=0 lastRegenerateAt=2026-06-17T14:12:47.603477 bundleGeneratedAt=2026-06-17T14:12:47.603477
+I/flutter (17764): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=298000 isLoading=false hasBundle=true candidates=10 completedCount=0 lastRegenerateAt=2026-06-17T14:12:47.603477 bundleGeneratedAt=2026-06-17T14:12:47.603477
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=297000 isLoading=false hasBundle=true candidates=10 completedCount=0 lastRegenerateAt=2026-06-17T14:12:47.603477 bundleGeneratedAt=2026-06-17T14:12:47.603477
+I/flutter (17764): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (17764): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=screen pending=327 done=50 filter= tab=done
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+W/o.room_manager2(17764): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(17764): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+W/WindowOnBackDispatcher(17764): sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@c90199a
+I/AdrenoVK-0(17764): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(17764): Build Date              : 08/23/22
+I/AdrenoVK-0(17764): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(17764): Local Branch            : 
+I/AdrenoVK-0(17764): Remote Branch           : 
+I/AdrenoVK-0(17764): Remote Branch           : 
+I/AdrenoVK-0(17764): Reconstruct Branch      : 
+I/AdrenoVK-0(17764): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(17764): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+I/flutter (17764): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (17764): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (17764): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (17764): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (17764): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(17764): GetGpuPixelFormat: No map for format: 0x38
+E/OpenGLRenderer(17764): Unable to match the desired swap behavior.
+E/AdrenoUtils(17764): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(17764): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(17764): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(17764): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(17764): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(17764): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(17764): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(17764): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(17764): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(17764): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(17764): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(17764): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(17764): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(17764): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(17764): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(17764): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(17764): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(17764): isSupported(1, 1, 56, 1, ...) failed with 1
+E/AHardwareBuffer(17764): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(17764): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(17764): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/GraphicBufferAllocator(17764): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AdrenoUtils(17764): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(17764): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(17764): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(17764): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(17764): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+I/flutter (17764): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (17764): [ADMOB] initialization skipped ads=false
+I/flutter (17764): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (17764): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (17764): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [AUTO_REACTION_SYNC] scheduled
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=327 done=50 filter= tab=
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=screen pending=327 done=50 filter= tab=candidate
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=327 done=50 filter= tab=
+I/Choreographer(17764): Skipped 233 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(17764): Davey! duration=3906ms; Flags=1, FrameTimelineVsyncId=52297412, IntendedVsync=684932273770639, Vsync=684936166626760, InputEventId=0, HandleInputStart=684936173468455, AnimationStart=684936173469862, PerformTraversalsStart=684936173470487, DrawStart=684936173965383, FrameDeadline=684932290437305, FrameInterval=684936173165903, FrameStartTime=16707537, SyncQueued=684936174160643, SyncStart=684936174227049, IssueDrawCommandsStart=684936174394080, SwapBuffers=684936178669497, FrameCompleted=684936180706320, DequeueBufferDuration=2190469, QueueBufferDuration=1689063, GpuCompleted=684936180254080, SwapBuffersCompleted=684936180706320, DisplayPresentTime=0, CommandSubmissionCompleted=684936178669497, 
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/PlatformViewsController(17764): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(17764): PlatformView is using SurfaceProducer backend
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(17764): type=1400 audit(0.0:85287): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/Choreographer(17764): Skipped 33 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2(17764): type=1400 audit(0.0:85288): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (17764): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+E/FrameEvents(17764): updateAcquireFence: Did not find frame.
+I/flutter (17764): [AUTO_REACTION_SYNC] skipped reason=noHistory
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755\room_manager2_shot_001.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755\room_manager2_shot_002.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755\room_manager2_shot_003.png
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+W/WindowOnBackDispatcher(17764): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(17764): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=screen pending=327 done=50 filter= tab=candidate
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=327 done=50 filter= tab=
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+I/flutter (17764): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=327→327 done=50→50
+I/flutter (17764): [MANAGED_PRODUCT_LOAD] source=provider pending=327 done=50 filter= tab=
+I/flutter (17764): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (17764): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ablana:10000187 reviewAverage=4.08 reviewCount=193 displayText=評価 ★4.1（193件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=mountaingoat:10008401 reviewAverage=4.36 reviewCount=215 displayText=評価 ★4.4（215件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ka-sannoshiki:10000094 reviewAverage=4.75 reviewCount=202 displayText=評価 ★4.8（202件）
+I/flutter (17764): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=absorb:10001133 reviewAverage=4.61 reviewCount=197 displayText=評価 ★4.6（197件）
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_135755.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_135755.mp4 (1831593 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260617_135755\terminal_output_20260617_135755.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260617_135755.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260617_135755.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260617_135755.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260617_135755.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260617_135755.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
