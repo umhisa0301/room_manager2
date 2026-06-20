@@ -29,6 +29,7 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.minHeight = 46,
     this.semanticLabel,
+    this.focusedBorderColor,
     this.validator,
     this.autovalidateMode,
     this.errorText,
@@ -54,6 +55,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLength;
   final double minHeight;
   final String? semanticLabel;
+  final Color? focusedBorderColor;
   final FormFieldValidator<String>? validator;
   final AutovalidateMode? autovalidateMode;
   final String? errorText;
@@ -140,8 +142,8 @@ class AppTextField extends StatelessWidget {
           disabledBorder: normalBorder,
           focusedBorder: OutlineInputBorder(
             borderRadius: radius,
-            borderSide: const BorderSide(
-              color: AppColors.accentPrimary,
+            borderSide: BorderSide(
+              color: focusedBorderColor ?? AppColors.accentPrimary,
               width: 1.2,
             ),
           ),

@@ -11,6 +11,7 @@ import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/display_text_utils.dart';
 import '../utils/product_card_rakuten_open.dart';
@@ -180,8 +181,6 @@ class RakutenManagedProductCard extends StatelessWidget {
     return label;
   }
 
-  static const Color _roomReactionPink = Color(0xFFE91E63);
-
   void _debugLogReactionStatusChip() {
     if (!kDebugMode) return;
     if (product.status != RakutenManagedProductStatus.done) return;
@@ -195,7 +194,9 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Color _heartCommentAccent(int? count) {
-    return count != null && count > 0 ? _roomReactionPink : AppColors.textTertiary;
+    return count != null && count > 0
+        ? HomeScreenColors.homeAccentTeal
+        : AppColors.textTertiary;
   }
 
   void _openRakuten(BuildContext context, String source) {
@@ -232,11 +233,22 @@ class RakutenManagedProductCard extends StatelessWidget {
 
     return RoomColleProductListCardShell(
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: RoomColleProductListCardLayout.cardInnerPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (isCandidate)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _candidateBadges(context)),
+                    _candidateRemoveLink(context),
+                  ],
+                ),
+              ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -253,22 +265,26 @@ class RakutenManagedProductCard extends StatelessWidget {
                           runSpacing: 4,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
+                            _SmallBadge(
+                              label: 'コレ済',
+                              color: RoomColleListAccent.done,
+                            ),
                             if (product.coredActivitySource ==
                                     RakutenCoredActivitySource.roomImport &&
                                 roomImportEnrichHighlight) ...[
                               const _SmallBadge(
                                 label: '補完反映',
-                                color: Color(0xFF1565C0),
+                                color: HomeScreenColors.homeAccentTeal,
                               ),
                               if (!enrichNeed.needsPrice)
                                 const _SmallBadge(
                                   label: '価格取得済み',
-                                  color: Color(0xFF37474F),
+                                  color: Color(0xFF64748B),
                                 ),
                               if (!enrichNeed.needsImage)
                                 const _SmallBadge(
                                   label: '画像取得済み',
-                                  color: Color(0xFF37474F),
+                                  color: Color(0xFF64748B),
                                 ),
                             ],
                             Builder(
@@ -279,16 +295,16 @@ class RakutenManagedProductCard extends StatelessWidget {
                                 final Color chipColor;
                                 switch (chip) {
                                   case '反応あり':
-                                    chipColor = _roomReactionPink;
+                                    chipColor = HomeScreenColors.homeSuccess;
                                     break;
                                   case '未確認':
                                     chipColor = AppColors.textTertiary;
                                     break;
                                   case '未取り込み':
-                                    chipColor = const Color(0xFF6D4C41);
+                                    chipColor = HomeScreenColors.homeMutedText;
                                     break;
                                   default:
-                                    chipColor = const Color(0xFF1B5E20);
+                                    chipColor = HomeScreenColors.homeSuccess;
                                 }
                                 return _SmallBadge(
                                   label: chip,
@@ -304,7 +320,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                                 label: RoomUnconfirmedDisplayCopy.chipLabelFor(
                                   product,
                                 )!,
-                                color: const Color(0xFF6D4C41),
+                                color: HomeScreenColors.homeWarning,
                               ),
                             if (product.roomLikeCount != null)
                               Text(
@@ -325,10 +341,6 @@ class RakutenManagedProductCard extends StatelessWidget {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 6),
-                      ],
-                      if (isCandidate) ...[
-                        _candidateBadges(context),
                         const SizedBox(height: 6),
                       ],
                       InkWell(
@@ -378,7 +390,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: timestampStyle,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Builder(
                         builder: (ctx) {
                           final line = isCandidate
@@ -410,7 +422,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             if (isCandidate) ...[
               _candidateActions(context),
             ] else ...[
@@ -429,24 +441,86 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Widget _candidateBadges(BuildContext context) {
-    final badges = <Widget>[];
+    final badges = <Widget>[
+      _SmallBadge(label: 'コレ候補', color: RoomColleListAccent.candidate),
+    ];
     if (isTodayRecommendationCandidate) {
       badges.add(_decisionBadge(context));
     }
     if (isSavedShop) {
-      badges.add(const _SmallBadge(label: '保存ショップ', color: Color(0xFF1565C0)));
+      badges.add(
+        _SmallBadge(
+          label: '保存ショップ',
+          color: HomeScreenColors.homeMutedText,
+        ),
+      );
     }
     if (_hasRoomLinkForBadge) {
       badges.add(
-        const _SmallBadge(label: 'ROOM URLあり', color: Color(0xFF2E7D32)),
-      );
-    }
-    if (badges.isEmpty) {
-      badges.add(
-        _SmallBadge(label: 'コレ候補', color: RoomColleListAccent.candidate),
+        _SmallBadge(
+          label: 'ROOM URLあり',
+          color: HomeScreenColors.homeSuccess,
+        ),
       );
     }
     return Wrap(spacing: 5, runSpacing: 4, children: badges);
+  }
+
+  Widget _candidateRemoveLink(BuildContext context) {
+    final provider = context.read<RakutenManagedProductProvider>();
+    return Semantics(
+      button: true,
+      label: 'post_management_item_remove_button',
+      child: TextButton.icon(
+        onPressed: () => _confirmRemoveCandidate(context, provider),
+        style: TextButton.styleFrom(
+          foregroundColor: HomeScreenColors.homeMutedText,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+          minimumSize: const Size(0, 32),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+        ),
+        icon: const Icon(Icons.delete_outline_rounded, size: 16),
+        label: const Text(
+          '削除',
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
+  }
+
+  static ButtonStyle _cardOutlineButtonStyle({required bool enabled}) {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeAccentTeal,
+      backgroundColor: Colors.white,
+      disabledForegroundColor: const Color(0xFF9CA3AF),
+      side: BorderSide(
+        color: enabled
+            ? HomeScreenColors.homeCardBorder
+            : HomeScreenColors.homeCardBorder.withValues(alpha: 0.6),
+      ),
+      elevation: 0,
+      minimumSize: const Size(0, 40),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+    );
+  }
+
+  static ButtonStyle _cardPrimaryButtonStyle({required bool enabled}) {
+    return FilledButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: HomeScreenColors.homeAccentTeal,
+      disabledForegroundColor: Colors.white.withValues(alpha: 0.72),
+      disabledBackgroundColor: HomeScreenColors.homeAccentTeal.withValues(
+        alpha: 0.34,
+      ),
+      elevation: 0,
+      minimumSize: const Size(0, 40),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
+    );
   }
 
   Widget _ratingRow(BuildContext context) {
@@ -554,88 +628,76 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const gap = 6.0;
-        final narrow = constraints.maxWidth < 340;
-        final halfWidth = (constraints.maxWidth - gap) / 2;
-        final thirdWidth = (constraints.maxWidth - gap * 2) / 3;
+    final postLimitBlocked = collectPostingBlocked;
+    final urlNotReady = !_canCollectRoom;
+    final postActionsDisabled = postLimitBlocked || urlNotReady;
+    final String postTooltip;
+    if (urlNotReady) {
+      postTooltip = 'ROOM用のURLが取得できるまでお待ちください';
+    } else if (postLimitBlocked) {
+      final m = collectPostingBlockedMessage.trim();
+      postTooltip = m.isNotEmpty
+          ? m
+          : '直近24時間またはこの1時間の投稿上限に達しています。ホームの表示をご確認ください。';
+    } else {
+      postTooltip = 'ROOMのURLを開き、一覧をコレ済に移します。';
+    }
 
-        final postLimitBlocked = collectPostingBlocked;
-        final urlNotReady = !_canCollectRoom;
-        final postActionsDisabled = postLimitBlocked || urlNotReady;
-        final String postTooltip;
-        if (urlNotReady) {
-          postTooltip = 'ROOM用のURLが取得できるまでお待ちください';
-        } else if (postLimitBlocked) {
-          final m = collectPostingBlockedMessage.trim();
-          postTooltip = m.isNotEmpty
-              ? m
-              : '直近24時間またはこの1時間の投稿上限に達しています。ホームの表示をご確認ください。';
-        } else {
-          postTooltip = 'ROOMのURLを開き、一覧をコレ済に移します。';
-        }
-
-        return Wrap(
-          spacing: gap,
-          runSpacing: gap,
-          children: [
-            SizedBox(
-              width: narrow ? halfWidth : thirdWidth,
-              child: AppOutlineButton(
-                label: '楽天で見る',
-                icon: const Icon(Icons.open_in_new, size: 16),
-                height: 40,
-                expand: true,
-                onPressed: () async {
-                  final err = await provider.openRakutenItemPage(
+    return Row(
+      children: [
+        Expanded(
+          child: Semantics(
+            button: true,
+            label: 'post_management_item_open_rakuten_button',
+            child: OutlinedButton.icon(
+              onPressed: () async {
+                final err = await provider.openRakutenItemPage(
+                  context,
+                  product.productId,
+                );
+                if (!context.mounted) return;
+                if (err != null) {
+                  ScaffoldMessenger.of(
                     context,
-                    product.productId,
-                  );
-                  if (!context.mounted) return;
-                  if (err != null) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(err)));
-                  }
-                },
-              ),
+                  ).showSnackBar(SnackBar(content: Text(err)));
+                }
+              },
+              style: _cardOutlineButtonStyle(enabled: true),
+              icon: const Icon(Icons.open_in_new_rounded, size: 16),
+              label: const Text('楽天で見る'),
             ),
-            SizedBox(
-              width: narrow ? halfWidth : thirdWidth,
-              child: Tooltip(
-                message: postTooltip,
-                child: AppPrimaryButton(
-                  label: '投稿する',
-                  height: 40,
-                  expand: true,
-                  onPressed: postActionsDisabled
-                      ? null
-                      : () async {
-                          if (onCollectPressed != null) {
-                            await onCollectPressed!(context, product);
-                            return;
-                          }
-                          await provider.collectRoomAndLaunch(
-                            context,
-                            product.productId,
-                          );
-                        },
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Tooltip(
+            message: postTooltip,
+            child: Semantics(
+              button: true,
+              label: 'post_management_item_post_button',
+              child: FilledButton(
+                onPressed: postActionsDisabled
+                    ? null
+                    : () async {
+                        if (onCollectPressed != null) {
+                          await onCollectPressed!(context, product);
+                          return;
+                        }
+                        await provider.collectRoomAndLaunch(
+                          context,
+                          product.productId,
+                        );
+                      },
+                style: _cardPrimaryButtonStyle(enabled: !postActionsDisabled),
+                child: const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text('投稿する', maxLines: 1),
                 ),
               ),
             ),
-            SizedBox(
-              width: narrow ? constraints.maxWidth : thirdWidth,
-              child: AppSecondaryButton(
-                label: '候補から外す',
-                height: 40,
-                expand: true,
-                onPressed: () => _confirmRemoveCandidate(context, provider),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 

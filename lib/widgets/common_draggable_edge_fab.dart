@@ -242,9 +242,16 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
 
         final left = _leftForFab(w);
 
-        final fab = Tooltip(
-          message: 'コメント',
-          child: GestureDetector(
+        final semanticLabel = widget.shellTabIndex == 1
+            ? 'post_management_comment_fab'
+            : 'comment_edge_fab';
+
+        final fab = Semantics(
+          button: true,
+          label: semanticLabel,
+          child: Tooltip(
+            message: 'コメント',
+            child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: _onTapComment,
             onLongPressStart: _onLongPressStart,
@@ -267,6 +274,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
               ),
             ),
           ),
+        ),
         );
 
         if (_verticalDragging) {

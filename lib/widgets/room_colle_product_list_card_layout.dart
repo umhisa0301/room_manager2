@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
-import 'app_card.dart';
 
 /// ROOM コレ一覧と検索結果の商品行カードで共有するレイアウト・タイポの単一情報源。
 abstract final class RoomColleProductListCardLayout {
@@ -11,27 +10,21 @@ abstract final class RoomColleProductListCardLayout {
   static const double minCardHeight = 0;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
-  static const double thumbSlotWidth = 104;
+  static const double thumbSlotWidth = 96;
 
-  static const double radius = 18;
+  static const double radius = 16;
 
   static const int titleMaxLines = 2;
   static const int shopMaxLines = 1;
 
-  static Color get cardBackgroundColor => HomeScreenColors.roomMetricTileFill;
-  static Color get cardBorderColor => HomeScreenColors.roomMetricTileBorder;
+  static Color get cardBackgroundColor => HomeScreenColors.homeCardFill;
+  static Color get cardBorderColor => HomeScreenColors.homeCardBorder;
 
   static List<BoxShadow> get cardBoxShadow => [
-    ...HomeScreenColors.roomMetricTileShadow,
-    BoxShadow(
-      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.32),
-      offset: const Offset(0, 3),
-      blurRadius: 12,
-    ),
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.03),
       offset: const Offset(0, 1),
-      blurRadius: 3,
+      blurRadius: 4,
     ),
   ];
 
@@ -43,6 +36,8 @@ abstract final class RoomColleProductListCardLayout {
       boxShadow: cardBoxShadow,
     );
   }
+
+  static EdgeInsets get cardInnerPadding => const EdgeInsets.all(14);
 
   static EdgeInsets get rightColumnPadding =>
       const EdgeInsets.fromLTRB(10, 8, 12, 8);
@@ -120,12 +115,8 @@ class RoomColleProductListCardShell extends StatelessWidget {
         minHeight:
             minHeight ?? RoomColleProductListCardLayout.thumbSlotWidth,
       ),
-      child: AppCard(
-        padding: EdgeInsets.zero,
-        backgroundColor: RoomColleProductListCardLayout.cardBackgroundColor,
-        borderColor: RoomColleProductListCardLayout.cardBorderColor,
-        radius: RoomColleProductListCardLayout.radius,
-        elevated: true,
+      child: DecoratedBox(
+        decoration: RoomColleProductListCardLayout.cardDecoration(),
         child: child,
       ),
     );
