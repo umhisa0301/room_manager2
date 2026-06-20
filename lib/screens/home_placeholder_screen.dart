@@ -323,7 +323,10 @@ abstract final class _HomeDataUpdateButtonStyle {
     );
   }
 
-  static ButtonStyle reactionAccent(BuildContext context, {required bool enabled}) {
+  static ButtonStyle reactionAccent(
+    BuildContext context, {
+    required bool enabled,
+  }) {
     return OutlinedButton.styleFrom(
       foregroundColor: HomeScreenColors.homeAccentTeal,
       backgroundColor: HomeScreenColors.homeAccentTealLight,
@@ -478,9 +481,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     messenger.showSnackBar(
       SnackBar(
         content: Text(
-          hadError
-              ? '一部の情報を更新できませんでした。時間をおいて再試行してください。'
-              : '最新の状態に更新しました',
+          hadError ? '一部の情報を更新できませんでした。時間をおいて再試行してください。' : '最新の状態に更新しました',
         ),
       ),
     );
@@ -645,8 +646,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       events: actProvider.events,
                       now: now,
                     );
-                    final recentReactedProducts =
-                        _homeRecentReactedProducts(items);
+                    final recentReactedProducts = _homeRecentReactedProducts(
+                      items,
+                    );
                     final bottomInset = MediaQuery.paddingOf(context).bottom;
                     const navBarReserve = 52.0;
                     final todayLocalDay = DateTime(
@@ -670,14 +672,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         )
                         .length;
 
-                    final todayCandidateAddedCount =
-                        _countTodayCandidateAdded(
-                          actProvider.events,
-                          todayLocalDay,
-                        );
+                    final todayCandidateAddedCount = _countTodayCandidateAdded(
+                      actProvider.events,
+                      todayLocalDay,
+                    );
                     final todayRoomPostCount = milestonePostCount;
-                    final unconfirmedReactionCount =
-                        _countUnconfirmedReactions(items);
+                    final unconfirmedReactionCount = _countUnconfirmedReactions(
+                      items,
+                    );
 
                     return RefreshIndicator(
                       onRefresh: _refreshHome,
@@ -736,10 +738,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                             .loading,
                                 onOpenRecommendations: () =>
                                     _openTodayRecommendations(context),
-                                onOpenPendingCandidates: () => _openRoomList(
-                                  context,
-                                  initialTabIndex: 0,
-                                ),
+                                onOpenPendingCandidates: () =>
+                                    _openRoomList(context, initialTabIndex: 0),
                                 onOpenSearch: () {
                                   _trace('trigger=cta');
                                   _trace('action=openSearch');
@@ -752,10 +752,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 unconfirmedReactionCount:
                                     unconfirmedReactionCount,
                                 hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
-                                onOpenProductTap: (_) => _openRoomList(
-                                  context,
-                                  initialTabIndex: 1,
-                                ),
+                                onOpenProductTap: (_) =>
+                                    _openRoomList(context, initialTabIndex: 1),
                                 onOpenReactionList: () {
                                   context
                                       .read<AppShellController>()
@@ -872,14 +870,14 @@ _HomeGoalBadgeState _homeGoalBadgeState(int postCount, int milestone) {
 List<RakutenManagedProduct> _homeRecentReactedProducts(
   List<RakutenManagedProduct> items,
 ) {
-  final reacted = roomReactionAnalyticsEligibleItems(items)
-      .where(roomReactionAnalyticsHasReaction)
-      .toList()
-    ..sort(
-      (a, b) => roomReactionAnalyticsReactionScore(b).compareTo(
-        roomReactionAnalyticsReactionScore(a),
-      ),
-    );
+  final reacted =
+      roomReactionAnalyticsEligibleItems(
+        items,
+      ).where(roomReactionAnalyticsHasReaction).toList()..sort(
+        (a, b) => roomReactionAnalyticsReactionScore(
+          b,
+        ).compareTo(roomReactionAnalyticsReactionScore(a)),
+      );
   return reacted.take(2).toList(growable: false);
 }
 
@@ -889,13 +887,13 @@ String _homeGoalProgressSummary(int postCount) {
     useCalendarDayLabel: true,
   );
   if (snap.isHighProgress) {
-    return '${postCount}件投稿済み';
+    return '$postCount件投稿済み';
   }
   final next = snap.nextMilestone;
   if (next == null) {
-    return '${postCount}件投稿済み';
+    return '$postCount件投稿済み';
   }
-  return '${postCount}件投稿済み　${next}件まであと${next - postCount}件';
+  return '$postCount件投稿済み　$next件まであと${next - postCount}件';
 }
 
 String _homeReactionSummary(RakutenManagedProduct product) {
@@ -1179,11 +1177,11 @@ String _homeGoalMarkerLabel(int postCount, int milestone) {
   final state = _homeGoalBadgeState(postCount, milestone);
   switch (state) {
     case _HomeGoalBadgeState.achieved:
-      return '${milestone}件 達成';
+      return '$milestone件 達成';
     case _HomeGoalBadgeState.current:
-      return '${milestone}件 挑戦中';
+      return '$milestone件 挑戦中';
     case _HomeGoalBadgeState.pending:
-      return '${milestone}件 未達';
+      return '$milestone件 未達';
   }
 }
 
@@ -1363,7 +1361,7 @@ class _HomeLimitDetailRow extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '$label  $used / ${max}件',
+                '$label  $used / $max件',
                 style: _HomeUi.tapHint(context).copyWith(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w500,
@@ -1533,19 +1531,15 @@ class _HomeMetricCountText extends StatelessWidget {
         children: [
           TextSpan(
             text: '$count',
-            style: _HomeUi.homeMetricValue(context).copyWith(
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-              height: 1.0,
-            ),
+            style: _HomeUi.homeMetricValue(
+              context,
+            ).copyWith(fontSize: 28, fontWeight: FontWeight.w800, height: 1.0),
           ),
           TextSpan(
             text: '件',
-            style: _HomeUi.homeMetricValue(context).copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              height: 1.0,
-            ),
+            style: _HomeUi.homeMetricValue(
+              context,
+            ).copyWith(fontSize: 14, fontWeight: FontWeight.w700, height: 1.0),
           ),
         ],
       ),
@@ -1620,7 +1614,13 @@ class _TodayRoomWorkCard extends StatelessWidget {
     return _HomeWorkPrimaryAction.searchMore;
   }
 
-  ({String title, String subtitle, String buttonLabel, VoidCallback? onTap, String semanticsLabel})
+  ({
+    String title,
+    String subtitle,
+    String buttonLabel,
+    VoidCallback? onTap,
+    String semanticsLabel,
+  })
   _primaryCtaSpec() {
     switch (_primaryAction()) {
       case _HomeWorkPrimaryAction.recommendations:
@@ -1725,8 +1725,9 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                 cta.subtitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: _HomeUi.homeCardSubtitle(context)
-                                    .copyWith(fontSize: 13.5, height: 1.25),
+                                style: _HomeUi.homeCardSubtitle(
+                                  context,
+                                ).copyWith(fontSize: 13.5, height: 1.25),
                               ),
                             ],
                           ),
@@ -1741,10 +1742,12 @@ class _TodayRoomWorkCard extends StatelessWidget {
                             child: FilledButton(
                               onPressed: cta.onTap,
                               style: FilledButton.styleFrom(
-                                backgroundColor: HomeScreenColors.homeAccentTeal,
+                                backgroundColor:
+                                    HomeScreenColors.homeAccentTeal,
                                 foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -2061,18 +2064,16 @@ class _ReactionCheckCard extends StatelessWidget {
                     Divider(
                       height: 1,
                       thickness: 0.5,
-                      color: HomeScreenColors.listRowDivider
-                          .withValues(alpha: 0.7),
+                      color: HomeScreenColors.listRowDivider.withValues(
+                        alpha: 0.7,
+                      ),
                     ),
                 ],
               ],
             ),
           ] else ...[
             const SizedBox(height: 6),
-            Text(
-              '最近反応があった商品はありません',
-              style: _HomeUi.homeCardSubtitle(context),
-            ),
+            Text('最近反応があった商品はありません', style: _HomeUi.homeCardSubtitle(context)),
           ],
           if (!hasRoomProfileUrl) ...[
             const SizedBox(height: 6),
@@ -2088,10 +2089,7 @@ class _ReactionCheckCard extends StatelessWidget {
 }
 
 class _RecentReactedProductTile extends StatelessWidget {
-  const _RecentReactedProductTile({
-    required this.product,
-    required this.onTap,
-  });
+  const _RecentReactedProductTile({required this.product, required this.onTap});
 
   final RakutenManagedProduct product;
   final VoidCallback onTap;
@@ -2260,7 +2258,8 @@ Future<void> _homeHandleRoomImport(
     context,
     result,
     startBatch: () => ctl.runImport(context),
-    startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
+    startDeepCollectsBatch: () =>
+        ctl.runImport(context, deepCollectsExplore: true),
   );
 }
 
@@ -2486,10 +2485,11 @@ class _DataUpdateCard extends StatelessWidget {
 
         final canRunPrimary = hasRoomProfileUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
-        final importButtonEnabled =
-            showImportButton && roomImportState.allowed;
+        final importButtonEnabled = showImportButton && roomImportState.allowed;
         final showReactionButtonSlot =
-            hasRoomProfileUrl && importedDoneCount > 0 && (syncBusy || canRunPrimary);
+            hasRoomProfileUrl &&
+            importedDoneCount > 0 &&
+            (syncBusy || canRunPrimary);
         final reactionButtonEnabled = canRunPrimary && !syncBusy;
         final reactionButtonLabel = syncBusy && reactionOnly
             ? RoomSyncCardCopy.reactionCheckBusyLabel
@@ -2594,10 +2594,7 @@ class _DataUpdateCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'データ更新',
-                style: _HomeUi.homeCardTitle(context),
-              ),
+              Text('データ更新', style: _HomeUi.homeCardTitle(context)),
               const SizedBox(height: 4),
               Text(
                 hasRoomProfileUrl
@@ -2631,7 +2628,10 @@ class _DataUpdateCard extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.w800),
                         ),
                         const SizedBox(height: 8),
-                        Text(busyLead, style: _HomeUi.homeCardSubtitle(context)),
+                        Text(
+                          busyLead,
+                          style: _HomeUi.homeCardSubtitle(context),
+                        ),
                         const SizedBox(height: 8),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(999),
@@ -2679,9 +2679,10 @@ class _DataUpdateCard extends StatelessWidget {
                                       _handleImport(context);
                                     }
                                   : null,
-                              style: _HomeDataUpdateButtonStyle.dataUpdateOutlined(
-                                context,
-                              ),
+                              style:
+                                  _HomeDataUpdateButtonStyle.dataUpdateOutlined(
+                                    context,
+                                  ),
                               icon: const Icon(
                                 Icons.download_outlined,
                                 size: 18,
@@ -2711,9 +2712,10 @@ class _DataUpdateCard extends StatelessWidget {
                                       _handleReactionSync(context);
                                     }
                                   : null,
-                              style: _HomeDataUpdateButtonStyle.dataUpdateOutlined(
-                                context,
-                              ),
+                              style:
+                                  _HomeDataUpdateButtonStyle.dataUpdateOutlined(
+                                    context,
+                                  ),
                               icon: const Icon(
                                 Icons.check_circle_outline_rounded,
                                 size: 18,
@@ -2905,9 +2907,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     if (pendingCount > 0) return null;
     final statusMsg = recommendationStatusMessage?.trim();
     if (totalCount > 0) {
-      return statusMsg?.isNotEmpty == true
-          ? statusMsg
-          : 'おすすめ候補 $totalCount件';
+      return statusMsg?.isNotEmpty == true ? statusMsg : 'おすすめ候補 $totalCount件';
     }
     if (statusMsg?.isNotEmpty == true) return statusMsg;
     return null;
@@ -3167,13 +3167,14 @@ class _HomePostMilestoneSection extends StatelessWidget {
                   HomePostMilestoneSnapshot.milestones.length;
               return Row(
                 children: [
-                  for (var i = 0;
-                      i < HomePostMilestoneSnapshot.milestones.length;
-                      i++) ...[
+                  for (
+                    var i = 0;
+                    i < HomePostMilestoneSnapshot.milestones.length;
+                    i++
+                  ) ...[
                     if (i > 0) const SizedBox(width: chipGap),
                     _HomeMilestoneChip(
-                      label:
-                          '${HomePostMilestoneSnapshot.milestones[i]}件',
+                      label: '${HomePostMilestoneSnapshot.milestones[i]}件',
                       reached: snapshot.isMilestoneReached(
                         HomePostMilestoneSnapshot.milestones[i],
                       ),
@@ -3190,9 +3191,8 @@ class _HomePostMilestoneSection extends StatelessWidget {
             child: LinearProgressIndicator(
               value: snapshot.segmentProgress,
               minHeight: 3,
-              backgroundColor: HomeScreenColors.sectionOutlineNeutral.withValues(
-                alpha: 0.2,
-              ),
+              backgroundColor: HomeScreenColors.sectionOutlineNeutral
+                  .withValues(alpha: 0.2),
               color: AppColors.accentPrimary.withValues(alpha: 0.78),
             ),
           ),
@@ -3238,11 +3238,9 @@ class _HomeMilestoneChip extends StatelessWidget {
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: _HomeUi.tapHint(context).copyWith(
-          fontSize: 10,
-          fontWeight: FontWeight.w800,
-          color: textColor,
-        ),
+        style: _HomeUi.tapHint(
+          context,
+        ).copyWith(fontSize: 10, fontWeight: FontWeight.w800, color: textColor),
       ),
     );
   }
@@ -3865,8 +3863,7 @@ class _HomeNotificationBellState extends State<_HomeNotificationBell> {
     final entries = results[1] as List<RoomReactionSyncHistoryEntry>;
     setState(() {
       _persistedDismissedKeys = results[0] as Set<String>;
-      _latestReactionSyncHistory =
-          entries.isEmpty ? null : entries.first;
+      _latestReactionSyncHistory = entries.isEmpty ? null : entries.first;
       _reactionSyncHistoryCount = entries.length;
       _storeLoaded = true;
     });
@@ -3939,10 +3936,7 @@ class _HomeNotificationBellState extends State<_HomeNotificationBell> {
                     onTap: () => Navigator.pop(ctx),
                   ),
                 if (notice == null && unconfirmed <= 0)
-                  Text(
-                    '新しいお知らせはありません',
-                    style: _HomeUi.homeCardSubtitle(ctx),
-                  ),
+                  Text('新しいお知らせはありません', style: _HomeUi.homeCardSubtitle(ctx)),
               ],
             ),
           ),
@@ -4255,9 +4249,9 @@ class _HomeCollectionListLink extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: _HomeUi.sectionFooterActionTitle(context).copyWith(
-                          color: AppColors.accentPrimary,
-                        ),
+                        style: _HomeUi.sectionFooterActionTitle(
+                          context,
+                        ).copyWith(color: AppColors.accentPrimary),
                       ),
                       const SizedBox(height: _HomeUi.gapStackTight),
                       Text(hint, style: _HomeUi.tapHint(context)),
@@ -4684,55 +4678,56 @@ class _RecentCandidateTile extends StatelessWidget {
             child: Padding(
               padding: contentPadding,
               child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _thumb(thumbSize),
-                SizedBox(width: _HomeUi.gapIconToTitle),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product.itemName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF374151),
-                          height: 1.22,
-                          fontSize: 13.5,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _thumb(thumbSize),
+                  SizedBox(width: _HomeUi.gapIconToTitle),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.itemName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF374151),
+                                height: 1.22,
+                                fontSize: 13.5,
+                              ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        RoomColleProductListCardLayout.formatPriceYen(
-                          product.itemPrice,
+                        const SizedBox(height: 2),
+                        Text(
+                          RoomColleProductListCardLayout.formatPriceYen(
+                            product.itemPrice,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              RoomColleProductListCardLayout.priceTextStyle(
+                                Theme.of(context),
+                              )?.copyWith(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w800,
+                              ) ??
+                              _HomeUi.tapHint(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.w800),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            RoomColleProductListCardLayout.priceTextStyle(
-                              Theme.of(context),
-                            )?.copyWith(
-                              fontSize: 13.5,
-                              fontWeight: FontWeight.w800,
-                            ) ??
-                            _HomeUi.tapHint(context).copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: HomeScreenColors.chevronOnSection.withValues(
-                    alpha: 0.55,
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: HomeScreenColors.chevronOnSection.withValues(
+                      alpha: 0.55,
+                    ),
+                    size: 20,
                   ),
-                  size: 20,
-                ),
-              ],
-            ),
+                ],
+              ),
             ),
           ),
         ),
