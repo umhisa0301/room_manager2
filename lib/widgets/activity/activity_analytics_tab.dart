@@ -51,6 +51,17 @@ class ActivityAnalyticsTab extends StatefulWidget {
 
 enum _OutcomeLens { combined, sold, likedOnly }
 
+/// 分析サブタブのセクション表示フラグ（将来復活・再設計用）。
+abstract final class _ActivityAnalyticsUiFlags {
+  _ActivityAnalyticsUiFlags._();
+
+  /// 「次にやること」カード。現時点では分析価値が弱いため非表示。
+  static const bool showDecisionInsightCard = false;
+
+  /// 「今日の気づき」カード。再設計後に復活予定のため非表示。
+  static const bool showTodayInsightCard = false;
+}
+
 class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
   @override
   Widget build(BuildContext context) {
@@ -131,36 +142,49 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             importedFromRoomCount: importedFromRoomCount,
           );
         }
-        final done = items
-            .where(
-              (e) =>
-                  RakutenManagedProduct.isMemberForStatusTab(
-                    e,
-                    RakutenManagedProductStatus.done,
-                  ),
-            )
-            .toList(growable: false);
+        final listChildren = <Widget>[
+          KeyedSubtree(
+            key: widget.roomReactionSectionKey,
+            child: _RoomReactionAnalyticsSection(
+              allItems: items,
+            ),
+          ),
+        ];
 
-        final outcomeLens = _OutcomeLens.combined;
-        final outcomeSubset = _outcomeSubset(done, outcomeLens);
-        final genreRows = _genreOutcomeAggregation(outcomeSubset);
-        final shopRows = _shopOutcomeAggregation(outcomeSubset);
-        final timeBuckets = _postedHourBuckets8(outcomeSubset, act.events);
-
-        final insight = _buildDecisionBrief(
-          context: context,
-          shell: shell,
-          done: done,
-          outcomeSubset: outcomeSubset,
-          outcomeLens: outcomeLens,
-          genreRows: genreRows,
-          shopRows: shopRows,
-          timeBuckets: timeBuckets,
-          savedShopIds: saved.shops
-              .map((e) => e.shopId.trim())
-              .where((e) => e.isNotEmpty)
-              .toSet(),
-        );
+        if (_ActivityAnalyticsUiFlags.showDecisionInsightCard) {
+          final done = items
+              .where(
+                (e) =>
+                    RakutenManagedProduct.isMemberForStatusTab(
+                      e,
+                      RakutenManagedProductStatus.done,
+                    ),
+              )
+              .toList(growable: false);
+          final outcomeLens = _OutcomeLens.combined;
+          final outcomeSubset = _outcomeSubset(done, outcomeLens);
+          final genreRows = _genreOutcomeAggregation(outcomeSubset);
+          final shopRows = _shopOutcomeAggregation(outcomeSubset);
+          final timeBuckets = _postedHourBuckets8(outcomeSubset, act.events);
+          final insight = _buildDecisionBrief(
+            context: context,
+            shell: shell,
+            done: done,
+            outcomeSubset: outcomeSubset,
+            outcomeLens: outcomeLens,
+            genreRows: genreRows,
+            shopRows: shopRows,
+            timeBuckets: timeBuckets,
+            savedShopIds: saved.shops
+                .map((e) => e.shopId.trim())
+                .where((e) => e.isNotEmpty)
+                .toSet(),
+          );
+          listChildren.insertAll(0, [
+            _DecisionInsightCard(brief: insight),
+            const SizedBox(height: ActivityScreenLayout.sectionGap),
+          ]);
+        }
 
         return RefreshIndicator(
           onRefresh: widget.onRefresh,
@@ -175,16 +199,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
                   ActivityScreenLayout.fabSideReserve,
               bottomPad,
             ),
-            children: [
-              _DecisionInsightCard(brief: insight),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              KeyedSubtree(
-                key: widget.roomReactionSectionKey,
-                child: _RoomReactionAnalyticsSection(
-                  allItems: items,
-                ),
-              ),
-            ],
+            children: listChildren,
           ),
         );
       },
@@ -1012,13 +1027,6 @@ class _RoomReactionAnalyticsSectionState
         .where((e) => _commentOf(e) > 0)
         .length;
 
-    final insightTexts = _buildTodayInsightTexts(
-      reactionCount: withReaction.length,
-      commentedCount: commentedInReaction,
-      genreBySumSorted: genreRows,
-      shopAggSorted: shopRows,
-    );
-
     logRoomReactionTrendRenderIfChanged(
       itemsWithReaction: withReaction.length,
       genreRows: genreRows.length,
@@ -1156,40 +1164,47 @@ class _RoomReactionAnalyticsSectionState
     );
 
     final children = <Widget>[
-      AppCard(
-        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-        elevated: true,
-        radius: ActivityScreenLayout.cardRadius,
-        borderColor: ActivityScreenUi.border,
-        backgroundColor: ActivityScreenUi.surface,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '今日の気づき',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
-            ),
-            const SizedBox(height: 10),
-            for (final line in insightTexts)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  line,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        height: 1.45,
-                        fontSize: 14,
-                        color: ActivityScreenUi.textPrimary,
-                      ),
-                ),
+      if (_ActivityAnalyticsUiFlags.showTodayInsightCard) ...[
+        AppCard(
+          padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+          elevated: true,
+          radius: ActivityScreenLayout.cardRadius,
+          borderColor: ActivityScreenUi.border,
+          backgroundColor: ActivityScreenUi.surface,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '今日の気づき',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                      color: ActivityScreenUi.textPrimary,
+                    ),
               ),
-          ],
+              const SizedBox(height: 10),
+              for (final line in _buildTodayInsightTexts(
+                reactionCount: withReaction.length,
+                commentedCount: commentedInReaction,
+                genreBySumSorted: genreRows,
+                shopAggSorted: shopRows,
+              ))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    line,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          height: 1.45,
+                          fontSize: 14,
+                          color: ActivityScreenUi.textPrimary,
+                        ),
+                  ),
+                ),
+            ],
+          ),
         ),
-      ),
-      const SizedBox(height: ActivityScreenLayout.sectionGap),
+        const SizedBox(height: ActivityScreenLayout.sectionGap),
+      ],
       AppCard(
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
@@ -1593,6 +1608,10 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                       compact: true,
                       screen: 'activityReactionProduct',
                       logStyleAudit: true,
+                      outlineButtonStyle:
+                          ActivityScreenUi.compactProductOutlineButtonStyle(
+                        theme: Theme.of(context),
+                      ),
                     ),
                   ],
                 ),

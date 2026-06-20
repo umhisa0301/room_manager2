@@ -17,12 +17,16 @@ class ProductOpenActionButtons extends StatelessWidget {
     this.compact = true,
     this.screen = 'productCard',
     this.logStyleAudit = false,
+    this.outlineButtonStyle,
   });
 
   final RakutenManagedProduct product;
   final bool compact;
   final String screen;
   final bool logStyleAudit;
+
+  /// 指定時は [AppOutlineButton] の代わりにこのスタイルで描画する（分析画面のティール化など）。
+  final ButtonStyle? outlineButtonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,56 @@ class ProductOpenActionButtons extends StatelessWidget {
         final itemWidth = narrow
             ? constraints.maxWidth
             : (constraints.maxWidth - gap) / 2;
+
+        final outlineStyle = outlineButtonStyle;
+        if (outlineStyle != null) {
+          return Wrap(
+            spacing: gap,
+            runSpacing: gap,
+            children: [
+              SizedBox(
+                width: itemWidth,
+                height: height,
+                child: OutlinedButton.icon(
+                  onPressed: rakutenUrl.isEmpty
+                      ? null
+                      : () => _openRakuten(context),
+                  style: outlineStyle,
+                  icon: const Icon(Icons.open_in_new, size: 16),
+                  label: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '楽天で見る',
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: itemWidth,
+                height: height,
+                child: OutlinedButton.icon(
+                  onPressed: roomUrl.isEmpty
+                      ? null
+                      : () => unawaited(
+                            AppActionService.openUrl(context, url: roomUrl),
+                          ),
+                  style: outlineStyle,
+                  icon: const Icon(Icons.open_in_new, size: 16),
+                  label: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'ROOMで見る',
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
 
         return Wrap(
           spacing: gap,

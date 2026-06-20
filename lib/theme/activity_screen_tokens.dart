@@ -107,4 +107,27 @@ abstract final class ActivityScreenUi {
       ),
     );
   }
+
+  /// 反応商品行の「楽天で見る / ROOMで見る」（高さ36前後）。
+  static ButtonStyle compactProductOutlineButtonStyle({
+    required ThemeData theme,
+    double height = 36,
+  }) {
+    return OutlinedButton.styleFrom(
+      foregroundColor: primary,
+      backgroundColor: surface,
+      disabledForegroundColor: textMuted,
+      side: BorderSide(color: primary.withValues(alpha: 0.72)),
+      minimumSize: Size(0, height),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      textStyle: theme.textTheme.labelSmall?.copyWith(
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.15,
+      ),
+    );
+  }
 }
