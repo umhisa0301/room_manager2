@@ -153,7 +153,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
             icon: Icons.travel_explore_rounded,
             title: '楽天で商品を探す',
             description: 'キーワードで商品を検索',
-            isPrimaryEntry: true,
+            showRecommendedBadge: true,
             onTap: () {
               if (_blockIfRoomTourBusy(context, 'search')) return;
               onTapRakutenProductSearch();
@@ -227,79 +227,18 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
     required this.title,
     required this.description,
     required this.onTap,
-    this.isPrimaryEntry = false,
+    this.showRecommendedBadge = false,
   });
 
   final IconData icon;
   final String title;
   final String description;
   final VoidCallback onTap;
-  final bool isPrimaryEntry;
+  final bool showRecommendedBadge;
 
   @override
   Widget build(BuildContext context) {
-    final accent = HomeScreenColors.homeAccentTeal;
-    if (isPrimaryEntry) {
-      return Material(
-        color: accent,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-          child: Padding(
-            padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.18),
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusButton,
-                    ),
-                  ),
-                  child: Icon(icon, color: Colors.white),
-                ),
-                const SizedBox(width: AppDimensions.spacingSm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.bodyLarge.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: Colors.white.withValues(alpha: 0.88),
-                          height: 1.3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: Colors.white.withValues(alpha: 0.92),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
+    final accent = RakutenSearchScreenUi.primary;
     return Material(
       color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -312,57 +251,78 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
             border: Border.all(color: HomeScreenColors.homeCardBorder),
           ),
           child: Padding(
-          padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: HomeScreenColors.homeAccentTealLight,
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusButton,
+            padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: RakutenSearchScreenUi.primaryLight,
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusButton,
+                    ),
+                  ),
+                  child: Icon(icon, color: accent),
+                ),
+                const SizedBox(width: AppDimensions.spacingSm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: HomeScreenColors.homeTextPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: HomeScreenColors.homeTextSecondary,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Icon(icon, color: accent),
-              ),
-              const SizedBox(width: AppDimensions.spacingSm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: AppTextStyles.bodyLarge.copyWith(
+                if (showRecommendedBadge) ...[
+                  const SizedBox(width: AppDimensions.spacingXs),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: RakutenSearchScreenUi.primaryLight,
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: accent.withValues(alpha: 0.35),
+                      ),
+                    ),
+                    child: Text(
+                      'おすすめ',
+                      style: AppTextStyles.label.copyWith(
+                        fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: HomeScreenColors.homeTextPrimary,
+                        color: accent,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: HomeScreenColors.homeTextSecondary,
-                        height: 1.3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: AppDimensions.spacingXs),
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Icon(
+                  ),
+                ],
+                const SizedBox(width: AppDimensions.spacingXs),
+                Icon(
                   Icons.chevron_right_rounded,
                   color: HomeScreenColors.homeTextSecondary,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );

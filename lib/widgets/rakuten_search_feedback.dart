@@ -327,7 +327,7 @@ class RakutenSearchErrorView extends StatelessWidget {
                           label: Text(retryLabel),
                           style: OutlinedButton.styleFrom(
                             visualDensity: VisualDensity.compact,
-                            foregroundColor: AppColors.accentPrimary,
+                            foregroundColor: RakutenSearchScreenUi.primary,
                           ),
                         ),
                       ),
@@ -395,7 +395,7 @@ class RakutenSearchErrorView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          AppPrimaryButton(
+          RakutenSearchPrimaryButton(
             label: retryLabel,
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded),
@@ -502,7 +502,7 @@ class RakutenSearchEmptyView extends StatelessWidget {
           ],
           if (onRefine != null) ...[
             SizedBox(height: compactLayout ? 12 : 14),
-            AppPrimaryButton(
+            RakutenSearchPrimaryButton(
               label: refineLabel,
               onPressed: onRefine,
               icon: const Icon(Icons.tune_rounded),

@@ -9,7 +9,7 @@ import '../utils/shop_display_resolve.dart';
 import '../theme/app_theme.dart';
 import '../utils/search_tab_ui_audit_log.dart';
 import '../theme/home_screen_colors.dart';
-import 'app_button.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 楽天検索結果の1商品カード（ROOM コレ一覧カードと同一 UI ルール）。
@@ -333,7 +333,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     final h = buttonHeight;
     final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
     final isDone = localStatus == RakutenManagedProductStatus.done;
-    final rakuten = AppOutlineButton(
+    final rakuten = RakutenSearchOutlineButton(
       label: '楽天で見る',
       icon: Icon(Icons.open_in_new, size: compact ? 16.0 : 18.0),
       height: h,
@@ -363,7 +363,7 @@ class RakutenSearchResultCard extends StatelessWidget {
   }) {
     return Tooltip(
       message: 'ROOMコレの候補に追加します。あとから候補一覧で比較・整理できます。',
-      child: AppPrimaryButton(
+      child: RakutenSearchPrimaryButton(
         label: '候補に追加',
         icon: Icon(Icons.add, size: compact ? 16.0 : 18.0),
         height: height,
@@ -378,7 +378,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     return Checkbox(
       value: isSelected,
       onChanged: !isSelectionEnabled ? null : (_) => onToggleSelected?.call(),
-      activeColor: AppColors.accentPrimary,
+      activeColor: RakutenSearchScreenUi.primary,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
     );

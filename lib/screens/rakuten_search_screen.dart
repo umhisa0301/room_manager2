@@ -1756,7 +1756,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           RakutenSearchScreenUi.screenPadH,
           RakutenSearchScreenUi.gapFloatingBarPad,
         ),
-        child: AppPrimaryButton(
+        child: RakutenSearchPrimaryButton(
           key: const Key('rakuten_search_bulk_add_button'),
           label: _isBulkRegistering
               ? '追加中…（$_bulkRegisterProcessed/$_bulkRegisterTotal）'
@@ -1963,7 +1963,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ? '候補に追加中です：$_bulkRegisterProcessed / $_bulkRegisterTotal件\n登録中は他の商品登録を実行できません'
             : (bulk.blockingRoomTourUserMessage ?? '処理中です。完了後にお試しください');
         return Material(
-          color: AppColors.accentPrimary.withValues(alpha: 0.12),
+          color: RakutenSearchScreenUi.primaryLight.withValues(alpha: 0.85),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Text(
@@ -3113,7 +3113,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     trailing: _selectedShopCode == s.shopId
                         ? Icon(
                             Icons.check_circle_rounded,
-                            color: AppColors.accentPrimary,
+                            color: RakutenSearchScreenUi.primary,
                           )
                         : null,
                     onTap: () {
@@ -3155,7 +3155,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         title: '保存ショップはまだありません',
         body: 'ショップ発掘などでショップを保存すると、ここから店内検索に使えます。',
         actions: [
-          AppPrimaryButton(
+          RakutenSearchPrimaryButton(
             label: 'ショップ発掘を開く',
             onPressed: () {
               Navigator.of(context).push<void>(
@@ -3232,7 +3232,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
           ] else
-            AppPrimaryButton(
+            RakutenSearchPrimaryButton(
               label: 'ショップを選択',
               icon: const Icon(Icons.storefront_outlined, size: 20),
               height: 48,
@@ -3329,13 +3329,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           label: const Text('条件を変更'),
           style: OutlinedButton.styleFrom(
             visualDensity: VisualDensity.compact,
-            foregroundColor: AppColors.accentPrimary,
-            side: BorderSide(color: AppColors.accentPrimary),
+            foregroundColor: RakutenSearchScreenUi.primary,
+            side: BorderSide(color: RakutenSearchScreenUi.primary),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           ),
         ),
         const SizedBox(height: 8),
-        AppPrimaryButton(
+                                    RakutenSearchPrimaryButton(
           label: 'このショップで探す',
           icon: const Icon(Icons.search_rounded, size: 22),
           height: 46,
@@ -3471,7 +3471,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         Row(
           children: [
             Expanded(
-              child: AppPrimaryButton(
+              child: RakutenSearchPrimaryButton(
                 key: const Key('rakuten_search_keyword_search_button'),
                 label: '検索する',
                 icon: const Icon(Icons.search_rounded, size: 20),
@@ -3578,8 +3578,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
         SizedBox(
           height: 52,
-          child: AppPrimaryButton(
-            // 共通AppPrimaryButtonへ置換: ショップ発掘の主CTA。
+          child: RakutenSearchPrimaryButton(
+            // 探す画面 Primary CTA（ティール）。
             label: 'ショップを探す',
             icon: const Icon(Icons.travel_explore_rounded, size: 22),
             onPressed: search.status == RakutenSearchStatus.loading
@@ -3810,7 +3810,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Semantics(
       button: true,
       label: label,
-      child: AppPrimaryButton(
+      child: RakutenSearchPrimaryButton(
         label: label,
         icon: const Icon(Icons.search_rounded, size: 22),
         onPressed: onPressed,
@@ -3825,13 +3825,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(r),
         border: Border.all(
-          color: HomeScreenColors.sectionOutlineAccent.withValues(alpha: 0.85),
+          color: RakutenSearchScreenUi.primary.withValues(alpha: 0.35),
           width: 1.5,
         ),
-        color: AppColors.accentLight.withValues(alpha: 0.1),
+        color: RakutenSearchScreenUi.primaryLight.withValues(alpha: 0.65),
         boxShadow: [
           BoxShadow(
-            color: HomeScreenColors.sectionOutlineAccent.withValues(alpha: 0.1),
+            color: RakutenSearchScreenUi.primary.withValues(alpha: 0.1),
             blurRadius: 12,
             offset: const Offset(0, 3),
           ),
@@ -4266,7 +4266,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                           minHeight: 3,
                                         ),
                                       ),
-                                    AppPrimaryButton(
+                                    RakutenSearchPrimaryButton(
                                       key: const Key(
                                         'product_search_detail_submit',
                                       ),
@@ -4525,8 +4525,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                AppPrimaryButton(
-                                  // 共通AppPrimaryButtonへ置換: ショップ発掘条件保存CTA。
+                                RakutenSearchPrimaryButton(
+                                  // 探す画面 Primary CTA（ティール）。
                                   label: '条件を保存して検索',
                                   icon: const Icon(
                                     Icons.search_rounded,
@@ -5219,7 +5219,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             height: 1.35,
           ),
         ),
-        backgroundColor: AppColors.accentPrimary,
+        backgroundColor: RakutenSearchScreenUi.primary,
       ),
     );
   }
@@ -5403,7 +5403,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             height: 1.35,
           ),
         ),
-        backgroundColor: AppColors.accentPrimary,
+        backgroundColor: RakutenSearchScreenUi.primary,
       ),
     );
   }
@@ -7098,7 +7098,9 @@ class _RakutenSearchBottomNavItem extends StatelessWidget {
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.accentLight : Colors.transparent,
+            color: isSelected
+                ? RakutenSearchScreenUi.primaryLight
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
           ),
           child: Column(
@@ -7109,8 +7111,8 @@ class _RakutenSearchBottomNavItem extends StatelessWidget {
                 isSelected ? selectedIcon : icon,
                 size: AppDimensions.iconNav,
                 color: isSelected
-                    ? AppColors.accentPrimary
-                    : AppColors.textSecondary,
+                    ? RakutenSearchScreenUi.primary
+                    : HomeScreenColors.homeNavInactive,
               ),
               const SizedBox(height: 2),
               FittedBox(
@@ -7120,8 +7122,12 @@ class _RakutenSearchBottomNavItem extends StatelessWidget {
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: isSelected
-                      ? AppTextStyles.navLabelSelected
-                      : AppTextStyles.navLabel,
+                      ? AppTextStyles.navLabelSelected.copyWith(
+                          color: RakutenSearchScreenUi.primary,
+                        )
+                      : AppTextStyles.navLabel.copyWith(
+                          color: HomeScreenColors.homeNavInactive,
+                        ),
                 ),
               ),
             ],

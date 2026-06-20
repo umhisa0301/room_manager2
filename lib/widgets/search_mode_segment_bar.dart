@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/app_debug_log.dart';
 
 /// 探し方セレクター（ピル型チップ・横スクロール可）。
@@ -187,7 +188,7 @@ class _SegmentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = HomeScreenColors.homeAccentTeal;
+    final accent = RakutenSearchScreenUi.primary;
     return Material(
       color: selected ? accent : HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(999),

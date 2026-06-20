@@ -60,6 +60,18 @@ abstract final class RakutenSearchScreenUi {
   /// 条件ボタンの固定幅（横 overflow 防止）。
   static const double filterButtonWidth = 92;
 
+  /// 探す画面 Primary（投稿管理 [HomeScreenColors.homeAccentTeal] と同一）。
+  static const Color primary = HomeScreenColors.homeAccentTeal;
+
+  /// Primary の淡い背景（選択チップ・バナー・ナビ選択背景）。
+  static const Color primaryLight = HomeScreenColors.homeAccentTealLight;
+
+  /// Primary の枠線（アウトラインボタン・チップ）。
+  static const Color primaryBorder = HomeScreenColors.homeAccentTealBorder;
+
+  /// Primary 上の文字色。
+  static const Color textOnPrimary = Colors.white;
+
   /// 検索欄の通常枠線。
   static const Color searchFieldBorder = Color(0xFFCBD5E1);
 
@@ -345,12 +357,149 @@ abstract final class RakutenSearchScreenUi {
       enabledBorder: normal,
       focusedBorder: OutlineInputBorder(
         borderRadius: r,
-        borderSide: BorderSide(color: HomeScreenColors.homeAccentTeal, width: 1.2),
+        borderSide: BorderSide(color: RakutenSearchScreenUi.primary, width: 1.2),
       ),
       contentPadding: searchFieldContentPadding,
       prefixIconConstraints: searchFieldIconConstraints,
       suffixIconConstraints: searchFieldIconConstraints,
     );
+  }
+}
+
+/// 探す画面向け Primary CTA（ティール系。[AppPrimaryButton] の探す版）。
+class RakutenSearchPrimaryButton extends StatelessWidget {
+  const RakutenSearchPrimaryButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.isLoading = false,
+    this.height = 52,
+    this.expand = true,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final Widget? icon;
+  final bool isLoading;
+  final double height;
+  final bool expand;
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = RakutenSearchScreenUi.primary;
+    final button = SizedBox(
+      width: expand ? double.infinity : null,
+      height: height,
+      child: FilledButton.icon(
+        onPressed: isLoading ? null : onPressed,
+        style: FilledButton.styleFrom(
+          foregroundColor: RakutenSearchScreenUi.textOnPrimary,
+          backgroundColor: primary,
+          disabledForegroundColor: RakutenSearchScreenUi.textOnPrimary.withValues(
+            alpha: 0.72,
+          ),
+          disabledBackgroundColor: primary.withValues(alpha: 0.34),
+          elevation: 1.2,
+          shadowColor: primary.withValues(alpha: 0.22),
+          minimumSize: Size(0, height),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: AppTextStyles.button.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.15,
+          ),
+        ),
+        icon: isLoading
+            ? SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: RakutenSearchScreenUi.textOnPrimary.withValues(
+                    alpha: 0.9,
+                  ),
+                ),
+              )
+            : icon ?? const SizedBox.shrink(),
+        label: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label, maxLines: 1, softWrap: false),
+        ),
+      ),
+    );
+
+    return Semantics(button: true, label: label, child: button);
+  }
+}
+
+/// 探す画面向けアウトラインボタン（白背景 + ティール枠 + ティール文字）。
+class RakutenSearchOutlineButton extends StatelessWidget {
+  const RakutenSearchOutlineButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.height = 52,
+    this.expand = true,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final Widget? icon;
+  final double height;
+  final bool expand;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+    final primary = RakutenSearchScreenUi.primary;
+    final button = SizedBox(
+      width: expand ? double.infinity : null,
+      height: height,
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: primary,
+          backgroundColor: Colors.transparent,
+          disabledForegroundColor: AppColors.textTertiary,
+          side: BorderSide(
+            color: enabled
+                ? primary.withValues(alpha: 0.75)
+                : AppColors.divider,
+          ),
+          elevation: 0,
+          minimumSize: Size(0, height),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: AppTextStyles.button.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.15,
+            color: primary,
+          ),
+        ),
+        icon: icon ?? const SizedBox.shrink(),
+        label: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            maxLines: 1,
+            softWrap: false,
+            style: AppTextStyles.button.copyWith(
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.15,
+              color: enabled ? primary : AppColors.textTertiary,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return Semantics(button: true, label: label, child: button);
   }
 }
 
@@ -397,7 +546,7 @@ class RakutenSearchSectionShell extends StatelessWidget {
                       child: Icon(
                         icon,
                         size: 20,
-                        color: HomeScreenColors.statusAccentStrong,
+                        color: RakutenSearchScreenUi.primary,
                       ),
                     ),
                     SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
