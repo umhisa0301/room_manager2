@@ -1,4 +1,3 @@
-import 'dart:async' show unawaited;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,56 +6,71 @@ import 'package:provider/provider.dart';
 import '../config/demo_mode.dart';
 import '../config/dev_automation_config.dart';
 import '../services/dev_automation_visible_run.dart';
-import '../constants/legal_urls.dart';
-import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
-import '../navigation/app_shell_controller.dart';
 import '../repository/easy_initial_setup_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
-import '../services/room_import_collects_policy.dart';
-import '../services/room_import_limit.dart';
-import '../services/room_import_limit_policy.dart';
-import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../utils/app_input_limits.dart';
 import '../utils/favorite_genre_pref.dart';
 import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
-import '../utils/room_sync_button_visibility.dart';
-import '../utils/room_sync_card_copy.dart';
-import '../utils/room_sync_log.dart';
-import '../widgets/operation_confirm_dialog.dart';
-import '../widgets/room_post_import_flow.dart';
-import '../widgets/room_sync_reaction_button.dart';
-import '../models/room_reaction_sync_history_entry.dart';
-import '../services/room_reaction_sync_history_store.dart';
-import '../utils/room_reaction_analytics.dart';
-import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
-import '../state/bulk_operation_state_controller.dart';
-import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
+import '../theme/mypage_screen_tokens.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../widgets/post_style_picker_sheet.dart';
-import '../widgets/app_button.dart';
-import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
+import '../widgets/mypage/mypage_widgets.dart';
 import 'closed_test_demo_screen.dart';
 import 'dev_automation_screen.dart';
 import 'easy_initial_setup_screen.dart';
 import 'monetization_plan_screen.dart';
 import 'saved_shops_screen.dart';
 
-/// マイページ：設定・状態確認のハブ（ホームの行動・おすすめ導線はここでは持たない）。
-class MypagePlaceholderScreen extends StatelessWidget {
+export '../widgets/mypage/mypage_widgets.dart' show MyPageSettingsSection;
+
+/// マイページ：設定・プラン・サポートのハブ。
+class MypagePlaceholderScreen extends StatefulWidget {
   const MypagePlaceholderScreen({super.key});
 
-  static const double _screenPadH = AppDimensions.screenPaddingH;
-  static const double _gap = AppDimensions.spacingMd;
-  static const double _navReserve = 64;
+  @override
+  State<MypagePlaceholderScreen> createState() => _MypagePlaceholderScreenState();
+}
+
+class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
+  bool _setupPromptDismissed = false;
+
+  Future<void> _openPostStylePickerSheet(BuildContext context) async {
+    final profile = context.read<UserProfileProvider>().profile;
+    final picked = await showModalBottomSheet<List<String>>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => PostStylePickerSheet(
+        initialSelectedKeys: profile.postStyleList,
+      ),
+    );
+    if (picked == null || !context.mounted) return;
+    final base = context.read<UserProfileProvider>().profile;
+    final next = UserProfile(
+      displayName: base.displayName,
+      age: base.age,
+      genderKey: base.genderKey,
+      occupation: base.occupation,
+      favoriteGenres: base.favoriteGenres,
+      favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: picked.where(UserProfile.postStyleKeys.contains).take(1).join('、'),
+      roomUrl: base.roomUrl,
+    );
+    await context.read<UserProfileProvider>().saveProfile(next);
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('探し方を保存しました')),
+    );
+  }
 
   Future<void> _openProfileEditSheet(BuildContext context) async {
     await showModalBottomSheet<void>(
@@ -76,41 +90,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
       showDragHandle: true,
       builder: (sheetContext) => const RoomUrlEditSheet(),
     );
-  }
-
-  Future<void> _openPostStylePickerSheet(BuildContext context) async {
-    final profile = context.read<UserProfileProvider>().profile;
-    final picked = await showModalBottomSheet<List<String>>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      showDragHandle: true,
-      builder: (sheetContext) =>
-          PostStylePickerSheet(initialSelectedKeys: profile.postStyleList),
-    );
-    if (picked == null || !context.mounted) return;
-    final base = context.read<UserProfileProvider>().profile;
-    final next = UserProfile(
-      displayName: base.displayName,
-      age: base.age,
-      genderKey: base.genderKey,
-      occupation: base.occupation,
-      favoriteGenres: base.favoriteGenres,
-      favoriteGenreIds: base.favoriteGenreIds,
-      postStyles: picked
-          .where(UserProfile.postStyleKeys.contains)
-          .take(1)
-          .join('、'),
-      roomUrl: base.roomUrl,
-    );
-    debugPrint(
-      '[SEARCH_STYLE_SAVE] selected=${picked.where(UserProfile.postStyleKeys.contains).take(1).join()}',
-    );
-    await context.read<UserProfileProvider>().saveProfile(next);
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('探し方を保存しました')));
   }
 
   Future<void> _openFavoriteGenrePickerSheet(BuildContext context) async {
@@ -213,1701 +192,101 @@ class MypagePlaceholderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPad = MediaQuery.paddingOf(context).bottom + _navReserve;
+    final bottomPad =
+        MediaQuery.paddingOf(context).bottom + MyPageScreenUi.navReserve;
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('マイページ')),
+      backgroundColor: MyPageScreenUi.canvas,
+      appBar: AppBar(
+        title: const Text('マイページ'),
+        backgroundColor: MyPageScreenUi.canvas,
+        surfaceTintColor: Colors.transparent,
+      ),
       body: SafeArea(
         top: false,
-        child:
-            Consumer4<
-              UserProfileProvider,
-              SavedShopProvider,
-              RakutenManagedProductProvider,
-              EasyInitialSetupRepository
-            >(
-              builder:
-                  (
-                    context,
-                    profileProvider,
-                    saved,
-                    managed,
-                    setup,
-                    _,
-                  ) {
-                    final profile = profileProvider.profile;
-                    final missingRoomUrl = !profile.hasRoomUrl;
-                    final missingGenre = profile.favoriteGenreIdList.isEmpty;
-                    final missingSavedShop = saved.shops.isEmpty;
-                    final showMyPageSetupCard =
-                        !setup.initialSetupCompleted &&
-                        (missingRoomUrl || missingGenre || missingSavedShop);
-                    final roomUrlFormat =
-                        RoomProfileUrlValidationService.validateFormat(
-                          profile.roomUrl,
-                        );
-                    logOnboardingUi(
-                      route: 'myPage',
-                      termsAccepted: true,
-                      initialSetupCompleted: setup.initialSetupCompleted,
-                      initialSetupSkipped: setup.initialSetupSkipped,
-                      missingRoomUrl: missingRoomUrl,
-                      missingGenre: missingGenre,
-                      missingSavedShop: missingSavedShop,
-                      showMyPageSetupCard: showMyPageSetupCard,
-                      roomUrlValidationResult: roomUrlFormat.logValue,
-                      roomProfileExists: missingRoomUrl ? 'skipped' : 'unknown',
-                    );
-                    final candidateCount = managed.items
-                        .where(
-                          (e) =>
-                              e.status == RakutenManagedProductStatus.candidate,
-                        )
-                        .length;
-                    final doneCount = managed.items
-                        .where(
-                          (e) => e.status == RakutenManagedProductStatus.done,
-                        )
-                        .length;
-                    return ListView(
-                      padding: EdgeInsets.fromLTRB(
-                        _screenPadH,
-                        AppDimensions.spacingMd,
-                        _screenPadH,
-                        bottomPad,
-                      ),
-                      children: [
-                        if (showMyPageSetupCard) ...[
-                          MyPageHeader(
-                            profile: profile,
-                            savedShopCount: saved.shops.length,
-                            onOpenSetup: () => _openEasyInitialSetup(context),
-                            onStepGenre: () =>
-                                _openFavoriteGenrePickerSheet(context),
-                            onStepRoom: () => _openRoomUrlEditSheet(context),
-                            onStepProfile: () => _openProfileEditSheet(context),
-                            onStepSavedShops: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute<void>(
-                                  builder: (_) => const SavedShopsScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: _gap),
-                        ],
-                        MyPageRegisteredContentCard(
-                          profile: profile,
-                          savedShopCount: saved.shops.length,
-                          onEditNickname: () => _openProfileEditSheet(context),
-                          onEditPostStyles: () =>
-                              _openPostStylePickerSheet(context),
-                          onEditRoomUrl: () => _openRoomUrlEditSheet(context),
-                          onEditGenres: () =>
-                              _openFavoriteGenrePickerSheet(context),
-                          onOpenSavedShops: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const SavedShopsScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: _gap),
-                        MyPageQuickSummaryCard(
-                          candidateCount: candidateCount,
-                          doneCount: doneCount,
-                          savedShopCount: saved.shops.length,
-                          onTapCandidates: () => context
-                              .read<AppShellController>()
-                              .openRoomCollect(initialTabIndex: 0),
-                          onTapDone: () => context
-                              .read<AppShellController>()
-                              .openRoomCollect(initialTabIndex: 1),
-                          onTapSavedShops: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const SavedShopsScreen(),
-                              ),
-                            );
-                          },
-                          onTapTodayActivity: () => context
-                              .read<AppShellController>()
-                              .openActivityTab(),
-                        ),
-                        const SizedBox(height: _gap),
-                        MyPageRoomSyncSection(
-                          onEditRoomUrl: () => _openRoomUrlEditSheet(context),
-                        ),
-                        const SizedBox(height: _gap),
-                        MyPageSettingsSection(
-                          onOpenPlan: () => _openMonetizationPlan(context),
-                          onOpenDemo: kClosedTestDemoAvailable
-                              ? () => _openClosedTestDemo(context)
-                              : null,
-                          onOpenDevAutomation: DevAutomationFlags.isEnabled
-                              ? () => _openDevAutomation(context)
-                              : null,
-                          onOpenInitialSetup: () =>
-                              _openEasyInitialSetup(context),
-                        ),
-                      ],
-                    );
-                  },
-            ),
-      ),
-    );
-  }
-}
+        child: Consumer3<UserProfileProvider, SavedShopProvider,
+            EasyInitialSetupRepository>(
+          builder: (context, profileProvider, saved, setup, _) {
+            final profile = profileProvider.profile;
+            final missingRoomUrl = !profile.hasRoomUrl;
+            final missingGenre = profile.favoriteGenreIdList.isEmpty;
+            final missingSavedShop = saved.shops.isEmpty;
+            final showMyPageSetupCard =
+                !setup.initialSetupCompleted &&
+                (missingRoomUrl || missingGenre || missingSavedShop);
+            final roomUrlFormat =
+                RoomProfileUrlValidationService.validateFormat(profile.roomUrl);
+            logOnboardingUi(
+              route: 'myPage',
+              termsAccepted: true,
+              initialSetupCompleted: setup.initialSetupCompleted,
+              initialSetupSkipped: setup.initialSetupSkipped,
+              missingRoomUrl: missingRoomUrl,
+              missingGenre: missingGenre,
+              missingSavedShop: missingSavedShop,
+              showMyPageSetupCard: showMyPageSetupCard,
+              roomUrlValidationResult: roomUrlFormat.logValue,
+              roomProfileExists: missingRoomUrl ? 'skipped' : 'unknown',
+            );
 
-class MyPageHeader extends StatefulWidget {
-  const MyPageHeader({
-    super.key,
-    required this.profile,
-    required this.savedShopCount,
-    required this.onOpenSetup,
-    required this.onStepGenre,
-    required this.onStepRoom,
-    required this.onStepProfile,
-    required this.onStepSavedShops,
-  });
-
-  final UserProfile profile;
-  final int savedShopCount;
-  final VoidCallback onOpenSetup;
-  final VoidCallback onStepGenre;
-  final VoidCallback onStepRoom;
-  final VoidCallback onStepProfile;
-  final VoidCallback onStepSavedShops;
-
-  @override
-  State<MyPageHeader> createState() => _MyPageHeaderState();
-}
-
-class _MyPageHeaderState extends State<MyPageHeader> {
-  bool _isExpanded = false;
-
-  static const Duration _expandDuration = Duration(milliseconds: 200);
-  static const Curve _expandCurve = Curves.easeOutCubic;
-
-  String _accuracySummaryLine(int remaining) {
-    if (remaining <= 0) return '高';
-    if (remaining == 1) return '中（あと1ステップ）';
-    if (remaining == 2) return '中（あと2ステップ）';
-    return '低（あと$remainingステップ）';
-  }
-
-  String _nextStepShortTitle(int firstIncomplete) {
-    switch (firstIncomplete) {
-      case 0:
-        return 'ROOMプロフィールURL';
-      case 1:
-        return 'よく使うジャンル';
-      case 2:
-        return '保存ショップ';
-      default:
-        return '';
-    }
-  }
-
-  String _collapsedNextStepLine(int firstIncomplete) {
-    final t = _nextStepShortTitle(firstIncomplete);
-    if (t.isEmpty) return '次：設定を進める';
-    return '次：$t';
-  }
-
-  String _stepProgressDots(List<bool> stepDoneFlags) {
-    final b = StringBuffer();
-    for (final done in stepDoneFlags) {
-      b.write(done ? '●' : '○');
-    }
-    return b.toString();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final genreCount = widget.profile.favoriteGenreIdList.length;
-    final hasGenres = genreCount > 0;
-    final hasRoomUrl = widget.profile.hasRoomUrl;
-    final savedDone = widget.savedShopCount > 0;
-
-    final stepRoomDone = hasRoomUrl;
-    final stepGenreDone = hasGenres;
-    final stepSavedDone = savedDone;
-
-    final stepDoneFlags = <bool>[stepRoomDone, stepGenreDone, stepSavedDone];
-    final completedCount = stepDoneFlags.where((e) => e).length;
-    final firstIncomplete = stepDoneFlags.indexWhere((e) => !e);
-    final remaining = 3 - completedCount;
-    final allDone = remaining == 0;
-
-    if (allDone) {
-      return AppCard(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'おすすめ精度：高',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w800,
-                height: 1.25,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '🎉 準備完了！おすすめ精度が最大になりました',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.success.withValues(alpha: 0.94),
-                fontWeight: FontWeight.w800,
-                height: 1.38,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return AppCard(
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => setState(() => _isExpanded = !_isExpanded),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'おすすめ精度：${_accuracySummaryLine(remaining)}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w800,
-                                  height: 1.25,
-                                ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            _collapsedNextStepLine(firstIncomplete),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.3,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Icon(
-                      _isExpanded
-                          ? Icons.expand_less_rounded
-                          : Icons.expand_more_rounded,
-                      color: AppColors.textSecondary,
-                      size: 26,
-                    ),
-                  ],
+            void openSavedShops() {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const SavedShopsScreen(),
                 ),
+              );
+            }
+
+            final showSetupPrompt =
+                showMyPageSetupCard && !_setupPromptDismissed;
+
+            Widget buildRoomSettingsCard() {
+              return MyPageRoomSettingsCard(
+                profile: profile,
+                savedShopCount: saved.shops.length,
+                onEditNickname: () => _openProfileEditSheet(context),
+                onEditRoomUrl: () => _openRoomUrlEditSheet(context),
+                onEditGenres: () => _openFavoriteGenrePickerSheet(context),
+                onOpenSavedShops: openSavedShops,
+                onEditPostStyle: () => _openPostStylePickerSheet(context),
+              );
+            }
+
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                MyPageScreenUi.screenPadH,
+                MyPageScreenUi.gapSection,
+                MyPageScreenUi.screenPadH,
+                bottomPad,
               ),
-            ),
-          ),
-          RepaintBoundary(
-            child: ClipRect(
-              child: AnimatedSize(
-                duration: _expandDuration,
-                curve: _expandCurve,
-                alignment: Alignment.topCenter,
-                clipBehavior: Clip.hardEdge,
-                child: _isExpanded
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const SizedBox(height: 14),
-                          Text(
-                            '進捗：$completedCount / 3 完了',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.35,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            _stepProgressDots(stepDoneFlags),
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: AppColors.textPrimary.withValues(
-                                    alpha: 0.88,
-                                  ),
-                                  fontWeight: FontWeight.w800,
-                                  height: 1.1,
-                                  letterSpacing: 0.5,
-                                ),
-                          ),
-                          const SizedBox(height: 10),
-                          _MyPageStepRow(
-                            stepLabel: 'STEP1',
-                            title: 'ROOMプロフィールURL',
-                            description: 'ROOM投稿取り込みに使います。あとから変更できます。',
-                            isDone: stepRoomDone,
-                            isNextStep: firstIncomplete == 0,
-                            onTap: widget.onStepRoom,
-                          ),
-                          const SizedBox(height: 8),
-                          _MyPageStepRow(
-                            stepLabel: 'STEP2',
-                            title: 'よく使うジャンル',
-                            description: 'おすすめ候補の精度が上がります。スキップできます。',
-                            isDone: stepGenreDone,
-                            isNextStep: firstIncomplete == 1,
-                            onTap: widget.onStepGenre,
-                          ),
-                          const SizedBox(height: 8),
-                          _MyPageStepRow(
-                            stepLabel: 'STEP3',
-                            title: '保存ショップ',
-                            description: 'よく使うショップ内で商品を探しやすくなります。',
-                            isDone: stepSavedDone,
-                            isNextStep: firstIncomplete == 2,
-                            onTap: widget.onStepSavedShops,
-                          ),
-                        ],
-                      )
-                    : const SizedBox(width: double.infinity),
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          AppPrimaryButton(
-            label: 'かんたん初期設定を再開',
-            height: 46,
-            icon: const Icon(Icons.play_arrow_rounded),
-            onPressed: widget.onOpenSetup,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MyPageStepRow extends StatelessWidget {
-  const _MyPageStepRow({
-    required this.stepLabel,
-    required this.title,
-    required this.description,
-    required this.isDone,
-    required this.isNextStep,
-    required this.onTap,
-  });
-
-  final String stepLabel;
-  final String title;
-  final String description;
-  final bool isDone;
-  final bool isNextStep;
-  final VoidCallback onTap;
-
-  static const Color _orange = Color(0xFFE65100);
-  static const Color _orangeSurface = Color(0xFFFFF7E8);
-
-  @override
-  Widget build(BuildContext context) {
-    final borderColor = isNextStep
-        ? _orange
-        : isDone
-        ? AppColors.divider.withValues(alpha: 0.35)
-        : AppColors.divider.withValues(alpha: 0.28);
-    final borderW = isNextStep ? 2.0 : 1.0;
-    final bg = isNextStep
-        ? _orangeSurface
-        : isDone
-        ? AppColors.surfaceVariant.withValues(alpha: 0.22)
-        : AppColors.surfaceVariant.withValues(alpha: 0.12);
-
-    final stepStyleColor = isNextStep
-        ? _orange
-        : isDone
-        ? AppColors.textSecondary.withValues(alpha: 0.5)
-        : AppColors.textSecondary.withValues(alpha: 0.42);
-    final titleStyleColor = isNextStep
-        ? AppColors.textPrimary
-        : isDone
-        ? AppColors.textSecondary.withValues(alpha: 0.72)
-        : AppColors.textSecondary.withValues(alpha: 0.48);
-    final descStyleColor = isNextStep
-        ? AppColors.textSecondary
-        : AppColors.textSecondary.withValues(alpha: 0.45);
-
-    final leadingIcon = isDone
-        ? Icon(
-            Icons.check_circle_rounded,
-            color: AppColors.success.withValues(alpha: 0.72),
-            size: 22,
-          )
-        : Icon(
-            Icons.circle_outlined,
-            color: isNextStep
-                ? _orange
-                : AppColors.textSecondary.withValues(alpha: 0.45),
-            size: 22,
-          );
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        child: Ink(
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-            border: Border.all(color: borderColor, width: borderW),
-          ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 56),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: leadingIcon,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          stepLabel,
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: stepStyleColor,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        Text(
-                          title,
-                          style: Theme.of(context).textTheme.labelLarge
-                              ?.copyWith(
-                                color: titleStyleColor,
-                                fontWeight: FontWeight.w800,
-                              ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          description,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: descStyleColor, height: 1.35),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: Icon(
-                      Icons.chevron_right_rounded,
-                      color: isNextStep
-                          ? _orange
-                          : AppColors.textSecondary.withValues(alpha: 0.45),
-                      size: 22,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyPageQuickSummaryCard extends StatelessWidget {
-  const MyPageQuickSummaryCard({
-    super.key,
-    required this.savedShopCount,
-    required this.candidateCount,
-    required this.doneCount,
-    required this.onTapCandidates,
-    required this.onTapDone,
-    required this.onTapSavedShops,
-    required this.onTapTodayActivity,
-  });
-
-  final int savedShopCount;
-  final int candidateCount;
-  final int doneCount;
-  final VoidCallback onTapCandidates;
-  final VoidCallback onTapDone;
-  final VoidCallback onTapSavedShops;
-  final VoidCallback onTapTodayActivity;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.10),
-            offset: const Offset(0, 4),
-            blurRadius: 16,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 10),
-            blurRadius: 22,
-          ),
-        ],
-      ),
-      child: AppCard(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const AppSectionHeader(
-              title: '現在の登録状況',
-              subtitle: 'タップで各一覧を開けます',
-              icon: Icons.list_alt_outlined,
-            ),
-            const SizedBox(height: 10),
-            _MyPageSummarySectionTitle(title: '保存済みデータ', dense: true),
-            const SizedBox(height: 6),
-            _SummaryListTile(
-              icon: Icons.bookmark_add_outlined,
-              label: 'コレ候補',
-              value: '$candidateCount件',
-              onTap: onTapCandidates,
-            ),
-            Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.5)),
-            _SummaryListTile(
-              icon: Icons.collections_bookmark_outlined,
-              label: 'コレ済',
-              value: '$doneCount件',
-              onTap: onTapDone,
-            ),
-            Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.5)),
-            _SummaryListTile(
-              icon: Icons.bookmarks_outlined,
-              label: '保存ショップ',
-              value: '$savedShopCount件',
-              onTap: onTapSavedShops,
-            ),
-            const SizedBox(height: 14),
-            Divider(
-              height: 1,
-              color: AppColors.divider.withValues(alpha: 0.35),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              '活動の詳細は分析タブで確認できます',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.35,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: onTapTodayActivity,
-                icon: const Icon(Icons.insights_outlined, size: 18),
-                label: const Text('分析タブを開く'),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  foregroundColor: AppColors.accentPrimary,
-                  textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MyPageSummarySectionTitle extends StatelessWidget {
-  const _MyPageSummarySectionTitle({required this.title, this.dense = false});
-
-  final String title;
-  final bool dense;
-
-  @override
-  Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.labelLarge?.copyWith(
-      color: AppColors.textPrimary,
-      fontWeight: FontWeight.w800,
-      letterSpacing: dense ? 0.2 : 0.4,
-    );
-    return Text(title, style: style);
-  }
-}
-
-class _SummaryListTile extends StatelessWidget {
-  const _SummaryListTile({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 52),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: Row(
               children: [
-                Icon(icon, size: 22, color: AppColors.textSecondary),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                if (showSetupPrompt) ...[
+                  MyPageSetupIncompleteCard(
+                    profile: profile,
+                    savedShopCount: saved.shops.length,
+                    onOpenSetup: () => _openEasyInitialSetup(context),
+                    onLater: () =>
+                        setState(() => _setupPromptDismissed = true),
                   ),
-                ),
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: AppColors.textSecondary,
-                  size: 22,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyPageRoomLinkCard extends StatelessWidget {
-  const MyPageRoomLinkCard({
-    super.key,
-    required this.profile,
-    required this.onEditRoomUrl,
-  });
-
-  final UserProfile profile;
-  final VoidCallback onEditRoomUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    final url = profile.roomUrl.trim();
-    final hasUrl = url.isNotEmpty;
-    return AppCard(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AppSectionHeader(
-            title: hasUrl ? 'ROOM連携済み' : 'ROOM URL未登録',
-            subtitle: hasUrl ? '投稿先をすぐ開けます' : '登録すると投稿先をすぐ開けます',
-            icon: Icons.link_rounded,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: AppSecondaryButton(
-                  label: hasUrl ? 'ROOMを開く' : 'ROOM URLを登録',
-                  onPressed: hasUrl
-                      ? () => AppActionService.openUrl(context, url: url)
-                      : onEditRoomUrl,
-                  icon: Icon(
-                    hasUrl ? Icons.open_in_new_rounded : Icons.add_link_rounded,
-                  ),
-                  height: 40,
-                  expand: true,
-                ),
-              ),
-              if (hasUrl) ...[
-                const SizedBox(width: 8),
-                AppSecondaryButton(
-                  label: '編集',
-                  onPressed: onEditRoomUrl,
-                  icon: const Icon(Icons.edit_outlined),
-                  height: 40,
-                ),
-              ],
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-String _myPageFormatSyncHistoryTime(String iso) {
-  final dt = DateTime.tryParse(iso);
-  if (dt == null) return iso;
-  final local = dt.toLocal();
-  final y = local.year;
-  final m = local.month.toString().padLeft(2, '0');
-  final d = local.day.toString().padLeft(2, '0');
-  final h = local.hour.toString().padLeft(2, '0');
-  final min = local.minute.toString().padLeft(2, '0');
-  return '$y/$m/$d $h:$min';
-}
-
-class MyPageRoomSyncSection extends StatefulWidget {
-  const MyPageRoomSyncSection({super.key, required this.onEditRoomUrl});
-
-  final VoidCallback onEditRoomUrl;
-
-  @override
-  State<MyPageRoomSyncSection> createState() => _MyPageRoomSyncSectionState();
-}
-
-class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      unawaited(
-        context
-            .read<RoomImportController>()
-            .tickSlowRoomMetadataEnrichmentIfNeeded(context),
-      );
-    });
-  }
-
-  Future<void> _handleImport(BuildContext context) async {
-    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
-    if (roomUrl.isEmpty) return;
-    final importState = resolveRoomImportAvailabilityFromItems(
-      items: context.read<RakutenManagedProductProvider>().items,
-    );
-    if (!importState.allowed) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            key: const Key('room_import_limit_blocked_snackbar'),
-            content: Text(buildRoomImportLimitBlockedBody(importState)),
-          ),
-        );
-      }
-      return;
-    }
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('ROOM投稿を取り込む'),
-        content: const Text(
-          'ROOM投稿を取り込みます。\n処理中は検索や登録操作を一時停止します。\nよろしいですか？',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('キャンセル'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('開始する'),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !context.mounted) return;
-    if (kDebugMode) {
-      debugPrint(
-        '[OPERATION_CONFIRM_DIALOG] operation=roomImport shown=true accepted=true',
-      );
-    }
-    final ctl = context.read<RoomImportController>();
-    final result = await ctl.runImport(context);
-    if (!context.mounted) return;
-    if (result == null) return;
-    await RoomPostImportFlow.presentPostImportUi(
-      context,
-      result,
-      startBatch: () => ctl.runImport(context),
-      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
-    );
-  }
-
-  Future<void> _handleDeepRoomImport(BuildContext context) async {
-    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
-    if (roomUrl.isEmpty) return;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('さらに古い投稿を探す'),
-        content: Text(
-          '通常取り込みで見つからない古いROOM投稿を探します。'
-          'ROOMの collects API を最大${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで取得し、'
-          '数分〜10分以上かかる場合があります。実行しますか？',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('キャンセル'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('実行'),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !context.mounted) return;
-    final ctl = context.read<RoomImportController>();
-    final result = await ctl.runImport(context, deepCollectsExplore: true);
-    if (!context.mounted) return;
-    if (result == null) return;
-    await RoomPostImportFlow.presentPostImportUi(
-      context,
-      result,
-      startBatch: () => ctl.runImport(context),
-      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
-    );
-  }
-
-  Future<void> _handleReactionSync(BuildContext context) async {
-    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
-    if (roomUrl.isEmpty) return;
-    final ctl = context.read<RoomImportController>();
-    final bulk = context.read<BulkOperationStateController>();
-    final syncBusy = ctl.isRunning ||
-        bulk.isMetadataEnriching ||
-        bulk.isRoomReactionSyncRunning;
-    if (syncBusy || bulk.isAnyBlockingOperationRunning) {
-      if (kDebugMode) {
-        debugPrint(
-          '[ROOM_REACTION_SYNC_START_GUARD] screen=myPage blockedByBusy=true '
-          'confirmed=false',
-        );
-      }
-      return;
-    }
-    final confirmed = await showRoomReactionSyncConfirmDialog(
-      context,
-      screen: 'myPage',
-    );
-    if (kDebugMode) {
-      debugPrint(
-        '[ROOM_REACTION_SYNC_START_GUARD] screen=myPage blockedByBusy=false '
-        'confirmed=$confirmed',
-      );
-    }
-    if (!confirmed || !context.mounted) return;
-    final r = await ctl.runReactionSync(context);
-    if (!context.mounted || r == null) return;
-    if (r.hasFatalError) {
-      await showDialog<void>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('反応を確認する'),
-          content: Text(r.fatalErrorMessage!.trim()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('閉じる'),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-    final text = r.uiSummaryMessage.trim().isNotEmpty
-        ? r.uiSummaryMessage
-        : '反応を確認しました：確認${r.itemsChecked}件 / 変更なし';
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(text)),
-    );
-  }
-
-  Future<void> _handleEnrichRoomMetadata(BuildContext context) async {
-    await RoomPostImportFlow.runManualPendingRoomImportMetadataEnrich(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final profile = context.watch<UserProfileProvider>().profile;
-    final roomUrl = profile.roomUrl.trim();
-    final hasUrl = roomUrl.isNotEmpty;
-    final importedDoneCount = context
-        .watch<RakutenManagedProductProvider>()
-        .items
-        .where(
-          (e) =>
-              e.status == RakutenManagedProductStatus.done &&
-              e.roomUrl.trim().isNotEmpty,
-        )
-        .length;
-    final roomImportState = resolveRoomImportAvailabilityFromItems(
-      items: context.watch<RakutenManagedProductProvider>().items,
-    );
-
-    return Consumer2<RoomImportController, BulkOperationStateController>(
-      builder: (context, ctl, bulk, _) {
-        final syncBusy = ctl.isRunning ||
-            bulk.isMetadataEnriching ||
-            bulk.isRoomReactionSyncRunning;
-        final enrichingOnly = !ctl.isRunning &&
-            !bulk.isRoomReactionSyncRunning &&
-            bulk.isMetadataEnriching;
-        final reactionOnly = !ctl.isRunning &&
-            !bulk.isMetadataEnriching &&
-            bulk.isRoomReactionSyncRunning;
-        final syncJob = RoomSyncButtonVisibility.jobLabel(
-          importing: ctl.isRunning,
-          syncingReactions: reactionOnly,
-          enrichingMetadata: enrichingOnly,
-        );
-        if (syncBusy) {
-          for (final b in const [
-            'import',
-            'reaction',
-            'maintenance',
-            'deepSearch',
-            'metadataRetry',
-          ]) {
-            RoomSyncButtonVisibility.logHiddenWhileBusy(
-              screen: 'myPage',
-              job: syncJob,
-              button: b,
-            );
-            RoomSyncButtonVisibility.logRenderDecision(
-              screen: 'myPage',
-              button: b,
-              canRun: false,
-              visible: false,
-              reason: 'busy',
-            );
-          }
-        }
-        final completed = ctl.checkedCount;
-        final total = ctl.targetCount;
-        final actionLocked = bulk.isAnyBlockingOperationRunning;
-
-        var busyLead = ctl.isRunning
-            ? (total > 0
-                  ? '現在ROOM投稿を取り込んでいます（$completed / $total件）'
-                  : (ctl.importProcessingHint.isNotEmpty
-                        ? ctl.importProcessingHint
-                        : '現在ROOM投稿を取り込んでいます'))
-            : (reactionOnly
-                  ? '現在反応を確認中です'
-                  : (enrichingOnly
-                        ? '現在ショップ名・ジャンルを確認しています'
-                        : ''));
-        if (syncBusy && busyLead.trim().isEmpty) {
-          busyLead = '現在同期処理を実行しています';
-        }
-
-        final syncCardState = !hasUrl
-            ? 'noRoomUrl'
-            : syncBusy
-            ? 'busy'
-            : importedDoneCount <= 0
-            ? 'empty'
-            : 'ready';
-
-        final canRunPrimary = hasUrl && !actionLocked;
-        final showImportButton = canRunPrimary && !syncBusy;
-        final importButtonEnabled =
-            showImportButton && roomImportState.allowed;
-        final showReactionButton =
-            showImportButton && importedDoneCount > 0;
-        final showAnalysisLink = !syncBusy && hasUrl;
-        roomSyncCardUxRenderLog(
-          state: syncCardState,
-          showImportButton: showImportButton,
-          showReactionButton: showReactionButton,
-          showAnalysisCta: false,
-          hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
-        );
-        roomSyncButtonRenderDecisionLog(
-          'screen=myPage button=import visible=$showImportButton '
-          'enabled=$importButtonEnabled '
-          'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
-          'reason=${syncBusy ? 'busy' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : (!roomImportState.allowed ? 'roomImportLimitReached' : 'ready')))}',
-        );
-        roomSyncButtonRenderDecisionLog(
-          'screen=myPage button=reaction visible=$showReactionButton '
-          'enabled=$showReactionButton label=反応を確認する '
-          'reason=${syncBusy ? 'busy' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
-        );
-        roomSyncEmptyButtonAuditLog(
-          screen: 'myPage',
-          button: 'reaction',
-          visible: false,
-          enabled: false,
-          label: '反応を確認する',
-          reason: importedDoneCount <= 0 && !syncBusy
-              ? 'notImportedYet'
-              : 'hiddenByUxPolicy',
-        );
-
-        final showPrimaryButtons = showImportButton;
-        if (!syncBusy) {
-          final baseReason =
-              !hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready');
-          final showMaintenanceUi = showRoomSyncMaintenanceDebugUi;
-          roomSyncMaintenanceVisibilityLog(
-            'screen=myPage '
-            'visible=$showMaintenanceUi '
-            'reason=${showMaintenanceUi ? 'debugOnly' : 'hiddenForNormalUx'}',
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'import',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: baseReason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'reaction',
-            canRun: canRunPrimary,
-            visible: showReactionButton,
-            reason: importedDoneCount <= 0 ? 'notImportedYet' : baseReason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'maintenance',
-            canRun: false,
-            visible: showMaintenanceUi,
-            reason: showMaintenanceUi ? 'debugOnly' : 'hiddenByUxPolicy',
-          );
-          final maintChildReason =
-              showMaintenanceUi ? baseReason : 'hiddenByUxPolicy';
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'deepSearch',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons && showMaintenanceUi,
-            reason: maintChildReason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'metadataRetry',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons && showMaintenanceUi,
-            reason: maintChildReason,
-          );
-        }
-
-        return AppCard(
-          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AppSectionHeader(
-                title: RoomSyncCardCopy.title,
-                subtitle: RoomSyncCardCopy.subtitle,
-                icon: Icons.downloading_rounded,
-              ),
-              const SizedBox(height: 8),
-              if (!hasUrl) ...[
-                Text(
-                  'ROOMプロフィールURLを登録すると同期できます',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton(
-                  onPressed: widget.onEditRoomUrl,
-                  child: const Text('ROOMプロフィールを登録'),
-                ),
-              ] else ...[
-                if (syncBusy) ...[
-                  Text(
-                    busyLead,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (ctl.isRunning && total > 0)
-                    Text(
-                      '$completed / $total件',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  const SizedBox(height: 6),
-                  LinearProgressIndicator(
-                    value: ctl.isRunning && total > 0 && completed >= 0
-                        ? (completed / total).clamp(0.0, 1.0)
-                        : null,
-                  ),
-                  const SizedBox(height: 12),
-                ] else ...[
-                  if (actionLocked && !syncBusy) ...[
-                    Text(
-                      bulk.blockingRoomTourUserMessage ??
-                          BulkOperationStateController.blockingSnackMessage,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.35,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                  if (importedDoneCount > 0) ...[
-                    FutureBuilder<RoomReactionSyncHistoryEntry?>(
-                      future: RoomReactionSyncHistoryStore.loadLatest(),
-                      builder: (context, snap) {
-                        final last = snap.data;
-                        final lastLabel = last == null
-                            ? '前回確認：未確認'
-                            : '前回確認：${_myPageFormatSyncHistoryTime(last.syncedAtIso)}';
-                        return Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: AppColors.surfaceVariant,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.divider),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '取り込み済み：$importedDoneCount件',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w800),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                lastLabel,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: AppColors.textSecondary),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ] else ...[
-                    Text(
-                      'まだROOM投稿を取り込んでいません',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
-                            height: 1.35,
-                          ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      RoomSyncCardCopy.emptyImportHint,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.35,
-                          ),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-                  Consumer<RakutenManagedProductProvider>(
-                    builder: (context, managed, _) {
-                      final showLink = showAnalysisLink &&
-                          roomReactionAnalyticsHomeShowCta(managed.items);
-                      if (!showLink) return const SizedBox.shrink();
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                            onPressed: () {
-                              context.read<AppShellController>().openActivityTab(
-                                    subTabIndex: 1,
-                                    scrollToRoomReactionSection: true,
-                                  );
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: Text(
-                              '${RoomSyncCardCopy.analysisTabHint} ＞',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: AppColors.accentPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  if (showImportButton) ...[
-                    if (roomImportState.limitsEnforcementEnabled &&
-                        !roomImportState.unlimited &&
-                        roomImportState.allowed) ...[
-                      Text(
-                        roomImportLimitUsageHint(roomImportState) ??
-                            roomImportLimitTrialHint(),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
-                              height: 1.35,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                    ],
-                    FilledButton(
-                      onPressed: importButtonEnabled
-                          ? () {
-                              RoomSyncButtonVisibility.logIdleVisible(
-                                screen: 'myPage',
-                                button: 'import',
-                              );
-                              _handleImport(context);
-                            }
-                          : null,
-                      child: Text(
-                        importedDoneCount > 0
-                            ? '投稿済み商品を取り込む'
-                            : 'ROOM投稿を取り込む',
-                      ),
-                    ),
-                    if (roomImportState.limitsEnforcementEnabled &&
-                        !roomImportState.allowed) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        roomImportLimitBlockedMessage(),
-                        key: const Key('room_import_limit_locked_hint'),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
-                              height: 1.35,
-                            ),
-                      ),
-                    ],
-                  ],
-                  if (showReactionButton) ...[
-                    const SizedBox(height: 10),
-                    RoomSyncReactionButton(
-                      screen: 'myPage',
-                      onPressed: () {
-                        RoomSyncButtonVisibility.logIdleVisible(
-                          screen: 'myPage',
-                          button: 'reaction',
-                        );
-                        _handleReactionSync(context);
-                      },
-                    ),
-                  ],
-                  const SizedBox(height: 10),
-                  Text(
-                    RoomSyncCardCopy.combinedFooterHint,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
-                  ),
-                  if (showRoomSyncMaintenanceDebugUi) ...[
-                    const SizedBox(height: 14),
-                    ExpansionTile(
-                      initiallyExpanded: false,
-                      tilePadding: EdgeInsets.zero,
-                      title: Text(
-                        RoomSyncCardCopy.maintenanceTileTitle,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                      subtitle: Text(
-                        RoomSyncCardCopy.maintenanceTileSubtitle,
-                        style:
-                            Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
-                      ),
-                      children: [
-                        if (showPrimaryButtons) ...[
-                          OutlinedButton.icon(
-                            onPressed: () {
-                              RoomSyncButtonVisibility.logIdleVisible(
-                                screen: 'myPage',
-                                button: 'deepSearch',
-                              );
-                              _handleDeepRoomImport(context);
-                            },
-                            icon: const Icon(
-                              Icons.manage_search_outlined,
-                              size: 18,
-                            ),
-                            label: const Text('さらに古い投稿を探す'),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
-                            style:
-                                Theme.of(context).textTheme.labelSmall?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      height: 1.35,
-                                    ),
-                          ),
-                          const SizedBox(height: 12),
-                          OutlinedButton.icon(
-                            onPressed: () {
-                              RoomSyncButtonVisibility.logIdleVisible(
-                                screen: 'myPage',
-                                button: 'metadataRetry',
-                              );
-                              _handleEnrichRoomMetadata(context);
-                            },
-                            icon: const Icon(
-                              Icons.auto_fix_high_outlined,
-                              size: 18,
-                            ),
-                            label: const Text('ショップ名・ジャンルを再確認'),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
-                            style:
-                                Theme.of(context).textTheme.labelSmall?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      height: 1.35,
-                                    ),
-                          ),
-                        ] else if (hasUrl) ...[
-                          Text(
-                            bulk.blockingRoomTourUserMessage ??
-                                BulkOperationStateController.blockingSnackMessage,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      height: 1.35,
-                                    ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
-                  if (showRoomSyncMaintenanceDebugUi)
-                    const RoomImportEnrichmentPendingHint(),
-                  const SizedBox(height: 6),
-                  if (showRoomSyncMaintenanceDebugUi)
-                    Text(
-                      RoomSyncCardCopy.freeTierLine(
-                        limit: RoomImportLimitPolicy.freeBatchLimit,
-                      ),
-                      style:
-                          Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
-                    ),
+                  const SizedBox(height: MyPageScreenUi.gapSection),
                 ],
+                buildRoomSettingsCard(),
+                const SizedBox(height: MyPageScreenUi.gapSection),
+                MyPageSettingsSection(
+                  onOpenPlan: () => _openMonetizationPlan(context),
+                  onOpenDemo: kClosedTestDemoAvailable
+                      ? () => _openClosedTestDemo(context)
+                      : null,
+                  onOpenDevAutomation: DevAutomationFlags.isEnabled
+                      ? () => _openDevAutomation(context)
+                      : null,
+                  onOpenInitialSetup: () => _openEasyInitialSetup(context),
+                  onOpenSavedShops: openSavedShops,
+                ),
               ],
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class MyPageSettingsSection extends StatelessWidget {
-  const MyPageSettingsSection({
-    super.key,
-    required this.onOpenPlan,
-    this.onOpenDemo,
-    this.onOpenDevAutomation,
-    required this.onOpenInitialSetup,
-  });
-
-  final VoidCallback onOpenPlan;
-  final VoidCallback? onOpenDemo;
-  final VoidCallback? onOpenDevAutomation;
-  final VoidCallback onOpenInitialSetup;
-
-  static bool _devAutomationEntryVisibilityLogged = false;
-
-  @override
-  Widget build(BuildContext context) {
-    if (onOpenDevAutomation != null &&
-        kDebugMode &&
-        !_devAutomationEntryVisibilityLogged) {
-      _devAutomationEntryVisibilityLogged = true;
-      debugPrint('[DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true');
-    }
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: '設定・その他',
-            subtitle: '低頻度の確認項目',
-            icon: Icons.settings_outlined,
-          ),
-          const SizedBox(height: 10),
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              key: const Key('mypage_plan_entry'),
-              onTap: onOpenPlan,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.card_membership_outlined,
-                      size: 22,
-                      color: AppColors.textSecondary,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'プランを見る',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '無料版とBasicプランの違い',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.3,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.chevron_right_rounded,
-                      color: AppColors.textSecondary,
-                      size: 22,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          if (onOpenDemo != null) ...[
-            AppSecondaryButton(
-              label: 'クローズドテスト用デモを見る',
-              onPressed: onOpenDemo,
-              icon: const Icon(Icons.rocket_launch_outlined),
-              expand: true,
-              height: 42,
-            ),
-            const SizedBox(height: 8),
-          ],
-          if (onOpenDevAutomation != null) ...[
-            AppSecondaryButton(
-              label: '開発者向け自動検証',
-              onPressed: onOpenDevAutomation,
-              icon: const Icon(Icons.bug_report_outlined),
-              expand: true,
-              height: 42,
-            ),
-            const SizedBox(height: 8),
-          ],
-          AppOutlineButton(
-            label: 'かんたん初期設定をやり直す',
-            onPressed: onOpenInitialSetup,
-            icon: const Icon(Icons.tune_rounded),
-            height: 38,
-          ),
-          const SizedBox(height: 8),
-          OutlinedButton.icon(
-            onPressed: () => AppActionService.openUrl(
-              context,
-              url: LegalUrls.termsOfService,
-            ),
-            icon: const Icon(Icons.article_outlined),
-            label: const Text('利用規約を開く'),
-          ),
-          const SizedBox(height: 8),
-          OutlinedButton.icon(
-            onPressed: () =>
-                AppActionService.openUrl(context, url: LegalUrls.privacyPolicy),
-            icon: const Icon(Icons.shield_outlined),
-            label: const Text('プライバシーポリシーを開く'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyPageRegisteredContentCard extends StatelessWidget {
-  const MyPageRegisteredContentCard({
-    super.key,
-    required this.profile,
-    required this.savedShopCount,
-    required this.onEditNickname,
-    required this.onEditPostStyles,
-    required this.onEditRoomUrl,
-    required this.onEditGenres,
-    required this.onOpenSavedShops,
-  });
-
-  final UserProfile profile;
-  final int savedShopCount;
-  final VoidCallback onEditNickname;
-  final VoidCallback onEditPostStyles;
-  final VoidCallback onEditRoomUrl;
-  final VoidCallback onEditGenres;
-  final VoidCallback onOpenSavedShops;
-
-  @override
-  Widget build(BuildContext context) {
-    final nickname = profile.displayName.trim().isEmpty ? '未設定' : '登録済み';
-    final postStyles = profile.postStyleLabelsText;
-    final roomUrl = profile.hasRoomUrl ? '登録済み' : '未設定';
-    final genreCount = profile.favoriteGenreIdList.length;
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: '登録内容',
-            subtitle: 'ROOM URL・ニックネーム・探し方・ジャンル・保存ショップを確認できます',
-            icon: Icons.assignment_ind_outlined,
-          ),
-          const SizedBox(height: 10),
-          _RegisteredContentRow(
-            title: 'ニックネーム',
-            value: nickname,
-            onTap: onEditNickname,
-          ),
-          _RegisteredContentRow(
-            title: '探し方',
-            value: postStyles,
-            onTap: onEditPostStyles,
-          ),
-          _RegisteredContentRow(
-            title: 'ROOM URL',
-            value: roomUrl,
-            onTap: onEditRoomUrl,
-          ),
-          _RegisteredContentRow(
-            title: 'よく使うジャンル',
-            value: '$genreCount件',
-            onTap: onEditGenres,
-          ),
-          _RegisteredContentRow(
-            title: '保存ショップ',
-            value: '$savedShopCount件',
-            onTap: onOpenSavedShops,
-            showDivider: false,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RegisteredContentRow extends StatelessWidget {
-  const _RegisteredContentRow({
-    required this.title,
-    required this.value,
-    required this.onTap,
-    this.showDivider = true,
-  });
-
-  final String title;
-  final String value;
-  final VoidCallback onTap;
-  final bool showDivider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          dense: true,
-          contentPadding: EdgeInsets.zero,
-          title: Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                value,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
-            ],
-          ),
-          onTap: onTap,
+            );
+          },
         ),
-        if (showDivider) Divider(height: 1, color: AppColors.divider),
-      ],
+      ),
     );
   }
 }
@@ -1957,15 +336,18 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return _SheetScaffold(
-      title: 'ニックネームを編集',
-      body: [
-        AppTextField(
-          controller: _nameController,
-          textInputAction: TextInputAction.done,
-          labelText: 'ニックネーム（任意）',
-          hintText: '例: ルーマネ',
-        ),
+    return Theme(
+      data: MyPageScreenUi.overlayTheme(Theme.of(context)),
+      child: _SheetScaffold(
+        title: 'ニックネームを編集',
+        body: [
+          AppTextField(
+            controller: _nameController,
+            textInputAction: TextInputAction.done,
+            labelText: 'ニックネーム（任意）',
+            hintText: '例: ルーマネ',
+            focusedBorderColor: MyPageScreenUi.primary,
+          ),
         const SizedBox(height: 8),
         Text(
           'AIのおすすめ文や投稿文に使用します。未設定でもすべての機能を使えます。',
@@ -1976,8 +358,9 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
           ),
         ),
       ],
-      primaryLabel: '保存',
-      onPrimary: _save,
+        primaryLabel: '保存',
+        onPrimary: _save,
+      ),
     );
   }
 }
@@ -2081,24 +464,27 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       _roomUrlController.text,
     );
     final hasUrl = _roomUrlController.text.trim().isNotEmpty && format.isValid;
-    return _SheetScaffold(
-      title: 'ROOMプロフィールを登録',
-      body: [
-        AppTextField(
-          controller: _roomUrlController,
-          textInputAction: TextInputAction.done,
-          keyboardType: TextInputType.url,
-          labelText: 'ROOMプロフィールURL（任意）',
-          hintText: '例: https://room.rakuten.co.jp/xxxx',
-          maxLength: AppInputLimits.roomUrlMax,
-          inputFormatters: AppInputLimits.urlFormatters(
+    return Theme(
+      data: MyPageScreenUi.overlayTheme(Theme.of(context)),
+      child: _SheetScaffold(
+        title: 'ROOMプロフィールを登録',
+        body: [
+          AppTextField(
+            controller: _roomUrlController,
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.url,
+            labelText: 'ROOMプロフィールURL（任意）',
+            hintText: '例: https://room.rakuten.co.jp/xxxx',
             maxLength: AppInputLimits.roomUrlMax,
+            inputFormatters: AppInputLimits.urlFormatters(
+              maxLength: AppInputLimits.roomUrlMax,
+            ),
+            errorText: _roomUrlErrorText,
+            focusedBorderColor: MyPageScreenUi.primary,
+            onChanged: (_) => setState(() {
+              _roomUrlErrorText = null;
+            }),
           ),
-          errorText: _roomUrlErrorText,
-          onChanged: (_) => setState(() {
-            _roomUrlErrorText = null;
-          }),
-        ),
         if (_isCheckingRoomProfile || _roomUrlErrorText != null) ...[
           const SizedBox(height: 8),
           Row(
@@ -2146,7 +532,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
           ),
         ),
         const SizedBox(height: 12),
-        AppSecondaryButton(
+        MyPageOutlineButton(
           label: 'ROOMを開く',
           onPressed: hasUrl
               ? () => AppActionService.openUrl(
@@ -2155,7 +541,6 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
                 )
               : null,
           icon: const Icon(Icons.open_in_new_rounded),
-          expand: true,
           height: 42,
         ),
       ],
@@ -2163,6 +548,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       onPrimary: _save,
       primaryEnabled: !_isCheckingRoomProfile,
       isPrimaryLoading: _isCheckingRoomProfile,
+      ),
     );
   }
 }
@@ -2212,17 +598,16 @@ class _SheetScaffold extends StatelessWidget {
               const SizedBox(height: 12),
               ...body,
               const SizedBox(height: 16),
-              AppPrimaryButton(
+              MyPagePrimaryButton(
                 label: primaryLabel,
                 onPressed: primaryEnabled ? onPrimary : null,
                 isLoading: isPrimaryLoading,
               ),
               const SizedBox(height: 8),
-              AppSecondaryButton(
-                label: '閉じる',
+              OutlinedButton(
                 onPressed: () => Navigator.of(context).pop(),
-                expand: true,
-                height: 44,
+                style: MyPageScreenUi.outlineButtonStyle(height: 44),
+                child: const Text('閉じる'),
               ),
             ],
           ),
