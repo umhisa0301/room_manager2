@@ -3,6 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/dev_automation_config.dart';
 import 'package:room_manager2/screens/mypage_placeholder_screen.dart';
 
+Widget _settingsSection({
+  required VoidCallback onOpenPlan,
+  VoidCallback? onOpenDevAutomation,
+}) {
+  return SingleChildScrollView(
+    child: MyPageSettingsSection(
+      onOpenPlan: onOpenPlan,
+      onOpenDevAutomation: onOpenDevAutomation,
+      onOpenInitialSetup: () {},
+      onOpenSavedShops: () {},
+    ),
+  );
+}
+
 void main() {
   group('MyPageSettingsSection dev automation entry', () {
     testWidgets('shows entry button only when callback is provided', (
@@ -11,10 +25,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: MyPageSettingsSection(
-              onOpenPlan: () {},
-              onOpenInitialSetup: () {},
-            ),
+            body: _settingsSection(onOpenPlan: () {}),
           ),
         ),
       );
@@ -28,10 +39,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: MyPageSettingsSection(
+            body: _settingsSection(
               onOpenPlan: () {},
               onOpenDevAutomation: () {},
-              onOpenInitialSetup: () {},
             ),
           ),
         ),
@@ -46,10 +56,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: MyPageSettingsSection(
+            body: _settingsSection(
               onOpenPlan: () {},
-              onOpenDevAutomation: DevAutomationFlags.isEnabled ? () {} : null,
-              onOpenInitialSetup: () {},
+              onOpenDevAutomation:
+                  DevAutomationFlags.isEnabled ? () {} : null,
             ),
           ),
         ),
