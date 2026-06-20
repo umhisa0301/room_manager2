@@ -264,4 +264,32 @@ abstract final class HomeScreenColors {
   /// フローステップの番号バッジ背景
   static Color get flowStepBadgeFill =>
       AppColors.accentPrimary.withValues(alpha: 0.18);
+
+  // --- ホーム改修（Material 3・ブルーグリーン基調）---
+  /// ホーム主CTA・進行中ステップ
+  static const Color homeAccentTeal = Color(0xFF0F766E);
+
+  /// ホーム主CTA背景（淡いブルーグリーン）
+  static const Color homeAccentTealLight = Color(0xFFECFDF5);
+
+  /// ホーム主CTA枠線
+  static const Color homeAccentTealBorder = Color(0xFF99F6E4);
+
+  /// 完了・達成済み
+  static const Color homeSuccess = Color(0xFF059669);
+
+  /// 完了背景
+  static const Color homeSuccessLight = Color(0xFFD1FAE5);
+
+  /// 注意（投稿上限など）
+  static const Color homeWarning = Color(0xFFD97706);
+
+  /// 未読バッジ
+  static const Color homeUnreadBadge = Color(0xFFDC2626);
+
+  /// 補助テキスト・非アクティブ
+  static const Color homeMutedText = Color(0xFF6B7280);
+
+  /// 投稿上限折りたたみ行
+  static const Color homeLimitRowText = Color(0xFF64748B);
 }
