@@ -51,10 +51,10 @@ abstract final class _HomeUi {
   const _HomeUi._();
 
   /// 主要ブロック同士（カード間）
-  static const double gapSection = 12;
+  static const double gapSection = 10;
 
   /// 白カード内 padding
-  static const EdgeInsets homeCardPadding = EdgeInsets.all(16);
+  static const EdgeInsets homeCardPadding = EdgeInsets.all(14);
 
   /// ホーム白カードの角丸
   static const double homeCardRadius = 16;
@@ -365,6 +365,20 @@ abstract final class _HomeDataUpdateButtonStyle {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    );
+  }
+
+  /// 反応チェック見出し行の閲覧導線（コンパクト Pill）
+  static ButtonStyle reactionViewPill(BuildContext context) {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeAccentTeal,
+      backgroundColor: Colors.white,
+      side: const BorderSide(color: HomeScreenColors.homeAccentTealBorder),
+      minimumSize: const Size(0, 38),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+      textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
     );
   }
 }
@@ -918,7 +932,7 @@ class _TodayRoomStatusCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('今日のROOM状況', style: _HomeUi.homeCardTitle(context)),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -957,9 +971,9 @@ class _TodayRoomStatusCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          Divider(height: 1, color: HomeScreenColors.homeCardBorder),
           const SizedBox(height: 10),
+          Divider(height: 1, color: HomeScreenColors.homeCardBorder),
+          const SizedBox(height: 8),
           Text(
             '今日の目標',
             style: _HomeUi.bodyEmphasis(context).copyWith(
@@ -973,9 +987,9 @@ class _TodayRoomStatusCard extends StatelessWidget {
             _homeGoalProgressSummary(todayRoomPostCount),
             style: _HomeUi.homeCardSubtitle(context).copyWith(fontSize: 12.5),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           _HomeGoalProgressBar(postCount: todayRoomPostCount),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           _HomePostLimitSection(collectLimit: collectLimit),
         ],
       ),
@@ -1648,13 +1662,13 @@ class _TodayRoomWorkCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('今日のROOM作業', style: _HomeUi.homeCardTitle(context)),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Builder(
             builder: (context) {
               final cta = _primaryCtaSpec();
               return Container(
-                constraints: const BoxConstraints(minHeight: 108),
-                padding: const EdgeInsets.all(16),
+                constraints: const BoxConstraints(minHeight: 82),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: HomeScreenColors.homeAccentTealLight,
                   borderRadius: BorderRadius.circular(14),
@@ -1679,7 +1693,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
-                                  vertical: 4,
+                                  vertical: 3,
                                 ),
                                 decoration: BoxDecoration(
                                   color: HomeScreenColors.homeAccentTeal,
@@ -1694,7 +1708,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 6),
+                              const SizedBox(height: 4),
                               Text(
                                 cta.title,
                                 maxLines: 1,
@@ -1703,16 +1717,16 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                   color: HomeScreenColors.homeTextPrimary,
-                                  height: 1.2,
+                                  height: 1.15,
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 1),
                               Text(
                                 cta.subtitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: _HomeUi.homeCardSubtitle(context)
-                                    .copyWith(fontSize: 13.5),
+                                    .copyWith(fontSize: 13.5, height: 1.25),
                               ),
                             ],
                           ),
@@ -1764,7 +1778,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
                     if (isRecommendationLoading &&
                         _primaryAction() ==
                             _HomeWorkPrimaryAction.recommendations) ...[
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       const LinearProgressIndicator(minHeight: 2),
                     ],
                   ],
@@ -1772,7 +1786,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           _HomeWorkFlowRow(
             step1State: _stateForStep(1),
             step2State: _stateForStep(2),
@@ -1895,7 +1909,7 @@ class _HomeWorkFlowChip extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -1974,31 +1988,60 @@ class _ReactionCheckCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('反応チェック', style: _HomeUi.homeCardTitle(context)),
-              if (unconfirmedReactionCount > 0) ...[
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: HomeScreenColors.homeUnreadBadge.withValues(
-                      alpha: 0.12,
-                    ),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: HomeScreenColors.homeUnreadBadge.withValues(
-                        alpha: 0.35,
+              Expanded(
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        '反応チェック',
+                        style: _HomeUi.homeCardTitle(context),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                  child: Text(
-                    '未確認 $unconfirmedReactionCount件',
-                    style: _HomeUi.tapHint(context).copyWith(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      color: HomeScreenColors.homeUnreadBadge,
+                    if (unconfirmedReactionCount > 0) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: HomeScreenColors.homeUnreadBadge.withValues(
+                            alpha: 0.12,
+                          ),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: HomeScreenColors.homeUnreadBadge.withValues(
+                              alpha: 0.35,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          '未確認 $unconfirmedReactionCount件',
+                          style: _HomeUi.tapHint(context).copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: HomeScreenColors.homeUnreadBadge,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (_showViewButton) ...[
+                const SizedBox(width: 8),
+                Semantics(
+                  label: 'home_reaction_view_button',
+                  button: true,
+                  child: OutlinedButton(
+                    onPressed: onOpenReactionList,
+                    style: _HomeDataUpdateButtonStyle.reactionViewPill(context),
+                    child: const Text(
+                      '反応商品を見る',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -2006,48 +2049,21 @@ class _ReactionCheckCard extends StatelessWidget {
             ],
           ),
           if (products.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 8),
+            Column(
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < products.length; i++) ...[
-                        _RecentReactedProductTile(
-                          product: products[i],
-                          onTap: () => onOpenProductTap(products[i].productId),
-                        ),
-                        if (i < products.length - 1)
-                          Divider(
-                            height: 1,
-                            thickness: 0.5,
-                            color: HomeScreenColors.listRowDivider
-                                .withValues(alpha: 0.7),
-                          ),
-                      ],
-                    ],
+                for (int i = 0; i < products.length; i++) ...[
+                  _RecentReactedProductTile(
+                    product: products[i],
+                    onTap: () => onOpenProductTap(products[i].productId),
                   ),
-                ),
-                if (_showViewButton) ...[
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    width: 120,
-                    child: Semantics(
-                      label: 'home_reaction_view_button',
-                      button: true,
-                      child: OutlinedButton(
-                        onPressed: onOpenReactionList,
-                        style: _HomeDataUpdateButtonStyle.tealOutlined(context),
-                        child: const Text(
-                          '反応商品を見る',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                  if (i < products.length - 1)
+                    Divider(
+                      height: 1,
+                      thickness: 0.5,
+                      color: HomeScreenColors.listRowDivider
+                          .withValues(alpha: 0.7),
                     ),
-                  ),
                 ],
               ],
             ),
@@ -2057,31 +2073,9 @@ class _ReactionCheckCard extends StatelessWidget {
               '最近反応があった商品はありません',
               style: _HomeUi.homeCardSubtitle(context),
             ),
-            if (_showViewButton) ...[
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  width: 120,
-                  child: Semantics(
-                    label: 'home_reaction_view_button',
-                    button: true,
-                    child: OutlinedButton(
-                      onPressed: onOpenReactionList,
-                      style: _HomeDataUpdateButtonStyle.tealOutlined(context),
-                      child: const Text(
-                        '反応商品を見る',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ],
           if (!hasRoomProfileUrl) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               'ROOMプロフィールURLを登録すると反応を確認できます',
               style: _HomeUi.homeCardSubtitle(context),
@@ -2109,9 +2103,9 @@ class _RecentReactedProductTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 56),
+          constraints: const BoxConstraints(minHeight: 52),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -2611,7 +2605,7 @@ class _DataUpdateCard extends StatelessWidget {
                     : 'ROOMプロフィールURLを登録すると同期できます',
                 style: _HomeUi.homeCardSubtitle(context),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               if (!hasRoomProfileUrl) ...[
                 Text(
                   key: const Key('room_import_not_configured_message'),
