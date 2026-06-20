@@ -31,12 +31,17 @@ import '../widgets/rakuten_managed_product_card.dart';
 
 /// 投稿管理一覧の左右 padding（ホーム [_HomeUi.screenPaddingH] と同一）。
 const double _kRoomListScreenPadH = 16;
-const double _kRoomListCardGap = 10;
+const double _kRoomListCardGap = 8;
 
 enum RoomColleListSortPreset { recentFirst, oldFirst, priceHigh, priceLow }
 
 /// ROOM取り込みメタの表示絞り込み（コレ済タブのみ）。
 enum _RoomImportMetaListFilter { all, incompleteOnly, completeOnly }
+
+/// [AppShellController.currentIndex] の ROOMコレ（下部ナビ「投稿」）タブ。
+/// IndexedStack 上は 1。下部ナビの見た目上 3 番目（0=ホーム, 1=探す, 2=投稿…）だが、
+/// 「探す」はシートのみでシェル index を変えない。
+const int _roomColleShellIndex = 1;
 
 /// ROOMコレ画面のレイアウト・面色・装飾（ホーム完成版と同一デザイン言語。ロジックとは分離）。
 abstract final class _RoomColleUi {
@@ -82,25 +87,17 @@ class _RoomColleFilterButton extends StatelessWidget {
     required this.active,
     required this.activeCount,
     required this.onPressed,
+    this.onClear,
   });
 
   final bool active;
   final int activeCount;
   final VoidCallback onPressed;
-
-  String _buttonLabel({required bool compact}) {
-    if (active && activeCount > 0) {
-      return compact ? '条件$activeCount' : '絞込 $activeCount';
-    }
-    if (active) return compact ? '条件' : '絞込';
-    return compact ? '' : '絞込';
-  }
+  final VoidCallback? onClear;
 
   @override
   Widget build(BuildContext context) {
     final accent = HomeScreenColors.homeAccentTeal;
-    final compact = MediaQuery.sizeOf(context).width < 340;
-    final label = _buttonLabel(compact: compact);
     return SizedBox(
       width: _RoomColleUi.filterButtonWidth,
       height: _RoomColleUi.searchRowHeight,
@@ -109,54 +106,102 @@ class _RoomColleFilterButton extends StatelessWidget {
         label: active
             ? 'post_management_filter_button_active'
             : 'post_management_filter_button',
-        child: OutlinedButton(
-          onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: accent,
-            backgroundColor: active
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: active
                 ? HomeScreenColors.homeAccentTealLight
                 : HomeScreenColors.homeCardFill,
-            side: BorderSide(color: accent, width: 1.2),
-            minimumSize: Size(
-              _RoomColleUi.filterButtonWidth,
-              _RoomColleUi.searchRowHeight,
-            ),
-            fixedSize: Size(
-              _RoomColleUi.filterButtonWidth,
-              _RoomColleUi.searchRowHeight,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: label.isEmpty ? 0 : 6,
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            textStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              height: 1.1,
-            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accent, width: 1.2),
           ),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.tune_rounded, size: 16, color: accent),
-                if (label.isNotEmpty) ...[
-                  const SizedBox(width: 4),
-                  Text(
-                    label,
-                    maxLines: 1,
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
+          child: Row(
+            children: [
+              Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onPressed,
+                    borderRadius: const BorderRadius.horizontal(
+                      left: Radius.circular(11),
+                    ),
+                    child: SizedBox(
+                      height: _RoomColleUi.searchRowHeight,
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.tune_rounded, size: 16, color: accent),
+                              if (!active) ...[
+                                const SizedBox(width: 4),
+                                Text(
+                                  '絞込',
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.1,
+                                    color: accent,
+                                  ),
+                                ),
+                              ] else if (activeCount > 0) ...[
+                                const SizedBox(width: 4),
+                                DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: accent,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 1,
+                                    ),
+                                    child: Text(
+                                      '$activeCount',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w800,
+                                        height: 1.1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ],
-            ),
+                ),
+              ),
+              if (active && onClear != null)
+                Semantics(
+                  button: true,
+                  label: 'post_management_filter_clear_button',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onClear,
+                      borderRadius: const BorderRadius.horizontal(
+                        right: Radius.circular(11),
+                      ),
+                      child: SizedBox(
+                        width: 28,
+                        height: _RoomColleUi.searchRowHeight,
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: accent.withValues(alpha: 0.92),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
@@ -169,32 +214,11 @@ bool _roomColleHasActiveSheetFilters({
   required RoomColleListFilterCriteria criteria,
   required bool excludeUrlNotReady,
   required RoomColleListSortPreset sortPreset,
-  _RoomImportMetaListFilter roomImportMetaFilter =
-      _RoomImportMetaListFilter.all,
   DateTime? doneAtLocalDayFilter,
 }) {
   return criteria.hasNonKeywordConstraints ||
       excludeUrlNotReady ||
       sortPreset != RoomColleListSortPreset.recentFirst ||
-      (!isCandidate &&
-          roomImportMetaFilter != _RoomImportMetaListFilter.all) ||
-      (!isCandidate && doneAtLocalDayFilter != null);
-}
-
-bool _roomColleHasActiveListFilters({
-  required bool isCandidate,
-  required RoomColleListFilterCriteria criteria,
-  required bool excludeUrlNotReady,
-  required RoomColleListSortPreset sortPreset,
-  _RoomImportMetaListFilter roomImportMetaFilter =
-      _RoomImportMetaListFilter.all,
-  DateTime? doneAtLocalDayFilter,
-}) {
-  return criteria.hasAnyReducingFilter ||
-      excludeUrlNotReady ||
-      sortPreset != RoomColleListSortPreset.recentFirst ||
-      (!isCandidate &&
-          roomImportMetaFilter != _RoomImportMetaListFilter.all) ||
       (!isCandidate && doneAtLocalDayFilter != null);
 }
 
@@ -203,17 +227,12 @@ int _roomColleActiveFilterCount({
   required RoomColleListFilterCriteria criteria,
   required bool excludeUrlNotReady,
   required RoomColleListSortPreset sortPreset,
-  _RoomImportMetaListFilter roomImportMetaFilter =
-      _RoomImportMetaListFilter.all,
   DateTime? doneAtLocalDayFilter,
 }) {
   var count = _roomColleFilterSummaryChips(criteria).length;
   if (excludeUrlNotReady) count++;
   if (sortPreset != RoomColleListSortPreset.recentFirst) count++;
-  if (!isCandidate) {
-    if (roomImportMetaFilter != _RoomImportMetaListFilter.all) count++;
-    if (doneAtLocalDayFilter != null) count++;
-  }
+  if (!isCandidate && doneAtLocalDayFilter != null) count++;
   return count;
 }
 
@@ -1435,31 +1454,6 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   return metaFiltered;
 }
 
-/// タブ表示件数を [_roomListVisibleItems] に揃える。
-int _roomColleVisibleCount({
-  required RakutenManagedProductProvider provider,
-  required RakutenManagedProductStatus status,
-  required RoomColleListFilterCriteria listFilters,
-  required bool excludeUrlNotReady,
-  Set<String> savedShopIds = const <String>{},
-  Set<String> todayRecommendationProductIds = const <String>{},
-  String Function(RakutenManagedProduct product)? genreLabelForProduct,
-  DateTime? doneAtLocalDayFilter,
-  _RoomImportMetaListFilter roomImportMetaFilter = _RoomImportMetaListFilter.all,
-}) {
-  return _roomListVisibleItems(
-    provider: provider,
-    status: status,
-    listFilters: listFilters,
-    excludeUrlNotReady: excludeUrlNotReady,
-    savedShopIds: savedShopIds,
-    todayRecommendationProductIds: todayRecommendationProductIds,
-    genreLabelForProduct: genreLabelForProduct,
-    doneAtLocalDayFilter: doneAtLocalDayFilter,
-    roomImportMetaFilter: roomImportMetaFilter,
-  ).length;
-}
-
 /// [anchor] のローカル暦日と同一日の [doneAt] をもつコレ済のみ。
 List<RakutenManagedProduct> _filterDoneOnLocalCalendarDay(
   List<RakutenManagedProduct> items,
@@ -1698,6 +1692,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   /// [RoomColleUiStateSnapshot.doneReactionQuickAutoAppliedOnce] と同期。
   bool _doneReactionQuickAutoAppliedOnce = false;
   Timer? _persistSearchDebounce;
+  int _lastShellIndex = _roomColleShellIndex;
 
   String? get _focusCandidateTargetId {
     final w = widget.initialFocusCandidateProductId;
@@ -1828,6 +1823,41 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         _doneSearchController.clear();
         _doneListFilters = _doneListFilters.copyWith(keyword: '');
       }
+    });
+    _persistRoomColleUiNow();
+  }
+
+  /// フィルター画面を開かず、検索・絞り込み条件のみ解除（メイン/サブタブは維持）。
+  void _clearActiveRoomColleSheetFilters() {
+    if (!mounted) return;
+    _persistSearchDebounce?.cancel();
+    setState(() {
+      _candidateSearchController.clear();
+      _doneSearchController.clear();
+      _candidateListFilters = RoomColleListFilterCriteria.defaults;
+      _doneListFilters = RoomColleListFilterCriteria.defaults;
+      _candidateExcludeUrlNotReady = false;
+      _candidateSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneLocalDayFilter = null;
+    });
+    _persistRoomColleUiNow();
+  }
+
+  /// BottomNavigation で投稿画面を離れる／他タブから戻るとき、表示用の検索・フィルターのみ初期化。
+  /// メインタブ・コレ済サブタブ（すべて/未確認/確認済）は維持する。
+  void _resetRoomColleDisplayStateForShellLeave() {
+    if (!mounted) return;
+    _persistSearchDebounce?.cancel();
+    setState(() {
+      _candidateExcludeUrlNotReady = false;
+      _candidateSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneSortPreset = RoomColleListSortPreset.recentFirst;
+      _candidateListFilters = RoomColleListFilterCriteria.defaults;
+      _doneListFilters = RoomColleListFilterCriteria.defaults;
+      _candidateSearchController.clear();
+      _doneSearchController.clear();
+      _doneLocalDayFilter = null;
     });
     _persistRoomColleUiNow();
   }
@@ -1973,6 +2003,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       }
     });
     _shellCtrl = context.read<AppShellController>();
+    _lastShellIndex = _shellCtrl.currentIndex;
     _shellCtrl.addListener(_onShellCtrlChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
@@ -2015,8 +2046,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   void _onShellCtrlChanged() {
     if (!mounted) return;
+    final current = _shellCtrl.currentIndex;
+    final wasOnRoomColle = _lastShellIndex == _roomColleShellIndex;
+    final isOnRoomColle = current == _roomColleShellIndex;
+    if (wasOnRoomColle && !isOnRoomColle) {
+      _resetRoomColleDisplayStateForShellLeave();
+    } else if (!wasOnRoomColle && isOnRoomColle) {
+      _resetRoomColleDisplayStateForShellLeave();
+    }
+    _lastShellIndex = current;
     // IndexedStack 維持のため initState は1回のみ。タブ再表示時に一覧とエラー状態を復旧する。
-    if (_shellCtrl.currentIndex == 1) {
+    if (isOnRoomColle) {
       final managed = context.read<RakutenManagedProductProvider>();
       if (managed.listUiStatus == RakutenManagedProductListUiStatus.error) {
         if (kDebugMode) {
@@ -2227,7 +2267,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             sortPreset: _tabController.index == 0
                                 ? _candidateSortPreset
                                 : _doneSortPreset,
-                            roomImportMetaFilter: _doneRoomImportMetaFilter,
                             doneAtLocalDayFilter: _doneLocalDayFilter,
                           ),
                           activeCount: _roomColleActiveFilterCount(
@@ -2240,12 +2279,25 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             sortPreset: _tabController.index == 0
                                 ? _candidateSortPreset
                                 : _doneSortPreset,
-                            roomImportMetaFilter: _doneRoomImportMetaFilter,
                             doneAtLocalDayFilter: _doneLocalDayFilter,
                           ),
                           onPressed: () => _openRoomColleFilterEditor(
                             isCandidate: _tabController.index == 0,
                           ),
+                          onClear: _roomColleHasActiveSheetFilters(
+                            isCandidate: _tabController.index == 0,
+                            criteria: _tabController.index == 0
+                                ? _candidateListFilters
+                                : _doneListFilters,
+                            excludeUrlNotReady: _tabController.index == 0 &&
+                                _candidateExcludeUrlNotReady,
+                            sortPreset: _tabController.index == 0
+                                ? _candidateSortPreset
+                                : _doneSortPreset,
+                            doneAtLocalDayFilter: _doneLocalDayFilter,
+                          )
+                              ? _clearActiveRoomColleSheetFilters
+                              : null,
                         ),
                       ),
                     ],
@@ -2397,12 +2449,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         SizedBox(height: _RoomColleUi.gapListAfterDivider),
-                        _RoomColleCountSummary(
-                          status: RakutenManagedProductStatus.candidate,
-                          listFilters: _candidateListFilters,
-                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
-                          sortPreset: _candidateSortPreset,
-                        ),
                         Consumer<RakutenManagedProductProvider>(
                           builder: (context, managed, _) {
                             final pile = _roomColleStale7PlusCandidateCount(
@@ -2563,14 +2609,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             },
                           ),
                         ),
-                        _RoomColleCountSummary(
-                          status: RakutenManagedProductStatus.done,
-                          listFilters: _doneListFilters,
-                          excludeUrlNotReady: false,
-                          doneAtLocalDayFilter: _doneLocalDayFilter,
-                          roomImportMetaFilter: _doneRoomImportMetaFilter,
-                          sortPreset: _doneSortPreset,
-                        ),
                         Expanded(
                           child: _RoomManagedProductListTab(
                             status: RakutenManagedProductStatus.done,
@@ -2608,77 +2646,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
           ),
         ),
       ),
-    );
-  }
-}
-
-class _RoomColleCountSummary extends StatelessWidget {
-  const _RoomColleCountSummary({
-    required this.status,
-    required this.listFilters,
-    required this.excludeUrlNotReady,
-    required this.sortPreset,
-    this.doneAtLocalDayFilter,
-    this.roomImportMetaFilter = _RoomImportMetaListFilter.all,
-  });
-
-  final RakutenManagedProductStatus status;
-  final RoomColleListFilterCriteria listFilters;
-  final bool excludeUrlNotReady;
-  final RoomColleListSortPreset sortPreset;
-  final DateTime? doneAtLocalDayFilter;
-  final _RoomImportMetaListFilter roomImportMetaFilter;
-
-  @override
-  Widget build(BuildContext context) {
-    final isCandidate = status == RakutenManagedProductStatus.candidate;
-    final hasActiveFilters = _roomColleHasActiveListFilters(
-      isCandidate: isCandidate,
-      criteria: listFilters,
-      excludeUrlNotReady: excludeUrlNotReady,
-      sortPreset: sortPreset,
-      roomImportMetaFilter: roomImportMetaFilter,
-      doneAtLocalDayFilter: doneAtLocalDayFilter,
-    );
-    if (!hasActiveFilters) {
-      return const SizedBox.shrink();
-    }
-
-    return Consumer<RakutenManagedProductProvider>(
-      builder: (context, provider, _) {
-        final visibleCount = _roomColleVisibleCount(
-          provider: provider,
-          status: status,
-          listFilters: listFilters,
-          excludeUrlNotReady: excludeUrlNotReady,
-          savedShopIds: _savedShopIdSet(context),
-          todayRecommendationProductIds: _todayRecommendationIdSet(context),
-          genreLabelForProduct: _roomColleGenreLabelForProduct,
-          doneAtLocalDayFilter: doneAtLocalDayFilter,
-          roomImportMetaFilter: roomImportMetaFilter,
-        );
-        final summaryStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: HomeScreenColors.homeMutedText,
-          fontWeight: FontWeight.w500,
-          fontSize: 12,
-        );
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(
-            _kRoomListScreenPadH,
-            0,
-            _kRoomListScreenPadH,
-            4,
-          ),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '$visibleCount件を表示',
-              style: summaryStyle,
-              maxLines: 1,
-            ),
-          ),
-        );
-      },
     );
   }
 }

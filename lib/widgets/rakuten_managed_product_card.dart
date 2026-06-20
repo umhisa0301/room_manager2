@@ -233,7 +233,9 @@ class RakutenManagedProductCard extends StatelessWidget {
 
     return RoomColleProductListCardShell(
       child: Padding(
-        padding: RoomColleProductListCardLayout.cardInnerPadding,
+        padding: RoomColleProductListCardLayout.cardInnerPadding.copyWith(
+          bottom: 10,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -422,12 +424,12 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             if (isCandidate) ...[
               _candidateActions(context),
             ] else ...[
               _feedbackToolbar(context),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               _doneActions(context),
             ],
           ],
@@ -471,20 +473,25 @@ class RakutenManagedProductCard extends StatelessWidget {
     return Semantics(
       button: true,
       label: 'post_management_item_remove_button',
-      child: TextButton.icon(
+      child: OutlinedButton.icon(
         onPressed: () => _confirmRemoveCandidate(context, provider),
-        style: TextButton.styleFrom(
+        style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFF6B7280),
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          minimumSize: const Size(44, 36),
+          backgroundColor: HomeScreenColors.homeCardFill,
+          side: const BorderSide(color: Color(0xFFD1D5DB), width: 1),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          minimumSize: const Size(44, 32),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
+          shape: const StadiumBorder(),
+          textStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            height: 1.1,
+          ),
         ),
         icon: const Icon(Icons.delete_outline_rounded, size: 16),
-        label: const Text(
-          '削除',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        ),
+        label: const Text('削除'),
       ),
     );
   }
