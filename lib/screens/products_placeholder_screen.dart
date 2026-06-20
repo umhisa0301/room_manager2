@@ -2115,6 +2115,22 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   _kRoomListScreenPadH,
                   _RoomColleUi.gapSection,
                   _kRoomListScreenPadH,
+                  6,
+                ),
+                child: Text(
+                  '投稿管理',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: HomeScreenColors.titlePrimary,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  _kRoomListScreenPadH,
+                  0,
+                  _kRoomListScreenPadH,
                   0,
                 ),
                 child: DecoratedBox(

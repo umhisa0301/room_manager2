@@ -2379,7 +2379,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 child: _RakutenSearchBottomNavItem(
                   icon: Icons.collections_bookmark_outlined,
                   selectedIcon: Icons.collections_bookmark,
-                  label: 'ROOMコレ',
+                  label: '投稿',
                   isSelected: false,
                   onTap: () => _returnToShellWithTab(context, 1),
                 ),
@@ -5016,7 +5016,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 4),
         content: Text(
-          '候補に追加：成功 $success件$skipLine$failureLine\n下部の「ROOMコレ」→ 候補一覧で確認できます。',
+          '候補に追加：成功 $success件$skipLine$failureLine\n下部の「投稿」→ 候補一覧で確認できます。',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textOnAccent,
             fontWeight: FontWeight.w600,
@@ -5198,7 +5198,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
         content: Text(
-          'コレ候補に追加しました。\n下部の「ROOMコレ」→ 候補一覧で確認・整理できます。',
+          'コレ候補に追加しました。\n下部の「投稿」→ 候補一覧で確認・整理できます。',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textOnAccent,
             fontWeight: FontWeight.w600,

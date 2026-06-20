@@ -213,7 +213,7 @@ class _AppShellState extends State<AppShell> {
                     key: const Key('app_shell_nav_managed'),
                     icon: Icons.collections_bookmark_outlined,
                     selectedIcon: Icons.collections_bookmark,
-                    label: 'ROOMコレ',
+                    label: '投稿',
                     tooltip: null,
                     isSelected: idx == 1,
                     onTap: () =>
