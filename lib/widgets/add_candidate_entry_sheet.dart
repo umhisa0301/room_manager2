@@ -34,12 +34,7 @@ Future<void> showAddCandidateEntryBottomSheet({
     showDragHandle: true,
     isScrollControlled: true,
     useSafeArea: false,
-    backgroundColor: AppColors.surface,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(AppDimensions.radiusCard),
-      ),
-    ),
+    backgroundColor: Colors.transparent,
     builder: (sheetContext) {
       final keyboardBottom = MediaQuery.viewInsetsOf(sheetContext).bottom;
       return AnimatedPadding(
@@ -48,22 +43,38 @@ Future<void> showAddCandidateEntryBottomSheet({
         padding: EdgeInsets.only(bottom: keyboardBottom),
         child: SafeArea(
           top: false,
-          child: SingleChildScrollView(
-            key: const Key('add_candidate_sheet'),
-            padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
-            child: Consumer<BulkOperationStateController>(
-              builder: (context, bulk, _) {
-                final blocked = bulk.isRoomTourSearchBlocking;
-                return AddCandidateEntrySheetBody(
-                  roomTourSearchBlocked: blocked,
-                  onTapRakutenProductSearch: () =>
-                      onTapRakutenProductSearch(sheetContext),
-                  onTapGenreSearch: () => onTapGenreSearch(sheetContext),
-                  onTapSavedShops: () => onTapSavedShops(sheetContext),
-                  onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
-                  onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
-                );
-              },
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: HomeScreenColors.homeCardFill,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppDimensions.radiusCard),
+              ),
+              border: Border.all(color: HomeScreenColors.homeCardBorder),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  offset: const Offset(0, -2),
+                  blurRadius: 12,
+                ),
+              ],
+            ),
+            child: SingleChildScrollView(
+              key: const Key('add_candidate_sheet'),
+              padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
+              child: Consumer<BulkOperationStateController>(
+                builder: (context, bulk, _) {
+                  final blocked = bulk.isRoomTourSearchBlocking;
+                  return AddCandidateEntrySheetBody(
+                    roomTourSearchBlocked: blocked,
+                    onTapRakutenProductSearch: () =>
+                        onTapRakutenProductSearch(sheetContext),
+                    onTapGenreSearch: () => onTapGenreSearch(sheetContext),
+                    onTapSavedShops: () => onTapSavedShops(sheetContext),
+                    onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
+                    onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -126,29 +137,13 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
           const SizedBox(height: AppDimensions.spacingSm),
         ],
         Text(
-          '探すグループ',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: HomeScreenColors.footnoteMuted,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: AppDimensions.spacingXs / 2),
-        Text(
-          '候補を追加（探す）',
-          style: RakutenSearchScreenUi.sectionHeadingAccent(context),
+          '候補を追加',
+          style: RakutenSearchScreenUi.screenTitleStyle(context),
         ),
         const SizedBox(height: AppDimensions.spacingXs),
         Text(
           '探したい方法を選んでください',
-          style: RakutenSearchScreenUi.bodyCaption(context).copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: AppDimensions.spacingXs / 2),
-        Text(
-          '商品・ジャンル・ショップから候補を探せます。まずは楽天で商品を探すのがおすすめです。',
-          style: RakutenSearchScreenUi.bodyCaption(context),
+          style: RakutenSearchScreenUi.screenSubtitleStyle(context),
         ),
         const SizedBox(height: AppDimensions.spacingMd),
         Opacity(
@@ -243,10 +238,70 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = HomeScreenColors.homeAccentTeal;
+    if (isPrimaryEntry) {
+      return Material(
+        color: accent,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+          child: Padding(
+            padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusButton,
+                    ),
+                  ),
+                  child: Icon(icon, color: Colors.white),
+                ),
+                const SizedBox(width: AppDimensions.spacingSm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.white.withValues(alpha: 0.88),
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: Colors.white.withValues(alpha: 0.92),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Material(
-      color: isPrimaryEntry
-          ? AppColors.surface
-          : AppColors.accentLight,
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
       child: InkWell(
         onTap: onTap,
@@ -254,12 +309,7 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            border: isPrimaryEntry
-                ? Border.all(
-                    color: AppColors.accentPrimary.withValues(alpha: 0.42),
-                    width: 1.5,
-                  )
-                : null,
+            border: Border.all(color: HomeScreenColors.homeCardBorder),
           ),
           child: Padding(
           padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
@@ -270,64 +320,32 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: isPrimaryEntry
-                      ? AppColors.accentLight
-                      : AppColors.surface,
+                  color: HomeScreenColors.homeAccentTealLight,
                   borderRadius: BorderRadius.circular(
                     AppDimensions.radiusButton,
                   ),
                 ),
-                child: Icon(icon, color: AppColors.accentPrimary),
+                child: Icon(icon, color: accent),
               ),
               const SizedBox(width: AppDimensions.spacingSm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: AppTextStyles.bodyLarge.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ),
-                        if (isPrimaryEntry) ...[
-                          const SizedBox(width: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.accentPrimary.withValues(
-                                alpha: 0.12,
-                              ),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              'おすすめ',
-                              style: AppTextStyles.caption.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.accentPrimary,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
+                    Text(
+                      title,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: HomeScreenColors.homeTextPrimary,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       description,
-                      maxLines: 3,
-                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: HomeScreenColors.homeTextSecondary,
                         height: 1.3,
                       ),
                     ),
@@ -339,9 +357,7 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 2),
                 child: Icon(
                   Icons.chevron_right_rounded,
-                  color: isPrimaryEntry
-                      ? AppColors.accentPrimary
-                      : AppColors.textSecondary,
+                  color: HomeScreenColors.homeTextSecondary,
                 ),
               ),
             ],

@@ -9,8 +9,8 @@ import 'home_screen_colors.dart';
 abstract final class RakutenSearchScreenUi {
   const RakutenSearchScreenUi._();
 
-  /// ROOMコレ一覧と同じ左右 8。
-  static const double screenPadH = 8;
+  /// 投稿管理 [_kRoomListScreenPadH] と同じ 16。
+  static const double screenPadH = 16;
 
   /// ホーム [_HomeUi.gapSection] / ROOM [_RoomColleUi.gapSection] と同じ 9。
   static const double gapSection = 9;
@@ -53,6 +53,18 @@ abstract final class RakutenSearchScreenUi {
 
   /// 一括選択バーのボタン高さ（[AppPrimaryButton] height と揃える）。
   static const double bulkSelectionBarButtonHeight = 48;
+
+  /// 検索欄・条件ボタンの高さ（投稿管理 [_RoomColleUi.searchRowHeight] と同一）。
+  static const double searchRowHeight = 48;
+
+  /// 条件ボタンの固定幅（横 overflow 防止）。
+  static const double filterButtonWidth = 92;
+
+  /// 検索欄の通常枠線。
+  static const Color searchFieldBorder = Color(0xFFCBD5E1);
+
+  /// 検索欄プレースホルダー。
+  static const Color searchFieldHint = Color(0xFF94A3B8);
 
   /// リストが Column 内の一括バーと重ならないよう確保する下余白の目安
   /// （バーはリスト外に配置するため、通常は [listBottomPad] のみで足りる）。
@@ -107,54 +119,46 @@ abstract final class RakutenSearchScreenUi {
 
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.26),
-      offset: const Offset(0, 3),
-      blurRadius: 10,
-      spreadRadius: 0,
-    ),
-    BoxShadow(
-      color: Colors.black.withValues(alpha: 0.025),
+      color: Colors.black.withValues(alpha: 0.03),
       offset: const Offset(0, 1),
-      blurRadius: 3,
+      blurRadius: 4,
     ),
   ];
 
   /// 空状態・エラーなど結果ペインのカード外観（[outerSectionShellDecoration] と同系）。
   static BoxDecoration feedbackShellDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.roomGroupedShellFill,
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
-      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
       boxShadow: cardShadow,
     );
   }
 
   static BoxDecoration outerSectionShellDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.roomGroupedShellFill,
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
-      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
       boxShadow: cardShadow,
     );
   }
 
   static BoxDecoration modeTabDeckDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.roomContentWellFill,
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(radiusSectionInner),
-      border: Border.all(color: HomeScreenColors.deckOutline),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
     );
   }
 
-  /// 一覧フィルタ帯（ROOM 補助行〜チップ帯と同系：主シェルより一段弱い）。
+  /// 一覧フィルタ帯（投稿管理と同系の白カード）。
   static BoxDecoration listFilterStripDecoration() {
     return BoxDecoration(
-      color: Color.alphaBlend(
-        HomeScreenColors.subActionRowFill.withValues(alpha: 0.92),
-        HomeScreenColors.roomContentWellFill,
-      ),
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(searchFieldBorderRadius),
-      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
+      boxShadow: cardShadow,
     );
   }
 
@@ -165,8 +169,37 @@ abstract final class RakutenSearchScreenUi {
       fontWeight: FontWeight.w800,
       height: 1.2,
       letterSpacing: -0.12,
-      color: HomeScreenColors.accentSectionHeading,
+      color: HomeScreenColors.homeTextPrimary,
     );
+  }
+
+  /// 画面上部タイトル（投稿管理と同系）。
+  static TextStyle screenTitleStyle(BuildContext context) {
+    return Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: HomeScreenColors.homeTextPrimary,
+          letterSpacing: -0.15,
+        ) ??
+        const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: HomeScreenColors.homeTextPrimary,
+        );
+  }
+
+  /// 画面上部サブタイトル。
+  static TextStyle screenSubtitleStyle(BuildContext context) {
+    return Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontSize: 14,
+          color: HomeScreenColors.homeTextSecondary,
+          height: 1.35,
+        ) ??
+        TextStyle(
+          fontSize: 14,
+          color: HomeScreenColors.homeTextSecondary,
+          height: 1.35,
+        );
   }
 
   static TextStyle bodyCaption(BuildContext context) {
@@ -256,12 +289,12 @@ abstract final class RakutenSearchScreenUi {
     vertical: AppDimensions.spacingSm,
   );
 
-  /// 探すグループ：一覧行・補助ブロック（検索デッキ内ウェルと同系の外枠）。
+  /// 探すグループ：一覧行・補助ブロック。
   static BoxDecoration exploreGroupFlatCardDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.deckFill,
+      color: HomeScreenColors.homeCardFill,
       borderRadius: BorderRadius.circular(radiusSectionInner),
-      border: Border.all(color: HomeScreenColors.deckOutline),
+      border: Border.all(color: HomeScreenColors.homeCardBorder),
       boxShadow: cardShadow,
     );
   }
@@ -276,11 +309,11 @@ abstract final class RakutenSearchScreenUi {
     // 入力欄は補助要素として薄いグレー面・1px枠に抑える。
     final normal = OutlineInputBorder(
       borderRadius: r,
-      borderSide: const BorderSide(color: Color(0xFFD4D4DA), width: 1),
+      borderSide: const BorderSide(color: searchFieldBorder, width: 1),
     );
     return InputDecoration(
       filled: true,
-      fillColor: const Color(0xFFFAFAFB),
+      fillColor: HomeScreenColors.homeCardFill,
       isDense: true,
       labelText: labelText,
       hintText: hintText,
@@ -307,12 +340,12 @@ abstract final class RakutenSearchScreenUi {
         fontWeight: FontWeight.w600,
         fontSize: 13,
       ),
-      hintStyle: TextStyle(color: HomeScreenColors.footnoteMuted, fontSize: 14),
+      hintStyle: const TextStyle(color: searchFieldHint, fontSize: 14),
       border: normal,
       enabledBorder: normal,
       focusedBorder: OutlineInputBorder(
         borderRadius: r,
-        borderSide: BorderSide(color: AppColors.accentPrimary, width: 1.2),
+        borderSide: BorderSide(color: HomeScreenColors.homeAccentTeal, width: 1.2),
       ),
       contentPadding: searchFieldContentPadding,
       prefixIconConstraints: searchFieldIconConstraints,

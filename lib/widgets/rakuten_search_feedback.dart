@@ -106,7 +106,7 @@ class RakutenSearchIdleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ic =
-        iconTint ?? HomeScreenColors.statusAccentMuted.withValues(alpha: 0.88);
+        iconTint ?? HomeScreenColors.homeAccentTeal.withValues(alpha: 0.55);
     final iconSize = compactLayout ? 30.0 : 36.0;
 
     return _RakutenSearchFeedbackShell(
@@ -165,15 +165,45 @@ class RakutenSearchLoadingView extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.footnote,
+    this.compactLayout = false,
   });
 
   final String title;
   final String subtitle;
   final String? footnote;
+  final bool compactLayout;
 
   @override
   Widget build(BuildContext context) {
+    if (compactLayout) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: RakutenSearchScreenUi.screenPadH,
+            vertical: RakutenSearchScreenUi.gapSection,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppLoadingView(message: title, inline: false),
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: HomeScreenColors.homeTextSecondary,
+                      height: 1.32,
+                      fontSize: 12,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return _RakutenSearchFeedbackShell(
+      stretchToFillViewport: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -395,9 +425,12 @@ class RakutenSearchEmptyView extends StatelessWidget {
     required this.body,
     this.hints = const [],
     this.onRefine,
-    this.refineLabel = '条件を調整',
+    this.refineLabel = '条件を変更',
+    this.onClear,
+    this.clearLabel = '検索をクリア',
     this.stateFootnote,
     this.iconColor,
+    this.compactLayout = false,
   });
 
   final IconData icon;
@@ -406,99 +439,88 @@ class RakutenSearchEmptyView extends StatelessWidget {
   final List<String> hints;
   final VoidCallback? onRefine;
   final String refineLabel;
+  final VoidCallback? onClear;
+  final String clearLabel;
 
   /// ROOM コレの「読み込みは完了していますが…」に相当。
   final String? stateFootnote;
   final Color? iconColor;
+  final bool compactLayout;
 
   @override
   Widget build(BuildContext context) {
     final ic =
         iconColor ??
-        HomeScreenColors.statusAccentStrong.withValues(alpha: 0.38);
+        HomeScreenColors.homeAccentTeal.withValues(alpha: 0.38);
+    final iconSize = compactLayout ? 28.0 : 32.0;
 
     return _RakutenSearchFeedbackShell(
+      stretchToFillViewport: !compactLayout,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(icon, size: 34, color: ic),
-          const SizedBox(height: 10),
+          Icon(icon, size: iconSize, color: ic),
+          SizedBox(height: compactLayout ? 8 : 10),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: HomeScreenColors.titlePrimary,
+              color: HomeScreenColors.homeTextPrimary,
               fontWeight: FontWeight.w800,
-              fontSize: 15,
+              fontSize: compactLayout ? 14 : 15,
               height: 1.22,
               letterSpacing: -0.2,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: compactLayout ? 4 : 6),
           Text(
             body,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: HomeScreenColors.groupedSectionBody,
+              color: HomeScreenColors.homeTextSecondary,
               height: 1.34,
-              fontSize: 12,
+              fontSize: compactLayout ? 11.5 : 12,
               fontWeight: FontWeight.w500,
             ),
           ),
           if (hints.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Text(
-              'ヒント',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: HomeScreenColors.leadOnSection,
-                fontWeight: FontWeight.w800,
-                fontSize: 11,
-                letterSpacing: 0.2,
-              ),
-            ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             for (final h in hints)
               Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '・',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: HomeScreenColors.groupedSectionBody,
-                        height: 1.35,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        h,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: HomeScreenColors.groupedSectionBody,
-                          height: 1.38,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  h,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: HomeScreenColors.homeTextSecondary,
+                    height: 1.35,
+                    fontSize: 11.5,
+                  ),
                 ),
               ),
           ],
           if (onRefine != null) ...[
-            const SizedBox(height: 14),
-            AppSecondaryButton(
+            SizedBox(height: compactLayout ? 12 : 14),
+            AppPrimaryButton(
               label: refineLabel,
               onPressed: onRefine,
               icon: const Icon(Icons.tune_rounded),
+              height: 48,
+            ),
+          ],
+          if (onClear != null) ...[
+            const SizedBox(height: 8),
+            AppSecondaryButton(
+              label: clearLabel,
+              onPressed: onClear,
+              icon: const Icon(Icons.restart_alt_rounded),
               expand: true,
               height: 48,
             ),
           ],
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Text(
               stateFootnote!,
               textAlign: TextAlign.center,

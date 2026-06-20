@@ -156,134 +156,136 @@ class RakutenSearchResultCard extends StatelessWidget {
 
     return RoomColleProductListCardShell(
       minHeight: thumbW,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          SizedBox(
-            width: thumbW,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                RoomColleProductListCardThumbSlot(
-                  slotWidth: thumbW,
-                  child: _heroImage(context, compact: compact),
-                ),
-                if (selectionMode)
-                  Positioned(
-                    top: 4,
-                    left: 4,
-                    child: Material(
-                      color: Colors.white.withValues(alpha: 0.92),
-                      borderRadius: BorderRadius.circular(4),
-                      child: _buildSelectionCheckbox(context),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: thumbW,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    RoomColleProductListCardThumbSlot(
+                      slotWidth: thumbW,
+                      child: _heroImage(context, compact: compact),
                     ),
-                  ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: rightPad,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    if (selectionMode)
+                      Positioned(
+                        top: 4,
+                        left: 4,
+                        child: Material(
+                          color: Colors.white.withValues(alpha: 0.92),
+                          borderRadius: BorderRadius.circular(4),
+                          child: _buildSelectionCheckbox(context),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: rightPad,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (compact &&
-                          sourceContextLabel != null &&
-                          sourceContextLabel!.trim().isNotEmpty) ...[
-                        _SourceContextChip(label: sourceContextLabel!.trim()),
-                        SizedBox(height: metaGap + 1),
-                      ],
-                      InkWell(
-                        onTap: () => _openRakuten(context, 'title'),
-                        borderRadius: BorderRadius.circular(6),
-                        child: Text(
-                          _safeItemName(item),
-                          maxLines: titleMaxLines,
-                          overflow: TextOverflow.ellipsis,
-                          style: (titleStyle ?? const TextStyle()).copyWith(
-                            decoration: TextDecoration.underline,
-                            decorationColor: (titleStyle ?? const TextStyle())
-                                .color
-                                ?.withValues(alpha: 0.35),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: contentGap),
-                      _priceAndRatingRow(
-                        priceStyle: priceStyle,
-                        reviewScoreStyle: reviewScoreStyle,
-                        reviewCountStyle: reviewCountStyle,
-                      ),
-                      SizedBox(height: metaGap),
-                      Text(
-                        _safeShopName(item),
-                        maxLines: RoomColleProductListCardLayout.shopMaxLines,
-                        overflow: TextOverflow.ellipsis,
-                        style: shopStyle,
-                      ),
-                      if (item.genreId.trim().isNotEmpty) ...[
-                        SizedBox(height: metaGap),
-                        Text(
-                          genreDisplayLineOverride ??
-                              RakutenProductGenreDisplay.resolve(
-                                apiGenreName: item.genreName,
-                                persistedGenreName: null,
-                                prefetchedGenreName: null,
-                                genreId: item.genreId,
-                                traceItemCode: item.productId,
-                              ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: genreLineStyle,
-                        ),
-                      ],
-                      if (!compact &&
-                          sourceContextLabel != null &&
-                          sourceContextLabel!.trim().isNotEmpty) ...[
-                        SizedBox(height: metaGap),
-                        Text(
-                          sourceContextLabel!.trim(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: genreLineStyle.copyWith(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.accentPrimary.withValues(
-                              alpha: 0.92,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (compact &&
+                              sourceContextLabel != null &&
+                              sourceContextLabel!.trim().isNotEmpty) ...[
+                            _SourceContextChip(label: sourceContextLabel!.trim()),
+                            SizedBox(height: metaGap + 1),
+                          ],
+                          InkWell(
+                            onTap: () => _openRakuten(context, 'title'),
+                            borderRadius: BorderRadius.circular(6),
+                            child: Text(
+                              _safeItemName(item),
+                              maxLines: titleMaxLines,
+                              overflow: TextOverflow.ellipsis,
+                              style: titleStyle,
                             ),
                           ),
-                        ),
-                      ],
-                      if (localStatus != RakutenManagedProductStatus.none &&
-                          !selectionMode) ...[
-                        _SearchCardStatusLozenge(status: localStatus),
-                      ],
-                      if (selectionMode && !isSelectionEnabled) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          selectionDisabledLabel ?? 'この商品は選択できません',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: selectionHintStyle,
-                        ),
-                      ],
+                          SizedBox(height: contentGap),
+                          _priceAndRatingRow(
+                            priceStyle: priceStyle,
+                            reviewScoreStyle: reviewScoreStyle,
+                            reviewCountStyle: reviewCountStyle,
+                          ),
+                          SizedBox(height: metaGap),
+                          Text(
+                            _safeShopName(item),
+                            maxLines: RoomColleProductListCardLayout.shopMaxLines,
+                            overflow: TextOverflow.ellipsis,
+                            style: shopStyle,
+                          ),
+                          if (item.genreId.trim().isNotEmpty) ...[
+                            SizedBox(height: metaGap),
+                            Text(
+                              genreDisplayLineOverride ??
+                                  RakutenProductGenreDisplay.resolve(
+                                    apiGenreName: item.genreName,
+                                    persistedGenreName: null,
+                                    prefetchedGenreName: null,
+                                    genreId: item.genreId,
+                                    traceItemCode: item.productId,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: genreLineStyle,
+                            ),
+                          ],
+                          if (!compact &&
+                              sourceContextLabel != null &&
+                              sourceContextLabel!.trim().isNotEmpty) ...[
+                            SizedBox(height: metaGap),
+                            Text(
+                              sourceContextLabel!.trim(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: genreLineStyle.copyWith(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: HomeScreenColors.homeAccentTeal.withValues(
+                                  alpha: 0.92,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (selectionMode && !isSelectionEnabled) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              selectionDisabledLabel ?? 'この商品は選択できません',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: selectionHintStyle,
+                            ),
+                          ],
+                        ],
+                      ),
+                      SizedBox(height: compact ? 6 : 10),
+                      _searchResultActions(
+                        context,
+                        compact: compact,
+                        buttonHeight: buttonH,
+                      ),
                     ],
                   ),
-                  SizedBox(height: compact ? 6 : 10),
-                  _searchResultActions(
-                    context,
-                    compact: compact,
-                    buttonHeight: buttonH,
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
+          if (!selectionMode)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: _SearchCardStatusLozenge(status: localStatus),
+            ),
         ],
       ),
     );
@@ -329,6 +331,8 @@ class RakutenSearchResultCard extends StatelessWidget {
     required double buttonHeight,
   }) {
     final h = buttonHeight;
+    final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
+    final isDone = localStatus == RakutenManagedProductStatus.done;
     final rakuten = AppOutlineButton(
       label: '楽天で見る',
       icon: Icon(Icons.open_in_new, size: compact ? 16.0 : 18.0),
@@ -336,22 +340,17 @@ class RakutenSearchResultCard extends StatelessWidget {
       expand: true,
       onPressed: () => _openRakuten(context, 'button'),
     );
-    final register = _buildRegisterAction(context, compact: compact, height: h);
-    if (compact) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(flex: 5, child: register),
-          SizedBox(width: compact ? 6 : _buttonGapB),
-          Expanded(flex: 3, child: rakuten),
-        ],
-      );
+
+    if (isDone || isCandidate) {
+      return rakuten;
     }
+
+    final register = _buildRegisterAction(context, compact: compact, height: h);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: rakuten),
-        SizedBox(width: _buttonGapB),
+        SizedBox(width: compact ? 6 : _buttonGapB),
         Expanded(child: register),
       ],
     );
@@ -362,41 +361,6 @@ class RakutenSearchResultCard extends StatelessWidget {
     bool compact = false,
     required double height,
   }) {
-    final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
-    final isDone = localStatus == RakutenManagedProductStatus.done;
-
-    if (isDone) {
-      return Tooltip(
-        message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
-        child: AppOutlineButton(
-          label: 'コレ済',
-          icon: Icon(Icons.check_circle_outline, size: compact ? 16.0 : 18.0),
-          height: height,
-          expand: true,
-          onPressed: null,
-        ),
-      );
-    }
-
-    if (isCandidate) {
-      if (kDebugMode) {
-        registeredLabelCopyAuditLog(
-          'screen=searchResultCard oldLabel=候補に登録済み newLabel=登録済 '
-          'isDisabledButton=true isChip=false productId=${item.productId}',
-        );
-      }
-      return Tooltip(
-        message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
-        child: AppOutlineButton(
-          label: '登録済',
-          icon: Icon(Icons.bookmark_added_outlined, size: compact ? 16.0 : 18.0),
-          height: height,
-          expand: true,
-          onPressed: null,
-        ),
-      );
-    }
-
     return Tooltip(
       message: 'ROOMコレの候補に追加します。あとから候補一覧で比較・整理できます。',
       child: AppPrimaryButton(
@@ -490,7 +454,7 @@ class _SourceContextChip extends StatelessWidget {
   }
 }
 
-/// ROOM コレのメトリクスバッジと同系の、カード内ミニ状態表示。
+/// 商品カード右上の状態ピル。
 class _SearchCardStatusLozenge extends StatelessWidget {
   const _SearchCardStatusLozenge({required this.status});
 
@@ -498,55 +462,41 @@ class _SearchCardStatusLozenge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (status == RakutenManagedProductStatus.none) {
-      return const SizedBox.shrink();
-    }
     final isDone = status == RakutenManagedProductStatus.done;
+    final isCandidate = status == RakutenManagedProductStatus.candidate;
+    final label = isDone
+        ? 'コレ済'
+        : isCandidate
+        ? '登録済'
+        : '未登録';
     final bg = isDone
-        ? HomeScreenColors.metricRoleDoneIconBg
-        : HomeScreenColors.metricRoleCandidateIconBg;
-    final fg = isDone
-        ? HomeScreenColors.metricRoleDoneIcon
-        : HomeScreenColors.metricRoleCandidateIcon;
-    const oldLabel = '候補に登録済み';
-    final label = isDone ? 'コレ済' : '登録済';
-    if (kDebugMode && !isDone) {
+        ? HomeScreenColors.homeAccentTealLight
+        : isCandidate
+        ? HomeScreenColors.homeAccentTealLight
+        : const Color(0xFFF1F5F9);
+    final fg = isDone || isCandidate
+        ? HomeScreenColors.homeAccentTeal
+        : const Color(0xFF64748B);
+    if (kDebugMode && isCandidate) {
       registeredLabelCopyAuditLog(
-        'screen=searchResultCard oldLabel=$oldLabel newLabel=$label '
+        'screen=searchResultCard oldLabel=候補に登録済み newLabel=$label '
         'isDisabledButton=false isChip=true productId=-',
       );
     }
-    final icon = isDone
-        ? Icons.verified_outlined
-        : Icons.bookmark_added_outlined;
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: fg.withValues(alpha: 0.2)),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 12, color: fg),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: fg,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 10,
-                  height: 1.1,
-                  letterSpacing: -0.05,
-                ),
-              ),
-            ],
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: fg.withValues(alpha: 0.25)),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: fg,
+          fontWeight: FontWeight.w700,
+          fontSize: 10,
+          height: 1.1,
         ),
       ),
     );

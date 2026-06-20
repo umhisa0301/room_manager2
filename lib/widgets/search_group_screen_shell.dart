@@ -20,7 +20,7 @@ class SearchGroupScreenShell extends StatelessWidget {
     this.maintainBottomViewPadding = true,
   });
 
-  /// 土台の背景色。未指定時は楽天検索画面と同系の [HomeScreenColors.canvas]。
+  /// 土台の背景色。未指定時は白に近いキャンバス。
   final Color? backgroundColor;
 
   /// [SafeArea] 内側の共通パディング。未指定時は左右 [AppDimensions.screenPaddingH]、
@@ -90,37 +90,31 @@ class _SearchGroupHeaderBand extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
-      child: Padding(
-        padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null && title!.isNotEmpty)
-              Text(
-                title!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: RakutenSearchScreenUi.sectionHeadingAccent(context),
-              ),
-            if (title != null &&
-                title!.isNotEmpty &&
-                subtitle != null &&
-                subtitle!.isNotEmpty)
-              const SizedBox(height: AppDimensions.spacingXs),
-            if (subtitle != null && subtitle!.isNotEmpty)
-              Text(
-                subtitle!,
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                style: RakutenSearchScreenUi.bodyCaption(context),
-              ),
-          ],
-        ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (title != null && title!.isNotEmpty)
+          Text(
+            title!,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: RakutenSearchScreenUi.screenTitleStyle(context),
+          ),
+        if (title != null &&
+            title!.isNotEmpty &&
+            subtitle != null &&
+            subtitle!.isNotEmpty)
+          const SizedBox(height: 2),
+        if (subtitle != null && subtitle!.isNotEmpty)
+          Text(
+            subtitle!,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+            style: RakutenSearchScreenUi.screenSubtitleStyle(context),
+          ),
+      ],
     );
   }
 }

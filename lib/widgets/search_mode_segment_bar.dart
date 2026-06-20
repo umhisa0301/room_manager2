@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../utils/app_debug_log.dart';
 
-/// 探し方セレクター（ROOMコレの SegmentedButton 風・横スクロール可）。
+/// 探し方セレクター（ピル型チップ・横スクロール可）。
 class SearchModeSegmentBar extends StatefulWidget {
   const SearchModeSegmentBar({
     super.key,
@@ -34,9 +33,7 @@ class _SearchModeSegmentBarState extends State<SearchModeSegmentBar> {
     SearchModeSegment.shopDiscovery: 'ショップ発掘',
   };
 
-  static const double _segmentHeight = 46;
-  static const double _trackRadius = 14;
-  static const double _innerPad = 4;
+  static const double _segmentHeight = 36;
 
   final ScrollController _scrollController = ScrollController();
   final Map<SearchModeSegment, GlobalKey> _tileKeys = {
@@ -128,59 +125,48 @@ class _SearchModeSegmentBarState extends State<SearchModeSegmentBar> {
       'height=$_segmentHeight horizontalScroll=${modes.length > 3}',
       searchAuditLog,
     );
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: HomeScreenColors.roomContentWellFill,
-        borderRadius: BorderRadius.circular(_trackRadius),
-        border: Border.all(color: HomeScreenColors.deckOutline),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(_innerPad),
-        child: SizedBox(
-          height: _segmentHeight,
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              scrollbars: false,
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final sw = MediaQuery.sizeOf(context).width;
-                AuditLogDeduper.logOnce(
-                  'segment_overflow_${widget.selected.name}',
-                  '[SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=$sw '
-                  'totalTabWidth=${constraints.maxWidth} selectedMode=${widget.selected.name} '
-                  'clipped=${constraints.maxWidth < 360} horizontalScrollable=true',
-                  searchAuditLog,
-                );
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  if (!mounted) return;
-                  if (_lastScrolledSelection != widget.selected) {
-                    _scrollSelectedIntoView();
-                  } else {
-                    _logSegmentVisibility(scrolledToSelected: false);
-                  }
-                });
-                return SingleChildScrollView(
-                  controller: _scrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Row(
-                    children: [
-                      for (var i = 0; i < modes.length; i++) ...[
-                        if (i > 0) const SizedBox(width: 4),
-                        _SegmentTile(
-                          key: _tileKeys[modes[i]],
-                          label: _labels[modes[i]]!,
-                          selected: modes[i] == widget.selected,
-                          onTap: () => widget.onChanged(modes[i]),
-                        ),
-                      ],
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
+    return SizedBox(
+      height: _segmentHeight,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          scrollbars: false,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final sw = MediaQuery.sizeOf(context).width;
+            AuditLogDeduper.logOnce(
+              'segment_overflow_${widget.selected.name}',
+              '[SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=$sw '
+              'totalTabWidth=${constraints.maxWidth} selectedMode=${widget.selected.name} '
+              'clipped=${constraints.maxWidth < 360} horizontalScrollable=true',
+              searchAuditLog,
+            );
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              if (_lastScrolledSelection != widget.selected) {
+                _scrollSelectedIntoView();
+              } else {
+                _logSegmentVisibility(scrolledToSelected: false);
+              }
+            });
+            return SingleChildScrollView(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (var i = 0; i < modes.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 6),
+                    _SegmentTile(
+                      key: _tileKeys[modes[i]],
+                      label: _labels[modes[i]]!,
+                      selected: modes[i] == widget.selected,
+                      onTap: () => widget.onChanged(modes[i]),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -201,42 +187,34 @@ class _SegmentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = HomeScreenColors.homeAccentTeal;
     return Material(
-      color: selected
-          ? AppColors.accentPrimary.withValues(alpha: 0.14)
-          : HomeScreenColors.roomGroupedShellFill,
-      borderRadius: BorderRadius.circular(10),
+      color: selected ? accent : HomeScreenColors.homeCardFill,
+      borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(999),
         child: Container(
-          constraints: BoxConstraints(
-            minWidth: selected ? 88 : 68,
-            minHeight: 46,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          constraints: const BoxConstraints(minHeight: 36),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(999),
             border: Border.all(
-              color: selected
-                  ? AppColors.accentPrimary
-                  : HomeScreenColors.sectionOutlineNeutral,
-              width: selected ? 1.75 : 1,
+              color: selected ? accent : HomeScreenColors.homeCardBorder,
+              width: 1.2,
             ),
           ),
           child: Text(
             label,
             maxLines: 1,
             softWrap: false,
-            overflow: selected ? TextOverflow.visible : TextOverflow.ellipsis,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12.5,
-                  color: selected
-                      ? AppColors.accentPrimary
-                      : HomeScreenColors.leadOnSection,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                  color: selected ? Colors.white : HomeScreenColors.homeTextPrimary,
                 ),
           ),
         ),
