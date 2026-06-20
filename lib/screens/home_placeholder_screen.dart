@@ -51,19 +51,19 @@ abstract final class _HomeUi {
   const _HomeUi._();
 
   /// 主要ブロック同士（カード間）
-  static const double gapSection = 14;
+  static const double gapSection = 12;
 
   /// 白カード内 padding
   static const EdgeInsets homeCardPadding = EdgeInsets.all(16);
 
   /// ホーム白カードの角丸
-  static const double homeCardRadius = 20;
+  static const double homeCardRadius = 16;
 
-  /// ホーム ListView の左右（アプリ全体の [AppDimensions.screenPaddingH] より一段狭めて表示領域を確保）
-  static const double screenPaddingH = 10;
+  /// ホーム ListView の左右
+  static const double screenPaddingH = 16;
 
-  /// ホーム ListView の上下（画面端との距離を少し詰めつつ窮屈にならない程度）
-  static const double screenPaddingV = 10;
+  /// ホーム ListView の上下
+  static const double screenPaddingV = 8;
 
   /// セクション外枠の角丸（`AppDimensions.radiusCard` と一致）
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -140,9 +140,9 @@ abstract final class _HomeUi {
 
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.05),
-      offset: const Offset(0, 2),
-      blurRadius: 10,
+      color: Colors.black.withValues(alpha: 0.03),
+      offset: const Offset(0, 1),
+      blurRadius: 4,
     ),
   ];
 
@@ -158,17 +158,17 @@ abstract final class _HomeUi {
 
   static TextStyle homeCardTitle(BuildContext context) {
     return sectionTitle(context).copyWith(
-      fontSize: 20,
-      fontWeight: FontWeight.w800,
-      color: const Color(0xFF111827),
-      letterSpacing: -0.2,
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
+      color: HomeScreenColors.homeTextPrimary,
+      letterSpacing: -0.15,
     );
   }
 
   static TextStyle homeCardSubtitle(BuildContext context) {
     return sectionBody(context).copyWith(
-      fontSize: 13.5,
-      color: const Color(0xFF6B7280),
+      fontSize: 14,
+      color: HomeScreenColors.homeTextSecondary,
       height: 1.35,
     );
   }
@@ -176,17 +176,17 @@ abstract final class _HomeUi {
   static TextStyle homeMetricLabel(BuildContext context) {
     return tapHint(context).copyWith(
       fontSize: 12.5,
-      fontWeight: FontWeight.w600,
-      color: const Color(0xFF6B7280),
+      fontWeight: FontWeight.w500,
+      color: HomeScreenColors.homeTextSecondary,
     );
   }
 
   static TextStyle homeMetricValue(BuildContext context) {
     return bodyEmphasis(context).copyWith(
-      fontSize: 24,
-      fontWeight: FontWeight.w800,
-      color: const Color(0xFF111827),
-      height: 1.1,
+      fontSize: 28,
+      fontWeight: FontWeight.w700,
+      color: HomeScreenColors.homeAccentTeal,
+      height: 1.0,
     );
   }
 
@@ -349,9 +349,22 @@ abstract final class _HomeDataUpdateButtonStyle {
       disabledForegroundColor: const Color(0xFF9CA3AF),
       side: const BorderSide(color: HomeScreenColors.homeAccentTealBorder),
       minimumSize: const Size(0, 44),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    );
+  }
+
+  static ButtonStyle dataUpdateOutlined(BuildContext context) {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeAccentTeal,
+      backgroundColor: Colors.white,
+      disabledForegroundColor: const Color(0xFF9CA3AF),
+      side: const BorderSide(color: HomeScreenColors.homeCardBorder),
+      minimumSize: const Size(0, 44),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
     );
   }
 }
@@ -903,7 +916,7 @@ class _TodayRoomStatusCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('今日のROOM状況', style: _HomeUi.homeCardTitle(context)),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -942,25 +955,25 @@ class _TodayRoomStatusCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 12),
           Divider(height: 1, color: HomeScreenColors.homeCardBorder),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Text(
             '今日の目標',
             style: _HomeUi.bodyEmphasis(context).copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-              color: const Color(0xFF111827),
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: HomeScreenColors.homeTextPrimary,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             _homeGoalProgressSummary(todayRoomPostCount),
-            style: _HomeUi.homeCardSubtitle(context).copyWith(fontSize: 13),
+            style: _HomeUi.homeCardSubtitle(context).copyWith(fontSize: 12.5),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _HomeGoalProgressBar(postCount: todayRoomPostCount),
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
           _HomePostLimitSection(collectLimit: collectLimit),
         ],
       ),
@@ -982,7 +995,7 @@ class _HomeStatusMetricColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -990,21 +1003,19 @@ class _HomeStatusMetricColumn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 14, color: HomeScreenColors.homeMutedText),
+              Icon(icon, size: 18, color: HomeScreenColors.homeMutedText),
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: _HomeUi.homeMetricLabel(context).copyWith(
-                    fontSize: 11.5,
-                  ),
+                  style: _HomeUi.homeMetricLabel(context),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           _HomeMetricCountText(count: count),
         ],
       ),
@@ -1017,10 +1028,43 @@ class _HomeGoalProgressBar extends StatelessWidget {
 
   final int postCount;
 
+  static const _milestones = HomePostMilestoneSnapshot.milestones;
+  static const _markerSize = 22.0;
+  static const _barHeight = 3.0;
+
+  static double _markerFraction(int index) {
+    if (_milestones.length <= 1) return 0;
+    return index / (_milestones.length - 1);
+  }
+
+  static int _lastAchievedIndex(int count) {
+    var idx = -1;
+    for (var i = 0; i < _milestones.length; i++) {
+      if (count >= _milestones[i]) idx = i;
+    }
+    return idx;
+  }
+
+  static double _progressFraction(int count) {
+    if (count >= _milestones.last) return 1.0;
+    for (var i = 0; i < _milestones.length - 1; i++) {
+      final lo = _milestones[i];
+      final hi = _milestones[i + 1];
+      if (count < hi) {
+        final segStart = _markerFraction(i);
+        final segEnd = _markerFraction(i + 1);
+        final ratio = hi == lo ? 0.0 : (count - lo) / (hi - lo);
+        return segStart + (segEnd - segStart) * ratio;
+      }
+    }
+    return 1.0;
+  }
+
   @override
   Widget build(BuildContext context) {
-    const milestones = HomePostMilestoneSnapshot.milestones;
-    final progress = (postCount / milestones.last).clamp(0.0, 1.0);
+    final achievedIdx = _lastAchievedIndex(postCount);
+    final greenEnd = achievedIdx >= 0 ? _markerFraction(achievedIdx) : 0.0;
+    final progressEnd = _progressFraction(postCount);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1028,42 +1072,57 @@ class _HomeGoalProgressBar extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final trackWidth = constraints.maxWidth;
+            final inset = _markerSize / 2;
+            final innerWidth = trackWidth - _markerSize;
+
             return SizedBox(
-              height: 28,
+              height: _markerSize,
               child: Stack(
-                alignment: Alignment.centerLeft,
                 clipBehavior: Clip.none,
+                alignment: Alignment.centerLeft,
                 children: [
                   Positioned(
-                    left: 12,
-                    right: 12,
-                    top: 11,
+                    left: inset,
+                    right: inset,
+                    top: (_markerSize - _barHeight) / 2,
                     child: Container(
-                      height: 4,
+                      height: _barHeight,
                       decoration: BoxDecoration(
-                        color: HomeScreenColors.progressTrack,
+                        color: const Color(0xFFE5E7EB),
                         borderRadius: BorderRadius.circular(999),
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 12,
-                    top: 11,
-                    child: Container(
-                      height: 4,
-                      width: ((trackWidth - 24) * progress).clamp(0, trackWidth),
-                      decoration: BoxDecoration(
-                        color: postCount >= milestones[2]
-                            ? HomeScreenColors.homeAccentTeal
-                            : HomeScreenColors.homeSuccess,
-                        borderRadius: BorderRadius.circular(999),
+                  if (greenEnd > 0)
+                    Positioned(
+                      left: inset,
+                      top: (_markerSize - _barHeight) / 2,
+                      width: innerWidth * greenEnd,
+                      child: Container(
+                        height: _barHeight,
+                        decoration: BoxDecoration(
+                          color: HomeScreenColors.homeSuccess,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
                       ),
                     ),
-                  ),
+                  if (progressEnd > greenEnd)
+                    Positioned(
+                      left: inset + innerWidth * greenEnd,
+                      top: (_markerSize - _barHeight) / 2,
+                      width: innerWidth * (progressEnd - greenEnd),
+                      child: Container(
+                        height: _barHeight,
+                        decoration: BoxDecoration(
+                          color: HomeScreenColors.homeAccentTeal,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                      ),
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      for (final milestone in milestones)
+                      for (final milestone in _milestones)
                         _HomeGoalMarker(
                           milestone: milestone,
                           state: _homeGoalBadgeState(postCount, milestone),
@@ -1075,21 +1134,20 @@ class _HomeGoalProgressBar extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 4),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            for (final milestone in milestones)
+            for (final milestone in _milestones)
               Expanded(
                 child: Text(
                   _homeGoalMarkerLabel(postCount, milestone),
                   textAlign: TextAlign.center,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: HomeScreenColors.homeMutedText,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: HomeScreenColors.homeTextSecondary,
                     height: 1.2,
                   ),
                 ),
@@ -1105,11 +1163,11 @@ String _homeGoalMarkerLabel(int postCount, int milestone) {
   final state = _homeGoalBadgeState(postCount, milestone);
   switch (state) {
     case _HomeGoalBadgeState.achieved:
-      return '${milestone}件\n達成';
+      return '${milestone}件 達成';
     case _HomeGoalBadgeState.current:
-      return '${milestone}件\n挑戦中';
+      return '${milestone}件 挑戦中';
     case _HomeGoalBadgeState.pending:
-      return '${milestone}件\n未達';
+      return '${milestone}件 未達';
   }
 }
 
@@ -1151,6 +1209,13 @@ class _HomeGoalMarker extends StatelessWidget {
         color: fill,
         shape: BoxShape.circle,
         border: Border.all(color: border, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       alignment: Alignment.center,
       child: child,
@@ -1177,7 +1242,7 @@ class _HomePostLimitSectionState extends State<_HomePostLimitSection> {
       case RoomCollectPostLimitBarState.warning:
         return HomeScreenColors.homeWarning;
       case RoomCollectPostLimitBarState.normal:
-        return HomeScreenColors.homeAccentTeal.withValues(alpha: 0.55);
+        return HomeScreenColors.homeAccentTeal.withValues(alpha: 0.45);
     }
   }
 
@@ -1205,17 +1270,17 @@ class _HomePostLimitSectionState extends State<_HomePostLimitSection> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () => setState(() => _expanded = !_expanded),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         '投稿上限　24時間の残り ${limit.dailyRemaining}件',
                         style: _HomeUi.tapHint(context).copyWith(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                           color: summaryColor,
                         ),
                       ),
@@ -1224,7 +1289,7 @@ class _HomePostLimitSectionState extends State<_HomePostLimitSection> {
                       _expanded
                           ? Icons.keyboard_arrow_up_rounded
                           : Icons.keyboard_arrow_down_rounded,
-                      size: 18,
+                      size: 16,
                       color: summaryColor,
                     ),
                   ],
@@ -1241,7 +1306,7 @@ class _HomePostLimitSectionState extends State<_HomePostLimitSection> {
             barState: limit.hourlyBarState,
             barColor: _barColor(limit.hourlyBarState),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           _HomeLimitDetailRow(
             label: '直近24時間',
             used: limit.todayCount,
@@ -1284,8 +1349,8 @@ class _HomeLimitDetailRow extends StatelessWidget {
               child: Text(
                 '$label  $used / ${max}件',
                 style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
                   color: HomeScreenColors.homeLimitRowText,
                 ),
               ),
@@ -1300,11 +1365,11 @@ class _HomeLimitDetailRow extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
-            minHeight: 4,
+            minHeight: 3,
             value: ratio,
             backgroundColor: HomeScreenColors.progressTrack,
             color: barColor,
@@ -1573,8 +1638,6 @@ class _TodayRoomWorkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cta = _primaryCtaSpec();
-
     return Container(
       width: double.infinity,
       decoration: _HomeUi.homeCardDecoration(),
@@ -1583,84 +1646,56 @@ class _TodayRoomWorkCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('今日のROOM作業', style: _HomeUi.homeCardTitle(context)),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Container(
-            padding: const EdgeInsets.all(14),
+            constraints: const BoxConstraints(minHeight: 110, maxHeight: 120),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: HomeScreenColors.homeAccentTealLight,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: HomeScreenColors.homeAccentTealBorder),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: HomeScreenColors.homeAccentTealBorder.withValues(
+                  alpha: 0.6,
+                ),
+              ),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final compact = constraints.maxWidth < 340;
-                final textColumn = Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: HomeScreenColors.homeAccentTeal,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        '次にやる',
-                        style: _HomeUi.tapHint(context).copyWith(
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      cta.title,
-                      style: _HomeUi.bodyEmphasis(context).copyWith(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFF111827),
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      cta.subtitle,
-                      style: _HomeUi.homeCardSubtitle(context).copyWith(
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                );
+                final cta = _primaryCtaSpec();
                 final actionButton = Semantics(
                   label: cta.semanticsLabel,
                   button: true,
-                  child: FilledButton(
-                    onPressed: cta.onTap,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: HomeScreenColors.homeAccentTeal,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 12,
+                  child: SizedBox(
+                    width: 132,
+                    height: 44,
+                    child: FilledButton(
+                      onPressed: cta.onTap,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: HomeScreenColors.homeAccentTeal,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              cta.buttonLabel,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded, size: 16),
+                        ],
                       ),
-                      textStyle: const TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(cta.buttonLabel),
-                        const SizedBox(width: 2),
-                        const Icon(Icons.chevron_right_rounded, size: 18),
-                      ],
                     ),
                   ),
                 );
@@ -1668,31 +1703,73 @@ class _TodayRoomWorkCard extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (compact) ...[
-                      textColumn,
-                      const SizedBox(height: 12),
-                      Align(alignment: Alignment.centerRight, child: actionButton),
-                    ] else
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(child: textColumn),
-                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: HomeScreenColors.homeAccentTeal,
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
+                                  child: Text(
+                                    '次にやる',
+                                    style: _HomeUi.tapHint(context).copyWith(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  cta.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: _HomeUi.bodyEmphasis(context).copyWith(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: HomeScreenColors.homeTextPrimary,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  cta.subtitle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: _HomeUi.homeCardSubtitle(context)
+                                      .copyWith(fontSize: 13.5),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
                           actionButton,
                         ],
                       ),
+                    ),
                     if (isRecommendationLoading &&
                         _primaryAction() ==
                             _HomeWorkPrimaryAction.recommendations) ...[
-                      const SizedBox(height: 10),
-                      const LinearProgressIndicator(minHeight: 3),
+                      const SizedBox(height: 6),
+                      const LinearProgressIndicator(minHeight: 2),
                     ],
                   ],
                 );
               },
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           _HomeWorkFlowRow(
             step1State: _stateForStep(1),
             step2State: _stateForStep(2),
@@ -1729,36 +1806,44 @@ class _HomeWorkFlowRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 4,
-      runSpacing: 6,
+    return Row(
       children: [
-        _HomeWorkFlowChip(
-          label: 'おすすめ確認',
-          state: step1State,
-          onTap: isRecommendationLoading ? null : onOpenRecommendations,
+        Expanded(
+          child: _HomeWorkFlowChip(
+            label: 'おすすめ確認',
+            state: step1State,
+            onTap: isRecommendationLoading ? null : onOpenRecommendations,
+          ),
         ),
-        Icon(
-          Icons.arrow_forward_rounded,
-          size: 14,
-          color: HomeScreenColors.homeMutedText.withValues(alpha: 0.6),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Icon(
+            Icons.arrow_forward_rounded,
+            size: 12,
+            color: HomeScreenColors.homeMutedText.withValues(alpha: 0.45),
+          ),
         ),
-        _HomeWorkFlowChip(
-          label: 'ROOM投稿',
-          state: step2State,
-          onTap: onOpenPendingCandidates,
+        Expanded(
+          child: _HomeWorkFlowChip(
+            label: 'ROOM投稿',
+            state: step2State,
+            onTap: onOpenPendingCandidates,
+          ),
         ),
-        Icon(
-          Icons.arrow_forward_rounded,
-          size: 14,
-          color: HomeScreenColors.homeMutedText.withValues(alpha: 0.6),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Icon(
+            Icons.arrow_forward_rounded,
+            size: 12,
+            color: HomeScreenColors.homeMutedText.withValues(alpha: 0.45),
+          ),
         ),
-        _HomeWorkFlowChip(
-          label: '商品探し',
-          state: step3State,
-          onTap: onOpenSearch,
+        Expanded(
+          child: _HomeWorkFlowChip(
+            label: '商品探し',
+            state: step3State,
+            onTap: onOpenSearch,
+          ),
         ),
       ],
     );
@@ -1808,25 +1893,37 @@ class _HomeWorkFlowChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-          child: Row(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 14, color: iconColor),
-              const SizedBox(width: 3),
-              Text(
-                label,
-                style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF374151),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, size: 13, color: iconColor),
+                  const SizedBox(width: 3),
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: _HomeUi.tapHint(context).copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: HomeScreenColors.homeTextPrimary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 3),
+              const SizedBox(height: 1),
               Text(
                 statusLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
                   color: iconColor,
                 ),
               ),
@@ -1932,59 +2029,109 @@ class _ReactionCheckCard extends StatelessWidget {
                 ],
               ),
               if (products.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                for (int i = 0; i < products.length; i++) ...[
-                  _RecentReactedProductTile(
-                    product: products[i],
-                    onTap: () => onOpenProductTap(products[i].productId),
-                  ),
-                  if (i < products.length - 1)
-                    Divider(
-                      height: 1,
-                      thickness: 0.5,
-                      color: HomeScreenColors.listRowDivider.withValues(
-                        alpha: 0.7,
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          for (int i = 0; i < products.length; i++) ...[
+                            _RecentReactedProductTile(
+                              product: products[i],
+                              onTap: () =>
+                                  onOpenProductTap(products[i].productId),
+                            ),
+                            if (i < products.length - 1)
+                              Divider(
+                                height: 1,
+                                thickness: 0.5,
+                                color: HomeScreenColors.listRowDivider
+                                    .withValues(alpha: 0.7),
+                              ),
+                          ],
+                        ],
                       ),
                     ),
-                ],
+                    if (showReactionButton) ...[
+                      const SizedBox(width: 10),
+                      SizedBox(
+                        width: 112,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Semantics(
+                              label: 'home_reaction_sync_button',
+                              button: true,
+                              child: OutlinedButton(
+                                onPressed: reactionButtonEnabled
+                                    ? () => _handleReactionSync(context)
+                                    : null,
+                                style:
+                                    _HomeDataUpdateButtonStyle.tealOutlined(
+                                  context,
+                                ),
+                                child: Text(
+                                  reactionButtonLabel,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '反応があった商品を確認しましょう',
+                              textAlign: TextAlign.center,
+                              style: _HomeUi.homeFootnote(context).copyWith(
+                                fontSize: 10.5,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ] else ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   '最近反応があった商品はありません',
                   style: _HomeUi.homeCardSubtitle(context),
                 ),
-              ],
-              const SizedBox(height: 12),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (showReactionButton)
-                    Semantics(
-                      label: 'home_reaction_sync_button',
-                      button: true,
-                      child: OutlinedButton(
-                        onPressed: reactionButtonEnabled
-                            ? () => _handleReactionSync(context)
-                            : null,
-                        style: _HomeDataUpdateButtonStyle.tealOutlined(context),
-                        child: Text(reactionButtonLabel),
-                      ),
-                    )
-                  else if (!hasRoomProfileUrl)
-                    Expanded(
-                      child: Text(
-                        'ROOMプロフィールURLを登録すると反応を確認できます',
-                        style: _HomeUi.homeCardSubtitle(context),
+                if (showReactionButton) ...[
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 112,
+                      child: Semantics(
+                        label: 'home_reaction_sync_button',
+                        button: true,
+                        child: OutlinedButton(
+                          onPressed: reactionButtonEnabled
+                              ? () => _handleReactionSync(context)
+                              : null,
+                          style: _HomeDataUpdateButtonStyle.tealOutlined(
+                            context,
+                          ),
+                          child: Text(
+                            reactionButtonLabel,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                     ),
-                  const Spacer(),
+                  ),
                 ],
-              ),
-              if (showReactionButton) ...[
-                const SizedBox(height: 4),
+              ],
+              if (!hasRoomProfileUrl) ...[
+                const SizedBox(height: 8),
                 Text(
-                  '反応があった商品を確認しましょう',
-                  style: _HomeUi.homeFootnote(context).copyWith(fontSize: 11.5),
+                  'ROOMプロフィールURLを登録すると反応を確認できます',
+                  style: _HomeUi.homeCardSubtitle(context),
                 ),
               ],
             ],
@@ -2013,15 +2160,15 @@ class _RecentReactedProductTile extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 56),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 42,
+                    height: 42,
                     color: HomeScreenColors.candidateThumbPlaceholder,
                     child: product.imageUrl.isNotEmpty
                         ? Image.network(
@@ -2053,9 +2200,9 @@ class _RecentReactedProductTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF374151),
+                          color: HomeScreenColors.homeTextPrimary,
                           height: 1.22,
-                          fontSize: 13.5,
+                          fontSize: 12.5,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -2504,13 +2651,9 @@ class _DataUpdateCard extends StatelessWidget {
             children: [
               Text(
                 'データ更新',
-                style: _HomeUi.homeCardTitle(context).copyWith(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF374151),
-                ),
+                style: _HomeUi.homeCardTitle(context),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
                 hasRoomProfileUrl
                     ? 'ROOM投稿の取込と反応確認を行えます'
@@ -2591,14 +2734,18 @@ class _DataUpdateCard extends StatelessWidget {
                                       _handleImport(context);
                                     }
                                   : null,
-                              style: _HomeDataUpdateButtonStyle.tealOutlined(
+                              style: _HomeDataUpdateButtonStyle.dataUpdateOutlined(
                                 context,
                               ),
                               icon: const Icon(
                                 Icons.download_outlined,
                                 size: 18,
                               ),
-                              label: const Text('ROOM投稿を取り込む'),
+                              label: const Text(
+                                'ROOM投稿を取り込む',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ),
@@ -2619,7 +2766,7 @@ class _DataUpdateCard extends StatelessWidget {
                                       _handleReactionSync(context);
                                     }
                                   : null,
-                              style: _HomeDataUpdateButtonStyle.tealOutlined(
+                              style: _HomeDataUpdateButtonStyle.dataUpdateOutlined(
                                 context,
                               ),
                               icon: const Icon(
@@ -2630,6 +2777,8 @@ class _DataUpdateCard extends StatelessWidget {
                                 syncBusy && reactionOnly
                                     ? reactionButtonLabel
                                     : '反応を確認',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -3676,12 +3825,7 @@ class _HomeMomentumHeader extends StatelessWidget {
     const subLine = '今日もROOM運用を進めましょう';
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-        _HomeUi.insetSectionH,
-        2,
-        _HomeUi.insetSectionH,
-        0,
-      ),
+      padding: EdgeInsets.zero,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -3692,18 +3836,18 @@ class _HomeMomentumHeader extends StatelessWidget {
                 Text(
                   nameLine,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                    color: const Color(0xFF111827),
-                    height: 1.2,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 28,
+                    color: HomeScreenColors.homeTextPrimary,
+                    height: 1.15,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   subLine,
                   style: _HomeUi.sectionBody(context).copyWith(
-                    fontSize: 13.5,
-                    color: HomeScreenColors.homeMutedText,
+                    fontSize: 14,
+                    color: HomeScreenColors.homeTextSecondary,
                   ),
                 ),
               ],
@@ -3885,15 +4029,21 @@ class _HomeNotificationBellState extends State<_HomeNotificationBell> {
       label: 'home_notification_button',
       button: true,
       child: IconButton(
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
         onPressed: _onBellTap,
         icon: Badge(
           isLabelVisible: badgeCount > 0,
-          label: Text('$badgeCount'),
+          offset: const Offset(4, -4),
+          label: Text(
+            '$badgeCount',
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+          ),
           backgroundColor: HomeScreenColors.homeUnreadBadge,
           child: const Icon(
             Icons.notifications_none_rounded,
-            size: 26,
-            color: Color(0xFF374151),
+            size: 24,
+            color: HomeScreenColors.homeTextPrimary,
           ),
         ),
       ),

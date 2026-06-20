@@ -22,7 +22,13 @@ abstract final class HomeScreenColors {
 
   // --- 1. 画面土台 ---
   /// ホーム画面の背景（カード白面とのコントラスト用）
-  static const Color canvas = Color(0xFFF6F7F9);
+  static const Color canvas = Color(0xFFF8FAFC);
+
+  /// ホーム主テキスト
+  static const Color homeTextPrimary = Color(0xFF0F172A);
+
+  /// ホーム補足テキスト
+  static const Color homeTextSecondary = Color(0xFF64748B);
 
   /// ホームカード面
   static const Color homeCardFill = Color(0xFFFFFFFF);
@@ -269,14 +275,17 @@ abstract final class HomeScreenColors {
   /// ホーム主CTA・進行中ステップ
   static const Color homeAccentTeal = Color(0xFF0F766E);
 
+  /// ホームFAB・ナビ選択
+  static const Color homeFabBlue = Color(0xFF0E7490);
+
   /// ホーム主CTA背景（淡いブルーグリーン）
-  static const Color homeAccentTealLight = Color(0xFFECFDF5);
+  static const Color homeAccentTealLight = Color(0xFFEAFBF7);
 
   /// ホーム主CTA枠線
   static const Color homeAccentTealBorder = Color(0xFF99F6E4);
 
   /// 完了・達成済み
-  static const Color homeSuccess = Color(0xFF059669);
+  static const Color homeSuccess = Color(0xFF10A37F);
 
   /// 完了背景
   static const Color homeSuccessLight = Color(0xFFD1FAE5);
@@ -285,10 +294,13 @@ abstract final class HomeScreenColors {
   static const Color homeWarning = Color(0xFFD97706);
 
   /// 未読バッジ
-  static const Color homeUnreadBadge = Color(0xFFDC2626);
+  static const Color homeUnreadBadge = Color(0xFFEF4444);
 
   /// 補助テキスト・非アクティブ
   static const Color homeMutedText = Color(0xFF6B7280);
+
+  /// 下部ナビ非選択
+  static const Color homeNavInactive = Color(0xFF6B7280);
 
   /// 投稿上限折りたたみ行
   static const Color homeLimitRowText = Color(0xFF64748B);

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'navigation/app_shell_controller.dart';
 import 'navigation/rakuten_search_navigator.dart';
 import 'theme/app_theme.dart';
+import 'theme/home_screen_colors.dart';
 import 'screens/home_placeholder_screen.dart';
 import 'screens/products_placeholder_screen.dart';
 import 'screens/comments_placeholder_screen.dart';
@@ -275,42 +276,41 @@ class _NavItem extends StatelessWidget {
     final child = InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 48),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
-          decoration: BoxDecoration(
-            color: isSelected ? AppColors.accentLight : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                isSelected ? selectedIcon : icon,
-                size: AppDimensions.iconNav,
-                color: isSelected
-                    ? AppColors.accentPrimary
-                    : AppColors.textSecondary,
-              ),
-              const SizedBox(height: 2),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: isSelected
-                      ? AppTextStyles.navLabelSelected
-                      : AppTextStyles.navLabel,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  isSelected ? selectedIcon : icon,
+                  size: AppDimensions.iconNav,
+                  color: isSelected
+                      ? HomeScreenColors.homeAccentTeal
+                      : HomeScreenColors.homeNavInactive,
                 ),
-              ),
-            ],
+                const SizedBox(height: 2),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: isSelected
+                        ? AppTextStyles.navLabelSelected.copyWith(
+                            color: HomeScreenColors.homeAccentTeal,
+                          )
+                        : AppTextStyles.navLabel.copyWith(
+                            color: HomeScreenColors.homeNavInactive,
+                          ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
 
     if (tooltip != null && tooltip!.isNotEmpty) {
