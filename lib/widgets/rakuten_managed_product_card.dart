@@ -474,16 +474,16 @@ class RakutenManagedProductCard extends StatelessWidget {
       child: TextButton.icon(
         onPressed: () => _confirmRemoveCandidate(context, provider),
         style: TextButton.styleFrom(
-          foregroundColor: HomeScreenColors.homeMutedText,
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-          minimumSize: const Size(0, 32),
+          foregroundColor: const Color(0xFF6B7280),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          minimumSize: const Size(44, 36),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
         ),
         icon: const Icon(Icons.delete_outline_rounded, size: 16),
         label: const Text(
           '削除',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -494,10 +494,12 @@ class RakutenManagedProductCard extends StatelessWidget {
       foregroundColor: HomeScreenColors.homeAccentTeal,
       backgroundColor: Colors.white,
       disabledForegroundColor: const Color(0xFF9CA3AF),
+      disabledBackgroundColor: Colors.white,
       side: BorderSide(
         color: enabled
-            ? HomeScreenColors.homeCardBorder
+            ? HomeScreenColors.homeAccentTeal
             : HomeScreenColors.homeCardBorder.withValues(alpha: 0.6),
+        width: 1.5,
       ),
       elevation: 0,
       minimumSize: const Size(0, 40),
@@ -663,7 +665,11 @@ class RakutenManagedProductCard extends StatelessWidget {
                 }
               },
               style: _cardOutlineButtonStyle(enabled: true),
-              icon: const Icon(Icons.open_in_new_rounded, size: 16),
+              icon: Icon(
+                Icons.open_in_new_rounded,
+                size: 16,
+                color: HomeScreenColors.homeAccentTeal,
+              ),
               label: const Text('楽天で見る'),
             ),
           ),
@@ -771,13 +777,16 @@ class RakutenManagedProductCard extends StatelessWidget {
         if (hasRoomPage) {
           final roomView = Tooltip(
             message: '楽天ROOMの商品ページを開きます',
-            child: AppOutlineButton(
-              label: 'ROOMで見る',
-              icon: const Icon(Icons.open_in_new, size: 16),
-              height: 40,
-              expand: true,
+            child: OutlinedButton.icon(
               onPressed: () =>
                   AppActionService.openUrl(context, url: roomPage),
+              style: _cardOutlineButtonStyle(enabled: true),
+              icon: Icon(
+                Icons.open_in_new_rounded,
+                size: 16,
+                color: HomeScreenColors.homeAccentTeal,
+              ),
+              label: const Text('ROOMで見る'),
             ),
           );
 
@@ -787,11 +796,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: itemWidth,
-                child: AppOutlineButton(
-                  label: '楽天で見る',
-                  icon: const Icon(Icons.open_in_new, size: 16),
-                  height: 40,
-                  expand: true,
+                child: OutlinedButton.icon(
                   onPressed: () async {
                     final err = await provider.openRakutenItemPage(
                       context,
@@ -804,6 +809,13 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ).showSnackBar(SnackBar(content: Text(err)));
                     }
                   },
+                  style: _cardOutlineButtonStyle(enabled: true),
+                  icon: Icon(
+                    Icons.open_in_new_rounded,
+                    size: 16,
+                    color: HomeScreenColors.homeAccentTeal,
+                  ),
+                  label: const Text('楽天で見る'),
                 ),
               ),
               SizedBox(width: itemWidth, child: roomView),
@@ -811,11 +823,13 @@ class RakutenManagedProductCard extends StatelessWidget {
           );
         }
 
-        final roomPost = AppPrimaryButton(
-          label: 'ROOM投稿へ',
-          height: 40,
-          expand: true,
+        final roomPost = FilledButton(
           onPressed: () => openRoomPostFlow(),
+          style: _cardPrimaryButtonStyle(enabled: true),
+          child: const FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text('ROOM投稿へ', maxLines: 1),
+          ),
         );
 
         return Wrap(
@@ -824,11 +838,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           children: [
             SizedBox(
               width: itemWidth,
-              child: AppOutlineButton(
-                label: '楽天で見る',
-                icon: const Icon(Icons.open_in_new, size: 16),
-                height: 40,
-                expand: true,
+              child: OutlinedButton.icon(
                 onPressed: () async {
                   final err = await provider.openRakutenItemPage(
                     context,
@@ -841,6 +851,9 @@ class RakutenManagedProductCard extends StatelessWidget {
                     ).showSnackBar(SnackBar(content: Text(err)));
                   }
                 },
+                style: _cardOutlineButtonStyle(enabled: true),
+                icon: const Icon(Icons.open_in_new_rounded, size: 16),
+                label: const Text('楽天で見る'),
               ),
             ),
             SizedBox(width: itemWidth, child: roomPost),
@@ -878,7 +891,7 @@ class RakutenManagedProductCard extends StatelessWidget {
   Widget _thumbPlaceholder() {
     return Icon(
       Icons.image_outlined,
-      size: 30,
+      size: 36,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
     );
   }
