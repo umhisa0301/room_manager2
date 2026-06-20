@@ -1,0 +1,264 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-20 21:13:16
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260620_211316.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260620_211316.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260620_211316.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260620_211316.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260620_211316.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316\terminal_output_20260620_211316.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 17876).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316\room_manager2_shot_001.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316\room_manager2_shot_002.png
+Running Gradle task 'assembleDebug'...                              7.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           6.3s
+D/FlutterJNI(18340): Beginning load of flutter...
+D/FlutterJNI(18340): flutter (null) was loaded normally!
+I/flutter (18340): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (18340): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (18340): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (18340): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (18340): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+Syncing files to device SHG08...                                
+I/flutter (18340): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (18340): [ADMOB] initialization skipped ads=false
+Syncing files to device SHG08...                                    87ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:63431/MEdjX33A5kM=/
+I/flutter (18340): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (18340): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (18340): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter (18340): [AUTO_REACTION_SYNC] scheduled
+I/Choreographer(18340): Skipped 199 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:63431/MEdjX33A5kM=/
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/flutter (18340): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/WebViewFactory(18340): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(18340): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/nativeloader(18340): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(18340): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(18340): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(18340): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/chromium(18340): [0620/211346.323032:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(18340): Successfully loaded native library
+I/cr_CachingUmaRecorder(18340): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(18340): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(18340): #registerProvider() provider:WV.wk@a523add isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(18340): #setManagerAndSource() 0
+I/cr_DisplayManager(18340): Is Display Topology available: false
+I/cr_policy(18340): registerReceiver succeeded after 7ms
+I/cr_CombinedPProvider(18340): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(18340): Compat change id reported: 183155436; UID 10506; state: ENABLED
+I/cr_AppResProvider(18340): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(18340): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(18340): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(18340): #flushPolicies()
+W/chromium(18340): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 75906610
+D/CompatibilityChangeReporter(18340): Compat change id reported: 214741472; UID 10506; state: ENABLED
+I/cr_AppResProvider(18340): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(18340): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(18340): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(18340): #flushPolicies()
+I/CameraManagerGlobal(18340): Connecting to camera service
+D/CompatibilityChangeReporter(18340): Compat change id reported: 171228096; UID 10506; state: ENABLED
+D/CompatibilityChangeReporter(18340): Compat change id reported: 193247900; UID 10506; state: ENABLED
+I/PlatformViewsController(18340): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(18340): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(18340): Compat change id reported: 236825255; UID 10506; state: ENABLED
+W/libc    (18340): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(18340): type=1400 audit(0.0:7740): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/Choreographer(18340): Skipped 69 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+W/libc    (18340): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(18340): type=1400 audit(0.0:7741): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c250,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(18340): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(18340): Build Date              : 08/23/22
+I/AdrenoVK-0(18340): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(18340): Local Branch            : 
+I/AdrenoVK-0(18340): Remote Branch           : 
+I/AdrenoVK-0(18340): Remote Branch           : 
+I/AdrenoVK-0(18340): Reconstruct Branch      : 
+I/AdrenoVK-0(18340): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(18340): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(18340): Davey! duration=1225ms; Flags=1, FrameTimelineVsyncId=28569489, IntendedVsync=77403900493537, Vsync=77405050493491, InputEventId=0, HandleInputStart=77405051659116, AnimationStart=77405051660679, PerformTraversalsStart=77405051688595, DrawStart=77405063304429, FrameDeadline=77403917160203, FrameInterval=77405051252189, FrameStartTime=16666666, SyncQueued=77405113456981, SyncStart=77405113590210, IssueDrawCommandsStart=77405114135262, SwapBuffers=77405123368439, FrameCompleted=77405125788231, DequeueBufferDuration=2220000, QueueBufferDuration=2092500, GpuCompleted=77405124424585, SwapBuffersCompleted=77405125788231, DisplayPresentTime=0, CommandSubmissionCompleted=77405123368439, 
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(18340): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+E/FrameEvents(18340): updateAcquireFence: Did not find frame.
+I/flutter (18340): [AUTO_REACTION_SYNC] skipped reason=recentSync
+W/o.room_manager2(18340): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(18340): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/flutter (18340): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+W/WindowOnBackDispatcher(18340): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(18340): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316\room_manager2_shot_003.png
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=provider pending=317 done=81 filter= tab=
+I/flutter (18340): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+I/flutter (18340): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=317→317 done=81→81
+I/flutter (18340): [MANAGED_PRODUCT_LOAD] source=screen pending=317 done=81 filter= tab=candidate
+I/flutter (18340): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=honestyshop:10000131 reviewAverage=4.82 reviewCount=1012 displayText=評価 ★4.8（1012件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=juntakushop:10000045 reviewAverage=4.52 reviewCount=1021 displayText=評価 ★4.5（1021件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cubic-square:10000011 reviewAverage=4.54 reviewCount=1037 displayText=評価 ★4.5（1037件）
+I/flutter (18340): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=book:15710383 reviewAverage=4.88 reviewCount=238 displayText=評価 ★4.9（238件）
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260620_211316.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260620_211316.mp4 (28978053 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260620_211316\terminal_output_20260620_211316.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260620_211316.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260620_211316.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260620_211316.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260620_211316.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260620_211316.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
