@@ -28,7 +28,11 @@ class AppTextField extends StatelessWidget {
     this.maxLines = 1,
     this.maxLength,
     this.minHeight = 46,
+    this.fixedHeight,
     this.semanticLabel,
+    this.fillColor,
+    this.enabledBorderColor,
+    this.hintColor,
     this.focusedBorderColor,
     this.validator,
     this.autovalidateMode,
@@ -54,7 +58,13 @@ class AppTextField extends StatelessWidget {
   final int maxLines;
   final int? maxLength;
   final double minHeight;
+
+  /// 指定時は [minHeight] より優先し、外枠の高さを固定する。
+  final double? fixedHeight;
   final String? semanticLabel;
+  final Color? fillColor;
+  final Color? enabledBorderColor;
+  final Color? hintColor;
   final Color? focusedBorderColor;
   final FormFieldValidator<String>? validator;
   final AutovalidateMode? autovalidateMode;
@@ -66,13 +76,22 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(12);
+    final borderColor = enabledBorderColor ?? _fieldBorder;
+    final fieldFill = fillColor ?? _fieldFill;
     final normalBorder = OutlineInputBorder(
       borderRadius: radius,
-      borderSide: BorderSide(color: _fieldBorder, width: 1),
+      borderSide: BorderSide(color: borderColor, width: 1),
     );
 
+    final fieldHeight = fixedHeight ?? minHeight;
+    final verticalPad = fixedHeight != null
+        ? ((fieldHeight - 22) / 2).clamp(10.0, 16.0)
+        : 10.0;
+
     final field = ConstrainedBox(
-      constraints: BoxConstraints(minHeight: minHeight),
+      constraints: fixedHeight != null
+          ? BoxConstraints.tightFor(height: fixedHeight)
+          : BoxConstraints(minHeight: minHeight),
       child: TextFormField(
         controller: controller,
         focusNode: focusNode,
@@ -103,7 +122,7 @@ class AppTextField extends StatelessWidget {
           isDense: true,
           filled: true,
           fillColor: enabled
-              ? _fieldFill
+              ? fieldFill
               : Color.alphaBlend(
                   AppColors.surfaceVariant.withValues(alpha: 0.76),
                   AppColors.surface,
@@ -120,16 +139,16 @@ class AppTextField extends StatelessWidget {
             minWidth: 40,
             minHeight: 40,
           ),
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             horizontal: 12,
-            vertical: 10,
+            vertical: verticalPad,
           ),
           labelStyle: AppTextStyles.caption.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w600,
           ),
           hintStyle: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textTertiary,
+            color: hintColor ?? AppColors.textTertiary,
             height: 1.25,
           ),
           errorText: errorText,

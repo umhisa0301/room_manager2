@@ -10,7 +10,7 @@ abstract final class RoomColleProductListCardLayout {
   static const double minCardHeight = 0;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
-  static const double thumbSlotWidth = 96;
+  static const double thumbSlotWidth = 130;
 
   static const double radius = 16;
 
@@ -51,8 +51,8 @@ abstract final class RoomColleProductListCardLayout {
     return theme.textTheme.titleSmall?.copyWith(
       color: HomeScreenColors.metricTileTitleColor,
       height: 1.28,
-      fontWeight: FontWeight.w700,
-      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      fontSize: 13,
       letterSpacing: -0.15,
     );
   }
@@ -72,7 +72,7 @@ abstract final class RoomColleProductListCardLayout {
       color: HomeScreenColors.metricTileCaptionColor,
       height: 1.22,
       fontSize: 11,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
     );
   }
 
@@ -81,7 +81,7 @@ abstract final class RoomColleProductListCardLayout {
       color: HomeScreenColors.metricTileCaptionColor,
       height: 1.22,
       fontSize: 11,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
     );
   }
 
@@ -151,7 +151,7 @@ class RoomColleProductListCardThumbSlot extends StatelessWidget {
         ),
         border: Border(right: BorderSide(color: HomeScreenColors.deckOutline)),
       ),
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(3),
       child: Center(
         child: AspectRatio(
           aspectRatio: 1,
