@@ -13,6 +13,7 @@ import '../services/shop_discovery_aggregator.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/mypage_screen_tokens.dart';
 import '../utils/app_input_limits.dart';
 import '../utils/favorite_genre_pref.dart';
 import '../utils/favorite_genre_selection_policy.dart';
@@ -20,10 +21,10 @@ import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/shop_pool_audit.dart';
-import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/genre_drilldown_picker_sheet.dart';
+import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/shop_discovery_card.dart';
 
@@ -510,7 +511,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     if (_pageIndex == 0) {
       final styleCount = _postStyleKeys.length;
       return [
-        AppPrimaryButton(
+        MyPagePrimaryButton(
           label: styleCount == 0 ? '探し方を選ぶ' : 'この探し方で次へ',
           height: 48,
           onPressed: styleCount == 0
@@ -531,7 +532,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
     if (_pageIndex == 1) {
       return [
-        AppPrimaryButton(
+        MyPagePrimaryButton(
           label: '保存して次へ',
           height: 48,
           isLoading: _isCheckingRoomProfile,
@@ -550,7 +551,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     if (_pageIndex == 2) {
       final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
       return [
-        AppPrimaryButton(
+        MyPagePrimaryButton(
           label: hasGenres
               ? '${profile.favoriteGenreIdList.length}件で次へ'
               : 'ジャンルを選ぶ',
@@ -573,7 +574,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
     final savedShopCount = context.watch<SavedShopProvider>().shops.length;
     return [
-      AppPrimaryButton(
+      MyPagePrimaryButton(
         label: _shopRecommendationStarted
             ? savedShopCount > 0
                   ? '保存したショップで始める'
@@ -637,9 +638,11 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: MyPageScreenUi.canvas,
       appBar: AppBar(
         title: const Text('かんたん初期設定'),
+        backgroundColor: MyPageScreenUi.canvas,
+        surfaceTintColor: Colors.transparent,
         automaticallyImplyLeading: !widget.embeddedInEntryHost,
         leading: _pageIndex > 0
             ? IconButton(
@@ -661,7 +664,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
           handleWillPop();
         },
         child: SafeArea(
-          child: _DismissKeyboardOnInteract(
+          child: Theme(
+            data: MyPageScreenUi.overlayTheme(theme),
+            child: _DismissKeyboardOnInteract(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
               child: Column(
@@ -765,6 +770,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
             ),
           ),
         ),
+        ),
       ),
     );
   }
@@ -795,14 +801,14 @@ class _StepDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = active ? AppColors.accentPrimary : AppColors.textTertiary;
+    final c = active ? MyPageScreenUi.primary : AppColors.textTertiary;
     return InkWell(
       customBorder: const CircleBorder(),
       onTap: enabled ? onTap : null,
       child: CircleAvatar(
         radius: 14,
         backgroundColor: active
-            ? AppColors.accentLight
+            ? MyPageScreenUi.primaryLight
             : AppColors.surfaceVariant,
         child: Text(
           label,
@@ -894,6 +900,7 @@ class _StepProfile extends StatelessWidget {
               labelText: 'ニックネーム（任意）',
               hintText: '例: ルーマネ',
               textInputAction: TextInputAction.done,
+              focusedBorderColor: MyPageScreenUi.primary,
             ),
             const SizedBox(height: 12),
             _PostStyleSummary(
@@ -942,16 +949,16 @@ class _PostStyleSummary extends StatelessWidget {
               for (final key in selectedKeys)
                 Chip(
                   label: Text(UserProfile.postStyleLabelJa(key)),
-                  backgroundColor: AppColors.accentLight,
+                  backgroundColor: MyPageScreenUi.primaryLight,
                   labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.accentPrimary,
+                    color: MyPageScreenUi.primary,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
             ],
           ),
         const SizedBox(height: 10),
-        AppOutlineButton(
+        MyPageOutlineButton(
           label: selectedKeys.isEmpty ? '探し方を選ぶ' : '探し方を変更',
           icon: const Icon(Icons.auto_awesome_rounded, size: 18),
           height: 44,
@@ -1018,6 +1025,7 @@ class _StepRoomUrl extends StatelessWidget {
                 maxLength: AppInputLimits.roomUrlMax,
               ),
               errorText: errorText,
+              focusedBorderColor: MyPageScreenUi.primary,
               onChanged: (_) => onChanged(),
             ),
             if (isChecking || errorText != null) ...[
@@ -1112,7 +1120,7 @@ class _StepGenres extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            AppOutlineButton(
+            MyPageOutlineButton(
               label: 'ジャンルを選ぶ',
               icon: const Icon(Icons.category_outlined, size: 18),
               height: 44,
@@ -1264,10 +1272,10 @@ class _InlineShopIntroCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.accentLight.withValues(alpha: 0.45),
+        color: MyPageScreenUi.noticeFill,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.18),
+          color: MyPageScreenUi.noticeBorder,
         ),
       ),
       child: Text(
@@ -1332,11 +1340,21 @@ class _InlineShopEmptyCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          AppSecondaryButton(
-            label: 'あとで設定する',
+          OutlinedButton(
             onPressed: onSkip,
-            expand: true,
-            height: 40,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: MyPageScreenUi.textSecondary,
+              minimumSize: const Size(double.infinity, 40),
+              side: BorderSide(color: MyPageScreenUi.cardBorder),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(999),
+              ),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+              ),
+            ),
+            child: const Text('あとで設定する'),
           ),
         ],
       ),

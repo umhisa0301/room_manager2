@@ -6,7 +6,7 @@ import '../services/app_action_service.dart';
 import '../state/activity_log_provider.dart';
 import '../state/comment_template_provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/app_button.dart';
+import '../theme/comment_screen_tokens.dart';
 import '../widgets/app_card.dart';
 import 'comment_template_edit_screen.dart';
 
@@ -28,8 +28,12 @@ class CommentsPlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('コメント')),
+      backgroundColor: CommentScreenUi.canvas,
+      appBar: AppBar(
+        title: const Text('コメント'),
+        backgroundColor: CommentScreenUi.canvas,
+        surfaceTintColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: Consumer<CommentTemplateProvider>(
           builder: (context, provider, _) {
@@ -61,7 +65,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
                       Icon(
                         Icons.library_books_outlined,
                         size: 20,
-                        color: AppColors.accentPrimary,
+                        color: CommentScreenUi.primary,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -135,13 +139,16 @@ class CommentsPlaceholderScreen extends StatelessWidget {
                 title: const Text('削除の確認'),
                 content: const Text('このテンプレートを削除しますか？'),
                 actions: [
-                  AppSecondaryButton(
-                    label: 'キャンセル',
+                  TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: const Text('キャンセル'),
                   ),
-                  AppSecondaryButton(
-                    label: '削除',
+                  TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(true),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.error,
+                    ),
+                    child: const Text('削除'),
                   ),
                 ],
               ),
@@ -172,14 +179,14 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
       width: double.infinity,
       child: AppCard(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-        borderColor: AppColors.accentPrimary.withValues(alpha: 0.22),
+        borderColor: CommentScreenUi.primaryBorder.withValues(alpha: 0.55),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
               Icons.content_copy_rounded,
               size: 24,
-              color: AppColors.accentPrimary,
+              color: CommentScreenUi.primary,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -223,7 +230,7 @@ class _RecentCopiedStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final preview = text.replaceAll('\n', ' ');
     return Material(
-      color: AppColors.accentLight.withValues(alpha: 0.35),
+      color: CommentScreenUi.primaryLight.withValues(alpha: 0.85),
       borderRadius: BorderRadius.circular(12),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -233,7 +240,7 @@ class _RecentCopiedStrip extends StatelessWidget {
             Icon(
               Icons.history_rounded,
               size: 16,
-              color: AppColors.accentPrimary.withValues(alpha: 0.9),
+              color: CommentScreenUi.primary,
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -277,13 +284,13 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCard(
       padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
-      borderColor: AppColors.accentPrimary.withValues(alpha: 0.25),
+      borderColor: CommentScreenUi.primaryBorder.withValues(alpha: 0.55),
       child: Column(
         children: [
           Icon(
             Icons.post_add_rounded,
             size: 36,
-            color: AppColors.accentPrimary.withValues(alpha: 0.85),
+            color: CommentScreenUi.primary,
           ),
           const SizedBox(height: 12),
           Text(
@@ -306,10 +313,11 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 14),
-          AppPrimaryButton(
-            label: 'テンプレートを追加',
-            icon: const Icon(Icons.add_comment_rounded),
+          FilledButton.icon(
             onPressed: onAdd,
+            icon: const Icon(Icons.add_comment_rounded),
+            label: const Text('テンプレートを追加'),
+            style: CommentScreenUi.primaryButtonStyle(),
           ),
         ],
       ),
@@ -364,7 +372,7 @@ class _CommentTemplateCard extends StatelessWidget {
                   child: Icon(
                     Icons.star_rounded,
                     size: 20,
-                    color: AppColors.accentSecondary,
+                    color: CommentScreenUi.primary,
                   ),
                 ),
             ],
@@ -391,16 +399,16 @@ class _CommentTemplateCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.accentLight,
+                    color: CommentScreenUi.primaryLight,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
-                      color: AppColors.accentPrimary.withValues(alpha: 0.2),
+                      color: CommentScreenUi.primaryBorder,
                     ),
                   ),
                   child: Text(
                     category,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppColors.accentPrimary,
+                          color: CommentScreenUi.primary,
                           fontWeight: FontWeight.w700,
                         ),
                   ),
@@ -448,17 +456,7 @@ class _CommentTemplateCard extends StatelessWidget {
                   onPressed: onCopy,
                   icon: const Icon(Icons.copy_rounded, size: 20),
                   label: const Text('クリップボードにコピーする'),
-                  style: FilledButton.styleFrom(
-                    foregroundColor: AppColors.textOnAccent,
-                    backgroundColor: AppColors.accentPrimary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
+                  style: CommentScreenUi.copyButtonStyle(),
                 ),
               ),
               IconButton(

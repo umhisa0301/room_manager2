@@ -4,6 +4,7 @@ import '../config/monetization_config.dart';
 import '../config/monetization_plan_config.dart';
 import '../services/billing_product_service.dart';
 import '../theme/app_theme.dart';
+import '../theme/mypage_screen_tokens.dart';
 import '../utils/monetization_plan_display.dart';
 import '../widgets/app_card.dart';
 
@@ -40,10 +41,10 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
   static const double _gap = AppDimensions.spacingMd;
   static const double _wideLayoutBreakpoint = 520;
 
-  static const Color _basicAccentBg = Color(0xFFFFF5F9);
-  static const Color _basicAccentBorder = Color(0xFFF0B8D4);
-  static const Color _basicAccentText = Color(0xFFC21872);
-  static const Color _basicColumnBg = Color(0xFFFFF8FB);
+  static const Color _basicAccentBg = MyPageScreenUi.primaryLight;
+  static const Color _basicAccentBorder = MyPageScreenUi.primaryBorder;
+  static const Color _basicAccentText = MyPageScreenUi.primary;
+  static const Color _basicColumnBg = MyPageScreenUi.chipSetFill;
   static const Color _stripeEven = Color(0xFFF8F8FA);
 
   bool _billingQueryLoading = false;
@@ -418,8 +419,8 @@ class _BasicPlanCard extends StatelessWidget {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFE8F2),
+            decoration: BoxDecoration(
+              color: MyPageScreenUi.chipSetFill,
               borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             ),
             child: Row(
@@ -466,16 +467,7 @@ class _BasicPlanCard extends StatelessWidget {
                 OutlinedButton(
                   key: const Key('monetization_plan_basic_coming_soon'),
                   onPressed: () => _onComingSoonTap(context),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: _MonetizationPlanScreenState._basicAccentText,
-                    side: BorderSide(
-                      color: _MonetizationPlanScreenState._basicAccentBorder,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                  style: MyPageScreenUi.disabledOutlineButtonStyle(height: 44),
                   child: Text(
                     MonetizationPlanDisplayCopy.basicComingSoonLabel,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -518,12 +510,12 @@ class _PlanTaglineChip extends StatelessWidget {
           AppColors.textSecondary,
         ),
       _PlanChipVariant.recommended => (
-          AppColors.accentPrimary,
-          AppColors.accentPrimary,
-          AppColors.textOnAccent,
+          MyPageScreenUi.primaryLight,
+          MyPageScreenUi.primaryBorder,
+          MyPageScreenUi.primary,
         ),
       _PlanChipVariant.recommendedMuted => (
-          const Color(0xFFFFE8F2),
+          MyPageScreenUi.chipSetFill,
           _MonetizationPlanScreenState._basicAccentBorder,
           _MonetizationPlanScreenState._basicAccentText,
         ),

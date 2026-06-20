@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/comment_template.dart';
 import '../state/comment_template_provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/app_button.dart';
+import '../theme/comment_screen_tokens.dart';
 import '../widgets/app_text_field.dart';
 
 /// コメントテンプレートの追加・編集画面。
@@ -92,19 +92,22 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
     final viewInsets = MediaQuery.viewInsetsOf(context);
     final bottomPad = 16 + viewInsets.bottom;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
+    return Theme(
+      data: CommentScreenUi.overlayTheme(Theme.of(context)),
+      child: Scaffold(
+      backgroundColor: CommentScreenUi.canvas,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(_isEdit ? 'テンプレートを編集' : 'テンプレートを追加'),
+        backgroundColor: CommentScreenUi.canvas,
+        surfaceTintColor: Colors.transparent,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: AppPrimaryButton(
-              label: '保存',
+            child: FilledButton(
               onPressed: _save,
-              height: 40,
-              expand: false,
+              style: CommentScreenUi.primaryButtonStyle(height: 40),
+              child: const Text('保存'),
             ),
           ),
         ],
@@ -138,6 +141,7 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
                   hintText: '一覧で見分けやすい名前',
                   textInputAction: TextInputAction.next,
                   semanticLabel: 'テンプレートのタイトル',
+                  focusedBorderColor: CommentScreenUi.primary,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) {
                       return 'タイトルを入力してください';
@@ -155,6 +159,7 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
                   maxLines: 12,
                   minHeight: 140,
                   semanticLabel: 'コメント本文',
+                  focusedBorderColor: CommentScreenUi.primary,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) {
                       return '本文を入力してください';
@@ -168,6 +173,7 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
                   labelText: 'カテゴリー（任意）',
                   hintText: '例：フォローお礼 / 投稿コメント',
                   textInputAction: TextInputAction.done,
+                  focusedBorderColor: CommentScreenUi.primary,
                 ),
                 const SizedBox(height: 8),
                 Material(
@@ -190,21 +196,25 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
                           ),
                     ),
                     value: _isFavorite,
-                    activeThumbColor: AppColors.accentPrimary,
+                    activeThumbColor: CommentScreenUi.primary,
+                    activeTrackColor:
+                        CommentScreenUi.primary.withValues(alpha: 0.35),
                     onChanged: (v) => setState(() => _isFavorite = v),
                   ),
                 ),
                 const SizedBox(height: 20),
-                AppPrimaryButton(
-                  label: '保存して一覧へ戻る',
-                  icon: const Icon(Icons.check_rounded),
+                FilledButton.icon(
                   onPressed: _save,
+                  icon: const Icon(Icons.check_rounded),
+                  label: const Text('保存して一覧へ戻る'),
+                  style: CommentScreenUi.primaryButtonStyle(),
                 ),
               ],
             ),
           ),
         ),
       ),
+    ),
     );
   }
 }

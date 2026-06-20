@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/user_profile.dart';
 import '../theme/app_theme.dart';
-import 'app_button.dart';
+import '../theme/mypage_screen_tokens.dart';
+import 'mypage/mypage_widgets.dart';
 
 class PostStylePickerSheet extends StatefulWidget {
   const PostStylePickerSheet({super.key, required this.initialSelectedKeys});
@@ -35,57 +36,59 @@ class _PostStylePickerSheetState extends State<PostStylePickerSheet> {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomInset),
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: EdgeInsets.fromLTRB(20, 4, 20, 16 + bottomPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '探し方を選ぶ',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'おすすめ候補やショップ提案の調整に使います。1つ選べます。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.35,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 14),
-              for (final key in UserProfile.postStyleKeys) ...[
-                _PostStyleOptionTile(
-                  styleKey: key,
-                  selected: _selected == key,
-                  enabled: true,
-                  onTap: () => _select(key),
+    return Theme(
+      data: MyPageScreenUi.overlayTheme(Theme.of(context)),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: EdgeInsets.fromLTRB(20, 4, 20, 16 + bottomPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '探し方を選ぶ',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
+                Text(
+                  'おすすめ候補やショップ提案の調整に使います。1つ選べます。',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                for (final key in UserProfile.postStyleKeys) ...[
+                  _PostStyleOptionTile(
+                    styleKey: key,
+                    selected: _selected == key,
+                    enabled: true,
+                    onTap: () => _select(key),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                const SizedBox(height: 8),
+                MyPagePrimaryButton(
+                  label: _selected == null ? '未選択で保存' : 'この探し方で保存',
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pop(_selected == null ? <String>[] : <String>[_selected!]),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: MyPageScreenUi.outlineButtonStyle(height: 44),
+                  child: const Text('閉じる'),
+                ),
               ],
-              const SizedBox(height: 8),
-              AppPrimaryButton(
-                label: _selected == null ? '未選択で保存' : 'この探し方で保存',
-                onPressed: () => Navigator.of(
-                  context,
-                ).pop(_selected == null ? <String>[] : <String>[_selected!]),
-              ),
-              const SizedBox(height: 8),
-              AppSecondaryButton(
-                label: '閉じる',
-                onPressed: () => Navigator.of(context).pop(),
-                expand: true,
-                height: 44,
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -115,12 +118,12 @@ class _PostStyleOptionTile extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.accentLight.withValues(alpha: 0.65)
+              ? MyPageScreenUi.primaryLight.withValues(alpha: 0.85)
               : AppColors.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: selected
-                ? AppColors.accentPrimary.withValues(alpha: 0.45)
+                ? MyPageScreenUi.primaryBorder
                 : AppColors.divider.withValues(alpha: 0.9),
           ),
         ),
@@ -132,7 +135,7 @@ class _PostStyleOptionTile extends StatelessWidget {
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
               color: selected
-                  ? AppColors.accentPrimary
+                  ? MyPageScreenUi.primary
                   : AppColors.textTertiary,
               size: 20,
             ),

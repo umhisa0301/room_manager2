@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/comment_screen_tokens.dart';
 
 /// コメント画面以外で表示する右端収納型コメント FAB（半収納 ⇔ 展開）。
 ///
@@ -491,7 +492,7 @@ class _CommentTabPlusFabState extends State<CommentTabPlusFab> {
               width: CommonDraggableEdgeFab.plusFabSize,
               height: CommonDraggableEdgeFab.plusFabSize,
               decoration: BoxDecoration(
-                color: AppColors.accentPrimary,
+                color: CommentScreenUi.primary,
                 shape: BoxShape.circle,
                 boxShadow: _plusShadow,
               ),

@@ -6,10 +6,11 @@ import '../services/app_action_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/mypage_screen_tokens.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
-import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
+import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/search_group_screen_shell.dart';
 
 class SavedShopsScreen extends StatelessWidget {
@@ -48,7 +49,7 @@ class SavedShopsScreen extends StatelessWidget {
                 body:
                     'ショップ発掘などでショップを保存すると、ここから検索やページ閲覧に再利用できます。',
                 actions: [
-                  AppPrimaryButton(
+                  MyPagePrimaryButton(
                     label: 'ショップ発掘を開く',
                     onPressed: () {
                       openRakutenSearchScreen(
@@ -178,10 +179,11 @@ class _SavedShopsSummaryCard extends StatelessWidget {
             SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 3),
             Align(
               alignment: Alignment.centerRight,
-              child: AppSecondaryButton(
+              child: MyPageOutlineButton(
                 label: 'ショップ発掘へ戻る',
                 onPressed: onOpenDiscovery,
                 icon: const Icon(Icons.travel_explore_rounded),
+                expand: false,
               ),
             ),
           ],
@@ -252,9 +254,9 @@ class _SavedShopCard extends StatelessWidget {
             ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
           SizedBox(height: AppDimensions.spacingSm),
-          AppPrimaryButton(
+          MyPagePrimaryButton(
             label: 'このショップで探す',
-            onPressed: onSearchInShop,
+            onPressed: () => onSearchInShop(),
             icon: const Icon(Icons.search_rounded),
             height: 46,
           ),
@@ -262,23 +264,55 @@ class _SavedShopCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: AppSecondaryButton(
+                child: MyPageOutlineButton(
                   label: 'ショップページを開く',
                   onPressed:
                       shopUrl.trim().isEmpty ? null : () => onOpenShopUrl(),
                   icon: const Icon(Icons.open_in_new_rounded),
-                  expand: true,
                   height: 44,
                 ),
               ),
               const SizedBox(width: AppDimensions.spacingSm),
               Expanded(
-                child: AppSecondaryButton(
-                  label: '保存解除',
+                child: OutlinedButton(
                   onPressed: onRemove,
-                  icon: const Icon(Icons.delete_outline_rounded),
-                  expand: true,
-                  height: 44,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: MyPageScreenUi.textSecondary,
+                    minimumSize: const Size(0, 44),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    side: BorderSide(
+                      color: MyPageScreenUi.cardBorder,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.delete_outline_rounded,
+                        size: 16,
+                        color: MyPageScreenUi.textSecondary,
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          '保存解除',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
