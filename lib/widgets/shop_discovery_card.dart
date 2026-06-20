@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../models/shop_discovery_summary.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/search_tab_ui_audit_log.dart';
-import 'app_button.dart';
 import 'app_card.dart';
 
 class ShopDiscoveryCard extends StatelessWidget {
@@ -46,13 +46,13 @@ class ShopDiscoveryCard extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: HomeScreenColors.flowStepBadgeFill,
+                  color: RakutenSearchScreenUi.rankBadgeFill,
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
                   '#$rank',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: HomeScreenColors.statusAccentStrong,
+                    color: RakutenSearchScreenUi.rankBadgeText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -133,7 +133,7 @@ class ShopDiscoveryCard extends StatelessWidget {
                 children: [
                   if (showOpenShopAction) ...[
                     Expanded(
-                      child: AppPrimaryButton(
+                      child: RakutenSearchPrimaryButton(
                         label: addLabel,
                         onPressed: onOpenShop,
                         icon: const Icon(Icons.storefront_outlined),
@@ -143,7 +143,7 @@ class ShopDiscoveryCard extends StatelessWidget {
                     const SizedBox(width: 8),
                   ],
                   Expanded(
-                    child: AppSecondaryButton(
+                    child: RakutenSearchOutlineButton(
                       label: isSaved ? '保存済み' : saveLabel,
                       onPressed: isSaved && disableSavedAction ? null : onSave,
                       icon: Icon(
@@ -175,13 +175,16 @@ class _ScorePill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
-        color: AppColors.accentPrimary.withValues(alpha: 0.12),
+        color: RakutenSearchScreenUi.scoreChipFill,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: RakutenSearchScreenUi.primaryBorder.withValues(alpha: 0.45),
+        ),
       ),
       child: Text(
         '売れ筋度 ${score.toStringAsFixed(1)}',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.accentPrimary,
+          color: RakutenSearchScreenUi.rankBadgeText,
           fontWeight: FontWeight.w700,
         ),
       ),

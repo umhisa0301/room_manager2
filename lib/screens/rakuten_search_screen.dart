@@ -57,7 +57,6 @@ import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_loading.dart';
 import '../widgets/app_screen_status.dart';
-import '../widgets/app_text_field.dart';
 import '../widgets/common_draggable_edge_fab.dart';
 import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
@@ -1427,7 +1426,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               children: [
                 Expanded(
                   child: _savedShopKeywordEntryEffective
-                      ? AppTextField(
+                      ? RakutenSearchTextField(
                           controller: _keywordController,
                           hintText: '商品名・ショップ・キーワードを検索',
                           textInputAction: TextInputAction.search,
@@ -2182,7 +2181,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required VoidCallback? onSubmit,
     String? semanticLabel,
   }) {
-    return AppTextField(
+    return RakutenSearchTextField(
       key: const Key('product_search_keyword_entry'),
       controller: _keywordController,
       hintText: '商品名・ショップ・キーワードを検索',
@@ -2364,7 +2363,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     super.build(context);
     final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
     final keyboardVisible = keyboardInset > 0;
-    return Scaffold(
+    return Theme(
+      data: RakutenSearchScreenUi.overlayTheme(Theme.of(context)),
+      child: Scaffold(
       backgroundColor: HomeScreenColors.canvas,
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -2438,6 +2439,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
+      ),
     );
   }
 
@@ -3225,6 +3227,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
+                style: RakutenSearchScreenUi.linkTextButtonStyle(),
                 onPressed: () =>
                     _onSegmentChanged(SearchModeSegment.shopDiscovery),
                 icon: const Icon(Icons.travel_explore_rounded, size: 18),
@@ -3274,10 +3277,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
             TextButton(
-              style: TextButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-              ),
+              style: RakutenSearchScreenUi.linkTextButtonStyle(),
               onPressed: () =>
                   _openSavedShopKeywordShopPicker(context, savedProv),
               child: const Text('変更'),
@@ -3293,7 +3293,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ),
         ),
         const SizedBox(height: 2),
-        AppTextField(
+        RakutenSearchTextField(
           key: const ValueKey<String>('saved_shop_keyword_field'),
           controller: _keywordController,
           focusNode: _savedShopKeywordFocusNode,
@@ -3565,6 +3565,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
+            style: RakutenSearchScreenUi.linkTextButtonStyle(),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
@@ -3885,7 +3886,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               );
               final sheetInset = modalMq.viewInsets.bottom;
               final sheetHeight = modalMq.size.height * 0.9;
-              return Material(
+              return Theme(
+                data: RakutenSearchScreenUi.overlayTheme(
+                  Theme.of(sheetContext),
+                ),
+                child: Material(
                 color: HomeScreenColors.canvas,
                 child: SafeArea(
                   child: Padding(
@@ -3916,6 +3921,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                   ),
                                 ),
                                 TextButton(
+                                  style: RakutenSearchScreenUi.linkTextButtonStyle(),
                                   onPressed: () {
                                     if (_mode == _RakutenSearchMode.product) {
                                       _clearKeywordDetailConditionsOnly();
@@ -4007,8 +4013,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                                 .gapFieldStack +
                                             3,
                                       ),
-                                      AppTextField(
-                                        // 共通AppTextFieldへ置換: ジャンル探索の補助キーワード入力。
+                                      RakutenSearchTextField(
+                                        // 共通RakutenSearchTextFieldへ置換: ジャンル探索の補助キーワード入力。
                                         controller: _genreController,
                                         textInputAction: TextInputAction.search,
                                         onSubmitted: (_) =>
@@ -4046,11 +4052,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         focusNode:
                                             _productDetailSheetKeywordFocus,
                                         child: _sheetPrimaryAttentionShell(
-                                          child: AppTextField(
+                                          child: RakutenSearchTextField(
                                             key: const Key(
                                               'product_search_keyword_field',
                                             ),
-                                            // 共通AppTextFieldへ置換: 商品検索の主キーワード入力。
+                                            // 共通RakutenSearchTextFieldへ置換: 商品検索の主キーワード入力。
                                             controller: _keywordController,
                                             focusNode:
                                                 _productDetailSheetKeywordFocus,
@@ -4109,7 +4115,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                           height: RakutenSearchScreenUi
                                               .sheetBlockGap,
                                         ),
-                                        AppTextField(
+                                        RakutenSearchTextField(
                                           controller: _excludeKeywordController,
                                           onChanged: (_) =>
                                               setModalState(() {}),
@@ -4157,7 +4163,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                           height: RakutenSearchScreenUi
                                               .sheetBlockGap,
                                         ),
-                                        AppTextField(
+                                        RakutenSearchTextField(
                                           controller: _minCommentCountController,
                                           keyboardType: TextInputType.number,
                                           maxLength: AppInputLimits
@@ -4296,6 +4302,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     ),
                                     const SizedBox(height: 8),
                                     OutlinedButton(
+                                      style: RakutenSearchScreenUi.sheetDismissOutlineStyle(),
                                       onPressed: () =>
                                           Navigator.of(sheetContext).pop(),
                                       child: const Text('閉じる'),
@@ -4310,6 +4317,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                   ),
                 ),
+              ),
               );
             },
           );
@@ -4322,7 +4330,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           if (kDebugMode) {
             importantDebugLog('[SEARCH_CONDITION_SHEET_BUILD_ERROR] $e\n$st');
           }
-          return Material(
+          return Theme(
+            data: RakutenSearchScreenUi.overlayTheme(
+              Theme.of(sheetContext),
+            ),
+            child: Material(
             color: HomeScreenColors.canvas,
             child: SafeArea(
               child: Padding(
@@ -4333,7 +4345,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
               ),
             ),
-          );
+          ),
+        );
         }
       },
     );
@@ -4358,7 +4371,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final sheetInset = MediaQuery.of(sheetContext).viewInsets.bottom;
         return StatefulBuilder(
           builder: (modalContext, setModalState) {
-            return Material(
+            return Theme(
+              data: RakutenSearchScreenUi.overlayTheme(
+                Theme.of(sheetContext),
+              ),
+              child: Material(
               color: HomeScreenColors.canvas,
               child: SafeArea(
                 child: Padding(
@@ -4395,8 +4412,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         _PostFrameFocusRequester(
                           focusNode: _discoveryDetailSheetKeywordFocus,
                           child: _sheetPrimaryAttentionShell(
-                            child: AppTextField(
-                              // 共通AppTextFieldへ置換: ショップ発掘キーワード入力。
+                            child: RakutenSearchTextField(
+                              // 共通RakutenSearchTextFieldへ置換: ショップ発掘キーワード入力。
                               controller: _shopDiscoveryKeywordController,
                               focusNode: _discoveryDetailSheetKeywordFocus,
                               autofocus: false,
@@ -4427,8 +4444,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
                         ),
-                        AppTextField(
-                          // 共通AppTextFieldへ置換: ショップ発掘除外ワード入力。
+                        RakutenSearchTextField(
+                          // 共通RakutenSearchTextFieldへ置換: ショップ発掘除外ワード入力。
                           controller: _shopDiscoveryExcludeController,
                           labelText: '除外ワード',
                           hintText: '例: 中古 訳あり',
@@ -4440,8 +4457,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Row(
                           children: [
                             Expanded(
-                              child: AppTextField(
-                                // 共通AppTextFieldへ置換: 最低評価数入力。
+                              child: RakutenSearchTextField(
+                                // 共通RakutenSearchTextFieldへ置換: 最低評価数入力。
                                 controller:
                                     _shopDiscoveryMinReviewCountController,
                                 keyboardType: TextInputType.number,
@@ -4454,8 +4471,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               width: RakutenSearchScreenUi.gapFieldStack,
                             ),
                             Expanded(
-                              child: AppTextField(
-                                // 共通AppTextFieldへ置換: 最低評価点入力。
+                              child: RakutenSearchTextField(
+                                // 共通RakutenSearchTextFieldへ置換: 最低評価点入力。
                                 controller:
                                     _shopDiscoveryMinReviewAverageController,
                                 keyboardType:
@@ -4477,8 +4494,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Row(
                           children: [
                             Expanded(
-                              child: AppTextField(
-                                // 共通AppTextFieldへ置換: 表示ショップ数入力。
+                              child: RakutenSearchTextField(
+                                // 共通RakutenSearchTextFieldへ置換: 表示ショップ数入力。
                                 controller: _shopDiscoveryShopLimitController,
                                 keyboardType: TextInputType.number,
                                 labelText: '表示ショップ数',
@@ -4492,8 +4509,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               width: RakutenSearchScreenUi.gapFieldStack,
                             ),
                             Expanded(
-                              child: AppTextField(
-                                // 共通AppTextFieldへ置換: 1ショップあたり件数入力。
+                              child: RakutenSearchTextField(
+                                // 共通RakutenSearchTextFieldへ置換: 1ショップあたり件数入力。
                                 controller:
                                     _shopDiscoveryItemsPerShopController,
                                 keyboardType: TextInputType.number,
@@ -4595,7 +4612,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                 ),
               ),
-            );
+            ),
+          );
           },
         );
       },
@@ -5089,10 +5107,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
+            style: RakutenSearchScreenUi.dismissTextButtonStyle(),
             child: const Text('キャンセル'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: RakutenSearchScreenUi.primary,
+              foregroundColor: RakutenSearchScreenUi.textOnPrimary,
+            ),
             child: const Text('開始する'),
           ),
         ],

@@ -397,7 +397,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                                   ),
                             ),
                             SizedBox(height: RakutenSearchScreenUi.gapSection),
-                            AppPrimaryButton(
+                            RakutenSearchPrimaryButton(
                               label: '再読み込み',
                               expand: false,
                               onPressed: _loadItemsFromShopCode,
@@ -456,7 +456,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                               SizedBox(
                                 height: RakutenSearchScreenUi.gapSection,
                               ),
-                              AppPrimaryButton(
+                              RakutenSearchPrimaryButton(
                                 label: '商品名で探す',
                                 expand: false,
                                 onPressed: () {
@@ -783,12 +783,11 @@ class _HeaderMiniButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = RakutenSearchScreenUi.primary;
     final style = TextButton.styleFrom(
-      foregroundColor: filled
-          ? AppColors.accentPrimary
-          : AppColors.textSecondary,
+      foregroundColor: filled ? primary : AppColors.textSecondary,
       backgroundColor: filled
-          ? AppColors.accentLight.withValues(alpha: 0.42)
+          ? RakutenSearchScreenUi.primaryLight.withValues(alpha: 0.65)
           : Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       minimumSize: const Size(0, 36),
@@ -797,7 +796,7 @@ class _HeaderMiniButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         side: BorderSide(
           color: filled
-              ? AppColors.accentPrimary.withValues(alpha: 0.22)
+              ? primary.withValues(alpha: 0.22)
               : AppColors.divider.withValues(alpha: 0.75),
         ),
       ),

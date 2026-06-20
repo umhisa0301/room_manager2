@@ -301,7 +301,7 @@ class RakutenSearchErrorView extends StatelessWidget {
                           title,
                           style: Theme.of(context).textTheme.labelLarge?.copyWith(
                                 fontWeight: FontWeight.w800,
-                                color: HomeScreenColors.accentSectionHeading,
+                                color: HomeScreenColors.titlePrimary,
                                 height: 1.25,
                               ),
                         ),
@@ -367,7 +367,7 @@ class RakutenSearchErrorView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
-              color: HomeScreenColors.accentSectionHeading,
+              color: HomeScreenColors.titlePrimary,
               height: 1.28,
               letterSpacing: -0.15,
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/search_tab_ui_audit_log.dart';
 
 /// 「探す」タブ内の一括選択ヘッダ（左上チェック＋件数）。
@@ -36,11 +37,14 @@ class SearchBulkSelectionHeader extends StatelessWidget {
         'selectedCount=$selectedCount totalSelectable=$totalSelectable',
       );
     }
-    return Row(
-      children: [
-        Checkbox(
-          tristate: true,
-          value: _partialSelected ? null : checked,
+    return Theme(
+      data: RakutenSearchScreenUi.overlayTheme(Theme.of(context)),
+      child: Row(
+        children: [
+          Checkbox(
+            tristate: true,
+            value: _partialSelected ? null : checked,
+            activeColor: RakutenSearchScreenUi.primary,
           onChanged: !enabled || totalSelectable == 0
               ? null
               : (v) {
@@ -78,6 +82,7 @@ class SearchBulkSelectionHeader extends StatelessWidget {
               ),
         ),
       ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/saved_shop.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import 'app_card.dart';
 
 /// 保存ショップ選択（コンパクト Dropdown 風）。
@@ -56,6 +57,7 @@ class SavedShopCompactSelector extends StatelessWidget {
                 ),
               ),
               TextButton(
+                style: RakutenSearchScreenUi.linkTextButtonStyle(),
                 onPressed: onChangeShop,
                 child: const Text('変更'),
               ),
@@ -78,6 +80,7 @@ class SavedShopCompactSelector extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton.icon(
+              style: RakutenSearchScreenUi.linkTextButtonStyle(),
               onPressed: onDiscoverShops,
               icon: const Icon(Icons.travel_explore_rounded, size: 18),
               label: const Text('ショップを発掘する'),

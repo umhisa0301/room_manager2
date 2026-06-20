@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../services/genre_master_service.dart';
 import '../theme/app_theme.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/genre_display_order.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/favorite_genre_selection_policy.dart';
@@ -262,12 +263,14 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
         !_isMulti && _selectedId != null && _selectedId!.trim().isNotEmpty;
     final canConfirmMulti = _isMulti && _selectedMultiOrder.isNotEmpty;
 
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomInset),
-        child: SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.72,
-          child: Column(
+    return Theme(
+      data: RakutenSearchScreenUi.overlayTheme(Theme.of(context)),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.72,
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
@@ -294,6 +297,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                       ),
                     ),
                     TextButton(
+                      style: RakutenSearchScreenUi.dismissTextButtonStyle(),
                       onPressed: () => Navigator.pop(context),
                       child: const Text('閉じる'),
                     ),
@@ -351,7 +355,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                                     ? Icons.check_box_rounded
                                     : Icons.check_box_outline_blank_rounded,
                                 color: selected
-                                    ? AppColors.accentPrimary
+                                    ? RakutenSearchScreenUi.primary
                                     : AppColors.textTertiary,
                               ),
                               title: Text(
@@ -379,7 +383,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                             leading: selected
                                 ? Icon(
                                     Icons.check_rounded,
-                                    color: AppColors.accentPrimary,
+                                    color: RakutenSearchScreenUi.primary,
                                   )
                                 : const SizedBox(width: 24),
                             title: Text(
@@ -399,7 +403,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                                 : selected
                                 ? Icon(
                                     Icons.check_rounded,
-                                    color: AppColors.accentPrimary,
+                                    color: RakutenSearchScreenUi.primary,
                                     size: 22,
                                   )
                                 : null,
@@ -417,18 +421,12 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: _isMulti
                     ? (canConfirmMulti
-                        ? FilledButton(
+                        ? RakutenSearchPrimaryButton(
+                            label: '選択を完了（${_selectedMultiOrder.length}件）',
+                            height: 48,
                             onPressed: () => Navigator.pop(
                               context,
                               List<String>.from(_selectedMultiOrder),
-                            ),
-                            style: FilledButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              backgroundColor: AppColors.accentPrimary,
-                              foregroundColor: AppColors.textOnAccent,
-                            ),
-                            child: Text(
-                              '選択を完了（${_selectedMultiOrder.length}件）',
                             ),
                           )
                         : Text(
@@ -440,15 +438,11 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                                 ),
                           ))
                     : (canConfirmSingle
-                        ? FilledButton(
+                        ? RakutenSearchPrimaryButton(
+                            label: 'このカテゴリで検索',
+                            height: 48,
                             onPressed: () =>
                                 Navigator.pop(context, _selectedId!.trim()),
-                            style: FilledButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              backgroundColor: AppColors.accentPrimary,
-                              foregroundColor: AppColors.textOnAccent,
-                            ),
-                            child: const Text('このカテゴリで検索'),
                           )
                         : Text(
                             'リストからジャンルを選んでください',
@@ -462,6 +456,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

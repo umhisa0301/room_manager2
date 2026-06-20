@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_theme.dart';
 import 'home_screen_colors.dart';
+import '../widgets/app_text_field.dart';
 
 /// 楽天検索画面のレイアウト・配色（ROOMコレ [_RoomColleUi] と同一数値・同系色）。
 ///
@@ -71,6 +73,79 @@ abstract final class RakutenSearchScreenUi {
 
   /// Primary 上の文字色。
   static const Color textOnPrimary = Colors.white;
+
+  /// テキスト選択ハイライト（淡いティール）。
+  static Color get selectionHighlight =>
+      primary.withValues(alpha: 0.22);
+
+  /// ランキングバッジ背景（#1 / #2 等）。
+  static Color get rankBadgeFill => primary.withValues(alpha: 0.14);
+
+  /// ランキングバッジ文字・スコア系チップ文字。
+  static Color get rankBadgeText => primary;
+
+  /// スコア系チップ背景（売れ筋度など）。
+  static Color get scoreChipFill => primaryLight;
+
+  /// 探す画面スコープ用 Theme（カーソル・選択・チェックボックス）。
+  static ThemeData overlayTheme(ThemeData base) {
+    return base.copyWith(
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: primary,
+        selectionColor: selectionHighlight,
+        selectionHandleColor: primary,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return null;
+          }
+          if (states.contains(WidgetState.selected)) {
+            return primary;
+          }
+          return null;
+        }),
+      ),
+    );
+  }
+
+  /// BottomSheet 等の通常リンク（クリア・変更・一覧など）。
+  static ButtonStyle linkTextButtonStyle() {
+    return TextButton.styleFrom(
+      foregroundColor: primary,
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  /// 閉じる・キャンセルなど非強調リンク。
+  static ButtonStyle dismissTextButtonStyle() {
+    return TextButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeMutedText,
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  /// 条件シート下部の「閉じる」アウトライン。
+  static ButtonStyle sheetDismissOutlineStyle() {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeMutedText,
+      side: BorderSide(color: HomeScreenColors.homeCardBorder),
+    );
+  }
+
+  /// ジャンル選択チップ・選択中 InputChip。
+  static ChipThemeData chipTheme(ChipThemeData base) {
+    return base.copyWith(
+      selectedColor: primaryLight,
+      checkmarkColor: primary,
+      deleteIconColor: primary,
+      labelStyle: base.labelStyle?.copyWith(
+        color: HomeScreenColors.titlePrimary,
+        fontWeight: FontWeight.w700,
+      ),
+      side: BorderSide(color: primaryBorder.withValues(alpha: 0.55)),
+    );
+  }
 
   /// 検索欄の通常枠線。
   static const Color searchFieldBorder = Color(0xFFCBD5E1);
@@ -362,6 +437,107 @@ abstract final class RakutenSearchScreenUi {
       contentPadding: searchFieldContentPadding,
       prefixIconConstraints: searchFieldIconConstraints,
       suffixIconConstraints: searchFieldIconConstraints,
+    );
+  }
+}
+
+/// 探す画面向け TextField（フォーカス枠・カーソル・選択色をティールに統一）。
+class RakutenSearchTextField extends StatelessWidget {
+  const RakutenSearchTextField({
+    super.key,
+    this.controller,
+    this.focusNode,
+    this.labelText,
+    this.hintText,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.keyboardType,
+    this.textInputAction,
+    this.inputFormatters,
+    this.onChanged,
+    this.onSubmitted,
+    this.onTap,
+    this.readOnly = false,
+    this.enabled = true,
+    this.autofocus = false,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.maxLength,
+    this.minHeight = 46,
+    this.fixedHeight,
+    this.semanticLabel,
+    this.fillColor,
+    this.enabledBorderColor,
+    this.hintColor,
+    this.focusedBorderColor,
+    this.validator,
+    this.autovalidateMode,
+    this.errorText,
+  });
+
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final String? labelText;
+  final String? hintText;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onTap;
+  final bool readOnly;
+  final bool enabled;
+  final bool autofocus;
+  final bool obscureText;
+  final int maxLines;
+  final int? maxLength;
+  final double minHeight;
+  final double? fixedHeight;
+  final String? semanticLabel;
+  final Color? fillColor;
+  final Color? enabledBorderColor;
+  final Color? hintColor;
+  final Color? focusedBorderColor;
+  final FormFieldValidator<String>? validator;
+  final AutovalidateMode? autovalidateMode;
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: RakutenSearchScreenUi.overlayTheme(Theme.of(context)),
+      child: AppTextField(
+        controller: controller,
+        focusNode: focusNode,
+        labelText: labelText,
+        hintText: hintText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
+        inputFormatters: inputFormatters,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        onTap: onTap,
+        readOnly: readOnly,
+        enabled: enabled,
+        autofocus: autofocus,
+        obscureText: obscureText,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        minHeight: minHeight,
+        fixedHeight: fixedHeight,
+        semanticLabel: semanticLabel,
+        fillColor: fillColor,
+        enabledBorderColor: enabledBorderColor,
+        hintColor: hintColor,
+        focusedBorderColor: focusedBorderColor ?? RakutenSearchScreenUi.primary,
+        validator: validator,
+        autovalidateMode: autovalidateMode,
+        errorText: errorText,
+      ),
     );
   }
 }

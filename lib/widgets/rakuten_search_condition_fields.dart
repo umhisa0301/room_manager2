@@ -10,7 +10,6 @@ import '../utils/genre_pref_log.dart';
 import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import 'app_button.dart';
-import 'app_text_field.dart';
 
 /// ジャンルプルダウン用の選択肢（ID null は「指定なし」など）。
 class RakutenSearchGenreOption {
@@ -40,7 +39,7 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: AppTextField(
+          child: RakutenSearchTextField(
             // 共通AppTextFieldへ置換: 最低価格入力。
             controller: minPriceController,
             keyboardType: TextInputType.number,
@@ -56,7 +55,7 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
         ),
         SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
         Expanded(
-          child: AppTextField(
+          child: RakutenSearchTextField(
             // 共通AppTextFieldへ置換: 最高価格入力。
             controller: maxPriceController,
             keyboardType: TextInputType.number,
@@ -115,16 +114,23 @@ class RakutenSearchGenreDrilldownRow extends StatelessWidget {
           const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
         ],
         if (label.isNotEmpty) ...[
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              InputChip(
-                label: Text(label),
-                onDeleted: () => onGenreChanged(null),
-                deleteIcon: const Icon(Icons.close_rounded, size: 18),
+          Theme(
+            data: Theme.of(context).copyWith(
+              chipTheme: RakutenSearchScreenUi.chipTheme(
+                Theme.of(context).chipTheme,
               ),
-            ],
+            ),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                InputChip(
+                  label: Text(label),
+                  onDeleted: () => onGenreChanged(null),
+                  deleteIcon: const Icon(Icons.close_rounded, size: 18),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 10),
         ],
@@ -145,6 +151,12 @@ class RakutenSearchGenreDrilldownRow extends StatelessWidget {
           },
           icon: const Icon(Icons.category_outlined, size: 18),
           label: Text(label.isEmpty ? 'ジャンルを選ぶ' : 'ジャンルを変更'),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: RakutenSearchScreenUi.primary,
+            side: BorderSide(
+              color: RakutenSearchScreenUi.primary.withValues(alpha: 0.75),
+            ),
+          ),
         ),
         if (requiredSelection && label.isEmpty) ...[
           const SizedBox(height: 8),
