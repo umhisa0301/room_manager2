@@ -35,8 +35,8 @@ class CommonDraggableEdgeFab extends StatefulWidget {
 
   static const double edgeMargin = 8;
 
-  /// フッター直上からのオフセット（12〜16）
-  static const double marginAboveBodyBottom = 14;
+  /// フッター直上からのオフセット（BottomNavigation直上に寄せる）
+  static const double marginAboveBodyBottom = 8;
 
   static const double minGapAboveFooter = 12;
 

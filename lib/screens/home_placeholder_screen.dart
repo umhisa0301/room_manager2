@@ -738,18 +738,20 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 unconfirmedReactionCount:
                                     unconfirmedReactionCount,
                                 hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
-                                importedDoneCount: roomImportedDoneCount,
-                                reactionHistoryRefreshNonce:
-                                    _reactionNoticeRefreshNonce,
                                 onOpenProductTap: (_) => _openRoomList(
                                   context,
                                   initialTabIndex: 1,
                                 ),
+                                onOpenReactionList: () {
+                                  context
+                                      .read<AppShellController>()
+                                      .openActivityTab(
+                                        subTabIndex: 1,
+                                        scrollToRoomReactionSection: true,
+                                      );
+                                },
                                 onOpenRoomUrl: () =>
                                     _openRoomUrlEditSheet(context),
-                                onReactionSyncCompleted: () => setState(
-                                  () => _reactionNoticeRefreshNonce++,
-                                ),
                               ),
                               _HomeLimitAlertCard(
                                 collectLimit: collectLimit,
@@ -1620,8 +1622,8 @@ class _TodayRoomWorkCard extends StatelessWidget {
           title: 'ROOM投稿する',
           subtitle: pendingCandidateCount == 0
               ? '投稿待ちの候補はありません'
-              : 'コレ候補${pendingCandidateCount}件を投稿しましょう',
-          buttonLabel: 'ROOM投稿へ',
+              : 'コレ候補$pendingCandidateCount件',
+          buttonLabel: 'コレ候補へ',
           onTap: onOpenPendingCandidates,
           semanticsLabel: 'home_room_post_button',
         );
@@ -1647,116 +1649,117 @@ class _TodayRoomWorkCard extends StatelessWidget {
         children: [
           Text('今日のROOM作業', style: _HomeUi.homeCardTitle(context)),
           const SizedBox(height: 10),
-          Container(
-            constraints: const BoxConstraints(minHeight: 110, maxHeight: 120),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: HomeScreenColors.homeAccentTealLight,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: HomeScreenColors.homeAccentTealBorder.withValues(
-                  alpha: 0.6,
-                ),
-              ),
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final cta = _primaryCtaSpec();
-                final actionButton = Semantics(
-                  label: cta.semanticsLabel,
-                  button: true,
-                  child: SizedBox(
-                    width: 132,
-                    height: 44,
-                    child: FilledButton(
-                      onPressed: cta.onTap,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: HomeScreenColors.homeAccentTeal,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        textStyle: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              cta.buttonLabel,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const Icon(Icons.chevron_right_rounded, size: 16),
-                        ],
-                      ),
+          Builder(
+            builder: (context) {
+              final cta = _primaryCtaSpec();
+              return Container(
+                constraints: const BoxConstraints(minHeight: 108),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: HomeScreenColors.homeAccentTealLight,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: HomeScreenColors.homeAccentTealBorder.withValues(
+                      alpha: 0.6,
                     ),
                   ),
-                );
-
-                return Column(
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: HomeScreenColors.homeAccentTeal,
+                                  borderRadius: BorderRadius.circular(999),
+                                ),
+                                child: Text(
+                                  '次にやる',
+                                  style: _HomeUi.tapHint(context).copyWith(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: HomeScreenColors.homeAccentTeal,
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
-                                  child: Text(
-                                    '次にやる',
-                                    style: _HomeUi.tapHint(context).copyWith(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                cta.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: _HomeUi.bodyEmphasis(context).copyWith(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: HomeScreenColors.homeTextPrimary,
+                                  height: 1.2,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                cta.subtitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: _HomeUi.homeCardSubtitle(context)
+                                    .copyWith(fontSize: 13.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Semantics(
+                          label: cta.semanticsLabel,
+                          button: true,
+                          child: SizedBox(
+                            width: 120,
+                            height: 46,
+                            child: FilledButton(
+                              onPressed: cta.onTap,
+                              style: FilledButton.styleFrom(
+                                backgroundColor: HomeScreenColors.homeAccentTeal,
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                textStyle: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      cta.buttonLabel,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  cta.title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: _HomeUi.bodyEmphasis(context).copyWith(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: HomeScreenColors.homeTextPrimary,
-                                    height: 1.2,
+                                  const Icon(
+                                    Icons.chevron_right_rounded,
+                                    size: 16,
                                   ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  cta.subtitle,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: _HomeUi.homeCardSubtitle(context)
-                                      .copyWith(fontSize: 13.5),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          actionButton,
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     if (isRecommendationLoading &&
                         _primaryAction() ==
@@ -1765,9 +1768,9 @@ class _TodayRoomWorkCard extends StatelessWidget {
                       const LinearProgressIndicator(minHeight: 2),
                     ],
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 10),
           _HomeWorkFlowRow(
@@ -1937,207 +1940,155 @@ class _HomeWorkFlowChip extends StatelessWidget {
 
 enum _HomeWorkStepVisualState { completed, next, remaining, optional }
 
-/// 3. 反応チェック（最近反応商品 + 反応確認を統合）
+/// 3. 反応チェック（最近反応商品 + 閲覧導線）
 class _ReactionCheckCard extends StatelessWidget {
   const _ReactionCheckCard({
     required this.products,
     required this.unconfirmedReactionCount,
     required this.hasRoomProfileUrl,
-    required this.importedDoneCount,
-    required this.reactionHistoryRefreshNonce,
     required this.onOpenProductTap,
+    required this.onOpenReactionList,
     required this.onOpenRoomUrl,
-    this.onReactionSyncCompleted,
   });
 
   final List<RakutenManagedProduct> products;
   final int unconfirmedReactionCount;
   final bool hasRoomProfileUrl;
-  final int importedDoneCount;
-  final int reactionHistoryRefreshNonce;
   final void Function(String productId) onOpenProductTap;
+  final VoidCallback onOpenReactionList;
   final VoidCallback onOpenRoomUrl;
-  final VoidCallback? onReactionSyncCompleted;
 
-  Future<void> _handleReactionSync(BuildContext context) async {
-    await _homeHandleReactionSync(
-      context,
-      onCompleted: onReactionSyncCompleted,
-    );
-  }
+  bool get _showViewButton =>
+      hasRoomProfileUrl &&
+      (products.isNotEmpty || unconfirmedReactionCount > 0);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<RoomImportController, BulkOperationStateController>(
-      builder: (context, ctl, bulk, _) {
-        final syncBusy =
-            ctl.isRunning ||
-            bulk.isMetadataEnriching ||
-            bulk.isRoomReactionSyncRunning;
-        final reactionOnly =
-            !ctl.isRunning &&
-            !bulk.isMetadataEnriching &&
-            bulk.isRoomReactionSyncRunning;
-        final actionLocked = bulk.isAnyBlockingOperationRunning;
-        final canRunPrimary = hasRoomProfileUrl && !actionLocked;
-        final showReactionButton =
-            hasRoomProfileUrl && importedDoneCount > 0 && (syncBusy || canRunPrimary);
-        final reactionButtonEnabled = canRunPrimary && !syncBusy;
-        final reactionButtonLabel = syncBusy && reactionOnly
-            ? RoomSyncCardCopy.reactionCheckBusyLabel
-            : '反応を確認';
-
-        return Container(
-          width: double.infinity,
-          decoration: _HomeUi.homeCardDecoration(),
-          padding: _HomeUi.homeCardPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.homeCardDecoration(),
+      padding: _HomeUi.homeCardPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('反応チェック', style: _HomeUi.homeCardTitle(context)),
-                  if (unconfirmedReactionCount > 0) ...[
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 3,
+              Text('反応チェック', style: _HomeUi.homeCardTitle(context)),
+              if (unconfirmedReactionCount > 0) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: HomeScreenColors.homeUnreadBadge.withValues(
+                      alpha: 0.12,
+                    ),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: HomeScreenColors.homeUnreadBadge.withValues(
+                        alpha: 0.35,
                       ),
-                      decoration: BoxDecoration(
-                        color: HomeScreenColors.homeUnreadBadge.withValues(
-                          alpha: 0.12,
+                    ),
+                  ),
+                  child: Text(
+                    '未確認 $unconfirmedReactionCount件',
+                    style: _HomeUi.tapHint(context).copyWith(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: HomeScreenColors.homeUnreadBadge,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          if (products.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < products.length; i++) ...[
+                        _RecentReactedProductTile(
+                          product: products[i],
+                          onTap: () => onOpenProductTap(products[i].productId),
                         ),
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: HomeScreenColors.homeUnreadBadge.withValues(
-                            alpha: 0.35,
+                        if (i < products.length - 1)
+                          Divider(
+                            height: 1,
+                            thickness: 0.5,
+                            color: HomeScreenColors.listRowDivider
+                                .withValues(alpha: 0.7),
                           ),
-                        ),
-                      ),
-                      child: Text(
-                        '未確認 $unconfirmedReactionCount件',
-                        style: _HomeUi.tapHint(context).copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: HomeScreenColors.homeUnreadBadge,
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-              if (products.isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          for (int i = 0; i < products.length; i++) ...[
-                            _RecentReactedProductTile(
-                              product: products[i],
-                              onTap: () =>
-                                  onOpenProductTap(products[i].productId),
-                            ),
-                            if (i < products.length - 1)
-                              Divider(
-                                height: 1,
-                                thickness: 0.5,
-                                color: HomeScreenColors.listRowDivider
-                                    .withValues(alpha: 0.7),
-                              ),
-                          ],
-                        ],
-                      ),
-                    ),
-                    if (showReactionButton) ...[
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 112,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Semantics(
-                              label: 'home_reaction_sync_button',
-                              button: true,
-                              child: OutlinedButton(
-                                onPressed: reactionButtonEnabled
-                                    ? () => _handleReactionSync(context)
-                                    : null,
-                                style:
-                                    _HomeDataUpdateButtonStyle.tealOutlined(
-                                  context,
-                                ),
-                                child: Text(
-                                  reactionButtonLabel,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '反応があった商品を確認しましょう',
-                              textAlign: TextAlign.center,
-                              style: _HomeUi.homeFootnote(context).copyWith(
-                                fontSize: 10.5,
-                                height: 1.3,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ] else ...[
-                const SizedBox(height: 6),
-                Text(
-                  '最近反応があった商品はありません',
-                  style: _HomeUi.homeCardSubtitle(context),
-                ),
-                if (showReactionButton) ...[
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 112,
-                      child: Semantics(
-                        label: 'home_reaction_sync_button',
-                        button: true,
-                        child: OutlinedButton(
-                          onPressed: reactionButtonEnabled
-                              ? () => _handleReactionSync(context)
-                              : null,
-                          style: _HomeDataUpdateButtonStyle.tealOutlined(
-                            context,
-                          ),
-                          child: Text(
-                            reactionButtonLabel,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                if (_showViewButton) ...[
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: 120,
+                    child: Semantics(
+                      label: 'home_reaction_view_button',
+                      button: true,
+                      child: OutlinedButton(
+                        onPressed: onOpenReactionList,
+                        style: _HomeDataUpdateButtonStyle.tealOutlined(context),
+                        child: const Text(
+                          '反応商品を見る',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
                 ],
               ],
-              if (!hasRoomProfileUrl) ...[
-                const SizedBox(height: 8),
-                Text(
-                  'ROOMプロフィールURLを登録すると反応を確認できます',
-                  style: _HomeUi.homeCardSubtitle(context),
+            ),
+          ] else ...[
+            const SizedBox(height: 6),
+            Text(
+              '最近反応があった商品はありません',
+              style: _HomeUi.homeCardSubtitle(context),
+            ),
+            if (_showViewButton) ...[
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  width: 120,
+                  child: Semantics(
+                    label: 'home_reaction_view_button',
+                    button: true,
+                    child: OutlinedButton(
+                      onPressed: onOpenReactionList,
+                      style: _HomeDataUpdateButtonStyle.tealOutlined(context),
+                      child: const Text(
+                        '反応商品を見る',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
                 ),
-              ],
+              ),
             ],
-          ),
-        );
-      },
+          ],
+          if (!hasRoomProfileUrl) ...[
+            const SizedBox(height: 8),
+            Text(
+              'ROOMプロフィールURLを登録すると反応を確認できます',
+              style: _HomeUi.homeCardSubtitle(context),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -2562,12 +2513,12 @@ class _DataUpdateCard extends StatelessWidget {
         roomSyncButtonRenderDecisionLog(
           'screen=home button=import visible=$showImportButton '
           'enabled=$importButtonEnabled '
-          'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
+          'label=投稿を取り込む '
           'reason=${syncBusy ? 'busy' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : (!roomImportState.allowed ? 'roomImportLimitReached' : 'ready')))}',
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=reaction visible=$showReactionButton '
-          'enabled=$reactionButtonEnabled label=$reactionButtonLabel '
+          'enabled=$reactionButtonEnabled label=${syncBusy && reactionOnly ? reactionButtonLabel : '反応データ取得'} '
           'reason=${syncBusy ? 'busyDisabled' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
         );
         roomSyncEmptyButtonAuditLog(
@@ -2575,7 +2526,7 @@ class _DataUpdateCard extends StatelessWidget {
           button: 'import',
           visible: showImportButton,
           enabled: showImportButton,
-          label: importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む',
+          label: '投稿を取り込む',
           reason: showImportButton ? 'rendered' : 'hiddenByUxPolicy',
         );
         roomSyncEmptyButtonAuditLog(
@@ -2583,7 +2534,7 @@ class _DataUpdateCard extends StatelessWidget {
           button: 'reaction',
           visible: showReactionButton,
           enabled: reactionButtonEnabled,
-          label: reactionButtonLabel,
+          label: syncBusy && reactionOnly ? reactionButtonLabel : '反応データ取得',
           reason: showReactionButton
               ? (reactionButtonEnabled ? 'rendered' : 'disabledWhileBusy')
               : 'notImportedYetOrHidden',
@@ -2742,7 +2693,7 @@ class _DataUpdateCard extends StatelessWidget {
                                 size: 18,
                               ),
                               label: const Text(
-                                'ROOM投稿を取り込む',
+                                '投稿を取り込む',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -2776,7 +2727,7 @@ class _DataUpdateCard extends StatelessWidget {
                               label: Text(
                                 syncBusy && reactionOnly
                                     ? reactionButtonLabel
-                                    : '反応を確認',
+                                    : '反応データ取得',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
