@@ -2181,11 +2181,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   _kRoomListScreenPadH,
                   0,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: AppTextField(
+                child: SizedBox(
+                  height: _RoomColleUi.searchRowHeight,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: AppTextField(
                           key: ValueKey<int>(_tabController.index),
                           controller: _activeRoomColleSearchController,
                           onChanged: _onRoomColleSearchChanged,
@@ -2210,39 +2212,44 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               : null,
                         ),
                       ),
-                    const SizedBox(width: 8),
-                    _RoomColleFilterButton(
-                      active: _roomColleHasActiveSheetFilters(
-                        isCandidate: _tabController.index == 0,
-                        criteria: _tabController.index == 0
-                            ? _candidateListFilters
-                            : _doneListFilters,
-                        excludeUrlNotReady: _tabController.index == 0 &&
-                            _candidateExcludeUrlNotReady,
-                        sortPreset: _tabController.index == 0
-                            ? _candidateSortPreset
-                            : _doneSortPreset,
-                        roomImportMetaFilter: _doneRoomImportMetaFilter,
-                        doneAtLocalDayFilter: _doneLocalDayFilter,
+                      const SizedBox(width: 8),
+                      SizedBox(
+                        width: _RoomColleUi.filterButtonWidth,
+                        height: _RoomColleUi.searchRowHeight,
+                        child: _RoomColleFilterButton(
+                          active: _roomColleHasActiveSheetFilters(
+                            isCandidate: _tabController.index == 0,
+                            criteria: _tabController.index == 0
+                                ? _candidateListFilters
+                                : _doneListFilters,
+                            excludeUrlNotReady: _tabController.index == 0 &&
+                                _candidateExcludeUrlNotReady,
+                            sortPreset: _tabController.index == 0
+                                ? _candidateSortPreset
+                                : _doneSortPreset,
+                            roomImportMetaFilter: _doneRoomImportMetaFilter,
+                            doneAtLocalDayFilter: _doneLocalDayFilter,
+                          ),
+                          activeCount: _roomColleActiveFilterCount(
+                            isCandidate: _tabController.index == 0,
+                            criteria: _tabController.index == 0
+                                ? _candidateListFilters
+                                : _doneListFilters,
+                            excludeUrlNotReady: _tabController.index == 0 &&
+                                _candidateExcludeUrlNotReady,
+                            sortPreset: _tabController.index == 0
+                                ? _candidateSortPreset
+                                : _doneSortPreset,
+                            roomImportMetaFilter: _doneRoomImportMetaFilter,
+                            doneAtLocalDayFilter: _doneLocalDayFilter,
+                          ),
+                          onPressed: () => _openRoomColleFilterEditor(
+                            isCandidate: _tabController.index == 0,
+                          ),
+                        ),
                       ),
-                      activeCount: _roomColleActiveFilterCount(
-                        isCandidate: _tabController.index == 0,
-                        criteria: _tabController.index == 0
-                            ? _candidateListFilters
-                            : _doneListFilters,
-                        excludeUrlNotReady: _tabController.index == 0 &&
-                            _candidateExcludeUrlNotReady,
-                        sortPreset: _tabController.index == 0
-                            ? _candidateSortPreset
-                            : _doneSortPreset,
-                        roomImportMetaFilter: _doneRoomImportMetaFilter,
-                        doneAtLocalDayFilter: _doneLocalDayFilter,
-                      ),
-                      onPressed: () => _openRoomColleFilterEditor(
-                        isCandidate: _tabController.index == 0,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Padding(
