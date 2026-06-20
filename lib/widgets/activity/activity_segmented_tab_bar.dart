@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_theme.dart';
+import '../../theme/activity_screen_tokens.dart';
 import 'activity_screen_layout.dart';
 
 /// 活動画面用：実績／分析を 50:50 で均等配置するセグメント。
@@ -26,11 +26,16 @@ class ActivitySegmentedTabBar extends StatelessWidget {
       height: ActivityScreenLayout.mainTabBarHeight,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ActivityScreenUi.surface,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: AppColors.divider.withValues(alpha: 0.65),
-          ),
+          border: Border.all(color: ActivityScreenUi.border),
+          boxShadow: [
+            BoxShadow(
+              color: ActivityScreenUi.cardShadowColor,
+              offset: const Offset(0, 2),
+              blurRadius: 8,
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -86,15 +91,19 @@ class _ActivityMainTabCell extends StatelessWidget {
           curve: Curves.easeOutCubic,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected ? AppColors.accentPrimary : Colors.transparent,
+            color: selected ? ActivityScreenUi.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
+            border: selected
+                ? null
+                : Border.all(
+                    color: ActivityScreenUi.border.withValues(alpha: 0.85),
+                  ),
             boxShadow: selected
                 ? [
                     BoxShadow(
-                      color:
-                          AppColors.accentPrimary.withValues(alpha: 0.35),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+                      color: ActivityScreenUi.selectedTabShadow,
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
                   ]
                 : null,
@@ -103,13 +112,15 @@ class _ActivityMainTabCell extends StatelessWidget {
             child: Text(
               label,
               textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontWeight: selected ? FontWeight.w900 : FontWeight.w600,
                     fontSize: 15,
                     letterSpacing: selected ? 0.2 : 0,
                     color: selected
-                        ? AppColors.textOnAccent
-                        : AppColors.textSecondary,
+                        ? ActivityScreenUi.textOnPrimary
+                        : ActivityScreenUi.textPrimary,
                   ),
             ),
           ),

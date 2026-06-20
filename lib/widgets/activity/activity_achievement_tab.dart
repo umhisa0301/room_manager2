@@ -10,6 +10,7 @@ import '../../services/room_collect_post_limit.dart';
 import '../../services/room_kpi_calculator.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
+import '../../theme/activity_screen_tokens.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/app_debug_log.dart';
 import '../../utils/room_sync_log.dart';
@@ -91,7 +92,8 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
             padding: EdgeInsets.fromLTRB(
               ActivityScreenLayout.paddingH,
               8,
-              ActivityScreenLayout.paddingH,
+              ActivityScreenLayout.paddingH +
+                  ActivityScreenLayout.fabSideReserve,
               bottomPad,
             ),
             children: [
@@ -257,12 +259,13 @@ class _MilestoneToast extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
-        borderColor: AppColors.accentPrimary.withValues(alpha: 0.35),
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Row(
           children: [
             Icon(
               Icons.workspace_premium_rounded,
-              color: AppColors.accentPrimary,
+              color: ActivityScreenUi.primary,
               size: 32,
             ),
             const SizedBox(width: 12),
@@ -274,21 +277,21 @@ class _MilestoneToast extends StatelessWidget {
                     'ROOM投稿 $milestone 件',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w900,
-                          color: AppColors.textPrimary,
+                          color: ActivityScreenUi.textPrimary,
                         ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     'いいペースです。この調子で続けましょう',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: ActivityScreenUi.textSecondary,
                           height: 1.3,
                         ),
                   ),
                 ],
               ),
             ),
-            Icon(Icons.check_circle_rounded, color: AppColors.accentSecondary),
+            Icon(Icons.check_circle_rounded, color: ActivityScreenUi.success),
           ],
         ),
       ),
@@ -346,7 +349,8 @@ class _AchievementHeroCard extends StatelessWidget {
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
       radius: ActivityScreenLayout.cardRadius,
-      borderColor: AppColors.accentPrimary.withValues(alpha: 0.18),
+      borderColor: ActivityScreenUi.border,
+      backgroundColor: ActivityScreenUi.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -354,7 +358,7 @@ class _AchievementHeroCard extends StatelessWidget {
             '今日の実績',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w900,
-              color: AppColors.textPrimary,
+              color: ActivityScreenUi.textPrimary,
               fontSize: 18,
             ),
           ),
@@ -362,7 +366,7 @@ class _AchievementHeroCard extends StatelessWidget {
           Text(
             statusLine,
             style: theme.textTheme.labelMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: ActivityScreenUi.textSecondary,
               fontWeight: FontWeight.w600,
               fontSize: 12.5,
               height: 1.28,
@@ -373,10 +377,10 @@ class _AchievementHeroCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+              color: ActivityScreenUi.subBlockFill,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.divider.withValues(alpha: 0.55),
+                color: ActivityScreenUi.subBlockBorder,
               ),
             ),
             child: Column(
@@ -386,7 +390,7 @@ class _AchievementHeroCard extends StatelessWidget {
                   'ROOM上限（要約）',
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textTertiary,
+                    color: ActivityScreenUi.textMuted,
                     fontSize: 10,
                   ),
                 ),
@@ -448,15 +452,15 @@ class _AchievementHeroCard extends StatelessWidget {
             child: LinearProgressIndicator(
               minHeight: 9,
               value: todayProgressPct / 100.0,
-              backgroundColor: AppColors.surfaceVariant,
-              color: AppColors.accentPrimary,
+              backgroundColor: ActivityScreenUi.progressTrack,
+              color: ActivityScreenUi.progressValue,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             '今日の目標まで 約$todayProgressPct%（投稿・候補の平均）',
             style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
+              color: ActivityScreenUi.textMuted,
               fontWeight: FontWeight.w600,
               fontSize: 11,
             ),
@@ -477,10 +481,10 @@ class _AchievementHeroCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.accentLight.withValues(alpha: 0.35),
+        color: ActivityScreenUi.metricTileFill,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.14),
+          color: ActivityScreenUi.metricTileBorder,
         ),
       ),
       child: Column(
@@ -490,7 +494,7 @@ class _AchievementHeroCard extends StatelessWidget {
             label,
             style: theme.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w800,
-              color: AppColors.textTertiary,
+              color: ActivityScreenUi.textMuted,
               fontSize: 10,
             ),
           ),
@@ -506,7 +510,7 @@ class _AchievementHeroCard extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                   fontSize: 22,
                   height: 1.05,
-                  color: AppColors.textPrimary,
+                  color: ActivityScreenUi.textPrimary,
                 ),
               ),
               const SizedBox(width: 2),
@@ -515,7 +519,7 @@ class _AchievementHeroCard extends StatelessWidget {
                 style: theme.textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 11,
-                  color: AppColors.textSecondary,
+                  color: ActivityScreenUi.textSecondary,
                 ),
               ),
             ],
@@ -525,7 +529,7 @@ class _AchievementHeroCard extends StatelessWidget {
             caption,
             style: theme.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.textSecondary,
+              color: ActivityScreenUi.textSecondary,
               fontSize: 10,
             ),
           ),
@@ -576,6 +580,8 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -584,7 +590,14 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
+                    color: ActivityScreenUi.textPrimary,
                   ),
+            ),
+            const SizedBox(height: 14),
+            Icon(
+              Icons.history_rounded,
+              size: 40,
+              color: ActivityScreenUi.emptyStateIcon,
             ),
             const SizedBox(height: 10),
             Text(
@@ -592,13 +605,14 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
+                    color: ActivityScreenUi.textPrimary,
                   ),
             ),
             const SizedBox(height: 6),
             Text(
               'ROOMコレで商品を動かすと、ここに活動が積み上がります',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textSecondary,
                     height: 1.4,
                     fontSize: 15,
                   ),
@@ -608,6 +622,9 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
               onPressed: () => widget.shell.openRoomCollect(initialTabIndex: 0),
               icon: const Icon(Icons.collections_bookmark_outlined),
               label: const Text('ROOMコレを開く'),
+              style: ActivityScreenUi.compactOutlinedButtonStyle(
+                theme: Theme.of(context),
+              ),
             ),
           ],
         ),
@@ -621,6 +638,8 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
       radius: ActivityScreenLayout.cardRadius,
+      borderColor: ActivityScreenUi.border,
+      backgroundColor: ActivityScreenUi.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -629,13 +648,14 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
+                  color: ActivityScreenUi.textPrimary,
                 ),
           ),
           const SizedBox(height: 8),
           Text(
             '最新の活動です',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: ActivityScreenUi.textSecondary,
                   height: 1.35,
                   fontSize: 14,
                 ),
@@ -659,13 +679,13 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
                 onPressed: () => setState(() => _expanded = !_expanded),
                 icon: Icon(
                   _expanded ? Icons.expand_less : Icons.expand_more,
-                  color: AppColors.accentPrimary,
+                  color: ActivityScreenUi.primary,
                 ),
                 label: Text(
                   _expanded ? '閉じる' : 'もっと見る',
                   style: const TextStyle(
                     fontWeight: FontWeight.w800,
-                    color: AppColors.accentPrimary,
+                    color: ActivityScreenUi.primary,
                   ),
                 ),
               ),
@@ -694,8 +714,8 @@ class _ActivityLogTile extends StatelessWidget {
     final leading = _usesProductVisual(event.type)
         ? _ProductThumb(url: product?.imageUrl ?? '')
         : CircleAvatar(
-            backgroundColor: AppColors.accentLight,
-            child: Icon(Icons.notes_rounded, color: AppColors.accentPrimary),
+            backgroundColor: ActivityScreenUi.avatarBg,
+            child: Icon(Icons.notes_rounded, color: ActivityScreenUi.avatarIcon),
           );
 
     return InkWell(
@@ -817,7 +837,7 @@ class _WeekTotalBarsCard extends StatefulWidget {
   final List<RoomActivityEvent> events;
   final DateTime anchor;
 
-  static const Color _candBarColor = Color(0xFF5C6BC0);
+  static const Color _candBarColor = ActivityScreenUi.chartCandidateBar;
 
   @override
   State<_WeekTotalBarsCard> createState() => _WeekTotalBarsCardState();
@@ -875,6 +895,8 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
       radius: ActivityScreenLayout.cardRadius,
+      borderColor: ActivityScreenUi.border,
+      backgroundColor: ActivityScreenUi.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -883,6 +905,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w900,
               fontSize: 20,
+              color: ActivityScreenUi.textPrimary,
             ),
           ),
           const SizedBox(height: 10),
@@ -890,10 +913,10 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
             width: double.infinity,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+              color: ActivityScreenUi.subBlockFill,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.divider.withValues(alpha: 0.6),
+                color: ActivityScreenUi.subBlockBorder,
               ),
             ),
             child: Column(
@@ -903,7 +926,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                   '今週合計',
                   style: theme.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textSecondary,
                     fontSize: 12,
                   ),
                 ),
@@ -1009,8 +1032,8 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                                       child: Container(
                                                         width:
                                                             double.infinity,
-                                                        color: AppColors
-                                                            .accentPrimary,
+                                                        color: ActivityScreenUi
+                                                            .chartPostBar,
                                                       ),
                                                     ),
                                                   if (e.cand > 0)
@@ -1115,7 +1138,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
             spacing: 12,
             runSpacing: 6,
             children: [
-              _legendDot(theme, AppColors.accentPrimary, '投稿'),
+              _legendDot(theme, ActivityScreenUi.chartPostBar, '投稿'),
               _legendDot(theme, _WeekTotalBarsCard._candBarColor, '候補'),
             ],
           ),

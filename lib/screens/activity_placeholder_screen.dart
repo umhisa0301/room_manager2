@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 
 import '../navigation/app_shell_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
-import '../theme/app_theme.dart';
+import '../theme/activity_screen_tokens.dart';
 import '../widgets/activity/activity_achievement_tab.dart';
 import '../widgets/activity/activity_analytics_tab.dart';
+import '../widgets/activity/activity_screen_layout.dart';
 import '../widgets/activity/activity_segmented_tab_bar.dart';
 
 /// コレ活動：実績と分析の2タブ。
@@ -149,10 +150,13 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
   Widget build(BuildContext context) {
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
     const navBarReserve = 56.0;
-    final scrollBottomInset = bottomSafe + navBarReserve + 24;
+    final scrollBottomInset = bottomSafe +
+        navBarReserve +
+        24 +
+        ActivityScreenLayout.fabBottomReserve;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: ActivityScreenUi.background,
       appBar: AppBar(title: const Text('分析')),
       body: SafeArea(
         bottom: false,
@@ -160,7 +164,7 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: ListenableBuilder(
                 listenable: _tabController,
                 builder: (context, _) {

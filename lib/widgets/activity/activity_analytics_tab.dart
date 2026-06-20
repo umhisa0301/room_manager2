@@ -15,13 +15,13 @@ import '../../services/room_reaction_sync_history_store.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
+import '../../theme/activity_screen_tokens.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/analytics_shop_search_launcher.dart';
 import '../../utils/analytics_unknown_label.dart';
 import '../../utils/room_reaction_analytics.dart';
 import '../../utils/room_sync_log.dart';
 import '../../utils/shop_display_resolve.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/product_open_action_buttons.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
@@ -171,7 +171,8 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             padding: EdgeInsets.fromLTRB(
               ActivityScreenLayout.paddingH,
               8,
-              ActivityScreenLayout.paddingH,
+              ActivityScreenLayout.paddingH +
+                  ActivityScreenLayout.fabSideReserve,
               bottomPad,
             ),
             children: [
@@ -637,20 +638,21 @@ class _DecisionInsightCard extends StatelessWidget {
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
       radius: ActivityScreenLayout.cardRadius,
-      borderColor: AppColors.accentPrimary.withValues(alpha: 0.22),
+      borderColor: ActivityScreenUi.border,
+      backgroundColor: ActivityScreenUi.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.bolt_rounded, size: 26, color: AppColors.accentPrimary),
+              Icon(Icons.bolt_rounded, size: 26, color: ActivityScreenUi.primary),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   '次にやること',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: ActivityScreenUi.textPrimary,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
                   ),
@@ -665,10 +667,10 @@ class _DecisionInsightCard extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
               decoration: BoxDecoration(
-                color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+                color: ActivityScreenUi.subBlockFill,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.divider.withValues(alpha: 0.45),
+                  color: ActivityScreenUi.subBlockBorder,
                 ),
               ),
               child: Column(
@@ -682,6 +684,7 @@ class _DecisionInsightCard extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                       height: 1.3,
                       fontSize: 15,
+                      color: ActivityScreenUi.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -690,33 +693,31 @@ class _DecisionInsightCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: ActivityScreenUi.textSecondary,
                       height: 1.35,
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  FilledButton.icon(
-                    onPressed: brief.nextSteps[i].onPressed,
-                    icon: const Icon(Icons.arrow_forward_rounded, size: 18),
-                    label: Text(brief.nextSteps[i].buttonLabel),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.accentPrimary,
-                      foregroundColor: AppColors.textOnAccent,
-                      minimumSize: const Size(double.infinity, 44),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
+                  if (i == 0)
+                    FilledButton.icon(
+                      onPressed: brief.nextSteps[i].onPressed,
+                      icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      label: Text(brief.nextSteps[i].buttonLabel),
+                      style: ActivityScreenUi.primaryFilledButtonStyle(
+                        theme: theme,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      textStyle: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
+                    )
+                  else
+                    OutlinedButton.icon(
+                      onPressed: brief.nextSteps[i].onPressed,
+                      icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      label: Text(brief.nextSteps[i].buttonLabel),
+                      style: ActivityScreenUi.primaryOutlinedButtonStyle(
+                        theme: theme,
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -1044,6 +1045,8 @@ class _RoomReactionAnalyticsSectionState
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1052,13 +1055,20 @@ class _RoomReactionAnalyticsSectionState
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
+                    color: ActivityScreenUi.textPrimary,
                   ),
             ),
             const SizedBox(height: 14),
+            Icon(
+              Icons.insights_outlined,
+              size: 40,
+              color: ActivityScreenUi.emptyStateIcon,
+            ),
+            const SizedBox(height: 10),
             Text(
               'まだ反応データがありません。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textPrimary,
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
@@ -1067,7 +1077,7 @@ class _RoomReactionAnalyticsSectionState
             Text(
               'ROOM同期の「反応を確認する」から、いいね・コメントを確認できます。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textSecondary,
                     fontSize: 15,
                     height: 1.35,
                   ),
@@ -1082,6 +1092,8 @@ class _RoomReactionAnalyticsSectionState
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1090,22 +1102,30 @@ class _RoomReactionAnalyticsSectionState
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
+                    color: ActivityScreenUi.textPrimary,
                   ),
+            ),
+            const SizedBox(height: 12),
+            Icon(
+              Icons.sync_rounded,
+              size: 40,
+              color: ActivityScreenUi.emptyStateIcon,
             ),
             const SizedBox(height: 10),
             Text(
               'いいねやコメントの取得が進むと、このカードから傾向を確認できます。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textPrimary,
                     height: 1.4,
                     fontSize: 15,
+                    fontWeight: FontWeight.w700,
                   ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               'まずはROOM同期カードから「反応を確認する」を実行してください。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textSecondary,
                     height: 1.35,
                     fontSize: 14,
                   ),
@@ -1140,6 +1160,8 @@ class _RoomReactionAnalyticsSectionState
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1148,6 +1170,7 @@ class _RoomReactionAnalyticsSectionState
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
+                    color: ActivityScreenUi.textPrimary,
                   ),
             ),
             const SizedBox(height: 10),
@@ -1159,7 +1182,7 @@ class _RoomReactionAnalyticsSectionState
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         height: 1.45,
                         fontSize: 14,
-                        color: AppColors.textPrimary,
+                        color: ActivityScreenUi.textPrimary,
                       ),
                 ),
               ),
@@ -1171,6 +1194,8 @@ class _RoomReactionAnalyticsSectionState
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1179,6 +1204,7 @@ class _RoomReactionAnalyticsSectionState
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
+                    color: ActivityScreenUi.textPrimary,
                   ),
             ),
             const SizedBox(height: 8),
@@ -1187,7 +1213,7 @@ class _RoomReactionAnalyticsSectionState
                   ? 'いいね・コメントが多い順'
                   : '反応が確認できた${withReaction.length}件から（いいね・コメントが多い順）',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: ActivityScreenUi.textSecondary,
                     height: 1.4,
                     fontSize: 14,
                   ),
@@ -1218,15 +1244,15 @@ class _RoomReactionAnalyticsSectionState
                     _topProductsExpanded
                         ? Icons.expand_less_rounded
                         : Icons.expand_more_rounded,
-                    color: AppColors.accentPrimary,
+                    color: ActivityScreenUi.primary,
                   ),
                   label: Text(
                     _topProductsExpanded
                         ? '閉じる'
                         : 'もっと見る（最大5件）',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w800,
-                      color: AppColors.accentPrimary,
+                      color: ActivityScreenUi.primary,
                     ),
                   ),
                 ),
@@ -1239,6 +1265,8 @@ class _RoomReactionAnalyticsSectionState
         padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
         elevated: true,
         radius: ActivityScreenLayout.cardRadius,
+        borderColor: ActivityScreenUi.border,
+        backgroundColor: ActivityScreenUi.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -1247,6 +1275,7 @@ class _RoomReactionAnalyticsSectionState
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
+                    color: ActivityScreenUi.textPrimary,
                   ),
             ),
             const SizedBox(height: 16),
@@ -1347,14 +1376,18 @@ class _RoomReactionAnalyticsSectionState
                   final ctaLabel = shopLabel != null
                       ? '「$shopLabel」の商品を探す'
                       : '反応が良かったショップで検索する';
-                  return AppPrimaryButton(
-                    label: ctaLabel,
-                    icon: const Icon(Icons.storefront_outlined, size: 18),
+                  return OutlinedButton.icon(
                     onPressed: () =>
                         AnalyticsShopSearchLauncher.launchTopShopSearch(
                       context,
                       items: widget.allItems,
                       screen: 'activityReactionTrend',
+                    ),
+                    icon: const Icon(Icons.storefront_outlined, size: 18),
+                    label: Text(ctaLabel),
+                    style: ActivityScreenUi.primaryOutlinedButtonStyle(
+                      theme: Theme.of(context),
+                      minHeight: 48,
                     ),
                   );
                 },
@@ -1446,7 +1479,7 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w900,
-                          color: AppColors.accentPrimary,
+                          color: ActivityScreenUi.primary,
                           fontSize: 17,
                         ),
                   ),
@@ -1505,7 +1538,7 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                         deltaLine,
                         style:
                             Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.accentPrimary,
+                                  color: ActivityScreenUi.primary,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,
                                 ),
@@ -1622,8 +1655,8 @@ class _RoomReactionAggRow extends StatelessWidget {
             child: LinearProgressIndicator(
               minHeight: 8,
               value: fill.toDouble(),
-              backgroundColor: AppColors.surfaceVariant,
-              color: AppColors.accentPrimary.withValues(alpha: 0.75),
+              backgroundColor: ActivityScreenUi.progressTrack,
+              color: ActivityScreenUi.primary.withValues(alpha: 0.75),
             ),
           ),
         ),
