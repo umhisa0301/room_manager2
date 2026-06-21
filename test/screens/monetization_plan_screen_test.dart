@@ -8,7 +8,11 @@ import 'package:room_manager2/config/monetization_config.dart';
 import 'package:room_manager2/config/monetization_plan_config.dart';
 import 'package:room_manager2/screens/monetization_plan_screen.dart';
 import 'package:room_manager2/services/billing_product_service.dart';
+import 'package:room_manager2/services/billing_purchase_service.dart';
+import 'package:room_manager2/services/subscription_entitlement_store.dart';
+import 'package:room_manager2/services/subscription_status.dart';
 import 'package:room_manager2/utils/monetization_plan_display.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 MonetizationFlagSnapshot _allOnFlags() => resolveMonetizationFlags(
       monetizationEnabled: true,
@@ -40,6 +44,7 @@ void main() {
       WidgetTester tester, {
       MonetizationFlagSnapshot? flags,
       BillingProductQueryResult? billingQueryResultOverride,
+      BillingPurchaseService? billingPurchaseService,
       bool skipBillingQuery = true,
     }) async {
       await tester.pumpWidget(
@@ -48,11 +53,19 @@ void main() {
             flags: flags,
             billingQueryResultOverride: billingQueryResultOverride ??
                 createPlannedFallbackBillingQueryResult(),
+            billingPurchaseService: billingPurchaseService,
             skipBillingQuery: skipBillingQuery,
           ),
         ),
       );
       await tester.pumpAndSettle();
+    }
+
+    BillingPurchaseService createIdlePurchaseService() {
+      return BillingPurchaseService(
+        gateway: _IdlePurchaseGateway(),
+        entitlementStore: null,
+      );
     }
 
     testWidgets('renders plan screen with current free plan chip', (tester) async {
@@ -256,6 +269,107 @@ void main() {
       );
     });
 
+    testWidgets('shows Basic start button when basic product is available', (
+      tester,
+    ) async {
+      final purchaseService = createIdlePurchaseService();
+      await purchaseService.initialize();
+
+      await pumpPlanScreen(
+        tester,
+        flags: _allOnFlags(),
+        billingQueryResultOverride: BillingProductQueryResult.fromProducts(
+          products: [
+            BillingProductDetails(
+              productId: BillingProductConfig.basicMonthlyProductId,
+              title: 'Basic',
+              description: 'desc',
+              price: '¥500',
+              rawPrice: 500,
+              currencyCode: 'JPY',
+            ),
+          ],
+        ),
+        billingPurchaseService: purchaseService,
+      );
+
+      expect(find.text(MonetizationPlanDisplayCopy.basicStartLabel), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('monetization_plan_restore_button')),
+        48,
+      );
+      expect(find.text(MonetizationPlanDisplayCopy.restorePurchasesLabel), findsOneWidget);
+    });
+
+    testWidgets('shows Basic active label when basic entitlement is active', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final store = SubscriptionEntitlementStore(prefs);
+      await store.save(
+        const PurchaseEntitlement(status: SubscriptionStatus.basicActive),
+      );
+      final purchaseService = BillingPurchaseService(
+        gateway: _IdlePurchaseGateway(),
+        entitlementStore: store,
+      );
+      await purchaseService.initialize();
+
+      await pumpPlanScreen(
+        tester,
+        flags: _allOnFlags(),
+        billingQueryResultOverride: BillingProductQueryResult.fromProducts(
+          products: [
+            BillingProductDetails(
+              productId: BillingProductConfig.basicMonthlyProductId,
+              title: 'Basic',
+              description: 'desc',
+              price: '¥500',
+              rawPrice: 500,
+              currencyCode: 'JPY',
+            ),
+          ],
+        ),
+        billingPurchaseService: purchaseService,
+      );
+
+      expect(find.text(MonetizationPlanDisplayCopy.basicActiveLabel), findsOneWidget);
+      expect(find.byKey(const Key('monetization_plan_basic_current_label')), findsOneWidget);
+      expect(find.byKey(const Key('monetization_plan_current_label')), findsNothing);
+    });
+
+    testWidgets('does not show restore button when subscription disabled', (
+      tester,
+    ) async {
+      await pumpPlanScreen(tester, flags: _subscriptionOffFlags());
+
+      expect(find.text(MonetizationPlanDisplayCopy.restorePurchasesLabel), findsNothing);
+    });
+
+    testWidgets('pro teaser has no purchase button', (tester) async {
+      await pumpPlanScreen(
+        tester,
+        flags: _allOnFlags(),
+        billingQueryResultOverride: BillingProductQueryResult.fromProducts(
+          products: [
+            BillingProductDetails(
+              productId: BillingProductConfig.proMonthlyProductId,
+              title: 'Pro',
+              description: 'desc',
+              price: '¥900',
+              rawPrice: 900,
+              currencyCode: 'JPY',
+            ),
+          ],
+        ),
+      );
+
+      expect(find.text('今すぐ購入'), findsNothing);
+      expect(find.text('購入する'), findsNothing);
+      expect(find.text(MonetizationPlanDisplayCopy.basicStartLabel), findsNothing);
+    });
+
     testWidgets('shows checking status while billing query is loading', (
       tester,
     ) async {
@@ -329,4 +443,29 @@ class _NeverCompletingGateway implements InAppPurchaseGateway {
   Future<ProductDetailsResponse> queryProductDetails(Set<String> productIds) {
     return Completer<ProductDetailsResponse>().future;
   }
+}
+
+class _IdlePurchaseGateway implements InAppPurchasePurchaseGateway {
+  final StreamController<List<PurchaseDetails>> _controller =
+      StreamController<List<PurchaseDetails>>.broadcast();
+
+  @override
+  Stream<List<PurchaseDetails>> get purchaseStream => _controller.stream;
+
+  @override
+  Future<bool> isAvailable() async => true;
+
+  @override
+  Future<ProductDetailsResponse> queryProductDetails(Set<String> productIds) async {
+    return ProductDetailsResponse(productDetails: const [], notFoundIDs: const []);
+  }
+
+  @override
+  Future<bool> buyNonConsumable({required PurchaseParam purchaseParam}) async => true;
+
+  @override
+  Future<void> restorePurchases() async {}
+
+  @override
+  Future<void> completePurchase(PurchaseDetails purchaseDetails) async {}
 }

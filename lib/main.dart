@@ -47,6 +47,8 @@ import 'config/monetization_config.dart';
 import 'config/monetization_plan_config.dart';
 import 'config/room_import_enrichment_verify_config.dart';
 import 'services/admob_initializer.dart';
+import 'services/billing_purchase_service.dart';
+import 'services/subscription_entitlement_store.dart';
 import 'utils/room_sync_log.dart';
 
 Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
@@ -100,6 +102,19 @@ void main() async {
   await _bootstrapRakutenGenreNameCache(genreMasterRepository);
   await GenreMasterService.instance.load();
   await AdMobInitializer.initializeIfNeeded();
+
+  final subscriptionEntitlementStore = SubscriptionEntitlementStore(prefs);
+  registerGlobalSubscriptionEntitlementStore(subscriptionEntitlementStore);
+  registerPurchasedMonetizationPlanProvider(() {
+    return resolvePurchasedMonetizationPlanFromResolvedPlan(
+      readStoredPurchaseEntitlement().resolvedPlan,
+    );
+  });
+  final billingPurchaseService = BillingPurchaseService(
+    entitlementStore: subscriptionEntitlementStore,
+  );
+  await billingPurchaseService.initialize();
+
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -118,6 +133,7 @@ void main() async {
       todayRecommendationRepository: todayRecommendationRepository,
       genreMasterRepository: genreMasterRepository,
       prefs: prefs,
+      billingPurchaseService: billingPurchaseService,
     ),
   );
 }
@@ -141,6 +157,7 @@ class MyApp extends StatelessWidget {
     required this.todayRecommendationRepository,
     required this.genreMasterRepository,
     required this.prefs,
+    required this.billingPurchaseService,
   });
 
   final ProductRepository productRepository;
@@ -159,11 +176,15 @@ class MyApp extends StatelessWidget {
   final TodayRecommendationRepository todayRecommendationRepository;
   final GenreMasterRepository genreMasterRepository;
   final SharedPreferences prefs;
+  final BillingPurchaseService billingPurchaseService;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<BillingPurchaseService>.value(
+          value: billingPurchaseService,
+        ),
         Provider<RoomSyncCursorRepository>(
           create: (_) => SharedPreferencesRoomSyncCursorRepository(prefs),
         ),

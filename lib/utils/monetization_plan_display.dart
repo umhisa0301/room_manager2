@@ -12,6 +12,13 @@ abstract final class MonetizationPlanDisplayCopy {
   static const String subscriptionPreparingNotice =
       'アプリ内課金は現在準備中です。Basicプランは近日対応予定です。';
   static const String basicComingSoonLabel = '近日対応予定';
+  static const String basicStartLabel = 'Basicを開始';
+  static const String basicActiveLabel = 'Basic利用中';
+  static const String purchaseProcessingLabel = '処理中...';
+  static const String restorePurchasesLabel = '購入を復元';
+  static const String purchaseCanceledMessage = '購入はキャンセルされました';
+  static const String purchaseFailedMessage = '購入処理を完了できませんでした';
+  static const String restoreNothingFoundMessage = '復元できる購入はありませんでした';
   static const String preparingSnackBarMessage = '現在準備中です';
   static const String billingStatusChecking = '商品情報を確認中';
   static const String billingStatusFetchFailed = '商品情報を取得できませんでした';
@@ -301,6 +308,60 @@ String? resolveBillingStatusMessage({
     return MonetizationPlanDisplayCopy.billingStatusFetchFailed;
   }
   return null;
+}
+
+/// Basic カード購入ボタンの表示状態。
+class BasicPlanButtonState {
+  const BasicPlanButtonState({
+    required this.label,
+    required this.isEnabled,
+    required this.canPurchase,
+    required this.showComingSoon,
+  });
+
+  final String label;
+  final bool isEnabled;
+  final bool canPurchase;
+  final bool showComingSoon;
+}
+
+/// Basic カード購入ボタンのラベルと活性状態を解決する。
+BasicPlanButtonState resolveBasicPlanButtonState({
+  required bool isBasicActive,
+  required bool purchaseEnabled,
+  required bool isPurchasing,
+  required bool isRestoring,
+}) {
+  if (isBasicActive) {
+    return const BasicPlanButtonState(
+      label: MonetizationPlanDisplayCopy.basicActiveLabel,
+      isEnabled: false,
+      canPurchase: false,
+      showComingSoon: false,
+    );
+  }
+  if (isPurchasing || isRestoring) {
+    return const BasicPlanButtonState(
+      label: MonetizationPlanDisplayCopy.purchaseProcessingLabel,
+      isEnabled: false,
+      canPurchase: false,
+      showComingSoon: false,
+    );
+  }
+  if (purchaseEnabled) {
+    return const BasicPlanButtonState(
+      label: MonetizationPlanDisplayCopy.basicStartLabel,
+      isEnabled: true,
+      canPurchase: true,
+      showComingSoon: false,
+    );
+  }
+  return const BasicPlanButtonState(
+    label: MonetizationPlanDisplayCopy.basicComingSoonLabel,
+    isEnabled: true,
+    canPurchase: false,
+    showComingSoon: true,
+  );
 }
 
 /// 商品照会を行うべきか（プラン画面向け）。

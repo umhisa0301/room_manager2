@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../config/monetization_config.dart';
 import '../config/monetization_plan_config.dart';
 import '../services/billing_product_service.dart';
+import '../services/billing_purchase_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../utils/monetization_plan_display.dart';
@@ -15,6 +17,7 @@ class MonetizationPlanScreen extends StatefulWidget {
     this.flags,
     this.purchasedPlanOverride,
     this.billingProductService,
+    this.billingPurchaseService,
     this.billingQueryResultOverride,
     this.skipBillingQuery = false,
   });
@@ -25,6 +28,9 @@ class MonetizationPlanScreen extends StatefulWidget {
 
   /// テスト・差し替え用の商品照会サービス。
   final BillingProductService? billingProductService;
+
+  /// テスト・差し替え用の購入サービス。
+  final BillingPurchaseService? billingPurchaseService;
 
   /// テスト用。指定時は照会を行わずこの結果を使う。
   final BillingProductQueryResult? billingQueryResultOverride;
@@ -49,11 +55,62 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
 
   bool _billingQueryLoading = false;
   BillingProductQueryResult? _billingQueryResult;
+  BillingPurchaseService? _purchaseService;
+  String? _lastShownPurchaseMessage;
 
   @override
   void initState() {
     super.initState();
     _initializeBillingQuery();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _bindPurchaseServiceIfNeeded();
+  }
+
+  void _bindPurchaseServiceIfNeeded() {
+    final service =
+        widget.billingPurchaseService ?? _readPurchaseServiceFromContext();
+    if (service == null || identical(service, _purchaseService)) {
+      return;
+    }
+    _purchaseService?.removeListener(_onPurchaseServiceChanged);
+    _purchaseService = service;
+    _purchaseService!.addListener(_onPurchaseServiceChanged);
+  }
+
+  BillingPurchaseService? _readPurchaseServiceFromContext() {
+    try {
+      return context.read<BillingPurchaseService>();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _onPurchaseServiceChanged() {
+    if (!mounted) return;
+    final message = _purchaseService?.lastUserMessage;
+    if (message != null && message != _lastShownPurchaseMessage) {
+      _lastShownPurchaseMessage = message;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      });
+    }
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _purchaseService?.removeListener(_onPurchaseServiceChanged);
+    super.dispose();
   }
 
   void _initializeBillingQuery() {
@@ -89,14 +146,20 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
   @override
   Widget build(BuildContext context) {
     final snapshot = widget.flags ?? MonetizationFlagSnapshot.fromCompileTime();
+    final purchaseService = widget.billingPurchaseService ?? _purchaseService;
+    final purchasedPlan = widget.purchasedPlanOverride ??
+        (purchaseService?.entitlement.isActive == true
+            ? purchaseService!.entitlement.resolvedPlan
+            : null);
     final currentPlan = resolveCurrentMonetizationPlan(
       flags: snapshot,
-      purchasedPlanOverride: widget.purchasedPlanOverride,
+      purchasedPlanOverride: purchasedPlan,
     );
     final comparisonLines = buildFreeBasicComparisonLines();
     final freeFeatures = buildFreePlanCardFeatures();
     final basicFeatures = buildBasicPlanCardFeatures();
     final showCurrentOnFree = currentPlan == MonetizationPlan.free;
+    final showCurrentOnBasic = currentPlan == MonetizationPlan.basic;
     final basicPriceDisplay = resolveBasicPlanPriceDisplay(
       isLoading: _billingQueryLoading,
       queryResult: _billingQueryResult,
@@ -109,6 +172,18 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
       isLoading: _billingQueryLoading,
       queryResult: _billingQueryResult,
     );
+    final basicProductAvailable = _billingQueryResult?.basic != null;
+    final purchaseEnabled =
+        snapshot.isSubscriptionEnabled && basicProductAvailable;
+    final isPurchasing = purchaseService?.isPurchasing ?? false;
+    final isRestoring = purchaseService?.isRestoring ?? false;
+    final basicButtonState = resolveBasicPlanButtonState(
+      isBasicActive: showCurrentOnBasic,
+      purchaseEnabled: purchaseEnabled,
+      isPurchasing: isPurchasing,
+      isRestoring: isRestoring,
+    );
+    final showRestoreButton = snapshot.isSubscriptionEnabled;
 
     return Scaffold(
       key: const Key('monetization_plan_screen'),
@@ -142,6 +217,14 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
                         child: _BasicPlanCard(
                           features: basicFeatures,
                           priceDisplay: basicPriceDisplay,
+                          buttonState: basicButtonState,
+                          showCurrentChip: showCurrentOnBasic,
+                          onPurchaseTap: purchaseEnabled && !showCurrentOnBasic
+                              ? () => _onBasicPurchaseTap(purchaseService)
+                              : null,
+                          onComingSoonTap: !purchaseEnabled && !showCurrentOnBasic
+                              ? () => _onComingSoonTap(context)
+                              : null,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -159,6 +242,14 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
                     _BasicPlanCard(
                       features: basicFeatures,
                       priceDisplay: basicPriceDisplay,
+                      buttonState: basicButtonState,
+                      showCurrentChip: showCurrentOnBasic,
+                      onPurchaseTap: purchaseEnabled && !showCurrentOnBasic
+                          ? () => _onBasicPurchaseTap(purchaseService)
+                          : null,
+                      onComingSoonTap: !purchaseEnabled && !showCurrentOnBasic
+                          ? () => _onComingSoonTap(context)
+                          : null,
                     ),
                     const SizedBox(height: 12),
                     _FreePlanCard(
@@ -171,10 +262,42 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
             ),
             const SizedBox(height: _gap),
             _CoreComparisonSection(lines: comparisonLines),
+            if (showRestoreButton) ...[
+              const SizedBox(height: 12),
+              _RestorePurchasesButton(
+                isRestoring: isRestoring,
+                isPurchasing: isPurchasing,
+                onTap: purchaseService == null
+                    ? null
+                    : () => purchaseService.restorePurchases(),
+              ),
+            ],
             const SizedBox(height: _gap),
             _ProPlanTeaserCard(priceLabel: proPriceLabel),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _onBasicPurchaseTap(BillingPurchaseService? purchaseService) async {
+    if (purchaseService == null) {
+      _onComingSoonTap(context);
+      return;
+    }
+    final basic = _billingQueryResult?.basic;
+    if (basic == null) {
+      _onComingSoonTap(context);
+      return;
+    }
+    await purchaseService.purchaseBasic(basicProduct: basic);
+  }
+
+  void _onComingSoonTap(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(MonetizationPlanDisplayCopy.preparingSnackBarMessage),
+        duration: Duration(seconds: 2),
       ),
     );
   }
@@ -391,22 +514,27 @@ class _BasicPlanCard extends StatelessWidget {
   const _BasicPlanCard({
     required this.features,
     required this.priceDisplay,
+    required this.buttonState,
+    required this.showCurrentChip,
+    this.onPurchaseTap,
+    this.onComingSoonTap,
   });
 
   final List<MonetizationPlanCardFeature> features;
   final MonetizationPlanPriceDisplay priceDisplay;
-
-  void _onComingSoonTap(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(MonetizationPlanDisplayCopy.preparingSnackBarMessage),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
+  final BasicPlanButtonState buttonState;
+  final bool showCurrentChip;
+  final VoidCallback? onPurchaseTap;
+  final VoidCallback? onComingSoonTap;
 
   @override
   Widget build(BuildContext context) {
+    final buttonLabel = buttonState.label;
+    final buttonEnabled = buttonState.isEnabled;
+    final VoidCallback? onPressed = buttonState.canPurchase
+        ? onPurchaseTap
+        : (buttonState.showComingSoon ? onComingSoonTap : null);
+
     return AppCard(
       key: const Key('monetization_plan_basic_card'),
       padding: EdgeInsets.zero,
@@ -425,6 +553,13 @@ class _BasicPlanCard extends StatelessWidget {
             ),
             child: Row(
               children: [
+                if (showCurrentChip)
+                  _PlanTaglineChip(
+                    key: const Key('monetization_plan_basic_current_label'),
+                    label: MonetizationPlanDisplayCopy.currentPlanChipLabel,
+                    variant: _PlanChipVariant.current,
+                  ),
+                if (showCurrentChip) const SizedBox(width: 6),
                 _PlanTaglineChip(
                   key: const Key('monetization_plan_basic_recommended'),
                   label: MonetizationPlanDisplayCopy.basicRecommendedLabel,
@@ -466,10 +601,12 @@ class _BasicPlanCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 OutlinedButton(
                   key: const Key('monetization_plan_basic_coming_soon'),
-                  onPressed: () => _onComingSoonTap(context),
-                  style: MyPageScreenUi.disabledOutlineButtonStyle(height: 44),
+                  onPressed: buttonEnabled ? onPressed : null,
+                  style: buttonEnabled
+                      ? MyPageScreenUi.outlineButtonStyle(height: 44)
+                      : MyPageScreenUi.disabledOutlineButtonStyle(height: 44),
                   child: Text(
-                    MonetizationPlanDisplayCopy.basicComingSoonLabel,
+                    buttonLabel,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -479,6 +616,41 @@ class _BasicPlanCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _RestorePurchasesButton extends StatelessWidget {
+  const _RestorePurchasesButton({
+    required this.isRestoring,
+    required this.isPurchasing,
+    required this.onTap,
+  });
+
+  final bool isRestoring;
+  final bool isPurchasing;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null && !isRestoring && !isPurchasing;
+    return Align(
+      alignment: Alignment.center,
+      child: TextButton(
+        key: const Key('monetization_plan_restore_button'),
+        onPressed: enabled ? onTap : null,
+        child: Text(
+          isRestoring
+              ? MonetizationPlanDisplayCopy.purchaseProcessingLabel
+              : MonetizationPlanDisplayCopy.restorePurchasesLabel,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: enabled
+                    ? AppColors.textSecondary
+                    : AppColors.textTertiary,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
       ),
     );
   }

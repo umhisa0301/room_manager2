@@ -5,7 +5,51 @@
 このドキュメントは Google Play Billing 導入に関する課金商品情報と、フェーズごとの作業を整理する。
 
 **Phase 9C 時点で `in_app_purchase` による商品照会を導入済み。**  
-実際の購入処理・復元・レシート検証は次フェーズ以降で実装する。
+**Phase 9D 時点で Basic プランの購入処理・復元・簡易永続化を実装済み。**  
+Pro 購入・サーバー検証・広告非表示接続・無料版制限解除接続は未実施。
+
+---
+
+## Phase 9D（Basic 購入処理）
+
+### 実装内容
+
+- `BillingPurchaseService` — Basic 商品の購入フロー、`purchaseStream` 購読、復元
+- `SubscriptionEntitlementStore` — SharedPreferences による簡易購入状態保存（purchaseToken / レシートは保存しない）
+- `resolveCurrentMonetizationPlan` — 保存済み Basic entitlement 経由で `MonetizationPlan.basic` に解決可能
+- プラン画面 — Basic 商品取得後「Basicを開始」、購入成功後「Basic利用中」、「購入を復元」ボタン
+
+### 今回の購入対象
+
+| プラン | 購入 | 備考 |
+|--------|------|------|
+| Basic  | **可** | `room_manager_basic_monthly` |
+| Pro    | **不可** | 「今後追加予定」のまま |
+
+### 未接続（Phase 9F / 9G 以降）
+
+- 広告非表示（`adsRemoved` はモデル上 true だが AdMob 表示制御には未接続）
+- 無料版制限解除の本格接続
+- サーバー検証 / Firebase / Firestore
+- レシート送信
+
+### Play Console / 実機テスト前提
+
+1. **Play ストア経由インストール**が必要（`installerPackageName=com.android.vending`）
+2. Billing Library 入り AAB を **内部テスト / クローズドテスト** トラックへアップロード済みであること
+3. Play Console で **定期購入商品**（Basic）が作成・有効化されていること
+4. **ライセンステスター** アカウントを設定すること
+5. テスト購入では **テスト支払い方法** を使用（実課金されない）
+6. 本番公開前に **購入検証方針**（サーバー検証の要否等）を再確認すること
+
+### ログ確認
+
+```powershell
+adb logcat -c
+adb logcat | Select-String -Pattern "BILLING_PRODUCT|BILLING_PURCHASE|InAppPurchase|Flutter"
+```
+
+- purchaseToken / レシート / 商品IDの過剰出力はしない
 
 ---
 
@@ -41,7 +85,7 @@ BillingProductService().queryProducts()  // 商品照会のみ（購入処理な
 
 - `BillingProductConfig.allProductIds` を `queryProductDetails` で照会
 - 取得結果は `BillingProductQueryResult` としてプラン画面に渡す
-- 購入ボタンは有効化していない（「近日対応予定」のまま）
+- 購入ボタン: Basic 商品取得後は「Basicを開始」（Phase 9D）。未取得時は「近日対応予定」
 
 ---
 
@@ -63,15 +107,17 @@ BillingProductService().queryProducts()  // 商品照会のみ（購入処理な
 
 ---
 
-## 次フェーズ（Phase 9D以降）で行う作業
+## 次フェーズ（Phase 9E以降）で行う作業
 
-1. サブスク購入処理（`buyNonConsumable` 等）の実装
-2. 購入復元処理
-3. `PurchaseDetails` から `PurchaseEntitlement` への反映
-4. `resolveCurrentMonetizationPlan` への実購入状態接続
-5. 購入状態の永続化（SharedPreferences または Firestore）
-6. レシート検証・サーバー検証
-7. `adsRemoved` と広告表示制御を接続
+1. ~~サブスク購入処理（`buyNonConsumable` 等）の実装~~ → **Basic は Phase 9D で実装済み**
+2. ~~購入復元処理~~ → **Basic は Phase 9D で実装済み**
+3. ~~`PurchaseDetails` から `PurchaseEntitlement` への反映~~ → **Phase 9D で実装済み**
+4. ~~`resolveCurrentMonetizationPlan` への実購入状態接続~~ → **Phase 9D で実装済み**
+5. ~~購入状態の永続化（SharedPreferences）~~ → **Phase 9D で簡易実装済み**
+6. Pro 購入処理
+7. レシート検証・サーバー検証
+8. `adsRemoved` と広告表示制御を接続
+9. 無料版制限解除の本格接続
 
 ---
 

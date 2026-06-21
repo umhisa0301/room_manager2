@@ -227,6 +227,22 @@ void main() {
     });
   });
 
+  group('resolvePurchasedMonetizationPlan', () {
+    tearDown(() {
+      registerPurchasedMonetizationPlanProvider(null);
+    });
+
+    test('returns free when provider is not registered', () {
+      registerPurchasedMonetizationPlanProvider(null);
+      expect(resolvePurchasedMonetizationPlan(), MonetizationPlan.free);
+    });
+
+    test('uses registered provider', () {
+      registerPurchasedMonetizationPlanProvider(() => MonetizationPlan.basic);
+      expect(resolvePurchasedMonetizationPlan(), MonetizationPlan.basic);
+    });
+  });
+
   group('resolvePlanLimitsForCurrentUser', () {
     test('defaults to free with limits enforcement off at compile time', () {
       final context = resolvePlanLimitsForCurrentUser();

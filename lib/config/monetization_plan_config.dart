@@ -168,11 +168,20 @@ MonetizationPlan clampMonetizationPlan(
   return plan;
 }
 
-/// Billing 未接続時の購入済みプラン解決。現時点では常に free。
-///
-/// 将来の Billing 接続時は [resolvePurchasedMonetizationPlanFromEntitlement] を
-/// 呼び出すよう差し替える。
-MonetizationPlan resolvePurchasedMonetizationPlan() => MonetizationPlan.free;
+/// 購入済みプラン解決の差し替え口（main 起動時に [SubscriptionEntitlementStore] 等を接続）。
+MonetizationPlan Function()? _purchasedMonetizationPlanProvider;
+
+/// 購入済みプラン解決関数を登録する。null で解除。
+void registerPurchasedMonetizationPlanProvider(
+  MonetizationPlan Function()? provider,
+) {
+  _purchasedMonetizationPlanProvider = provider;
+}
+
+/// 登録済みプロバイダから購入済みプランを解決する。未登録時は free。
+MonetizationPlan resolvePurchasedMonetizationPlan() {
+  return _purchasedMonetizationPlanProvider?.call() ?? MonetizationPlan.free;
+}
 
 /// [PurchaseEntitlement] を受け取って購入済みプランを解決する差し替え口。
 ///
