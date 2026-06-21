@@ -1,0 +1,111 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-21 20:46:02
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: release
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260621_204602.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260621_204602.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260621_204602.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260621_204602.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260621_204602.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_204602
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_204602\terminal_output_20260621_204602.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 13796).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --release
+
+Flutter started (release). Use the separate controller window.
+Streaming flutter logs below...
+
+
+┌─────────────────────────────────────────────────────────┐
+│ A new version of Flutter is available!                  │
+│                                                         │
+│ To update to the latest version, run "flutter upgrade". │
+└─────────────────────────────────────────────────────────┘
+Launching lib\main.dart on SHG08 in release mode...
+Running Gradle task 'assembleRelease'...                            3.5s
+√ Built build\app\outputs\flutter-apk\app-release.apk (24.1MB)
+Installing build\app\outputs\flutter-apk\app-release.apk...      2,534ms
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-release.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.stepbytestudio.room_manager2 signatures do not match newer version; ignoring!]
+Uninstalling old version...
+Installing build\app\outputs\flutter-apk\app-release.apk...        34.5s
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-release.apk:
+Error: Failed to install APK again.
+Error running application on SHG08.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] Remote recorded video was not found at /sdcard/Movies/play_demo.mp4 (pull skipped).
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_204602
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260621_204602\terminal_output_20260621_204602.txt
+Video                    : (not pulled - remote file missing)
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260621_204602.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260621_204602.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260621_204602.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260621_204602.log
+
+Done (video not found on device).
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
