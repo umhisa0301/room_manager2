@@ -14,11 +14,13 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/today_recommendations_screen_tokens.dart';
 import '../utils/recommend_cooldown_policy.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
+import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_bulk_selection_header.dart';
@@ -134,10 +136,12 @@ class _TodayRecommendationsScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
+            style: TodayRecommendationsScreenUi.dismissTextButtonStyle(),
             child: const Text('キャンセル'),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
+            style: TodayRecommendationsScreenUi.primaryButtonStyle(height: 40),
             child: const Text('開始する'),
           ),
         ],
@@ -270,9 +274,16 @@ class _TodayRecommendationsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('今日のおすすめコレ候補')),
+    final theme = Theme.of(context);
+    return Theme(
+      data: TodayRecommendationsScreenUi.overlayTheme(theme),
+      child: Scaffold(
+      backgroundColor: TodayRecommendationsScreenUi.canvas,
+      appBar: AppBar(
+        title: const Text('今日のおすすめコレ候補'),
+        backgroundColor: TodayRecommendationsScreenUi.canvas,
+        surfaceTintColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: Consumer<TodayRecommendationProvider>(
           builder: (context, rec, _) {
@@ -315,11 +326,12 @@ class _TodayRecommendationsScreenState
                       : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
                   actions: [
                     const _GenerationLimitUsageLine(),
-                    AppPrimaryButton(
+                    MyPagePrimaryButton(
                       key: const Key('today_recommendation_generate_button'),
                       label: '今日のおすすめを作る',
                       onPressed: _regenerate,
                       icon: const Icon(Icons.auto_awesome_rounded),
+                      height: 48,
                     ),
                   ],
                 ),
@@ -468,13 +480,14 @@ class _TodayRecommendationsScreenState
                     top: false,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                      child: AppPrimaryButton(
+                      child: MyPagePrimaryButton(
                         key: const Key('today_recommendation_bulk_add_button'),
                         label: _isBulkAdding
                             ? '追加中…（$_bulkProcessed/$_bulkTotal）'
                             : 'まとめて候補に追加（${_selectedProductIds.length}件）',
                         icon: const Icon(Icons.playlist_add_check_rounded),
                         isLoading: _isBulkAdding,
+                        height: 48,
                         onPressed: _isBulkAdding
                             ? null
                             : () => _bulkAddCandidates(context, selectable),
@@ -487,6 +500,7 @@ class _TodayRecommendationsScreenState
           },
         ),
       ),
+    ),
     );
   }
 }
@@ -666,7 +680,7 @@ class _RecommendationCard extends StatelessWidget {
               child: Checkbox(
                 value: isSelected,
                 onChanged: (_) => onToggleSelected?.call(),
-                activeColor: AppColors.accentPrimary,
+                activeColor: TodayRecommendationsScreenUi.primary,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             ),
@@ -773,11 +787,13 @@ class _ProductTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
       decoration: BoxDecoration(
-        color: accent ? const Color(0xFFFFEEF5) : AppColors.surfaceVariant,
+        color: accent
+            ? TodayRecommendationsScreenUi.primaryLight
+            : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
           color: accent
-              ? AppColors.accentPrimary.withValues(alpha: 0.18)
+              ? TodayRecommendationsScreenUi.primaryBorder.withValues(alpha: 0.55)
               : AppColors.divider.withValues(alpha: 0.55),
         ),
       ),
@@ -786,7 +802,9 @@ class _ProductTag extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: accent ? AppColors.accentPrimary : AppColors.textSecondary,
+          color: accent
+              ? TodayRecommendationsScreenUi.primary
+              : AppColors.textSecondary,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -913,17 +931,17 @@ class _CompactActionButton extends StatelessWidget {
     final foreground = _isPrimary
         ? AppColors.textOnAccent
         : _isMedium
-        ? AppColors.accentPrimary
+        ? TodayRecommendationsScreenUi.primary
         : AppColors.textSecondary;
     final background = _isPrimary
-        ? AppColors.accentPrimary
+        ? TodayRecommendationsScreenUi.primary
         : _isMedium
-        ? const Color(0xFFFFEEF5)
+        ? Colors.white
         : Colors.transparent;
     final border = _isPrimary
-        ? AppColors.accentPrimary
+        ? TodayRecommendationsScreenUi.primary
         : _isMedium
-        ? AppColors.accentPrimary.withValues(alpha: 0.22)
+        ? TodayRecommendationsScreenUi.primaryBorder
         : AppColors.divider.withValues(alpha: 0.82);
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 34),

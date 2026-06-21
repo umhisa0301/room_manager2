@@ -801,14 +801,14 @@ class _StepDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = active ? MyPageScreenUi.primary : AppColors.textTertiary;
+    final c = active ? Colors.white : AppColors.textTertiary;
     return InkWell(
       customBorder: const CircleBorder(),
       onTap: enabled ? onTap : null,
       child: CircleAvatar(
         radius: 14,
         backgroundColor: active
-            ? MyPageScreenUi.primaryLight
+            ? MyPageScreenUi.primary
             : AppColors.surfaceVariant,
         child: Text(
           label,
@@ -1036,7 +1036,10 @@ class _StepRoomUrl extends StatelessWidget {
                     const SizedBox(
                       width: 14,
                       height: 14,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: MyPageScreenUi.primary,
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -1302,7 +1305,10 @@ class _InlineShopLoadingCard extends StatelessWidget {
           SizedBox(
             width: 22,
             height: 22,
-            child: CircularProgressIndicator(strokeWidth: 2.4),
+            child: CircularProgressIndicator(
+              strokeWidth: 2.4,
+              color: MyPageScreenUi.primary,
+            ),
           ),
           SizedBox(height: 12),
           Text('おすすめショップを探しています'),

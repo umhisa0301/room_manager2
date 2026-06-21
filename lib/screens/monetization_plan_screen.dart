@@ -185,7 +185,9 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
     );
     final showRestoreButton = snapshot.isSubscriptionEnabled;
 
-    return Scaffold(
+    return Theme(
+      data: MyPageScreenUi.overlayTheme(Theme.of(context)),
+      child: Scaffold(
       key: const Key('monetization_plan_screen'),
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('プランを見る')),
@@ -277,6 +279,7 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 

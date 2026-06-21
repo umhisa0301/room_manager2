@@ -27,7 +27,9 @@ class CommentsPlaceholderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Theme(
+      data: CommentScreenUi.overlayTheme(Theme.of(context)),
+      child: Scaffold(
       backgroundColor: CommentScreenUi.canvas,
       appBar: AppBar(
         title: const Text('コメント'),
@@ -85,6 +87,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
           },
         ),
       ),
+    ),
     );
   }
 

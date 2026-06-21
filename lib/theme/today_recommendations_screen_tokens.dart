@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'app_theme.dart';
 import 'home_screen_colors.dart';
 
-/// コメント画面のレイアウト・配色（ホーム/投稿/探す/分析/マイページと同系のティール基調）。
-abstract final class CommentScreenUi {
-  CommentScreenUi._();
+/// 今日のおすすめコレ候補画面の配色（探す・投稿管理と同系のティール基調）。
+abstract final class TodayRecommendationsScreenUi {
+  TodayRecommendationsScreenUi._();
 
   static const Color canvas = HomeScreenColors.canvas;
   static const Color primary = HomeScreenColors.homeAccentTeal;
   static const Color primaryLight = HomeScreenColors.homeAccentTealLight;
   static const Color primaryBorder = HomeScreenColors.homeAccentTealBorder;
-
-  static const Color textPrimary = HomeScreenColors.homeTextPrimary;
-  static const Color textSecondary = HomeScreenColors.homeTextSecondary;
-  static const Color cardBorder = HomeScreenColors.homeCardBorder;
 
   static Color get selectionHighlight => primary.withValues(alpha: 0.22);
 
@@ -25,10 +20,23 @@ abstract final class CommentScreenUi {
         selectionColor: selectionHighlight,
         selectionHandleColor: primary,
       ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return null;
+          }
+          if (states.contains(WidgetState.selected)) {
+            return primary;
+          }
+          return null;
+        }),
+      ),
       filledButtonTheme: FilledButtonThemeData(style: primaryButtonStyle()),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: primary,
-        foregroundColor: AppColors.textOnAccent,
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primary,
+          visualDensity: VisualDensity.compact,
+        ),
       ),
     );
   }
@@ -52,14 +60,10 @@ abstract final class CommentScreenUi {
     );
   }
 
-  static ButtonStyle copyButtonStyle() {
-    return FilledButton.styleFrom(
-      foregroundColor: AppColors.textOnAccent,
-      backgroundColor: primary,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-      ),
+  static ButtonStyle dismissTextButtonStyle() {
+    return TextButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeMutedText,
+      visualDensity: VisualDensity.compact,
     );
   }
 }

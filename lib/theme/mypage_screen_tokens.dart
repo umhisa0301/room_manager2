@@ -131,6 +131,21 @@ abstract final class MyPageScreenUi {
         selectionHandleColor: primary,
       ),
       textButtonTheme: TextButtonThemeData(style: linkTextButtonStyle()),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return null;
+          }
+          if (states.contains(WidgetState.selected)) {
+            return primary;
+          }
+          return null;
+        }),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: primaryButtonStyle(),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: primary),
     );
   }
 
