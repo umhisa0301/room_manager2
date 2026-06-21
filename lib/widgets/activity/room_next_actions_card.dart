@@ -9,6 +9,7 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/bulk_operation_state_controller.dart';
 import '../../state/room_import_controller.dart';
 import '../../theme/app_theme.dart';
+import '../../theme/activity_screen_tokens.dart';
 import '../../utils/analytics_shop_search_launcher.dart';
 import '../../utils/room_next_action_advisor.dart';
 import '../../widgets/app_card.dart';
@@ -102,10 +103,8 @@ class _ActionRow extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: OutlinedButton(
               onPressed: () => _onCta(context),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.accentPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                minimumSize: const Size(0, 36),
+              style: ActivityScreenUi.compactOutlinedButtonStyle(
+                theme: Theme.of(context),
               ),
               child: Text(action.ctaLabel),
             ),

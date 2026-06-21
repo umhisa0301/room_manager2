@@ -1627,7 +1627,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
         return (
           title: 'おすすめコレを見る',
           subtitle: '今日のおすすめ候補を確認しましょう',
-          buttonLabel: 'おすすめを見る',
+          buttonLabel: 'おすすめコレ',
           onTap: isRecommendationLoading ? null : onOpenRecommendations,
           semanticsLabel: 'home_recommendation_button',
         );
@@ -1760,11 +1760,12 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Flexible(
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     child: Text(
                                       cta.buttonLabel,
                                       maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
                                     ),
                                   ),
                                   const Icon(
@@ -2612,7 +2613,30 @@ class _DataUpdateCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: onOpenRoomUrl,
-                  icon: const Icon(Icons.link_rounded, size: 18),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: HomeScreenColors.homeAccentTeal,
+                    backgroundColor: HomeScreenColors.homeCardFill,
+                    side: const BorderSide(
+                      color: HomeScreenColors.homeAccentTealBorder,
+                      width: 1.2,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.link_rounded,
+                    size: 18,
+                    color: HomeScreenColors.homeAccentTeal,
+                  ),
                   label: const Text('ROOMプロフィールを登録'),
                 ),
               ] else ...[
@@ -3193,7 +3217,7 @@ class _HomePostMilestoneSection extends StatelessWidget {
               minHeight: 3,
               backgroundColor: HomeScreenColors.sectionOutlineNeutral
                   .withValues(alpha: 0.2),
-              color: AppColors.accentPrimary.withValues(alpha: 0.78),
+              color: HomeScreenColors.homeAccentTeal.withValues(alpha: 0.78),
             ),
           ),
         ],
@@ -3216,13 +3240,13 @@ class _HomeMilestoneChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fill = reached
-        ? AppColors.accentLight.withValues(alpha: 0.95)
+        ? HomeScreenColors.homeAccentTealLight.withValues(alpha: 0.95)
         : HomeScreenColors.subActionRowFill.withValues(alpha: 0.55);
     final border = reached
-        ? AppColors.accentPrimary.withValues(alpha: 0.42)
+        ? HomeScreenColors.homeAccentTeal.withValues(alpha: 0.42)
         : HomeScreenColors.sectionOutlineNeutral.withValues(alpha: 0.35);
     final textColor = reached
-        ? AppColors.accentPrimary
+        ? HomeScreenColors.homeAccentTeal
         : HomeScreenColors.footnoteMuted;
 
     return Container(
@@ -3293,7 +3317,7 @@ class _HomeHeroCtaButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.accentPrimary.withValues(alpha: 0.22),
+            color: HomeScreenColors.homeAccentTeal.withValues(alpha: 0.22),
             blurRadius: 14,
             offset: const Offset(0, 5),
           ),
@@ -3306,7 +3330,7 @@ class _HomeHeroCtaButton extends StatelessWidget {
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             foregroundColor: AppColors.textOnAccent,
-            backgroundColor: AppColors.accentPrimary,
+            backgroundColor: HomeScreenColors.homeAccentTeal,
             elevation: 0,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             shape: RoundedRectangleBorder(
@@ -3412,7 +3436,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = switch (state) {
-      RoomCollectPostLimitBarState.normal => AppColors.accentPrimary,
+      RoomCollectPostLimitBarState.normal => HomeScreenColors.homeAccentTeal,
       RoomCollectPostLimitBarState.warning => const Color(0xFFE67E22),
       RoomCollectPostLimitBarState.reached => AppColors.textSecondary,
     };
@@ -3705,7 +3729,7 @@ class _HomeOutlinedHomeButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: expandLabel ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: AppColors.accentPrimary),
+          Icon(icon, size: 18, color: HomeScreenColors.homeAccentTeal),
           gap,
           labelCell,
         ],
@@ -4239,7 +4263,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                   child: Icon(
                     leadingIcon,
                     size: 20,
-                    color: AppColors.accentPrimary,
+                    color: HomeScreenColors.homeAccentTeal,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -4251,7 +4275,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                         title,
                         style: _HomeUi.sectionFooterActionTitle(
                           context,
-                        ).copyWith(color: AppColors.accentPrimary),
+                        ).copyWith(color: HomeScreenColors.homeAccentTeal),
                       ),
                       const SizedBox(height: _HomeUi.gapStackTight),
                       Text(hint, style: _HomeUi.tapHint(context)),
@@ -4276,7 +4300,7 @@ class _HomeCollectionListLink extends StatelessWidget {
     return AppSecondaryButton(
       label: title,
       onPressed: onPressed,
-      icon: Icon(leadingIcon, size: 20, color: AppColors.accentPrimary),
+      icon: Icon(leadingIcon, size: 20, color: HomeScreenColors.homeAccentTeal),
       expand: true,
       height: 46,
     );

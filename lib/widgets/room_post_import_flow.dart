@@ -28,6 +28,7 @@ import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// [RoomPostImportFlow.executeBatch] から通知される進捗。
@@ -615,7 +616,7 @@ abstract final class RoomPostImportFlow {
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
-                    color: AppColors.accentPrimary,
+                    color: HomeScreenColors.homeAccentTeal,
                     height: 1.15,
                   ),
                 ),
@@ -714,7 +715,7 @@ abstract final class RoomPostImportFlow {
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
                     minimumSize: const Size(double.infinity, 54),
-                    backgroundColor: AppColors.accentPrimary,
+                    backgroundColor: HomeScreenColors.homeAccentTeal,
                     foregroundColor: AppColors.textOnAccent,
                   ),
                   onPressed: () {
@@ -852,7 +853,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: product.itemPrice > 0
-                              ? AppColors.accentPrimary
+                              ? HomeScreenColors.homeAccentTeal
                               : AppColors.textSecondary,
                           fontSize: product.itemPrice > 0 ? null : 12.5,
                         ),

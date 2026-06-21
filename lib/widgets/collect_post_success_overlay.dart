@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// コレ完了の軽い演出（上部バナー＋わずかなキラつき）。SnackBar だけにしないための UI。
 void showCollectPostSuccessCelebration(
@@ -93,7 +94,7 @@ class _CollectPostSuccessCelebrationLayerState
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: AppColors.accentPrimary.withValues(alpha: 0.35),
+                  color: HomeScreenColors.homeAccentTeal.withValues(alpha: 0.35),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -114,7 +115,7 @@ class _CollectPostSuccessCelebrationLayerState
                           return CustomPaint(
                             painter: _SparklePainter(
                               progress: _ctrl.value,
-                              color: AppColors.accentPrimary.withValues(
+                              color: HomeScreenColors.homeAccentTeal.withValues(
                                 alpha: 0.35,
                               ),
                             ),
@@ -163,7 +164,7 @@ class _CollectPostSuccessCelebrationLayerState
                                       .bodyMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.w700,
-                                        color: AppColors.accentPrimary,
+                                        color: HomeScreenColors.homeAccentTeal,
                                       ),
                                 ),
                               ],
@@ -172,8 +173,9 @@ class _CollectPostSuccessCelebrationLayerState
                           Icon(
                             Icons.auto_awesome_rounded,
                             size: 22,
-                            color:
-                                AppColors.accentPrimary.withValues(alpha: 0.9),
+                            color: HomeScreenColors.homeAccentTeal.withValues(
+                              alpha: 0.9,
+                            ),
                           ),
                         ],
                       ),

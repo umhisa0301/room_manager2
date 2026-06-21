@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../theme/app_theme.dart';
+import '../theme/mypage_screen_tokens.dart';
 import '../utils/favorite_genre_selection_policy.dart';
 import 'app_button.dart';
 
@@ -97,7 +98,7 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                         Icon(
                           Icons.numbers_rounded,
                           size: 22,
-                          color: AppColors.accentPrimary,
+                          color: MyPageScreenUi.primary,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -233,7 +234,7 @@ class _GenreGridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = AppColors.accentPrimary;
+    final accent = MyPageScreenUi.primary;
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(12),
@@ -250,7 +251,7 @@ class _GenreGridCell extends StatelessWidget {
               width: selected ? 2 : 1,
             ),
             color: selected
-                ? AppColors.accentLight.withValues(alpha: 0.38)
+                ? MyPageScreenUi.primaryLight.withValues(alpha: 0.38)
                 : AppColors.surface,
           ),
           child: Opacity(

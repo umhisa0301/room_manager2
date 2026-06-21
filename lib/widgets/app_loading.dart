@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// Small loading view. Loading must confirm progress, not dominate the screen.
 class AppLoadingView extends StatelessWidget {
@@ -22,7 +23,7 @@ class AppLoadingView extends StatelessWidget {
       height: inline ? 18 : 26,
       child: const CircularProgressIndicator(
         strokeWidth: 2.2,
-        color: AppColors.accentPrimary,
+        color: HomeScreenColors.homeAccentTeal,
       ),
     );
 

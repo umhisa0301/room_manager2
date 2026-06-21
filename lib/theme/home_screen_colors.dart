@@ -42,27 +42,27 @@ abstract final class HomeScreenColors {
     AppColors.background,
   );
 
-  /// ROOM：ほんの少しピンク寄り（一覧ブロックと「ひとかたまり」に見せる）
+  /// ROOM：ほんの少しティール寄り（一覧ブロックと「ひとかたまり」に見せる）
   static Color get roomGroupedShellFill => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.208),
+    homeAccentTealLight.withValues(alpha: 0.208),
     groupedSectionFill,
   );
 
   /// 最近候補：ROOM より薄く、別セクションだが同じ世界観
   static Color get recentGroupedShellFill => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.138),
+    homeAccentTealLight.withValues(alpha: 0.138),
     groupedSectionFill,
   );
 
   /// ROOM 見出し帯（タイトル＝親）
   static Color get roomSectionHeaderBand => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.42),
+    homeAccentTealLight.withValues(alpha: 0.42),
     roomGroupedShellFill,
   );
 
   /// 最近候補 見出し帯
   static Color get recentSectionHeaderBand => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.35),
+    homeAccentTealLight.withValues(alpha: 0.35),
     recentGroupedShellFill,
   );
 
@@ -80,7 +80,7 @@ abstract final class HomeScreenColors {
 
   /// 単独カード（検索ブロック）：真っ白だけにせずホーム全体と密度を揃える
   static Color get standaloneCardFill => Color.alphaBlend(
-    AppColors.accentLightest.withValues(alpha: 0.30),
+    homeAccentTealLight.withValues(alpha: 0.30),
     AppColors.surface,
   );
 
@@ -95,7 +95,7 @@ abstract final class HomeScreenColors {
 
   /// ROOM 集計4タイル：共通のカード面（純白よりほんの少しトーンを載せデッキから分離）
   static Color get roomMetricTileFill => Color.alphaBlend(
-    AppColors.accentLightest.withValues(alpha: 0.58),
+    homeAccentTealLight.withValues(alpha: 0.58),
     Color.alphaBlend(
       AppColors.surfaceVariant.withValues(alpha: 0.30),
       AppColors.surface,
@@ -130,11 +130,11 @@ abstract final class HomeScreenColors {
     AppColors.surface,
   );
 
-  /// 今日のコレ：当日アクション（ブランドアクセント）
+  /// 今日のコレ：当日アクション（ティールアクセント）
   static Color get metricRoleTodayIcon =>
-      AppColors.accentPrimary.withValues(alpha: 0.95);
+      homeAccentTeal.withValues(alpha: 0.95);
   static Color get metricRoleTodayIconBg => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.85),
+    homeAccentTealLight.withValues(alpha: 0.85),
     AppColors.surface,
   );
 
@@ -155,22 +155,22 @@ abstract final class HomeScreenColors {
   static Color get sectionOutlineNeutral =>
       AppColors.divider.withValues(alpha: 0.88);
   static Color get sectionOutlineAccent =>
-      AppColors.accentPrimary.withValues(alpha: 0.26);
+      homeAccentTeal.withValues(alpha: 0.26);
   static Color get inlineDivider => AppColors.divider.withValues(alpha: 0.58);
   static Color get listRowDivider => AppColors.divider.withValues(alpha: 0.56);
 
   // --- 今日のおすすめ（独立セクション・グラデでまとまり）---
   static List<Color> get todayActiveGradientColors => [
-    AppColors.accentLight.withValues(alpha: 0.98),
+    homeAccentTealLight.withValues(alpha: 0.98),
     Color.alphaBlend(
-      AppColors.accentLight.withValues(alpha: 0.44),
+      homeAccentTealLight.withValues(alpha: 0.44),
       AppColors.surface,
     ),
   ];
   static Color get todayActiveBorder =>
-      AppColors.accentPrimary.withValues(alpha: 0.32);
+      homeAccentTeal.withValues(alpha: 0.32);
   static Color get todayDoneFill => Color.alphaBlend(
-    AppColors.accentLight.withValues(alpha: 0.14),
+    homeAccentTealLight.withValues(alpha: 0.14),
     Color.alphaBlend(
       AppColors.surfaceVariant.withValues(alpha: 0.68),
       AppColors.surface,
@@ -180,9 +180,9 @@ abstract final class HomeScreenColors {
 
   // --- 「このアプリについて」（見出し〜本文が同カード内の塊）---
   static Color get aboutHeaderGradientStart =>
-      AppColors.accentLight.withValues(alpha: 0.97);
+      homeAccentTealLight.withValues(alpha: 0.97);
   static Color get aboutHeaderGradientEnd =>
-      Color.alphaBlend(AppColors.accentLight.withValues(alpha: 0.28), canvas);
+      Color.alphaBlend(homeAccentTealLight.withValues(alpha: 0.28), canvas);
 
   static List<Color> get aboutSectionGradientColors => [
     aboutHeaderGradientStart,
@@ -191,20 +191,20 @@ abstract final class HomeScreenColors {
 
   /// 展開本文エリア（ヘッダーより一段沈めて「中身」）
   static Color get aboutExpandedWellFill => Color.alphaBlend(
-    AppColors.accentLightest.withValues(alpha: 0.86),
+    homeAccentTealLight.withValues(alpha: 0.86),
     canvas,
   );
 
   // --- テキスト階層（ホーム）---
   static Color get titlePrimary => AppColors.textPrimary;
 
-  /// アクセントセクション見出し（ROOM・最近候補）：ブランドより一段濃く
+  /// アクセントセクション見出し（ROOM・最近候補）：ティールより一段濃く
   static Color get accentSectionHeading => Color.alphaBlend(
-    const Color(0xFF240010).withValues(alpha: 0.182),
-    AppColors.accentPrimary,
+    const Color(0xFF042F2E).withValues(alpha: 0.15),
+    homeAccentTeal,
   );
 
-  static Color get sectionTitleAccent => AppColors.accentPrimary;
+  static Color get sectionTitleAccent => homeAccentTeal;
   static Color get leadOnSection => const Color(0xFF5C5C64);
   static Color get bodyOnSection => AppColors.textSecondary;
 
@@ -212,7 +212,7 @@ abstract final class HomeScreenColors {
   static Color get groupedSectionBody => const Color(0xFF4B4B54);
   static Color get footnoteMuted => const Color(0xFF6C6C75);
   static Color get footerActionLabel =>
-      AppColors.accentPrimary.withValues(alpha: 0.94);
+      homeAccentTeal.withValues(alpha: 0.94);
 
   /// 補助アイコン（シェブロン等）
   static Color get chevronOnSection => leadOnSection;
@@ -231,26 +231,26 @@ abstract final class HomeScreenColors {
 
   /// ホーム主CTA（楽天で検索・hero）：ベタ塗りより一階調整して主役感と落ち着きの両立
   static Color get heroCtaBackground => Color.alphaBlend(
-    const Color(0xFF1A0610).withValues(alpha: 0.075),
-    AppColors.accentPrimary,
+    const Color(0xFF042F2E).withValues(alpha: 0.08),
+    homeAccentTeal,
   );
 
   static Color get heroCtaShadow =>
-      AppColors.accentPrimary.withValues(alpha: 0.37);
+      homeAccentTeal.withValues(alpha: 0.37);
 
   // --- 状態アイコン ---
   static Color get statusSuccessIcon =>
       AppColors.success.withValues(alpha: 0.9);
   static Color get statusAccentMuted =>
-      AppColors.accentPrimary.withValues(alpha: 0.6);
+      homeAccentTeal.withValues(alpha: 0.6);
   static Color get statusAccentStrong =>
-      AppColors.accentPrimary.withValues(alpha: 0.92);
+      homeAccentTeal.withValues(alpha: 0.92);
 
   // --- インタラクション（リップル：疲れない範囲で存在感）---
   static Color get inkAccentSplash =>
-      AppColors.accentPrimary.withValues(alpha: 0.12);
+      homeAccentTeal.withValues(alpha: 0.12);
   static Color get inkAccentHighlight =>
-      AppColors.accentPrimary.withValues(alpha: 0.06);
+      homeAccentTeal.withValues(alpha: 0.06);
   static Color get inkNeutralSplash =>
       AppColors.textPrimary.withValues(alpha: 0.07);
   static Color get inkNeutralHighlight =>
@@ -262,14 +262,14 @@ abstract final class HomeScreenColors {
   // --- プログレス（10件バーが埋もれないように）---
   static Color get progressTrack => AppColors.divider.withValues(alpha: 0.52);
   static Color get progressValue =>
-      AppColors.accentPrimary.withValues(alpha: 0.92);
+      homeAccentTeal.withValues(alpha: 0.92);
 
   // --- 商品サムネプレースホルダ ---
   static Color get candidateThumbPlaceholder => const Color(0xFFD9ECFC);
 
   /// フローステップの番号バッジ背景
   static Color get flowStepBadgeFill =>
-      AppColors.accentPrimary.withValues(alpha: 0.18);
+      homeAccentTeal.withValues(alpha: 0.18);
 
   // --- ホーム改修（Material 3・ブルーグリーン基調）---
   /// ホーム主CTA・進行中ステップ
