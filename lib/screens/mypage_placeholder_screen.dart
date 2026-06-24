@@ -16,6 +16,7 @@ import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
+import '../state/operation_tutorial_controller.dart';
 import '../theme/app_theme.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../utils/user_profile_genre_migration.dart';
@@ -281,6 +282,11 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       : null,
                   onOpenInitialSetup: () => _openEasyInitialSetup(context),
                   onOpenSavedShops: openSavedShops,
+                  onOpenTutorialReplay: () {
+                    context
+                        .read<OperationTutorialController>()
+                        .startProfileTutorial(forceReplay: true);
+                  },
                 ),
               ],
             );

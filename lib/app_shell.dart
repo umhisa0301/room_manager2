@@ -16,8 +16,10 @@ import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
 import 'state/bulk_operation_state_controller.dart';
 import 'state/room_import_controller.dart';
+import 'state/operation_tutorial_controller.dart';
 import 'utils/room_sync_log.dart';
 import 'widgets/common_draggable_edge_fab.dart';
+import 'widgets/tutorial/tutorial_overlay_host.dart';
 
 /// 下部ナビ表示は ホーム・探す・ROOMコレ・分析・マイページ。
 /// [IndexedStack] は 0=ホーム, 1=ROOMコレ, 2=コメント（フッター非表示）, 3=分析, 4=マイページ。
@@ -30,6 +32,8 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
+  bool _mypageTabOpenedOnce = false;
+
   @override
   void initState() {
     super.initState();
@@ -112,7 +116,17 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     final shell = context.watch<AppShellController>();
     final idx = shell.currentIndex;
-    return Scaffold(
+    if (idx == 4 && !_mypageTabOpenedOnce) {
+      _mypageTabOpenedOnce = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        context
+            .read<OperationTutorialController>()
+            .maybeAutoStartProfileTutorial();
+      });
+    }
+    return TutorialOverlayHost(
+      child: Scaffold(
       body: Stack(
         clipBehavior: Clip.none,
         fit: StackFit.expand,
@@ -249,6 +263,7 @@ class _AppShellState extends State<AppShell> {
           ),
         ),
       ),
+    ),
     );
   }
 }

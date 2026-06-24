@@ -7,6 +7,7 @@ import '../../models/user_profile.dart';
 import '../../services/app_action_service.dart';
 import '../../theme/mypage_screen_tokens.dart';
 import '../../utils/monetization_plan_display.dart';
+import '../tutorial/tutorial_target_keys.dart';
 
 /// マイページ共通カード。
 class MyPageCard extends StatelessWidget {
@@ -298,6 +299,7 @@ class MyPageSettingNavRow extends StatelessWidget {
     required this.chipVariant,
     required this.onTap,
     this.showDivider = true,
+    this.semanticsLabel,
   });
 
   final String label;
@@ -305,10 +307,11 @@ class MyPageSettingNavRow extends StatelessWidget {
   final MyPageStatusChipVariant chipVariant;
   final VoidCallback onTap;
   final bool showDivider;
+  final String? semanticsLabel;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final row = Column(
       children: [
         Material(
           color: Colors.transparent,
@@ -350,6 +353,9 @@ class MyPageSettingNavRow extends StatelessWidget {
           Divider(height: 1, color: MyPageScreenUi.cardBorder),
       ],
     );
+    final semantics = semanticsLabel;
+    if (semantics == null) return row;
+    return Semantics(label: semantics, button: true, child: row);
   }
 }
 
@@ -566,6 +572,7 @@ class MyPageRoomSettingsCard extends StatelessWidget {
         profile.hasRoomUrl && genreCount > 0 && savedShopCount > 0;
 
     return MyPageCard(
+      key: TutorialTargetKeys.roomSettingsCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -580,38 +587,47 @@ class MyPageRoomSettingsCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           MyPageSettingNavRow(
+            key: TutorialTargetKeys.nicknameRow,
             label: 'ニックネーム',
             chipLabel: hasNickname ? '設定済み' : '未設定',
             chipVariant: hasNickname
                 ? MyPageStatusChipVariant.set
                 : MyPageStatusChipVariant.optional,
             onTap: onEditNickname,
+            semanticsLabel: 'ニックネーム設定',
           ),
           MyPageSettingNavRow(
+            key: TutorialTargetKeys.roomUrlRow,
             label: 'ROOM URL',
             chipLabel: profile.hasRoomUrl ? '登録済み' : '未設定',
             chipVariant: profile.hasRoomUrl
                 ? MyPageStatusChipVariant.set
                 : MyPageStatusChipVariant.unset,
             onTap: onEditRoomUrl,
+            semanticsLabel: 'ROOM URL設定',
           ),
           MyPageSettingNavRow(
+            key: TutorialTargetKeys.genreRow,
             label: 'お気に入りジャンル',
             chipLabel: genreCount > 0 ? '$genreCount件' : '未設定',
             chipVariant: genreCount > 0
                 ? MyPageStatusChipVariant.set
                 : MyPageStatusChipVariant.unset,
             onTap: onEditGenres,
+            semanticsLabel: 'お気に入りジャンル設定',
           ),
           MyPageSettingNavRow(
+            key: TutorialTargetKeys.savedShopRow,
             label: '保存ショップ',
             chipLabel: savedShopCount > 0 ? '$savedShopCount件' : '未設定',
             chipVariant: savedShopCount > 0
                 ? MyPageStatusChipVariant.set
                 : MyPageStatusChipVariant.unset,
             onTap: onOpenSavedShops,
+            semanticsLabel: '保存ショップ設定',
           ),
           MyPageSettingNavRow(
+            key: TutorialTargetKeys.postStyleRow,
             label: '探し方',
             chipLabel: hasPostStyle ? postStyleLabel : '未設定',
             chipVariant: hasPostStyle
@@ -619,6 +635,7 @@ class MyPageRoomSettingsCard extends StatelessWidget {
                 : MyPageStatusChipVariant.optional,
             onTap: onEditPostStyle,
             showDivider: false,
+            semanticsLabel: '探し方設定',
           ),
         ],
       ),
@@ -678,12 +695,14 @@ class MyPageAppSettingsCard extends StatelessWidget {
     super.key,
     required this.onOpenInitialSetup,
     required this.onOpenSavedShops,
+    required this.onOpenTutorialReplay,
     this.onOpenDemo,
     this.onOpenDevAutomation,
   });
 
   final VoidCallback onOpenInitialSetup;
   final VoidCallback onOpenSavedShops;
+  final VoidCallback onOpenTutorialReplay;
   final VoidCallback? onOpenDemo;
   final VoidCallback? onOpenDevAutomation;
 
@@ -702,6 +721,11 @@ class MyPageAppSettingsCard extends StatelessWidget {
           MyPageNavListTile(
             title: '保存ショップを管理',
             onTap: onOpenSavedShops,
+          ),
+          MyPageNavListTile(
+            key: const Key('mypage_tutorial_replay_entry'),
+            title: '操作ガイドをもう一度見る',
+            onTap: onOpenTutorialReplay,
           ),
           MyPageNavListTile(
             title: '通知設定',
@@ -825,6 +849,7 @@ class MyPageSettingsSection extends StatelessWidget {
     this.onOpenDevAutomation,
     required this.onOpenInitialSetup,
     this.onOpenSavedShops,
+    this.onOpenTutorialReplay,
   });
 
   final VoidCallback onOpenPlan;
@@ -832,6 +857,7 @@ class MyPageSettingsSection extends StatelessWidget {
   final VoidCallback? onOpenDevAutomation;
   final VoidCallback onOpenInitialSetup;
   final VoidCallback? onOpenSavedShops;
+  final VoidCallback? onOpenTutorialReplay;
 
   static bool _devAutomationEntryVisibilityLogged = false;
 
@@ -852,6 +878,7 @@ class MyPageSettingsSection extends StatelessWidget {
         MyPageAppSettingsCard(
           onOpenInitialSetup: onOpenInitialSetup,
           onOpenSavedShops: onOpenSavedShops ?? () {},
+          onOpenTutorialReplay: onOpenTutorialReplay ?? () {},
           onOpenDemo: onOpenDemo,
           onOpenDevAutomation: onOpenDevAutomation,
         ),

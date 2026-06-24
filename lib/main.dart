@@ -19,6 +19,7 @@ import 'repository/product_catalog_repository.dart';
 import 'repository/shop_catalog_repository.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'repository/easy_initial_setup_repository.dart';
+import 'repository/operation_tutorial_repository.dart';
 import 'state/bulk_operation_state_controller.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
@@ -40,6 +41,7 @@ import 'state/user_profile_provider.dart';
 import 'state/room_import_controller.dart';
 import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
+import 'state/operation_tutorial_controller.dart';
 import 'navigation/app_shell_controller.dart';
 import 'models/genre_master.dart';
 import 'config/debug_log_flags.dart';
@@ -193,6 +195,14 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => EasyInitialSetupRepository(prefs),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OperationTutorialRepository(prefs),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => OperationTutorialController(
+            ctx.read<OperationTutorialRepository>(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => BulkOperationStateController(),
