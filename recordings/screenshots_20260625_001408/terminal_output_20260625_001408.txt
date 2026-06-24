@@ -1,0 +1,284 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-25 00:14:08
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260625_001408.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260625_001408.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260625_001408.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260625_001408.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260625_001408.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408\terminal_output_20260625_001408.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 7740).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                              5.2s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           3.5s
+D/FlutterJNI(19832): Beginning load of flutter...
+D/FlutterJNI(19832): flutter (null) was loaded normally!
+I/flutter (19832): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (19832): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (19832): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (19832): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (19832): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (19832): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (19832): [ADMOB] initialization skipped ads=false
+I/flutter (19832): [BILLING_PURCHASE] initialized available=true active=false
+Syncing files to device SHG08...                                    87ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:52370/ftHDU658ZJk=/
+I/flutter (19832): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer(19832): Skipped 61 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:52370/ftHDU658ZJk=/
+I/WebViewFactory(19832): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(19832): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(19832): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(19832): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(19832): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(19832): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(19832): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/chromium(19832): [0625/001429.199989:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/chromium(19832): [0625/001429.202649:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(19832): Successfully loaded native library
+I/cr_CachingUmaRecorder(19832): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(19832): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(19832): #registerProvider() provider:WV.wk@96fa714 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(19832): #setManagerAndSource() 0
+I/cr_policy(19832): registerReceiver succeeded after 1ms
+I/cr_DisplayManager(19832): Is Display Topology available: false
+I/cr_CombinedPProvider(19832): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(19832): Compat change id reported: 183155436; UID 10519; state: ENABLED
+I/cr_AppResProvider(19832): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(19832): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(19832): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(19832): #flushPolicies()
+W/chromium(19832): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 50566835
+D/CompatibilityChangeReporter(19832): Compat change id reported: 214741472; UID 10519; state: ENABLED
+I/CameraManagerGlobal(19832): Connecting to camera service
+I/cr_AppResProvider(19832): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(19832): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(19832): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(19832): #flushPolicies()
+D/CompatibilityChangeReporter(19832): Compat change id reported: 193247900; UID 10519; state: ENABLED
+D/CompatibilityChangeReporter(19832): Compat change id reported: 171228096; UID 10519; state: ENABLED
+I/Choreographer(19832): Skipped 40 frames!  The application may be doing too much work on its main thread.
+I/PlatformViewsController(19832): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(19832): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(19832): Compat change id reported: 236825255; UID 10519; state: ENABLED
+W/libc    (19832): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(19832): type=1400 audit(0.0:47140): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(19832): Davey! duration=719ms; Flags=1, FrameTimelineVsyncId=98568868, IntendedVsync=433846953974074, Vsync=433847620640714, InputEventId=0, HandleInputStart=433847629617050, AnimationStart=433847629618561, PerformTraversalsStart=433847629619134, DrawStart=433847644062727, FrameDeadline=433846970640740, FrameInterval=433847629312050, FrameStartTime=16666666, SyncQueued=433847644834915, SyncStart=433847644928769, IssueDrawCommandsStart=433847645438821, SwapBuffers=433847671996113, FrameCompleted=433847673634654, DequeueBufferDuration=2109166, QueueBufferDuration=1124739, GpuCompleted=433847673142675, SwapBuffersCompleted=433847673634654, DisplayPresentTime=0, CommandSubmissionCompleted=433847671996113, 
+W/libc    (19832): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(19832): type=1400 audit(0.0:47141): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(19832): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(19832): Build Date              : 08/23/22
+I/AdrenoVK-0(19832): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(19832): Local Branch            : 
+I/AdrenoVK-0(19832): Remote Branch           : 
+I/AdrenoVK-0(19832): Remote Branch           : 
+I/AdrenoVK-0(19832): Reconstruct Branch      : 
+I/AdrenoVK-0(19832): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(19832): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(19832): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(19832): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(19832): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+E/FrameEvents(19832): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(19832): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (19832): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [AUTO_REACTION_SYNC] scheduled
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (19832): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=人気 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (19832): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (19832): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BA%BA%E6%B0%97&minReviewCount=5&minReviewAverage=3.4&sort=-reviewCount
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [Rakuten] response status=200 page=1 bytes=255663
+I/flutter (19832): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (19832): [Rakuten] repository search total mapped=30
+I/flutter (19832): [Rakuten] search mapped item count=30
+I/flutter (19832): [Rakuten] search before filter count=30
+I/flutter (19832): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (19832): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (19832): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=-
+I/flutter (19832): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=10 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=201117:1|503020:1|566732:2|503170:1|110475:1|564277:2|201402:1|206440:1 shopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:2|美顔器・原液ならモテビューティー:1|【手作りお餅・和菓子通販】伊富貴:1|La Chou Chou:2|グルメコーヒー豆専門!加藤珈琲店:1|Dark Angel (ダークエンジェル):1
+I/flutter (19832): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 apiCalls=1 pagesUsed=1 rawItems=27 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=3 excludedZeroReview=0 finalItems=10 fallbackUsed=true assistPlanUsed=false
+I/flutter (19832): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:2|美顔器・原液ならモテビューティー:1|【手作りお餅・和菓子通販】伊富貴:1|La Chou Chou:2|グルメコーヒー豆専門!加藤珈琲店:1|Dark Angel (ダークエンジェル):1
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [INPUT_LIMIT_APPLIED] screen=myPage field=roomUrl maxLength=200 keyboardType=url formatter=url validator=default
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/TRuntime.CctTransportBackend(19832): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+E/FeatureFlagsImplExport(19832): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+W/pool-2-thread-1(19832): type=1400 audit(0.0:47142): avc:  denied  { search } for  name="/" dev="sda10" ino=2 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0 app=com.stepbytestudio.room_manager2
+I/TRuntime.CctTransportBackend(19832): Status Code: 200
+I/ImeTracker(19832): com.stepbytestudio.room_manager2:56775e01: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(19832): showSoftInput() view=io.flutter.embedding.android.FlutterView{66455fe VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(19832): The input method toggled cursor monitoring on
+D/InsetsController(19832): show(ime(), fromIme=true)
+I/ImeTracker(19832): com.stepbytestudio.room_manager2:56775e01: onShown
+I/ImeTracker(19832): com.stepbytestudio.room_manager2:199f9486: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor(19832): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(19832): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@222687647 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@49ada62
+I/ImeTracker(19832): com.stepbytestudio.room_manager2:b0b4c5b8: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(19832): com.stepbytestudio.room_manager2:199f9486: onHidden
+I/flutter (19832): [INPUT_LIMIT_APPLIED] screen=myPage field=roomUrl maxLength=200 keyboardType=url formatter=url validator=default
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408\room_manager2_shot_001.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408\room_manager2_shot_002.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408\room_manager2_shot_003.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_001408\room_manager2_shot_004.png
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher(19832): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(19832): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (19832): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=restore resultCount=0
+I/flutter (19832): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=0
+I/flutter (19832): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (19832): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [AUTO_REACTION_SYNC] scheduled
+I/flutter (19832): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (19832): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (19832): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (19832): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
