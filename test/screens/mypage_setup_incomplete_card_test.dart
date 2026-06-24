@@ -77,6 +77,8 @@ void main() {
       await tester.pump();
 
       expect(find.text('設定を完了しましょう'), findsOneWidget);
+      expect(find.text('プロフィール設定を編集'), findsOneWidget);
+      expect(find.text('初期設定を再開'), findsNothing);
     });
   });
 }

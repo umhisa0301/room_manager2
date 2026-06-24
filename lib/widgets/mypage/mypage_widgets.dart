@@ -526,7 +526,7 @@ class MyPageSetupIncompleteCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           MyPagePrimaryButton(
-            label: '初期設定を再開',
+            label: 'プロフィール設定を編集',
             onPressed: onOpenSetup,
           ),
           const SizedBox(height: 10),

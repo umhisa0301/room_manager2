@@ -648,7 +648,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     return Scaffold(
       backgroundColor: MyPageScreenUi.canvas,
       appBar: AppBar(
-        title: const Text('かんたん初期設定'),
+        title: const Text('プロフィール設定'),
         backgroundColor: MyPageScreenUi.canvas,
         surfaceTintColor: Colors.transparent,
         automaticallyImplyLeading: !widget.embeddedInEntryHost,

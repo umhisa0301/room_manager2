@@ -63,6 +63,8 @@ void main() {
         );
         await tester.pump();
 
+        expect(find.text('プロフィール設定'), findsOneWidget);
+        expect(find.text('かんたん初期設定'), findsNothing);
         expect(find.text('プロフィール'), findsOneWidget);
         expect(find.text('ROOM投稿取り込み'), findsNothing);
       },
