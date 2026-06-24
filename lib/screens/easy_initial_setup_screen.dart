@@ -30,10 +30,17 @@ import '../widgets/shop_discovery_card.dart';
 
 /// 規約同意後の「かんたん初期設定」（スキップ可能）。
 class EasyInitialSetupScreen extends StatefulWidget {
-  const EasyInitialSetupScreen({super.key, this.embeddedInEntryHost = true});
+  const EasyInitialSetupScreen({
+    super.key,
+    this.embeddedInEntryHost = true,
+    this.initialPageIndex,
+  });
 
   /// true のときルートの [AppShell] の代わりに配置される。
   final bool embeddedInEntryHost;
+
+  /// 指定時はこのページから開始する（マイページからの手動起動向け）。
+  final int? initialPageIndex;
 
   @override
   State<EasyInitialSetupScreen> createState() => _EasyInitialSetupScreenState();
@@ -78,9 +85,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     _postStyleKeys = profile.postStyleList.toSet();
     _roomUrlController.text = profile.roomUrl;
     final saved = context.read<SavedShopProvider>().shops.length;
-    final start = widget.embeddedInEntryHost
-        ? 0
-        : _firstIncompletePage(profile, saved);
+    final start = widget.initialPageIndex ??
+        (widget.embeddedInEntryHost
+            ? 0
+            : _firstIncompletePage(profile, saved));
     _pageIndex = start;
     _pageController = PageController(initialPage: start);
   }

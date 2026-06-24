@@ -7,7 +7,9 @@ import '../config/demo_mode.dart';
 import '../config/dev_automation_config.dart';
 import '../services/dev_automation_visible_run.dart';
 import '../models/user_profile.dart';
+import '../models/operation_tutorial_id.dart';
 import '../repository/easy_initial_setup_repository.dart';
+import '../repository/operation_tutorial_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
 import '../utils/app_input_limits.dart';
@@ -179,8 +181,10 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
   void _openEasyInitialSetup(BuildContext context) {
     Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
-        builder: (_) =>
-            const EasyInitialSetupScreen(embeddedInEntryHost: false),
+        builder: (_) => const EasyInitialSetupScreen(
+          embeddedInEntryHost: false,
+          initialPageIndex: 0,
+        ),
       ),
     );
   }
@@ -204,9 +208,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
       ),
       body: SafeArea(
         top: false,
-        child: Consumer3<UserProfileProvider, SavedShopProvider,
-            EasyInitialSetupRepository>(
-          builder: (context, profileProvider, saved, setup, _) {
+        child: Consumer4<UserProfileProvider, SavedShopProvider,
+            EasyInitialSetupRepository, OperationTutorialRepository>(
+          builder: (context, profileProvider, saved, setup, tutorial, _) {
             final profile = profileProvider.profile;
             final missingRoomUrl = !profile.hasRoomUrl;
             final missingGenre = profile.favoriteGenreIdList.isEmpty;
@@ -237,8 +241,11 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               );
             }
 
-            final showSetupPrompt =
-                showMyPageSetupCard && !_setupPromptDismissed;
+            final profileTutorialDismissed =
+                tutorial.isDismissed(OperationTutorialId.profile);
+            final showSetupPrompt = showMyPageSetupCard &&
+                !_setupPromptDismissed &&
+                profileTutorialDismissed;
 
             Widget buildRoomSettingsCard() {
               return MyPageRoomSettingsCard(

@@ -715,7 +715,7 @@ class MyPageAppSettingsCard extends StatelessWidget {
           const MyPageSectionHeaderRow(title: 'アプリ設定'),
           const SizedBox(height: 4),
           MyPageNavListTile(
-            title: '初期設定をやり直す',
+            title: 'プロフィール設定をまとめて編集',
             onTap: onOpenInitialSetup,
           ),
           MyPageNavListTile(
