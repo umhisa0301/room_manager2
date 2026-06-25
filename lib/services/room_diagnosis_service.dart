@@ -80,4 +80,61 @@ abstract final class RoomDiagnosisService {
 
   static String commentToneLabel(String toneId) =>
       CommentToneDefinitions.displayNameFor(toneId);
+
+  /// 診断結果画面向け：タイプ・関心ジャンル・重視条件をつなげた説明文。
+  static String buildResultNarrative({
+    required String primaryTypeId,
+    required Iterable<String> interestCategoryIds,
+    required Iterable<String> priorityRuleIds,
+  }) {
+    final typeName = RoomTypeDefinitions.displayNameFor(primaryTypeId);
+    final interests =
+        InterestCategoryDefinitions.displayNamesFor(interestCategoryIds);
+    final priorities = priorityRuleIds
+        .map(PriorityRuleDefinitions.byId)
+        .whereType<PriorityRuleDefinition>()
+        .map((e) => _shortPriorityLabel(e.displayName))
+        .toList(growable: false);
+
+    final buffer = StringBuffer('$typeNameをベースに');
+    if (interests.isNotEmpty) {
+      buffer.write('、${_interestPhrase(interests)}の商品を中心に提案します。');
+    } else {
+      buffer.write('、あなたに合う商品を中心に提案します。');
+    }
+    if (priorities.isNotEmpty) {
+      buffer.write(_priorityNarrative(priorities));
+    }
+    return buffer.toString();
+  }
+
+  static String _interestPhrase(List<String> interests) {
+    if (interests.length == 1) return interests.first;
+    final head = interests.sublist(0, interests.length - 1).join('・');
+    final tail = interests.last;
+    if (head.isEmpty) return '$tailまわり';
+    return '$head・$tailまわり';
+  }
+
+  static String _priorityNarrative(List<String> priorities) {
+    if (priorities.any((p) => p.contains('レビュー'))) {
+      return 'レビューが多く、安心して紹介しやすい候補を優先します。';
+    }
+    if (priorities.any((p) => p.contains('見た目') || p.contains('映え'))) {
+      return '見た目や雰囲気が伝わりやすく、投稿しやすい候補を優先します。';
+    }
+    if (priorities.any((p) => p.contains('コスパ') || p.contains('バランス'))) {
+      return '価格と満足感のバランスが良く、紹介しやすい候補を優先します。';
+    }
+    if (priorities.any((p) => p.contains('ギフト'))) {
+      return '贈り物やイベント向けに選びやすい候補を優先します。';
+    }
+    if (priorities.any((p) => p.contains('実用'))) {
+      return '暮らしの役立ちが伝わりやすい候補を優先します。';
+    }
+    if (priorities.any((p) => p.contains('季節'))) {
+      return '季節感やトレンドが伝わりやすい候補を優先します。';
+    }
+    return '${priorities.first}条件に合いやすい候補を優先します。';
+  }
 }

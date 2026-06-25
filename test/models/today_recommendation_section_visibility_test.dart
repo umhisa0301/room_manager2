@@ -56,5 +56,58 @@ void main() {
         TodayRecommendationSection.popular,
       ]);
     });
+
+    test('visibleEntries は表示セクションの候補のみ返す', () {
+      final entries = [
+        TodayRecommendationEntry(
+          item: _item('1'),
+          section: TodayRecommendationSection.sellable,
+        ),
+        TodayRecommendationEntry(
+          item: _item('2'),
+          section: TodayRecommendationSection.popular,
+        ),
+        TodayRecommendationEntry(
+          item: _item('3'),
+          section: TodayRecommendationSection.fresh,
+        ),
+      ];
+
+      final visible = TodayRecommendationSectionVisibility.visibleEntries(
+        entries: entries,
+        savedShopCount: 0,
+      );
+
+      expect(visible.map((e) => e.item.productId).toList(), ['2', '3']);
+    });
+
+    test('表示候補の pending のみが一括選択対象になる', () {
+      final entries = [
+        TodayRecommendationEntry(
+          item: _item('1'),
+          section: TodayRecommendationSection.sellable,
+        ),
+        TodayRecommendationEntry(
+          item: _item('2'),
+          section: TodayRecommendationSection.popular,
+        ),
+        TodayRecommendationEntry(
+          item: _item('3'),
+          section: TodayRecommendationSection.popular,
+          decision: TodayRecommendationDecision.addedCandidate,
+        ),
+      ];
+
+      final visible = TodayRecommendationSectionVisibility.visibleEntries(
+        entries: entries,
+        savedShopCount: 0,
+      );
+      final selectable = visible
+          .where((e) => e.decision == TodayRecommendationDecision.pending)
+          .toList();
+
+      expect(selectable.length, 1);
+      expect(selectable.first.item.productId, '2');
+    });
   });
 }

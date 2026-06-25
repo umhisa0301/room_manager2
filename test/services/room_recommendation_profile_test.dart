@@ -8,7 +8,6 @@ import 'package:room_manager2/services/recommendation_reason_builder.dart';
 import 'package:room_manager2/services/recommendation_scoring_service.dart';
 import 'package:room_manager2/services/room_diagnosis_service.dart';
 import 'package:room_manager2/utils/profile_recommendation_integration.dart';
-import 'package:room_manager2/utils/today_recommendation_policy.dart';
 
 RakutenSearchItem _item({
   required String productId,
@@ -269,7 +268,41 @@ void main() {
         ),
       );
       final plans = ProfileRecommendationIntegration.buildSearchPlans(profile);
-      expect(plans.length, lessThanOrEqualTo(TodayRecommendationPolicy.maxApiCallsPerGeneration));
+      expect(
+        plans.length,
+        lessThanOrEqualTo(ProfileRecommendationIntegration.maxInitialSearchQueries),
+      );
+    });
+
+    test('プロファイル検索プランは初回最大3クエリに制限される', () {
+      final profile = RoomRecommendationProfile(
+        primaryTypeId: 'life_convenience',
+        interestCategoryIds: const ['kitchen', 'gift', 'pet'],
+        priorityRuleIds: const ['review_trust'],
+        searchKeywordPresets: const [
+          'q1',
+          'q2',
+          'q3',
+          'q4',
+          'q5',
+        ],
+        diagnosedAt: DateTime(2026, 6, 26),
+      );
+      final plans = ProfileRecommendationIntegration.buildSearchPlans(profile);
+      expect(plans.length, 3);
+    });
+  });
+
+  group('RoomDiagnosisService.buildResultNarrative', () {
+    test('タイプ・関心ジャンル・重視条件をつなげた説明文を返す', () {
+      final text = RoomDiagnosisService.buildResultNarrative(
+        primaryTypeId: 'life_convenience',
+        interestCategoryIds: const ['gift', 'pet', 'gadget_appliance'],
+        priorityRuleIds: const ['review_trust'],
+      );
+      expect(text, contains('暮らし便利型をベースに'));
+      expect(text, contains('ギフト・ペット・家電・ガジェットまわり'));
+      expect(text, contains('レビューが多く'));
     });
   });
 

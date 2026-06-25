@@ -11,6 +11,9 @@ abstract final class ProfileRecommendationIntegration {
 
   static const int profileDisplayCap = 3;
 
+  /// 初回生成で実行するプロファイル検索クエリ数（V1: 厳選3件優先）。
+  static const int maxInitialSearchQueries = 3;
+
   /// 診断プロファイルからキーワード検索プランを生成。
   static List<RecommendSearchPlanSpec> buildSearchPlans(
     RoomRecommendationProfile profile,
@@ -18,7 +21,7 @@ abstract final class ProfileRecommendationIntegration {
     final queries = profile.searchKeywordPresets
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
-        .take(TodayRecommendationPolicy.maxApiCallsPerGeneration)
+        .take(maxInitialSearchQueries)
         .toList(growable: false);
     return queries
         .map(

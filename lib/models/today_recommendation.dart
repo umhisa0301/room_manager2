@@ -127,6 +127,20 @@ extension TodayRecommendationSectionVisibility on TodayRecommendationSection {
       yield section;
     }
   }
+
+  /// 画面上に表示される候補（セクション表示条件と一致）。
+  static List<TodayRecommendationEntry> visibleEntries({
+    required List<TodayRecommendationEntry> entries,
+    required int savedShopCount,
+  }) {
+    final sections = visibleSections(
+      entries: entries,
+      savedShopCount: savedShopCount,
+    ).toSet();
+    return entries
+        .where((e) => sections.contains(e.section))
+        .toList(growable: false);
+  }
 }
 
 class TodayRecommendationBundle {

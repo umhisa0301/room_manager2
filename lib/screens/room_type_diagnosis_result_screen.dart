@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../data/room_type_definitions.dart';
 import '../models/room_recommendation_profile.dart';
 import '../services/room_diagnosis_service.dart';
-import '../state/today_recommendation_provider.dart';
-import '../state/user_profile_provider.dart';
-import '../state/rakuten_managed_product_provider.dart';
-import '../state/saved_shop_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/room_type_diagnosis_widgets.dart';
-import 'today_recommendations_screen.dart';
 
 /// 診断完了後にタイプ結果を表示する画面。
 class RoomTypeDiagnosisResultScreen extends StatelessWidget {
@@ -28,11 +22,15 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
     final typeDef = RoomTypeDefinitions.byId(profile.primaryTypeId);
     final typeName = typeDef?.displayName ??
         RoomTypeDefinitions.displayNameFor(profile.primaryTypeId);
-    final typeDescription = typeDef?.description ?? '';
     final interestLabel =
         RoomDiagnosisService.interestCategoriesLabel(profile.interestCategoryIds);
     final priorityLabel =
         RoomDiagnosisService.priorityRulesLabel(profile.priorityRuleIds);
+    final narrative = RoomDiagnosisService.buildResultNarrative(
+      primaryTypeId: profile.primaryTypeId,
+      interestCategoryIds: profile.interestCategoryIds,
+      priorityRuleIds: profile.priorityRuleIds,
+    );
 
     return Scaffold(
       backgroundColor: MyPageScreenUi.canvas,
@@ -55,23 +53,12 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             RoomTypeBadge(typeDisplayName: typeName),
-            if (typeDescription.isNotEmpty) ...[
-              const SizedBox(height: 14),
-              Text(
-                typeDescription,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: MyPageScreenUi.textSecondary,
-                  height: 1.5,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-            const SizedBox(height: 8),
+            const SizedBox(height: 14),
             Text(
-              _recommendationHint(typeDef?.id ?? profile.primaryTypeId),
-              style: theme.textTheme.bodySmall?.copyWith(
+              narrative,
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: MyPageScreenUi.textSecondary,
-                height: 1.45,
+                height: 1.5,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -113,12 +100,12 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
             ],
             const SizedBox(height: 28),
             MyPagePrimaryButton(
-              label: 'おすすめコレを見る',
-              onPressed: () => _openRecommendations(context),
+              label: 'ホームへ戻る',
+              onPressed: () => _goHome(context),
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
+              onPressed: () => _goHome(context),
               style: MyPageScreenUi.outlineButtonStyle(height: 48),
               child: const Text('マイページへ戻る'),
             ),
@@ -128,35 +115,7 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
     );
   }
 
-  String _recommendationHint(String typeId) {
-    switch (typeId) {
-      case 'visual_mood':
-        return 'おすすめコレでは、ファッション・美容・写真映えしやすい商品を優先して提案します。';
-      case 'life_convenience':
-        return 'おすすめコレでは、時短・収納・日用品など暮らしをラクにする商品を優先して提案します。';
-      case 'value_balance':
-        return 'おすすめコレでは、コスパや高評価のバランスが良い商品を優先して提案します。';
-      case 'gift_event':
-        return 'おすすめコレでは、ギフトやイベント向けの商品を優先して提案します。';
-      default:
-        return 'おすすめコレに診断結果が反映されます。';
-    }
-  }
-
-  Future<void> _openRecommendations(BuildContext context) async {
-    final recommender = context.read<TodayRecommendationProvider>();
-    await recommender.ensureToday(
-      profile: context.read<UserProfileProvider>().profile,
-      managedItems: context.read<RakutenManagedProductProvider>().items,
-      savedShops: context.read<SavedShopProvider>().shops,
-      recommendationProfile: profile,
-      trigger: 'diagnosisResult',
-    );
-    if (!context.mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => const TodayRecommendationsScreen(skipInitialEnsure: true),
-      ),
-    );
+  void _goHome(BuildContext context) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

@@ -895,6 +895,36 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return true;
     }
 
+    final recentlyShownProductIds = exposureRecords.entries
+        .where((e) => e.value.shownAt != null)
+        .map((e) => e.key.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
+
+    int profilePreviewEntryCount() {
+      if (!profileDiagnosed || recommendationProfile == null) return 0;
+      return _finalizeFromPool(
+        pool: pool,
+        metaById: metaById,
+        favoriteGenreIds: favoriteGenreIds,
+        favoriteGenreIdList: favoriteGenreIds.toList(growable: false),
+        savedShopIds: savedShopIds,
+        preferredGenreWords: genreWords,
+        doneItems: doneItems,
+        candidateItems: candidateItems,
+        postStyles: postStyles,
+        soldOutcomeItems: soldOutcomeItems,
+        reactedOutcomeItems: reactedOutcomeItems,
+        likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+        recentCandidatesForBridge: recentCandidates,
+        staleCandidatesForBridge: staleCandidates,
+        reactionProfile: reactionProfile,
+        recommendationProfile: recommendationProfile,
+        excludeProductIds: excludeIds,
+        recentlyShownProductIds: recentlyShownProductIds,
+      ).entries.length;
+    }
+
     if (!apiSkippedByCatalog) {
       for (var i = 0; i < mandatoryGenrePlans.length; i++) {
         if (TodayRecommendationExecutionPolicy.shouldSkipMandatoryGenrePlan(
@@ -904,19 +934,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
           break;
         }
         final ok = await runPlan(mandatoryGenrePlans[i]);
-        if (!ok) break;
+        if (!ok) {
+          if (profileDiagnosed &&
+              profilePreviewEntryCount() >=
+                  ProfileRecommendationIntegration.profileDisplayCap) {
+            earlyStopReason = 'rateLimitedWithEnoughCandidates';
+          }
+          break;
+        }
         executedFavoriteGenrePlans += 1;
+        if (profileDiagnosed &&
+            profilePreviewEntryCount() >=
+                ProfileRecommendationIntegration.profileDisplayCap) {
+          earlyStopReason = 'targetReached';
+          break;
+        }
       }
     }
 
     skippedFavoriteGenrePlans =
         mandatoryGenrePlans.length - executedFavoriteGenrePlans;
-
-    final recentlyShownProductIds = exposureRecords.entries
-        .where((e) => e.value.shownAt != null)
-        .map((e) => e.key.trim())
-        .where((e) => e.isNotEmpty)
-        .toSet();
 
     final previewAfterGenres = _finalizeFromPool(
       pool: pool,

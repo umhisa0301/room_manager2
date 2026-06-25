@@ -296,9 +296,9 @@ class _TodayRecommendationsScreenState
               return const KeyedSubtree(
                 key: Key('today_recommendation_status_area'),
                 child: AppScreenLoadingCenter(
-                  title: '今日のおすすめを準備しています',
+                  title: 'おすすめコレを準備しています',
                   subtitle:
-                      '保存ジャンルを中心に、画像・価格が確認できる商品を集めています。',
+                      '関心ジャンルと重視する条件をもとに、紹介しやすい商品を集めています。',
                 ),
               );
             }
@@ -343,11 +343,16 @@ class _TodayRecommendationsScreenState
               );
             }
 
+            final savedShopCount = context.read<SavedShopProvider>().shops.length;
             final rows = _RecommendationListRow.fromEntries(
               bundle.entries,
-              savedShopCount: context.read<SavedShopProvider>().shops.length,
+              savedShopCount: savedShopCount,
             );
-            final selectable = bundle.entries
+            final visibleEntries = TodayRecommendationSectionVisibility.visibleEntries(
+              entries: bundle.entries,
+              savedShopCount: savedShopCount,
+            );
+            final selectable = visibleEntries
                 .where(
                   (e) => e.decision == TodayRecommendationDecision.pending,
                 )
@@ -381,14 +386,24 @@ class _TodayRecommendationsScreenState
                 batchAddState.allowed && selectable.isNotEmpty;
             rec.logRegenerateButtonState(trigger: 'resultRender');
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) _syncRegenerateUiRefresh();
+              if (!mounted) return;
+              final visibleIds =
+                  selectable.map((e) => e.item.productId).toSet();
+              if (_selectedProductIds.any((id) => !visibleIds.contains(id))) {
+                setState(() {
+                  _selectedProductIds.removeWhere(
+                    (id) => !visibleIds.contains(id),
+                  );
+                });
+              }
+              _syncRegenerateUiRefresh();
             });
             return KeyedSubtree(
               key: const Key('today_recommendation_result_area'),
               child: Column(
               children: [
                 _SummaryCard(
-                  total: bundle.entries.length,
+                  total: visibleEntries.length,
                   uiState: regenerateUi,
                   onRegenerate: _regenerate,
                 ),
