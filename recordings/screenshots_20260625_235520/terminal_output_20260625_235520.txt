@@ -1,0 +1,120 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-25 23:55:20
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: 323953389489
+Device manufacturer: nubia
+Device model: A504ZT
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : 323953389489
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260625_235520.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260625_235520.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260625_235520.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260625_235520.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260625_235520.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\terminal_output_20260625_235520.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 2168).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d 323953389489 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on A504ZT in debug mode...
+Running Gradle task 'assembleDebug'...                             16.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           3.8s
+Error: ADB exited with exit code 1
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.stepbytestudio.room_manager2 signatures do not match newer version; ignoring!]
+Performing Streamed Install
+Uninstalling old version...
+Installing build\app\outputs\flutter-apk\app-debug.apk...           3.9s
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_001.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_002.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_003.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_004.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_005.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_006.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_007.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_008.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_009.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_010.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_011.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\room_manager2_shot_012.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260625_235520.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260625_235520.mp4 (18172615 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260625_235520\terminal_output_20260625_235520.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260625_235520.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260625_235520.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260625_235520.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260625_235520.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260625_235520.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
