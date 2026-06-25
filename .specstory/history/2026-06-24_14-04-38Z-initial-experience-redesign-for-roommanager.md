@@ -476,3 +476,1503 @@ Status: **completed**
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\app_shell.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "operation_tutorial|OperationTutorial|profile.*tutorial|TutorialHost"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "operation_tutorial|OperationTutorial|profile.*tutorial|TutorialHost",
+  "topFiles": [
+    {
+      "matchCount": 14,
+      "uri": "lib\\repository\\operation_tutorial_repository.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib\\main.dart"
+    },
+    {
+      "matchCount": 12,
+      "uri": "lib\\config\\profile_tutorial_flow.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib\\models\\operation_tutorial_flow.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\models\\operation_tutorial_step.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\tutorial\\tutorial_overlay_host.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\models\\operation_tutorial_id.dart"
+    },
+    {
+      "matchCount": 13,
+      "uri": "lib\\state\\operation_tutorial_controller.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\app_shell.dart"
+    }
+  ],
+  "totalFiles": 10,
+  "totalMatches": 59
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (1 file)
+
+| File |
+|------|
+| `../lib/widgets/app_entry_host.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "初期設定をやり直す|onOpenInitialSetup|MyPageSetupIncompleteCard"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "初期設定をやり直す|onOpenInitialSetup|MyPageSetupIncompleteCard",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "test/screens/mypage_settings_section_dev_automation_test.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "test/screens/my_page_plan_entry_test.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib/widgets/mypage/mypage_widgets.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test\\screens\\mypage_tutorial_replay_test.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib\\widgets\\mypage\\mypage_widgets.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 26
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\app_shell.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\operation_tutorial_controller.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2\test** (0 files)
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2\test** (0 files)
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\repository\operation_tutorial_repository.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "**/*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "AppEntryHost|EasyInitialSetup|embeddedInEntryHost|initialPageIndex|_firstIncompletePage"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "AppEntryHost|EasyInitialSetup|embeddedInEntryHost|initialPageIndex|_firstIncompletePage",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "test\\repository\\operation_tutorial_repository_test.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "embeddedInEntryHost|_firstIncompletePage|dismiss|markFlow"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "embeddedInEntryHost|_firstIncompletePage|dismiss|markFlow",
+  "topFiles": [
+    {
+      "matchCount": 25,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 25
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Glob pattern "**/*" matches every file and is not allowed. Use a more specific glob or no glob.
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Glob pattern "**/*" matches every file and is not allowed. Use a more specific glob or no glob.
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_pageIndex|PageView|children:|_buildPage"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_pageIndex|PageView|children:|_buildPage",
+  "topFiles": [
+    {
+      "matchCount": 38,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 38
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **98** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (98 files)
+
+| File |
+|------|
+| `../test/utils/today_recommendation_genre_distribution_test.dart` |
+| `../test\widgets\tutorial_overlay_host_test.dart` |
+| `../test/services/recommendation_generation_limit_test.dart` |
+| `../test/widgets/monetization_ad_slot_test.dart` |
+| `../test/state/rakuten_search_provider_catalog_test.dart` |
+| `../test/utils/room_import_enrich_keyword_normalize_test.dart` |
+| `../test/utils/today_recommendation_catalog_test.dart` |
+| `../test/services/shop_pool_keyword_relevance_test.dart` |
+| `../test/widgets/shop_discovery_pool_supplement_cards_test.dart` |
+| `../test/screens/my_page_plan_entry_test.dart` |
+| `../test/screens/today_recommendations_summary_card_test.dart` |
+| `../test/repository/shop_catalog_repository_test.dart` |
+| `../test/services/rakuten_api_service_test.dart` |
+| `../test/utils/room_reaction_analytics_test.dart` |
+| `../test/widgets/home_in_app_notice_card_test.dart` |
+| `../test/widgets/room_sync_reaction_button_test.dart` |
+| `../test/utils/app_debug_log_test.dart` |
+| `../test/widgets/monetization_ad_content_resolver_test.dart` |
+| `../test/models/shop_catalog_entry_test.dart` |
+| `../test/config/admob_config_test.dart` |
+| `../test/screens/rakuten_search_bulk_add_lock_test.dart` |
+| `../test/utils/room_catalog_enrichment_test.dart` |
+| `../test/models/today_recommendation_entry_test.dart` |
+| `../test/services/shop_discovery_pool_supplement_ui_bridge_test.dart` |
+| `../test/utils/home_post_milestone_test.dart` |
+| `../test/models/product_url_resolver_test.dart` |
+| `../test/utils/product_catalog_audit_test.dart` |
+| `../test/utils/rakuten_product_url_support_test.dart` |
+| `../test\screens\mypage_tutorial_replay_test.dart` |
+| `../test/utils/room_rakuten_url_normalize_test.dart` |
+| `../test/services/home_in_app_notice_dismiss_store_test.dart` |
+| `../test/repository/product_catalog_repository_test.dart` |
+| `../test/utils/room_import_product_url_match_test.dart` |
+| `../test/services/batch_candidate_add_availability_test.dart` |
+| `../test/services/shop_discovery_pool_api_compare_test.dart` |
+| `../test/models/user_profile_test.dart` |
+| `../test/services/shop_discovery_pool_comparator_test.dart` |
+| `../test/config/monetization_plan_config_test.dart` |
+| `../test/services/recommendation_generation_count_store_test.dart` |
+| `../test/utils/catalog_product_keys_test.dart` |
+| `../test/services/rakuten_genre_master_service_test.dart` |
+| `../test/utils/rakuten_product_rating_display_test.dart` |
+| `../test/utils/search_result_quality_filter_test.dart` |
+| `../test/config/dev_automation_config_test.dart` |
+| `../test/state/room_import_controller_silent_test.dart` |
+| `../test/utils/recommend_cooldown_policy_test.dart` |
+| `../test/screens/shop_discovery_detail_screen_test.dart` |
+| `../test/services/shop_discovery_pool_fallback_quality_test.dart` |
+| `../test/utils/room_import_safe_merge_test.dart` |
+| `../test/services/room_room_page_reaction_parse_test.dart` |
+| `../test/services/room_listing_fast_path_test.dart` |
+| `../test/services/shop_discovery_pool_supplement_test.dart` |
+| `../test/utils/home_auto_reaction_sync_test.dart` |
+| `../test/services/subscription_entitlement_store_test.dart` |
+| `../test/utils/rakuten_keyword_search_sort_test.dart` |
+| `../test/widgets/add_candidate_entry_sheet_url_visibility_test.dart` |
+| `../test/models/catalog_product_test.dart` |
+| `../test\repository\operation_tutorial_repository_test.dart` |
+| `../test/services/room_collected_sync_parse_test.dart` |
+| `../test/services/room_import_limit_test.dart` |
+| `../test/utils/catalog_product_mapper_test.dart` |
+| `../test/utils/genre_display_order_test.dart` |
+| `../test/utils/today_recommendation_plan_builder_test.dart` |
+| `../test/services/subscription_status_test.dart` |
+| `../test/config/demo_mode_test.dart` |
+| `../test/services/room_profile_url_validation_service_test.dart` |
+| `../test/screens/dev_automation_screen_test.dart` |
+| `../test/state/rakuten_search_provider_test.dart` |
+| `../test/services/billing_product_service_test.dart` |
+| `../test/services/rakuten_search_condition_availability_test.dart` |
+| `../test/utils/catalog_product_quality_test.dart` |
+| `../test/utils/monetization_plan_display_test.dart` |
+| `../test/screens/monetization_plan_screen_test.dart` |
+| `../test/services/dev_automation_visible_run_test.dart` |
+| `../test/services/billing_purchase_service_test.dart` |
+| `../test/config/billing_product_config_test.dart` |
+| `../test/config/monetization_config_test.dart` |
+| `../test/repository/rakuten_search_under100_reason_test.dart` |
+| `../test/screens/mypage_settings_section_dev_automation_test.dart` |
+| `../test/utils/dev_automation_log_buffer_test.dart` |
+| `../test/utils/product_safety_filter_test.dart` |
+| `../test/utils/today_recommendation_exposure_policy_test.dart` |
+| `../test\state\operation_tutorial_controller_test.dart` |
+| `../test/services/rakuten_item_page_url_item_code_service_test.dart` |
+| `../test/e2e/product_catalog_search_device_path_test.dart` |
+| `../test/services/dev_automation_runner_test.dart` |
+| `../test/screens/today_recommendations_bulk_add_lock_test.dart` |
+| `../test/services/product_catalog_shop_aggregator_test.dart` |
+| `../test/state/today_recommendation_regenerate_cooldown_test.dart` |
+| `../test/utils/home_in_app_notice_test.dart` |
+| `../test/utils/shop_catalog_mapper_test.dart` |
+| `../test/utils/today_recommendation_execution_policy_test.dart` |
+| `../test/utils/room_unconfirmed_display_copy_test.dart` |
+| `../test/utils/room_rat_redirect_parse_test.dart` |
+| `../test/services/shop_discovery_pool_fallback_test.dart` |
+| `../test/utils/today_recommendation_genre_page_store_test.dart` |
+| `../test/widgets/admob_banner_ad_slot_test.dart` |
+| `../test/screens/rakuten_search_condition_lock_test.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\repository\operation_tutorial_repository_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\mypage_tutorial_replay_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\state\operation_tutorial_controller_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\widgets\tutorial_overlay_host_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "LegalConsent|AppEntryHost|isDismissed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "LegalConsent|AppEntryHost|isDismissed",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/repository/legal_consent_repository.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/repository/easy_initial_setup_repository.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\main.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test\\repository\\operation_tutorial_repository_test.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/screens/legal_consent_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\state\\operation_tutorial_controller.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\repository\\operation_tutorial_repository.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test\\state\\operation_tutorial_controller_test.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/widgets/app_entry_host.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/legal_consent_screen_tokens.dart"
+    }
+  ],
+  "totalFiles": 11,
+  "totalMatches": 35
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査を終え、現状のコード構成と実装方針を把握した。
+
+EasyInitialSetupScreen のページ構成と _firstIncompletePage の挙動を確認した。ページ0（プロフィール）から開始するが、room URL 未設定時はページ1から始まる。showMyPageSetupCard の動作についても検討が必要だ。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\my_page_plan_entry_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査を終え、全体像を把握した。
+
+`_firstIncompletePage` が ROOM URL 未登録時にページ 0 をスキップし、ページ 1 から開始することを確認した。ユーザーが指摘する「2番目から始まる」は、ステップドットの「2」（ROOM URL）を指す可能性がある。ページ 0 にはニックネームと探し方が含まれる。
+
+マイページからの手動起動は常にページ 0 から開始する方針とした。
+
+AppEntryHost では `setup.isDismissed` の分岐を削除し、規約同意後に直接 AppShell へ遷移する。EasyInitialSetupScreen のインポートも不要なら削除できる。
+
+EasyInitialSetupRepository は既存のキーとロジックを維持する。`_migrateLegacyInstall` により既存ユーザーのデータは壊さない。
+
+`isDismissed` は MyPageSetupIncompleteCard の表示条件には使われない。`showMyPageSetupCard` は `initialSetupCompleted` と未入力項目の有無で判定するため、自動表示停止後も未完了ユーザーはマイページにカードを表示する。新規インストール時は両フラグとも false のままである。
+
+マイページ初回表示時に MyPageSetupIncompleteCard とプロフィールガイドが同時に出現する可能性がある。ユーザーはカード削除ではなくメニュー文言変更を求めているため、影響評価にこのリスクを記載する必要がある。
+
+既存ユーザーは初期設定を完了またはスキップ済みであり、dismissedKey は true となる。
+
+スキップ済みユーザーは initialSetupSkipped=true となるが、未入力項目があれば MyPageSetupIncompleteCard は依然として表示される。
+
+未完了・未スキップユーザーは起動時に EasyInitialSetup から AppShell へ遷移する。手動でマイページを開く際はページ 0 から再開するため、途中から起動したユーザーは以前の画面位置に戻れない。これはユーザーが明示的に求める動作である。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "EasyInitialSetupScreen\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "EasyInitialSetupScreen\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/app_entry_host.dart"
+    }
+  ],
+  "totalFiles": 4,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showMyPageSetupCard|MyPageSetupIncompleteCard"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showMyPageSetupCard|MyPageSetupIncompleteCard",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/onboarding_ui_log.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/widgets/app_entry_host.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/mypage/mypage_widgets.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\mypage\\mypage_widgets.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 24
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査結果を整理し、日本語で包括的な実装計画を提示する準備が整った。
+
+報告書の15項目構成を確定した。現在の起動フローは規約同意→EasyInitialSetupScreen→AppShellの3段階であることを整理した。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "easySetup|easy_initial_setup_dismissed|isDismissed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "easySetup|easy_initial_setup_dismissed|isDismissed",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/app_entry_host.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test\\repository\\operation_tutorial_repository_test.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/repository/easy_initial_setup_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\repository\\operation_tutorial_repository.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\state\\operation_tutorial_controller.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test\\state\\operation_tutorial_controller_test.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 14
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+実装は最小限に抑えられる。
+
+AppEntryHost のクラスドキュメントコメントも更新する。EasyInitialSetupScreen の embeddedInEntryHost パラメータは後方互換性のため残す。マイページから手動起動時は pop し、起動フロー変更後は非埋め込み表示となる。
+
+initialPageIndex をオプションパラメータとする案を採用する。マイページから手動起動時に 0 を渡せば、_firstIncompletePage を上書きして1ページ目から開始できる。影響範囲を最小化するため、AppEntryHost からの呼び出しを廃止した後もこのパラメータは残す。MyPageSetupIncompleteCard とプロフィールガイドの重複表示に留意する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "EasyInitialSetup|かんたん初期設定|initialSetup"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "EasyInitialSetup|かんたん初期設定|initialSetup",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "test\\repository\\operation_tutorial_repository_test.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/repository/easy_initial_setup_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 18,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/catalog_product.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/shop_catalog_entry.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib/widgets/app_entry_host.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/utils/onboarding_ui_log.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/genre_pref_log.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\main.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\repository\\operation_tutorial_repository.dart"
+    }
+  ],
+  "totalFiles": 14,
+  "totalMatches": 63
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査を完了し、実装案を提示します。
+
+実装案を日本語で構成中です。影響範囲13項目をセクション10または別小節に配置します。_firstIncompletePageのバグを修正し、マイページから初期設定を再開する際はページ0から開始します。マイページの「初期設定を再開」ボタンは変更しません。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*_test.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "LegalConsentRepository|UserProfileProvider"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "LegalConsentRepository|UserProfileProvider",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "test/state/room_import_controller_silent_test.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+調査結果に基づき、影響範囲を最小にした実装案をまとめます。コード変更はまだ行っていません。
+
+---
+
+## 1. 現在の起動フロー
+
+```mermaid
+flowchart TD
+    A[アプリ起動] --> B[AppEntryHost]
+    B --> C{規約同意済み?}
+    C -->|No| D[LegalConsentScreen]
+    C -->|Yes| E{easy_initial_setup_dismissed_v1?}
+    E -->|false| F[EasyInitialSetupScreen<br/>embeddedInEntryHost: true]
+    E -->|true| G[AppShell]
+    G --> H{初回マイページタブ?}
+    H -->|Yes| I{operation_tutorial_profile_dismissed_v1?}
+    I -->|false| J[プロフィールガイド自動表示]
+    I -->|true| K[通常表示]
+```
+
+**現状の分岐（`AppEntryHost`）**
+
+```82:121:c:\dev\app_project\room_manager2\lib\widgets\app_entry_host.dart
+    if (!legal.isAccepted) {
+      // ...
+      return const LegalConsentScreen();
+    }
+    if (!setup.isDismissed) {
+      // ...
+      return const EasyInitialSetupScreen(embeddedInEntryHost: true);
+    }
+    // ...
+    return const AppShell();
+```
+
+**二重導線の原因**
+
+| タイミング | 画面 | 判定キー |
+|---|---|---|
+| 起動直後（規約同意後） | かんたん初期設定 | `easy_initial_setup_dismissed_v1 == false` |
+| マイページ初回表示 | プロフィールガイド | `operation_tutorial_profile_dismissed_v1 == false` |
+
+新規インストールでは両方のキーが未設定のため、連続して「設定案内」が出ます。
+
+**マイページ手動起動時の開始ページ（現状）**
+
+```64:86:c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart
+  int _firstIncompletePage(UserProfile profile, int savedShopCount) {
+    if (!profile.hasRoomUrl) return 1;
+    if (profile.favoriteGenreIdList.isEmpty) return 2;
+    if (savedShopCount <= 0) return 3;
+    return 3;
+  }
+  // ...
+    final start = widget.embeddedInEntryHost
+        ? 0
+        : _firstIncompletePage(profile, saved);
+```
+
+マイページから（`embeddedInEntryHost: false`）開くと、ROOM URL 未登録時は **ページ0（ニックネーム＋探し方）を飛ばしてページ1から** 始まります。
+
+---
+
+## 2. 変更後の起動フロー
+
+```mermaid
+flowchart TD
+    A[アプリ起動] --> B[AppEntryHost]
+    B --> C{規約同意済み?}
+    C -->|No| D[LegalConsentScreen]
+    C -->|Yes| G[AppShell]
+    G --> H{初回マイページタブ?}
+    H -->|Yes| I{operation_tutorial_profile_dismissed_v1?}
+    I -->|false| J[プロフィールガイド自動表示]
+    I -->|true| K[通常表示]
+    K --> L[手動: プロフィール設定をまとめて編集]
+    L --> M[EasyInitialSetupScreen<br/>initialPageIndex: 0]
+```
+
+**変更の要点**
+
+- 規約同意後は常に `AppShell` へ（`EasyInitialSetupScreen` の自動表示を削除）
+- 初回操作支援はプロフィールガイドに一本化
+- `EasyInitialSetupScreen` はマイページからの手動導線のみ
+
+---
+
+## 3. 変更予定ファイル（4ファイル + テスト新規/修正）
+
+| ファイル | 変更内容 | 規模 |
+|---|---|---|
+| `lib/widgets/app_entry_host.dart` | `!setup.isDismissed` 分岐の削除、コメント更新、不要 import 削除 | 小（約15行） |
+| `lib/screens/easy_initial_setup_screen.dart` | `initialPageIndex` オプション引数の追加 | 小（約10行） |
+| `lib/screens/mypage_placeholder_screen.dart` | 手動起動時に `initialPageIndex: 0` を渡す | 1行 |
+| `lib/widgets/mypage/mypage_widgets.dart` | メニュー文言変更 | 1行 |
+| `test/widgets/app_entry_host_test.dart` | **新規** 起動分岐テスト | 中 |
+| `test/screens/easy_initial_setup_start_page_test.dart` | **新規** 開始ページテスト | 小 |
+| `test/screens/mypage_initial_setup_label_test.dart` | **新規** 文言テスト | 小 |
+
+---
+
+## 4. 変更しないファイル
+
+ユーザー指定どおり、以下は変更しません。
+
+- `lib/repository/user_profile_repository.dart`
+- `lib/state/user_profile_provider.dart`
+- `lib/services/room_profile_url_validation_service.dart`
+- `lib/state/rakuten_search_provider.dart` / `today_recommendation_provider.dart`
+- 商品検索・おすすめコレ関連 Repository / ビジネスロジック一式
+- `lib/repository/operation_tutorial_repository.dart`
+- `lib/state/operation_tutorial_controller.dart`
+- `lib/app_shell.dart`（プロフィールガイド起動ロジックは現状維持）
+- `lib/main.dart`
+- `lib/repository/easy_initial_setup_repository.dart`（キー・ロジック不変）
+
+---
+
+## 5. AppEntryHost の変更方針
+
+**やること**
+
+1. `if (!setup.isDismissed) { return EasyInitialSetupScreen(...); }` ブロックを削除
+2. 規約同意後は `AppShell` を返す
+3. クラス doc コメントを更新（「初期設定ウィザード優先」の記述を削除）
+4. `easy_initial_setup_screen.dart` の import を削除
+
+**残すもの**
+
+- `LegalConsentScreen` 分岐（変更なし）
+- `EasyInitialSetupRepository` の watch（`showMyPageSetupCard` ログ用）
+- `logOnboardingUi` 呼び出し（`route: 'home'` 側のログは継続）
+
+**削除するログ分岐**
+
+- `route: 'easySetup'` は起動時に到達しなくなる（ログ仕様の軽微な変化。意図的な副作用）
+
+---
+
+## 6. EasyInitialSetupRepository の扱い
+
+**変更なし**（推奨）
+
+| キー | 役割 | 変更後の使われ方 |
+|---|---|---|
+| `easy_initial_setup_dismissed_v1` | ウィザード非表示フラグ | 手動起動時の完了/スキップで引き続き書き込み |
+| `easy_initial_setup_flow_completed_v1` | 完了フラグ | `MyPageSetupIncompleteCard` 表示判定に使用 |
+| `easy_initial_setup_flow_skipped_v1` | スキップフラグ | ログ・状態参照のみ |
+
+- 起動時自動表示停止のためにキーを書き換えない
+- `_migrateLegacyInstall()` は既存アップデートユーザー向けのまま維持
+- `operation_tutorial_*` とは独立（既存テストで確認済み）
+
+---
+
+## 7. EasyInitialSetupScreen の開始ページ制御方針
+
+**追加する API（案）**
+
+```dart
+class EasyInitialSetupScreen extends StatefulWidget {
+  const EasyInitialSetupScreen({
+    super.key,
+    this.embeddedInEntryHost = true,
+    this.initialPageIndex,
+  });
+
+  final bool embeddedInEntryHost;
+  /// 指定時はこのページから開始。未指定時は既存ロジック。
+  final int? initialPageIndex;
+}
+```
+
+**`didChangeDependencies` の変更（案）**
+
+```dart
+final start = widget.initialPageIndex ??
+    (widget.embeddedInEntryHost
+        ? 0
+        : _firstIncompletePage(profile, saved));
+```
+
+**呼び出し側**
+
+```dart
+// mypage_placeholder_screen.dart
+const EasyInitialSetupScreen(
+  embeddedInEntryHost: false,
+  initialPageIndex: 0,
+),
+```
+
+- 保存済みプロフィール値の初期表示（コントローラへの反映）は現状維持
+- `_firstIncompletePage` は削除せず、将来の再利用に備えて残す
+- `embeddedInEntryHost` パラメータも維持（`_persistDismissAndLeave` の pop 挙動に影響）
+
+---
+
+## 8. マイページ文言変更の対象箇所
+
+| 箇所 | 現状 | 変更後 | 変更対象 |
+|---|---|---|---|
+| `MyPageAppSettingsCard` メニュー | `初期設定をやり直す` | `プロフィール設定をまとめて編集` | **変更する** |
+| `MyPageSetupIncompleteCard` ボタン | `初期設定を再開` | 変更なし | 今回スコープ外 |
+| `EasyInitialSetupScreen` AppBar | `かんたん初期設定` | 変更なし | 画面タイトルは維持 |
+
+変更箇所:
+
+```717:719:c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart
+          MyPageNavListTile(
+            title: '初期設定をやり直す',
+            onTap: onOpenInitialSetup,
+```
+
+---
+
+## 9. SharedPreferences キーへの影響
+
+| キー群 | 影響 |
+|---|---|
+| `easy_initial_setup_*` | **書き換えなし**。起動分岐から外れるだけ |
+| `operation_tutorial_*` | **影響なし** |
+| `legal_consent_*` | **影響なし** |
+| `user_profile_v1` 等 | **影響なし** |
+
+新規インストール時:
+
+- `easy_initial_setup_dismissed_v1` は未設定のまま起動可能（`isDismissed == false` でも起動分岐に使わない）
+- 手動完了/スキップ時に従来どおり `dismiss()` が呼ばれる
+
+---
+
+## 10. 既存ユーザーへの影響（影響監査）
+
+| # | シナリオ | 変更後の挙動 |
+|---|---|---|
+| 1 | **新規インストール** | 規約同意 → `AppShell` → ホームではガイドなし → 初回マイページでプロフィールガイド |
+| 2 | **既存ユーザー（アップデート）** | 通常起動。過去キーがあってもクラッシュなし |
+| 3 | **規約未同意** | 従来どおり `LegalConsentScreen`（変更なし） |
+| 4 | **かんたん初期設定 完了済み** | `dismissed=true`, `completed=true` → 起動時もマイページも従来通り |
+| 5 | **かんたん初期設定 スキップ済み** | `dismissed=true`, `skipped=true` → 起動時 `AppShell`。未設定項目があれば `MyPageSetupIncompleteCard` 表示の可能性あり |
+| 6 | **かんたん初期設定 途中離脱**（`dismissed=false`） | **改善**: 毎回ウィザード強制表示がなくなる → `AppShell` 起動。マイページから手動再開（ページ0から、保存値は反映） |
+| 7 | **プロフィールガイド 未完了** | 初回マイページで自動表示（現状維持） |
+| 8 | **プロフィールガイド 完了済み** | 自動表示なし（現状維持） |
+| 9 | **プロフィールガイド スキップ済み** | 自動表示なし（現状維持） |
+| 10 | **マイページ手動「プロフィール設定をまとめて編集」** | `EasyInitialSetupScreen` を push、**必ずページ0から**、保存値は反映 |
+| 11 | **「操作ガイドをもう一度見る」** | 影響なし（`OperationTutorialController.startProfileTutorial(forceReplay: true)` は未変更） |
+| 12 | **SharedPreferences キー** | 既存キーは保持。新規書き込みパターンは手動完了/スキップ時のみ |
+| 13 | **既存テスト** | `operation_tutorial_*` 系は影響なし。`AppEntryHost` テストは新規追加が必要 |
+
+**補足（UX 上の注意）**
+
+新規ユーザーの初回マイページでは、以下が同時に出る可能性があります。
+
+- プロフィールガイド（オーバーレイ）
+- `MyPageSetupIncompleteCard`（`initialSetupCompleted == false` かつ未設定項目あり）
+
+オーバーレイが上に重なるため致命的ではありませんが、今回のスコープ外として認識しておくとよいです。必要なら別タスクでカード表示条件を調整できます。
+
+---
+
+## 11. 追加・修正するテスト
+
+### 新規
+
+**`test/widgets/app_entry_host_test.dart`**
+
+- 規約未同意 → `LegalConsentScreen` 表示
+- 規約同意済み + `easy_initial_setup_dismissed_v1 == false` → **`AppShell` 表示**（`EasyInitialSetupScreen` は出ない）
+- 規約同意済み + `dismissed == true` → `AppShell` 表示
+
+**`test/screens/easy_initial_setup_start_page_test.dart`**
+
+- `embeddedInEntryHost: false`, `initialPageIndex: 0` → ステップドット「1」が active（ページ0）
+- ROOM URL 未登録でもページ0から開始することを確認
+
+**`test/screens/mypage_initial_setup_label_test.dart`**
+
+- `MyPageAppSettingsCard` に「プロフィール設定をまとめて編集」が表示される
+- 「初期設定をやり直す」は表示されない
+
+### 修正不要（現状維持で十分）
+
+- `test/repository/operation_tutorial_repository_test.dart`
+- `test/state/operation_tutorial_controller_test.dart`
+- `test/widgets/tutorial_overlay_host_test.dart`
+- `test/screens/mypage_tutorial_replay_test.dart`
+
+### 既存テストの文言依存
+
+`my_page_plan_entry_test.dart` 等は「初期設定をやり直す」を直接 assert していないため、影響は小さいです。
+
+---
+
+## 12. 実装リスク
+
+| リスク | 深刻度 | 対策 |
+|---|---|---|
+| 初回マイページでガイド + 未完了カードが重なる | 低 | 今回スコープ外。オーバーレイ優先で操作可能 |
+| `embeddedInEntryHost: true` がデッドコード化 | 低 | パラメータは残し、将来のテスト・再利用に備える |
+| `route: 'easySetup'` ログが出なくなる | 低 | 意図的。必要なら別キーで手動起動をログ |
+| 途中離脱ユーザーが起動時にウィザードを見られなくなる | 中（意図的改善） | `MyPageSetupIncompleteCard` と手動メニューで再開可能 |
+| Dev Automation が起動時ウィザード前提 | 低 | コード上は依存なし（確認済み） |
+| `AppEntryHost` テストの Provider セットアップ | 低 | 最小限の `MultiProvider` で対応 |
+
+---
+
+## 13. 実装順序
+
+1. **`AppEntryHost`** — 起動時自動表示の停止（本修正の核心）
+2. **`EasyInitialSetupScreen`** — `initialPageIndex` 追加
+3. **`mypage_placeholder_screen.dart`** — 手動起動時に `initialPageIndex: 0`
+4. **`mypage_widgets.dart`** — メニュー文言変更
+5. **テスト追加** — `app_entry_host_test` → 開始ページ → 文言
+6. **`flutter analyze` / `flutter test`** — 全体確認
+
+---
+
+## 変更サマリー
+
+| 項目 | 内容 |
+|---|---|
+| 変更ファイル数 | 実装 4 + テスト 3（新規） |
+| 推定 diff 規模 | 実装 30行未満 |
+| Repository 変更 | なし |
+| プロフィールガイド変更 | なし |
+| 保存ロジック変更 | なし |
+| 外部パッケージ | 追加なし |
+
+---
+
+この方針で問題なければ、実装に進めます。初回マイページでの `MyPageSetupIncompleteCard` とプロフィールガイドの同時表示について、今回あわせて調整するかどうかも教えてください。
