@@ -37,7 +37,7 @@ abstract final class InterestCategoryDefinitions {
   static const beautyCosme = InterestCategoryDefinition(
     id: 'beauty_cosme',
     displayName: '美容・コスメ',
-    searchTerms: ['美容', 'コスメ', 'スキンケア'],
+    searchTerms: ['コスメ', '美容', 'スキンケア'],
   );
 
   static const fashion = InterestCategoryDefinition(
@@ -49,7 +49,7 @@ abstract final class InterestCategoryDefinitions {
   static const foodSweets = InterestCategoryDefinition(
     id: 'food_sweets',
     displayName: '食品・スイーツ',
-    searchTerms: ['食品', 'スイーツ', 'お菓子'],
+    searchTerms: ['スイーツ', '食品', 'お菓子'],
   );
 
   static const gadgetAppliance = InterestCategoryDefinition(
@@ -85,7 +85,7 @@ abstract final class InterestCategoryDefinitions {
   static const gift = InterestCategoryDefinition(
     id: 'gift',
     displayName: 'ギフト',
-    searchTerms: ['ギフト', 'プレゼント', '雑貨'],
+    searchTerms: ['雑貨', 'ギフト', 'プレゼント'],
   );
 
   static const List<InterestCategoryDefinition> all = [

@@ -10,6 +10,8 @@ class RoomRecommendationProfileRepository {
   final SharedPreferences _prefs;
 
   static const String _key = 'room_recommendation_profile_v1';
+  static const String _diagnosisPromptSkippedKey =
+      'room_diagnosis_prompt_skipped_v1';
 
   RoomRecommendationProfile? load() {
     final raw = _prefs.getString(_key);
@@ -28,5 +30,18 @@ class RoomRecommendationProfileRepository {
 
   Future<void> clear() async {
     await _prefs.remove(_key);
+    await _prefs.remove(_diagnosisPromptSkippedKey);
+  }
+
+  /// 「診断せずに見る」選択後は、診断完了までBottomSheetを再表示しない。
+  bool isDiagnosisPromptSkipped() =>
+      _prefs.getBool(_diagnosisPromptSkippedKey) ?? false;
+
+  Future<void> setDiagnosisPromptSkipped(bool skipped) async {
+    if (skipped) {
+      await _prefs.setBool(_diagnosisPromptSkippedKey, true);
+    } else {
+      await _prefs.remove(_diagnosisPromptSkippedKey);
+    }
   }
 }

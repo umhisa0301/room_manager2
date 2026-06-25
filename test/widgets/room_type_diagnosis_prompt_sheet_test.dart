@@ -50,5 +50,47 @@ void main() {
       expect(find.text('かんたん診断する'), findsOneWidget);
       expect(find.text('診断せずに見る'), findsOneWidget);
     });
+
+    testWidgets('診断せずに見る選択後はスキップフラグが保存される', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final repository = RoomRecommendationProfileRepository(prefs);
+      final provider = RoomRecommendationProfileProvider(repository: repository);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ChangeNotifierProvider.value(
+            value: provider,
+            child: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final skip = await RoomTypeDiagnosisPromptSheet.show(
+                          context,
+                        );
+                        if (skip == false) {
+                          await provider.markDiagnosisPromptSkipped();
+                        }
+                      },
+                      child: const Text('おすすめコレ'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('おすすめコレ'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('診断せずに見る'));
+      await tester.pumpAndSettle();
+
+      expect(provider.isDiagnosisPromptSkipped, isTrue);
+      expect(repository.isDiagnosisPromptSkipped(), isTrue);
+    });
   });
 }

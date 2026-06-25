@@ -130,11 +130,31 @@ abstract final class ProfileRecommendationIntegration {
     );
     if (trusted != null) picked.add(trusted);
 
+    final primaryCategoryId = profile.interestCategoryIds.isNotEmpty
+        ? profile.interestCategoryIds.first
+        : '';
     final discovery = takeFirstWhere(
-      (c) => c.profileScore.categoryScore > 0,
+      (c) {
+        if (c.profileScore.categoryScore <= 0) return false;
+        final cats = c.profileScore.matchedCategoryIds;
+        if (cats.isEmpty) return false;
+        if (primaryCategoryId.isNotEmpty &&
+            cats.length == 1 &&
+            cats.first == primaryCategoryId) {
+          return false;
+        }
+        return cats.any((id) => id != primaryCategoryId);
+      },
       RecommendationSlotRole.discovery,
       TodayRecommendationSection.fresh,
-    );
+    ) ??
+        takeFirstWhere(
+          (c) =>
+              c.profileScore.categoryScore > 0 &&
+              c.profileScore.priorityScore <= 0,
+          RecommendationSlotRole.discovery,
+          TodayRecommendationSection.fresh,
+        );
     if (discovery != null) picked.add(discovery);
 
     for (final c in valid) {

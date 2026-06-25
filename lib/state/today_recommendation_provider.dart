@@ -783,7 +783,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
           rateLimited = true;
           return false;
         }
-        rethrow;
+        recommendAuditLog('[RECOMMEND] planFailed planIndex=$idx error=$e');
+        apiCalls += 1;
+        return true;
       }
       apiCalls += 1;
       pagesUsed.add(startPage);

@@ -17,9 +17,17 @@ class RoomRecommendationProfileProvider extends ChangeNotifier {
 
   bool get isDiagnosed => _profile?.isDiagnosed ?? false;
 
+  bool get isDiagnosisPromptSkipped => _repository.isDiagnosisPromptSkipped();
+
+  Future<void> markDiagnosisPromptSkipped() async {
+    await _repository.setDiagnosisPromptSkipped(true);
+    notifyListeners();
+  }
+
   Future<void> saveFromDiagnosis(RoomDiagnosisAnswers answers) async {
     final built = RoomDiagnosisService.buildProfile(answers);
     await _repository.save(built);
+    await _repository.setDiagnosisPromptSkipped(false);
     _profile = built;
     notifyListeners();
   }

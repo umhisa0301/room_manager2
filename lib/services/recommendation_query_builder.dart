@@ -7,7 +7,7 @@ import '../models/room_recommendation_profile.dart';
 abstract final class RecommendationQueryBuilder {
   RecommendationQueryBuilder._();
 
-  static const int maxQueries = 8;
+  static const int maxQueries = 9;
 
   /// 優先条件ワード × 関心カテゴリでクエリを組み立てる。
   static List<String> buildQueries(RoomRecommendationProfile profile) {
@@ -23,13 +23,6 @@ abstract final class RecommendationQueryBuilder {
         .whereType<InterestCategoryDefinition>()
         .toList();
 
-    final searchWords = <String>[];
-    for (final rule in priorityRules) {
-      for (final word in rule.searchKeywords) {
-        if (_isUsableWord(word)) searchWords.add(word);
-      }
-    }
-
     final categoryTerms = <String>[];
     for (final cat in categories) {
       if (cat.searchTerms.isNotEmpty) {
@@ -39,13 +32,51 @@ abstract final class RecommendationQueryBuilder {
       }
     }
 
-    // 優先条件 × カテゴリの組み合わせ（主軸）。
-    for (final word in searchWords) {
-      for (final term in categoryTerms) {
-        if (queries.length >= maxQueries) break;
-        _addQuery(queries, seen, '$word $term');
+    if (priorityRules.isNotEmpty && categoryTerms.isNotEmpty) {
+      final primaryWords = priorityRules.first.searchKeywords
+          .where(_isUsableWord)
+          .toList(growable: false);
+
+      // 先頭2語を全カテゴリへ展開（手土産×各カテゴリ、便利グッズ×各カテゴリなど）。
+      for (var w = 0; w < 2 && w < primaryWords.length; w++) {
+        _expandKeywordAcrossCategories(
+          queries,
+          seen,
+          categoryTerms,
+          primaryWords[w],
+        );
       }
-      if (queries.length >= maxQueries) break;
+
+      // カテゴリごとに3語目以降をずらして追加（時短×キッチン、内祝い×雑貨など）。
+      final passBCategoryCount = categoryTerms.length >= 3
+          ? categoryTerms.length - 1
+          : categoryTerms.length;
+      for (var ci = 0; ci < passBCategoryCount; ci++) {
+        if (queries.length >= maxQueries) break;
+        final wordIndex = ci + 2;
+        if (wordIndex >= primaryWords.length) break;
+        _addQuery(queries, seen, '${primaryWords[wordIndex]} ${categoryTerms[ci]}');
+      }
+
+      // 3語目を末尾カテゴリへ（内祝い×ベビー、時短×掃除等）。
+      if (queries.length < maxQueries &&
+          primaryWords.length > 2 &&
+          categoryTerms.isNotEmpty) {
+        _addQuery(
+          queries,
+          seen,
+          '${primaryWords[2]} ${categoryTerms.last}',
+        );
+      }
+
+      // 第2優先以降は先頭キーワードを1カテゴリ分だけ追加（API枠の節約）。
+      for (var ri = 1; ri < priorityRules.length; ri++) {
+        if (queries.length >= maxQueries) break;
+        final word = priorityRules[ri].searchKeywords
+            .firstWhere(_isUsableWord, orElse: () => '');
+        if (word.isEmpty) continue;
+        _addQuery(queries, seen, '$word ${categoryTerms.first}');
+      }
     }
 
     // タイプ方向 × カテゴリで補完。
@@ -62,6 +93,19 @@ abstract final class RecommendationQueryBuilder {
     }
 
     return queries;
+  }
+
+  static void _expandKeywordAcrossCategories(
+    List<String> queries,
+    Set<String> seen,
+    List<String> categoryTerms,
+    String word,
+  ) {
+    if (!_isUsableWord(word)) return;
+    for (final term in categoryTerms) {
+      if (queries.length >= maxQueries) return;
+      _addQuery(queries, seen, '$word $term');
+    }
   }
 
   static void _addQuery(List<String> out, Set<String> seen, String query) {

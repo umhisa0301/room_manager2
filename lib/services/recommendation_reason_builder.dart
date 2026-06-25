@@ -32,18 +32,24 @@ abstract final class RecommendationReasonBuilder {
     switch (slot) {
       case RecommendationSlotRole.personalFit:
         if (priorityLabels.isNotEmpty) {
-          buffer.write('あなたの「$typeName」と「${_shortPriority(priorityLabels.first)}」に合わせて選びました。');
+          buffer.write(
+            'あなたの「$typeName」と「${_shortPriority(priorityLabels.first)}」に合わせて選びました。',
+          );
         } else {
           buffer.write('あなたの「$typeName」に合わせて選びました。');
         }
       case RecommendationSlotRole.trustedPick:
         buffer.write('レビューや価格のバランスを重視して選びました。');
         if (hasReview) {
-          buffer.write('評価${item.reviewAverage.toStringAsFixed(1)}（${item.reviewCount}件）の安心候補です。');
+          buffer.write(
+            '評価${item.reviewAverage.toStringAsFixed(1)}（${item.reviewCount}件）の安心候補です。',
+          );
         }
       case RecommendationSlotRole.discovery:
         buffer.write('少し視点を変えた発見候補です。');
-        if (categoryNames.isNotEmpty) {
+        if (categoryNames.length > 1) {
+          buffer.write('${categoryNames[1]}まわりで紹介しやすい商品です。');
+        } else if (categoryNames.isNotEmpty) {
           buffer.write('${categoryNames.first}まわりで紹介しやすい商品です。');
         }
     }
@@ -54,9 +60,14 @@ abstract final class RecommendationReasonBuilder {
       }
       if (matched.isNotEmpty) {
         buffer.write('${matched.take(2).join('・')}を伝えやすい候補です。');
-      } else if (priorityLabels.isNotEmpty &&
-          profile.priorityRuleIds.contains('visual_sns')) {
+      } else if (_isVisualProfile(profile)) {
         buffer.write('写真で雰囲気が伝わりやすく、ROOMでも紹介しやすい候補です。');
+      } else if (_isGiftProfile(profile)) {
+        buffer.write('贈り物や手土産として紹介しやすい候補です。');
+      } else if (_isValueProfile(profile)) {
+        buffer.write('コスパや満足感のバランスを伝えやすい候補です。');
+      } else if (_isPracticalProfile(profile)) {
+        buffer.write('実用性や時短のメリットを伝えやすい候補です。');
       } else if (hasReview) {
         buffer.write('レビュー評価も高く、紹介しやすい候補です。');
       } else {
@@ -76,4 +87,21 @@ abstract final class RecommendationReasonBuilder {
     if (full.contains('季節')) return '季節感重視';
     return full;
   }
+
+  static bool _isVisualProfile(RoomRecommendationProfile profile) =>
+      profile.primaryTypeId == 'visual_mood' ||
+      profile.priorityRuleIds.contains('visual_sns');
+
+  static bool _isGiftProfile(RoomRecommendationProfile profile) =>
+      profile.primaryTypeId == 'gift_event' ||
+      profile.priorityRuleIds.contains('gift_event') ||
+      profile.priorityRuleIds.contains('seasonal_trend');
+
+  static bool _isValueProfile(RoomRecommendationProfile profile) =>
+      profile.primaryTypeId == 'value_balance' ||
+      profile.priorityRuleIds.contains('value_balance');
+
+  static bool _isPracticalProfile(RoomRecommendationProfile profile) =>
+      profile.primaryTypeId == 'life_convenience' ||
+      profile.priorityRuleIds.contains('practical_lifehack');
 }

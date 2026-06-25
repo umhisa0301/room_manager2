@@ -547,12 +547,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
 
   Future<void> _openTodayRecommendations(BuildContext context) async {
     final recProfile = context.read<RoomRecommendationProfileProvider>();
-    if (!recProfile.isDiagnosed) {
+    if (!recProfile.isDiagnosed && !recProfile.isDiagnosisPromptSkipped) {
       final startDiagnosis = await RoomTypeDiagnosisPromptSheet.show(context);
       if (!context.mounted) return;
       if (startDiagnosis == true) {
         await _openRoomTypeDiagnosis(context);
         if (!context.mounted) return;
+      } else if (startDiagnosis == false) {
+        await recProfile.markDiagnosisPromptSkipped();
       }
     }
     final recommender = context.read<TodayRecommendationProvider>();
