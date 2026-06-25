@@ -34,6 +34,8 @@ import 'package:room_manager2/state/room_import_controller.dart';
 import 'package:room_manager2/state/saved_shop_provider.dart';
 import 'package:room_manager2/state/today_recommendation_provider.dart';
 import 'package:room_manager2/state/user_profile_provider.dart';
+import 'package:room_manager2/repository/room_recommendation_profile_repository.dart';
+import 'package:room_manager2/state/room_recommendation_profile_provider.dart';
 import 'package:room_manager2/widgets/app_entry_host.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,6 +61,8 @@ Widget _wrapAppEntryHost({
   final userProfileRepository = UserProfileRepository(prefs);
   final savedShopRepository = SavedShopRepository(prefs);
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
+  final roomRecommendationProfileRepository =
+      RoomRecommendationProfileRepository(prefs);
   final genreMasterRepository = GenreMasterRepository(prefs: prefs);
 
   return MultiProvider(
@@ -132,6 +136,11 @@ Widget _wrapAppEntryHost({
       ),
       ChangeNotifierProvider(
         create: (_) => UserProfileProvider(repository: userProfileRepository),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => RoomRecommendationProfileProvider(
+          repository: roomRecommendationProfileRepository,
+        ),
       ),
       ChangeNotifierProvider(
         create: (_) => SavedShopProvider(repository: savedShopRepository),

@@ -70,9 +70,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
     if (!profile.hasRoomUrl) return 1;
-    if (profile.favoriteGenreIdList.isEmpty) return 2;
-    if (savedShopCount <= 0) return 3;
-    return 3;
+    return 1;
   }
 
   @override
@@ -110,7 +108,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
-      postStyles: _postStyleKeys.take(1).join('、'),
+      postStyles: base.postStyles,
       roomUrl: base.roomUrl,
     );
     await context.read<UserProfileProvider>().saveProfile(next);
@@ -448,17 +446,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       final saved = await _saveRoomUrlStep(context);
       if (!mounted) return;
       if (!saved) return;
-      _pageController!.nextPage(
-        duration: const Duration(milliseconds: 260),
-        curve: Curves.easeOutCubic,
-      );
-      return;
-    }
-    if (_pageIndex == 2) {
-      _pageController!.nextPage(
-        duration: const Duration(milliseconds: 260),
-        curve: Curves.easeOutCubic,
-      );
+      await _persistDismissAndLeave(context, markCompleted: true);
       return;
     }
     await _persistDismissAndLeave(context, markCompleted: true);
@@ -470,18 +458,15 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     EasyInitialSetupRepository setup,
   ) {
     final missingRoomUrl = !profile.hasRoomUrl;
-    final missingGenre = profile.favoriteGenreIdList.isEmpty;
-    final missingSavedShop = savedShopCount <= 0;
     final showMyPageSetupCard =
-        !setup.initialSetupCompleted &&
-        (missingRoomUrl || missingGenre || missingSavedShop);
+        !setup.initialSetupCompleted && missingRoomUrl;
     final signature = [
       _pageIndex,
       setup.initialSetupCompleted,
       setup.initialSetupSkipped,
       missingRoomUrl,
-      missingGenre,
-      missingSavedShop,
+      false,
+      false,
       showMyPageSetupCard,
       _roomUrlValidationResult,
       _roomProfileExists,
@@ -494,8 +479,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       initialSetupCompleted: setup.initialSetupCompleted,
       initialSetupSkipped: setup.initialSetupSkipped,
       missingRoomUrl: missingRoomUrl,
-      missingGenre: missingGenre,
-      missingSavedShop: missingSavedShop,
+      missingGenre: false,
+      missingSavedShop: false,
       showMyPageSetupCard: showMyPageSetupCard,
       roomUrlValidationResult: _roomUrlValidationResult,
       roomProfileExists: _roomProfileExists,
@@ -504,7 +489,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   void _skipStep(BuildContext context) async {
     _dismissKeyboard();
-    if (_pageIndex >= 3) {
+    if (_pageIndex >= 1) {
       await _persistDismissAndLeave(context, markSkipped: true);
       return;
     }
@@ -515,25 +500,19 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   }
 
   List<Widget> _buildSetupBottomActions(BuildContext context) {
-    final profile = context.watch<UserProfileProvider>().profile;
     if (_pageIndex == 0) {
-      final styleCount = _postStyleKeys.length;
       return [
         MyPagePrimaryButton(
-          label: styleCount == 0 ? '探し方を選ぶ' : 'この探し方で次へ',
+          label: '次へ',
           height: 48,
-          onPressed: styleCount == 0
-              ? () => _openPostStylePicker(context)
-              : () => _goNext(context),
+          onPressed: () => _goNext(context),
         ),
         const SizedBox(height: 8),
         Align(
           alignment: Alignment.center,
           child: TextButton(
-            onPressed: styleCount == 0
-                ? () => _skipStep(context)
-                : () => _openPostStylePicker(context),
-            child: Text(styleCount == 0 ? 'スキップして次へ' : '変更する'),
+            onPressed: () => _skipStep(context),
+            child: const Text('スキップして次へ'),
           ),
         ),
       ];
@@ -556,70 +535,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         ),
       ];
     }
-    if (_pageIndex == 2) {
-      final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
-      return [
-        MyPagePrimaryButton(
-          label: hasGenres
-              ? '${profile.favoriteGenreIdList.length}件で次へ'
-              : 'ジャンルを選ぶ',
-          height: 48,
-          onPressed: hasGenres
-              ? () => _goNext(context)
-              : () => _openGenrePicker(context),
-        ),
-        const SizedBox(height: 8),
-        Align(
-          alignment: Alignment.center,
-          child: TextButton(
-            onPressed: hasGenres
-                ? () => _openGenrePicker(context)
-                : () => _skipStep(context),
-            child: Text(hasGenres ? '変更する' : 'スキップして次へ'),
-          ),
-        ),
-      ];
-    }
-    final savedShopCount = context.watch<SavedShopProvider>().shops.length;
-    return [
-      MyPagePrimaryButton(
-        label: _shopRecommendationStarted
-            ? savedShopCount > 0
-                  ? '保存したショップで始める'
-                  : 'おすすめショップを保存して始める'
-            : 'おすすめショップを見る',
-        height: 48,
-        icon: _shopRecommendationStarted
-            ? null
-            : const Icon(Icons.auto_awesome_rounded),
-        isLoading: _isLoadingShopRecommendations,
-        onPressed: _isLoadingShopRecommendations
-            ? null
-            : _shopRecommendationStarted
-            ? () => _persistDismissAndLeave(context, markCompleted: true)
-            : () => _loadShopRecommendations(context),
-      ),
-      if (_shopRecommendationStarted) ...[
-        const SizedBox(height: 6),
-        Text(
-          '保存ショップはあとから追加できます',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColors.textTertiary,
-            height: 1.3,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-      const SizedBox(height: 8),
-      Align(
-        alignment: Alignment.center,
-        child: TextButton(
-          onPressed: () => _persistDismissAndLeave(context, markSkipped: true),
-          child: const Text('あとで設定する'),
-        ),
-      ),
-    ];
+    return const [];
   }
 
   @override
@@ -708,28 +624,6 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                         label: '2',
                         onTap: () => _jumpToStep(1),
                       ),
-                      Expanded(
-                        child: Divider(
-                          color: AppColors.divider.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      _StepDot(
-                        active: _pageIndex == 2,
-                        enabled: _pageIndex >= 2,
-                        label: '3',
-                        onTap: () => _jumpToStep(2),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: AppColors.divider.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      _StepDot(
-                        active: _pageIndex == 3,
-                        enabled: _pageIndex >= 3,
-                        label: '4',
-                        onTap: () => _jumpToStep(3),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -744,29 +638,12 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                       children: [
                         _StepProfile(
                           controller: _nicknameController,
-                          postStyleKeys: _postStyleKeys,
-                          onPickPostStyles: () => _openPostStylePicker(context),
                         ),
                         _StepRoomUrl(
                           controller: _roomUrlController,
                           errorText: _roomUrlErrorText,
                           isChecking: _isCheckingRoomProfile,
                           onChanged: () => setState(() {}),
-                        ),
-                        _StepGenres(
-                          onPickGenres: () => _openGenrePicker(context),
-                        ),
-                        _StepSavedShops(
-                          isLoading: _isLoadingShopRecommendations,
-                          recommendations: _shopRecommendations,
-                          failedReason: _shopRecommendationFailedReason,
-                          recommendationStarted: _shopRecommendationStarted,
-                          onSaveShop: (summary) =>
-                              _saveRecommendedShop(context, summary),
-                          onSkip: () => _persistDismissAndLeave(
-                            context,
-                            markSkipped: true,
-                          ),
                         ),
                       ],
                     ),
@@ -862,13 +739,9 @@ class _DismissKeyboardOnInteract extends StatelessWidget {
 class _StepProfile extends StatelessWidget {
   const _StepProfile({
     required this.controller,
-    required this.postStyleKeys,
-    required this.onPickPostStyles,
   });
 
   final TextEditingController controller;
-  final Set<String> postStyleKeys;
-  final VoidCallback onPickPostStyles;
 
   @override
   Widget build(BuildContext context) {
@@ -887,7 +760,7 @@ class _StepProfile extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n探し方は、おすすめ候補やショップ提案の調整に使います。あとから変更できます。',
+              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。あとから変更できます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -909,11 +782,6 @@ class _StepProfile extends StatelessWidget {
               hintText: '例: ルーマネ',
               textInputAction: TextInputAction.done,
               focusedBorderColor: MyPageScreenUi.primary,
-            ),
-            const SizedBox(height: 12),
-            _PostStyleSummary(
-              selectedKeys: postStyleKeys.toList(growable: false),
-              onPick: onPickPostStyles,
             ),
           ],
         ),

@@ -8,6 +8,8 @@ import 'package:room_manager2/repository/user_profile_repository.dart';
 import 'package:room_manager2/screens/mypage_placeholder_screen.dart';
 import 'package:room_manager2/state/saved_shop_provider.dart';
 import 'package:room_manager2/state/user_profile_provider.dart';
+import 'package:room_manager2/repository/room_recommendation_profile_repository.dart';
+import 'package:room_manager2/state/room_recommendation_profile_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _wrap({
@@ -29,6 +31,11 @@ Widget _wrap({
       ),
       ChangeNotifierProvider(
         create: (_) => OperationTutorialRepository(prefs),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => RoomRecommendationProfileProvider(
+          repository: RoomRecommendationProfileRepository(prefs),
+        ),
       ),
     ],
     child: MaterialApp(home: child),

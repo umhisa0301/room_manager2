@@ -12,6 +12,7 @@ import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
+import '../state/room_recommendation_profile_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/today_recommendations_screen_tokens.dart';
@@ -107,6 +108,8 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
+      recommendationProfile:
+          context.read<RoomRecommendationProfileProvider>().profile,
       trigger: 'screenOpen',
     );
   }
@@ -222,6 +225,8 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
+      recommendationProfile:
+          context.read<RoomRecommendationProfileProvider>().profile,
       trigger: 'manual',
       manual: true,
     );

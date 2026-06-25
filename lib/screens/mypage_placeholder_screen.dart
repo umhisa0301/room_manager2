@@ -18,7 +18,12 @@ import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
+import '../state/room_recommendation_profile_provider.dart';
 import '../state/operation_tutorial_controller.dart';
+import '../services/room_diagnosis_service.dart';
+import '../data/room_type_definitions.dart';
+import '../widgets/room_type_diagnosis_widgets.dart';
+import 'room_type_diagnosis_screen.dart';
 import '../theme/app_theme.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../utils/user_profile_genre_migration.dart';
@@ -213,11 +218,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
           builder: (context, profileProvider, saved, setup, tutorial, _) {
             final profile = profileProvider.profile;
             final missingRoomUrl = !profile.hasRoomUrl;
-            final missingGenre = profile.favoriteGenreIdList.isEmpty;
-            final missingSavedShop = saved.shops.isEmpty;
             final showMyPageSetupCard =
-                !setup.initialSetupCompleted &&
-                (missingRoomUrl || missingGenre || missingSavedShop);
+                !setup.initialSetupCompleted && missingRoomUrl;
             final roomUrlFormat =
                 RoomProfileUrlValidationService.validateFormat(profile.roomUrl);
             logOnboardingUi(
@@ -226,8 +228,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               initialSetupCompleted: setup.initialSetupCompleted,
               initialSetupSkipped: setup.initialSetupSkipped,
               missingRoomUrl: missingRoomUrl,
-              missingGenre: missingGenre,
-              missingSavedShop: missingSavedShop,
+              missingGenre: false,
+              missingSavedShop: false,
               showMyPageSetupCard: showMyPageSetupCard,
               roomUrlValidationResult: roomUrlFormat.logValue,
               roomProfileExists: missingRoomUrl ? 'skipped' : 'unknown',
@@ -250,14 +252,14 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             Widget buildRoomSettingsCard() {
               return MyPageRoomSettingsCard(
                 profile: profile,
-                savedShopCount: saved.shops.length,
                 onEditNickname: () => _openProfileEditSheet(context),
                 onEditRoomUrl: () => _openRoomUrlEditSheet(context),
-                onEditGenres: () => _openFavoriteGenrePickerSheet(context),
-                onOpenSavedShops: openSavedShops,
-                onEditPostStyle: () => _openPostStylePickerSheet(context),
               );
             }
+
+            final recProfile =
+                context.watch<RoomRecommendationProfileProvider>().profile;
+            final isDiagnosed = recProfile?.isDiagnosed ?? false;
 
             return ListView(
               padding: EdgeInsets.fromLTRB(
@@ -278,6 +280,33 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   const SizedBox(height: MyPageScreenUi.gapSection),
                 ],
                 buildRoomSettingsCard(),
+                const SizedBox(height: MyPageScreenUi.gapSection),
+                MyPageRoomTypeDiagnosisCard(
+                  isDiagnosed: isDiagnosed,
+                  typeDisplayName: isDiagnosed
+                      ? RoomTypeDefinitions.displayNameFor(
+                          recProfile!.primaryTypeId,
+                        )
+                      : '',
+                  interestLabel: isDiagnosed
+                      ? RoomDiagnosisService.interestCategoriesLabel(
+                          recProfile!.interestCategoryIds,
+                        )
+                      : '',
+                  priorityLabel: isDiagnosed
+                      ? RoomDiagnosisService.priorityRulesLabel(
+                          recProfile!.priorityRuleIds,
+                        )
+                      : '',
+                  actionLabel: isDiagnosed ? '診断をやり直す' : '診断する',
+                  onAction: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const RoomTypeDiagnosisScreen(),
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: MyPageScreenUi.gapSection),
                 MyPageSettingsSection(
                   onOpenPlan: () => _openMonetizationPlan(context),

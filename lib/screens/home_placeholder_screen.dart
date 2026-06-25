@@ -10,6 +10,7 @@ import '../navigation/app_shell_controller.dart';
 import '../navigation/rakuten_search_navigator.dart';
 import 'mypage_placeholder_screen.dart';
 import 'today_recommendations_screen.dart';
+import 'room_type_diagnosis_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
 import '../services/room_import_collects_policy.dart';
@@ -24,7 +25,10 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
+import '../state/room_recommendation_profile_provider.dart';
 import '../state/user_profile_provider.dart';
+import '../data/room_type_definitions.dart';
+import '../widgets/room_type_diagnosis_widgets.dart';
 import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
@@ -398,6 +402,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   DateTime? _lastAutoRegenerateTriedAt;
   int _reactionNoticeRefreshNonce = 0;
   bool _isHomeRefreshing = false;
+  bool _roomTypeCardDismissed = false;
   static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
@@ -431,6 +436,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         profile: context.read<UserProfileProvider>().profile,
         managedItems: room.items,
         savedShops: context.read<SavedShopProvider>().shops,
+        recommendationProfile:
+            context.read<RoomRecommendationProfileProvider>().profile,
         trigger: 'homeInit',
       );
       await _regenerateRecommendationsIfNeeded(
@@ -457,6 +464,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       profile: context.read<UserProfileProvider>().profile,
       managedItems: room.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      recommendationProfile:
+          context.read<RoomRecommendationProfileProvider>().profile,
       trigger: 'refresh',
     );
     _guard('skipReason=refreshDoesNotForceRegenerate');
@@ -525,7 +534,27 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     context.read<AppShellController>().selectTab(2);
   }
 
+  Future<void> _openRoomTypeDiagnosis(BuildContext context) async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(
+        builder: (_) => const RoomTypeDiagnosisScreen(),
+      ),
+    );
+    if (result == true && mounted) {
+      setState(() => _roomTypeCardDismissed = true);
+    }
+  }
+
   Future<void> _openTodayRecommendations(BuildContext context) async {
+    final recProfile = context.read<RoomRecommendationProfileProvider>();
+    if (!recProfile.isDiagnosed) {
+      final startDiagnosis = await RoomTypeDiagnosisPromptSheet.show(context);
+      if (!context.mounted) return;
+      if (startDiagnosis == true) {
+        await _openRoomTypeDiagnosis(context);
+        if (!context.mounted) return;
+      }
+    }
     final recommender = context.read<TodayRecommendationProvider>();
     final roomProvider = context.read<RakutenManagedProductProvider>();
     _trace('trigger=cta');
@@ -535,6 +564,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       profile: context.read<UserProfileProvider>().profile,
       managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      recommendationProfile: recProfile.profile,
       trigger: 'cta',
     );
     if (recommender.pendingCount <= 0 &&
@@ -580,6 +610,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       profile: context.read<UserProfileProvider>().profile,
       managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      recommendationProfile:
+          context.read<RoomRecommendationProfileProvider>().profile,
       trigger: trigger,
       manual: force,
     );
@@ -664,6 +696,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         );
                     final profileRoomUrl = userProfileProvider.profile.roomUrl
                         .trim();
+                    final recProfileProvider =
+                        context.watch<RoomRecommendationProfileProvider>();
                     final roomImportedDoneCount = items
                         .where(
                           (e) =>
@@ -726,6 +760,27 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 collectLimit: collectLimit,
                               ),
                               SizedBox(height: _HomeUi.gapSection),
+                              if (!recProfileProvider.isDiagnosed &&
+                                  !_roomTypeCardDismissed)
+                                HomeRoomTypeDiagnosisCard(
+                                  onStartDiagnosis: () =>
+                                      _openRoomTypeDiagnosis(context),
+                                  onLater: () => setState(
+                                    () => _roomTypeCardDismissed = true,
+                                  ),
+                                )
+                              else if (recProfileProvider.isDiagnosed)
+                                HomeRoomTypeSummaryCard(
+                                  typeDisplayName: RoomTypeDefinitions
+                                      .displayNameFor(
+                                    recProfileProvider
+                                        .profile!.primaryTypeId,
+                                  ),
+                                ),
+                              if (!recProfileProvider.isDiagnosed &&
+                                      !_roomTypeCardDismissed ||
+                                  recProfileProvider.isDiagnosed)
+                                SizedBox(height: _HomeUi.gapSection),
                               _TodayRoomWorkCard(
                                 todayCandidateAddedCount:
                                     todayCandidateAddedCount,

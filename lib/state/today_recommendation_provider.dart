@@ -7,6 +7,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
+import '../models/room_recommendation_profile.dart';
 import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
 import '../repository/product_catalog_repository.dart';
@@ -23,11 +24,13 @@ import '../utils/today_recommendation_policy.dart';
 import '../utils/today_recommendation_exposure_policy.dart';
 import '../utils/today_recommendation_genre_distribution.dart';
 import '../utils/today_recommendation_genre_page_store.dart';
+import '../utils/profile_recommendation_integration.dart';
 import '../utils/today_recommendation_catalog.dart';
 import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import '../services/recommendation_generation_limit.dart';
+import '../services/recommendation_scoring_service.dart';
 import 'rakuten_managed_product_provider.dart';
 
 enum TodayRecommendationGenerationStatus {
@@ -254,6 +257,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
+    RoomRecommendationProfile? recommendationProfile,
     String trigger = 'ensure',
   }) async {
     final now = DateTime.now();
@@ -298,6 +302,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       profile: profile,
       managedItems: managedItems,
       savedShops: savedShops,
+      recommendationProfile: recommendationProfile,
       trigger: trigger,
     );
   }
@@ -306,6 +311,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
+    RoomRecommendationProfile? recommendationProfile,
     String trigger = 'unknown',
     bool manual = false,
   }) async {
@@ -374,6 +380,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         profile: profile,
         managedItems: managedItems,
         savedShops: savedShops,
+        recommendationProfile: recommendationProfile,
       );
       _cooldownUntil = null;
       _lastRateLimitFailure = false;
@@ -492,6 +499,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
+    RoomRecommendationProfile? recommendationProfile,
   }) async {
     final generateStartedAt = DateTime.now();
     _trace('generate start');
@@ -611,15 +619,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reactionLikeShopIds: reactionProfileForPlans.likeShops,
       historyGenreIdsFiltered: historyGenres,
     );
-    final mandatoryGenrePlans = planSet.favoriteGenrePlans
-        .map(_RecommendSearchPlan.fromSpec)
-        .toList(growable: false);
-    final assistPlan = planSet.assistPlan != null
+    final profileDiagnosed = recommendationProfile?.isDiagnosed ?? false;
+    final mandatoryGenrePlans = profileDiagnosed
+        ? ProfileRecommendationIntegration.buildSearchPlans(
+                recommendationProfile!,
+              )
+              .map(_RecommendSearchPlan.fromSpec)
+              .toList(growable: false)
+        : planSet.favoriteGenrePlans
+            .map(_RecommendSearchPlan.fromSpec)
+            .toList(growable: false);
+    final assistPlan = profileDiagnosed
+        ? null
+        : planSet.assistPlan != null
         ? _RecommendSearchPlan.fromSpec(planSet.assistPlan!)
         : null;
-    final fallbackPlan = planSet.fallbackPlan != null
-        ? _RecommendSearchPlan.fromSpec(planSet.fallbackPlan!)
-        : null;
+    final fallbackPlan = profileDiagnosed
+        ? null
+        : planSet.fallbackPlan != null
+            ? _RecommendSearchPlan.fromSpec(planSet.fallbackPlan!)
+            : null;
     final plans = <_RecommendSearchPlan>[
       ...mandatoryGenrePlans,
       if (assistPlan != null) assistPlan,
@@ -879,6 +898,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
     skippedFavoriteGenrePlans =
         mandatoryGenrePlans.length - executedFavoriteGenrePlans;
 
+    final recentlyShownProductIds = exposureRecords.entries
+        .where((e) => e.value.shownAt != null)
+        .map((e) => e.key.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
+
     final previewAfterGenres = _finalizeFromPool(
       pool: pool,
       metaById: metaById,
@@ -895,6 +920,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
       recentCandidatesForBridge: recentCandidates,
       staleCandidatesForBridge: staleCandidates,
       reactionProfile: reactionProfile,
+      recommendationProfile: recommendationProfile,
+      excludeProductIds: excludeIds,
+      recentlyShownProductIds: recentlyShownProductIds,
     );
 
     if (!apiSkippedByCatalog &&
@@ -943,6 +971,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
       recentCandidatesForBridge: recentCandidates,
       staleCandidatesForBridge: staleCandidates,
       reactionProfile: reactionProfile,
+      recommendationProfile: recommendationProfile,
+      excludeProductIds: excludeIds,
+      recentlyShownProductIds: recentlyShownProductIds,
     );
 
     if (pool.isEmpty && allPlansNoItems) {
@@ -1114,10 +1145,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> recentCandidatesForBridge,
     required List<RakutenManagedProduct> staleCandidatesForBridge,
     required _ReactionProfile reactionProfile,
+    RoomRecommendationProfile? recommendationProfile,
+    Set<String> excludeProductIds = const {},
+    Set<String> recentlyShownProductIds = const {},
   }) {
     final scored = <_ScoredRecommendation>[];
     for (final item in pool.values) {
-      final scoredItem = _scoreRecommendationForBucket(
+      var scoredItem = _scoreRecommendationForBucket(
         item,
         meta: metaById[item.productId.trim()] ?? _ItemPoolMeta(),
         favoriteGenreIds: favoriteGenreIds,
@@ -1133,12 +1167,86 @@ class TodayRecommendationProvider extends ChangeNotifier {
         staleCandidatesForBridge: staleCandidatesForBridge,
         reactionProfile: reactionProfile,
       );
+      if (scoredItem != null &&
+          (recommendationProfile?.isDiagnosed ?? false)) {
+        final blended = ProfileRecommendationIntegration.blendScore(
+          item: item,
+          profile: recommendationProfile!,
+          baseScore: scoredItem.score,
+          excludeProductIds: excludeProductIds,
+          recentlyShownProductIds: recentlyShownProductIds,
+          collectedProductIds: excludeProductIds,
+        );
+        if (blended.blendedScore == double.negativeInfinity) {
+          scoredItem = null;
+        } else {
+          scoredItem = _ScoredRecommendation(
+            item: scoredItem.item,
+            score: blended.blendedScore,
+            priceScore: scoredItem.priceScore,
+            reason: scoredItem.reason,
+            section: scoredItem.section,
+          );
+        }
+      }
       if (scoredItem != null) scored.add(scoredItem);
     }
     scored.sort((a, b) => b.score.compareTo(a.score));
     if (kDebugMode) {
       recommendAuditLog(
         '[RECOMMEND_POOL] raw=${pool.length} valid=${scored.length} scored=${scored.length}',
+      );
+    }
+
+    if (recommendationProfile?.isDiagnosed ?? false) {
+      final profileCandidates = <({
+        RakutenSearchItem item,
+        double score,
+        double priceScore,
+        TodayRecommendationSection section,
+        RecommendationScoreResult profileScore,
+      })>[];
+      for (final e in scored) {
+        final profileScore = RecommendationScoringService.score(
+          item: e.item,
+          profile: recommendationProfile!,
+          excludeProductIds: excludeProductIds,
+          recentlyShownProductIds: recentlyShownProductIds,
+          collectedProductIds: excludeProductIds,
+        );
+        if (profileScore.totalScore == double.negativeInfinity) continue;
+        profileCandidates.add((
+          item: e.item,
+          score: e.score,
+          priceScore: e.priceScore,
+          section: e.section,
+          profileScore: profileScore,
+        ));
+      }
+      final profileEntries = ProfileRecommendationIntegration.pickTopThreeWithRoles(
+        candidates: profileCandidates,
+        profile: recommendationProfile!,
+      );
+      final shopDistribution = <String, int>{};
+      for (final e in profileEntries) {
+        final shop = e.item.shopName.trim().isEmpty
+            ? (e.item.shopCode.trim().isEmpty ? '-' : e.item.shopCode.trim())
+            : e.item.shopName.trim();
+        shopDistribution[shop] = (shopDistribution[shop] ?? 0) + 1;
+      }
+      return (
+        entries: profileEntries,
+        personalCount: profileEntries
+            .where((e) => e.section == TodayRecommendationSection.sellable)
+            .length,
+        relaxedCount: profileEntries
+            .where((e) => e.section == TodayRecommendationSection.popular)
+            .length,
+        discoveryCount: profileEntries
+            .where((e) => e.section == TodayRecommendationSection.fresh)
+            .length,
+        sourceGenreDistribution: const {},
+        shopDistribution: shopDistribution,
       );
     }
 

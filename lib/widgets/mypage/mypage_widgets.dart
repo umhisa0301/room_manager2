@@ -486,11 +486,9 @@ class MyPageSetupIncompleteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasRoomUrl = profile.hasRoomUrl;
-    final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
-    final hasSavedShops = savedShopCount > 0;
-    final stepDone = [hasRoomUrl, hasGenres, hasSavedShops];
+    final stepDone = [hasRoomUrl];
     final completedCount = stepDone.where((e) => e).length;
-    final progress = completedCount / 3;
+    final progress = completedCount / stepDone.length;
 
     return MyPageCard(
       child: Column(
@@ -508,7 +506,7 @@ class MyPageSetupIncompleteCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            '$completedCount/3 完了',
+            '$completedCount/${stepDone.length} 完了',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: MyPageScreenUi.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -546,30 +544,18 @@ class MyPageRoomSettingsCard extends StatelessWidget {
   const MyPageRoomSettingsCard({
     super.key,
     required this.profile,
-    required this.savedShopCount,
     required this.onEditNickname,
     required this.onEditRoomUrl,
-    required this.onEditGenres,
-    required this.onOpenSavedShops,
-    required this.onEditPostStyle,
   });
 
   final UserProfile profile;
-  final int savedShopCount;
   final VoidCallback onEditNickname;
   final VoidCallback onEditRoomUrl;
-  final VoidCallback onEditGenres;
-  final VoidCallback onOpenSavedShops;
-  final VoidCallback onEditPostStyle;
 
   @override
   Widget build(BuildContext context) {
-    final genreCount = profile.favoriteGenreIdList.length;
     final hasNickname = profile.displayName.trim().isNotEmpty;
-    final postStyleLabel = profile.postStyleLabelsText.trim();
-    final hasPostStyle = postStyleLabel.isNotEmpty;
-    final basicConfigured =
-        profile.hasRoomUrl && genreCount > 0 && savedShopCount > 0;
+    final basicConfigured = profile.hasRoomUrl;
 
     return MyPageCard(
       key: TutorialTargetKeys.roomSettingsCard,
@@ -605,37 +591,6 @@ class MyPageRoomSettingsCard extends StatelessWidget {
                 : MyPageStatusChipVariant.unset,
             onTap: onEditRoomUrl,
             semanticsLabel: 'ROOM URL設定',
-          ),
-          MyPageSettingNavRow(
-            key: TutorialTargetKeys.genreRow,
-            label: 'お気に入りジャンル',
-            chipLabel: genreCount > 0 ? '$genreCount件' : '未設定',
-            chipVariant: genreCount > 0
-                ? MyPageStatusChipVariant.set
-                : MyPageStatusChipVariant.unset,
-            onTap: onEditGenres,
-            semanticsLabel: 'お気に入りジャンル設定',
-          ),
-          MyPageSettingNavRow(
-            key: TutorialTargetKeys.savedShopRow,
-            label: '保存ショップ',
-            chipLabel: savedShopCount > 0 ? '$savedShopCount件' : '未設定',
-            chipVariant: savedShopCount > 0
-                ? MyPageStatusChipVariant.set
-                : MyPageStatusChipVariant.unset,
-            onTap: onOpenSavedShops,
-            semanticsLabel: '保存ショップ設定',
-          ),
-          MyPageSettingNavRow(
-            key: TutorialTargetKeys.postStyleRow,
-            label: '探し方',
-            chipLabel: hasPostStyle ? postStyleLabel : '未設定',
-            chipVariant: hasPostStyle
-                ? MyPageStatusChipVariant.set
-                : MyPageStatusChipVariant.optional,
-            onTap: onEditPostStyle,
-            showDivider: false,
-            semanticsLabel: '探し方設定',
           ),
         ],
       ),

@@ -23,21 +23,6 @@ const OperationTutorialFlow profileTutorialFlow = OperationTutorialFlow(
       body: 'あなたの楽天ROOMのURLを登録します。コレ同期や反応チェックなどに使われます。',
     ),
     OperationTutorialStep(
-      targetKey: TutorialTargetKeys.genreRow,
-      title: 'お気に入りジャンル',
-      body: '興味のあるジャンルを選ぶと、おすすめ商品の精度が上がります。',
-    ),
-    OperationTutorialStep(
-      targetKey: TutorialTargetKeys.savedShopRow,
-      title: '保存ショップ',
-      body: 'よく見るショップを保存しておくと、ショップベースの商品提案に使えます。',
-    ),
-    OperationTutorialStep(
-      targetKey: TutorialTargetKeys.postStyleRow,
-      title: '探し方',
-      body: '商品の探し方（投稿スタイル）を設定できます。おすすめの出し方に影響します。',
-    ),
-    OperationTutorialStep(
       title: 'ガイド完了',
       body: '基本設定の場所は把握できました。各項目をタップして、いつでも編集できます。',
     ),
