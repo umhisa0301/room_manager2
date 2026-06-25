@@ -343,7 +343,10 @@ class _TodayRecommendationsScreenState
               );
             }
 
-            final rows = _RecommendationListRow.fromEntries(bundle.entries);
+            final rows = _RecommendationListRow.fromEntries(
+              bundle.entries,
+              savedShopCount: context.read<SavedShopProvider>().shops.length,
+            );
             final selectable = bundle.entries
                 .where(
                   (e) => e.decision == TodayRecommendationDecision.pending,
@@ -386,8 +389,6 @@ class _TodayRecommendationsScreenState
               children: [
                 _SummaryCard(
                   total: bundle.entries.length,
-                  pending: rec.pendingCount,
-                  completed: rec.isCompleted,
                   uiState: regenerateUi,
                   onRegenerate: _regenerate,
                 ),
@@ -397,7 +398,7 @@ class _TodayRecommendationsScreenState
                 ),
                 if (bulkSelectAllowed)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
                     child: SearchBulkSelectionHeader(
                       key: const Key('today_recommendation_bulk_selection_header'),
                       screen: 'todayRecommendations',
@@ -453,11 +454,11 @@ class _TodayRecommendationsScreenState
                       if (row.section != null) {
                         return _RecommendationSectionHeader(
                           section: row.section!,
-                          topPadding: index == 0 ? 2 : 10,
+                          topPadding: index == 0 ? 0 : 6,
                         );
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 6),
                         child: _RecommendationCard(
                           entry: row.entry!,
                           bulkSelectEnabled: bulkSelectAllowed &&
@@ -518,14 +519,17 @@ class _RecommendationListRow {
   final TodayRecommendationSection? section;
 
   static List<_RecommendationListRow> fromEntries(
-    List<TodayRecommendationEntry> entries,
-  ) {
+    List<TodayRecommendationEntry> entries, {
+    required int savedShopCount,
+  }) {
     final rows = <_RecommendationListRow>[];
-    for (final section in TodayRecommendationSection.values) {
+    for (final section in TodayRecommendationSectionVisibility.visibleSections(
+      entries: entries,
+      savedShopCount: savedShopCount,
+    )) {
       final sectionEntries = entries
           .where((e) => e.section == section)
           .toList(growable: false);
-      if (sectionEntries.isEmpty) continue;
       rows.add(_RecommendationListRow.section(section));
       rows.addAll(sectionEntries.map(_RecommendationListRow.entry));
     }
@@ -545,26 +549,14 @@ class _RecommendationSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 6),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _sectionTitle(section),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 4),
+      child: Text(
+        _sectionTitle(section),
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w800,
+              fontSize: 14,
             ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            _sectionSubtitle(section),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.35,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -576,18 +568,7 @@ class _RecommendationSectionHeader extends StatelessWidget {
       case TodayRecommendationSection.popular:
         return 'あなた向け';
       case TodayRecommendationSection.fresh:
-        return '発掘・トレンド';
-    }
-  }
-
-  String _sectionSubtitle(TodayRecommendationSection section) {
-    switch (section) {
-      case TodayRecommendationSection.sellable:
-        return '保存したショップの中から、投稿しやすい候補です。';
-      case TodayRecommendationSection.popular:
-        return '好きなジャンル・コレ履歴・保存ショップに近い候補です。';
-      case TodayRecommendationSection.fresh:
-        return 'いつもの傾向を少し広げた候補です。最大3件に抑えています。';
+        return '発見候補';
     }
   }
 }
@@ -595,60 +576,57 @@ class _RecommendationSectionHeader extends StatelessWidget {
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard({
     required this.total,
-    required this.pending,
-    required this.completed,
     required this.uiState,
     required this.onRegenerate,
   });
 
   final int total;
-  final int pending;
-  final bool completed;
   final RegenerateButtonUiState uiState;
   final VoidCallback onRegenerate;
 
   @override
   Widget build(BuildContext context) {
+    final cooldownHint = uiState.showCooldownMessage && uiState.waitLabel.isNotEmpty
+        ? uiState.waitLabel
+        : (uiState.canPress ? '' : 'あと約5分で再生成できます');
     return AppCard(
-      margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            completed ? '本日のおすすめはチェック完了です' : '本日のおすすめ $total件（未処理 $pending件）',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            uiState.summaryBodyText(completed: completed),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.35,
-            ),
-          ),
-          if (uiState.showCooldownMessage) ...[
-            const SizedBox(height: 6),
-            Text(
-              uiState.waitLabel,
-              key: const Key('today_recommendation_skip_message'),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '$total件の候補',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                if (cooldownHint.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    cooldownHint,
+                    key: const Key('today_recommendation_skip_message'),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                          height: 1.3,
+                        ),
                   ),
+                ],
+              ],
             ),
-          ],
-          const SizedBox(height: 4),
-          Align(
-            alignment: Alignment.centerRight,
-            child: AppSecondaryButton(
-              label: '今日の候補を再生成',
-              onPressed: uiState.canPress ? onRegenerate : null,
-              icon: const Icon(Icons.refresh_rounded),
-            ),
+          ),
+          const SizedBox(width: 8),
+          AppSecondaryButton(
+            label: '再生成',
+            onPressed: uiState.canPress ? onRegenerate : null,
+            icon: const Icon(Icons.refresh_rounded, size: 18),
           ),
         ],
       ),
@@ -673,7 +651,7 @@ class _RecommendationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = entry.item;
     return AppCard(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       radius: 16,
       elevated: true,
       child: Row(
@@ -681,12 +659,17 @@ class _RecommendationCard extends StatelessWidget {
         children: [
           if (bulkSelectEnabled)
             Padding(
-              padding: const EdgeInsets.only(right: 2, top: 4),
-              child: Checkbox(
-                value: isSelected,
-                onChanged: (_) => onToggleSelected?.call(),
-                activeColor: TodayRecommendationsScreenUi.primary,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: const EdgeInsets.only(right: 0, top: 0),
+              child: SizedBox(
+                width: 36,
+                height: 36,
+                child: Checkbox(
+                  value: isSelected,
+                  onChanged: (_) => onToggleSelected?.call(),
+                  activeColor: TodayRecommendationsScreenUi.primary,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity.compact,
+                ),
               ),
             ),
           _ProductImageWithStatus(entry: entry),

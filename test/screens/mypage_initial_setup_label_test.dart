@@ -14,7 +14,7 @@ Widget _settingsSection({required VoidCallback onOpenInitialSetup}) {
 
 void main() {
   group('MyPage initial setup label', () {
-    testWidgets('shows profile bulk edit label', (tester) async {
+    testWidgets('プロフィール一括編集の導線は非表示', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -23,8 +23,8 @@ void main() {
         ),
       );
 
-      expect(find.text('プロフィール設定をまとめて編集'), findsOneWidget);
-      expect(find.text('初期設定をやり直す'), findsNothing);
+      expect(find.text('プロフィール設定をまとめて編集'), findsNothing);
+      expect(find.text('保存ショップを管理'), findsOneWidget);
     });
   });
 }

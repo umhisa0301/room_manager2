@@ -279,8 +279,10 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   ),
                   const SizedBox(height: MyPageScreenUi.gapSection),
                 ],
-                buildRoomSettingsCard(),
-                const SizedBox(height: MyPageScreenUi.gapSection),
+                if (!showMyPageSetupCard) ...[
+                  buildRoomSettingsCard(),
+                  const SizedBox(height: MyPageScreenUi.gapSection),
+                ],
                 MyPageRoomTypeDiagnosisCard(
                   isDiagnosed: isDiagnosed,
                   typeDisplayName: isDiagnosed
@@ -298,8 +300,19 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                           recProfile!.priorityRuleIds,
                         )
                       : '',
-                  actionLabel: isDiagnosed ? '診断をやり直す' : '診断する',
-                  onAction: () {
+                  commentToneLabel: isDiagnosed
+                      ? RoomDiagnosisService.commentToneLabel(
+                          recProfile!.commentToneId,
+                        )
+                      : '',
+                  onStartDiagnosis: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const RoomTypeDiagnosisScreen(),
+                      ),
+                    );
+                  },
+                  onRetakeDiagnosis: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
                         builder: (_) => const RoomTypeDiagnosisScreen(),

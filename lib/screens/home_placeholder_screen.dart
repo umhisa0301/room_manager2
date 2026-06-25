@@ -402,7 +402,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   DateTime? _lastAutoRegenerateTriedAt;
   int _reactionNoticeRefreshNonce = 0;
   bool _isHomeRefreshing = false;
-  bool _roomTypeCardDismissed = false;
   static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
@@ -535,14 +534,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 
   Future<void> _openRoomTypeDiagnosis(BuildContext context) async {
-    final result = await Navigator.of(context).push<bool>(
-      MaterialPageRoute<bool>(
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
         builder: (_) => const RoomTypeDiagnosisScreen(),
       ),
     );
-    if (result == true && mounted) {
-      setState(() => _roomTypeCardDismissed = true);
-    }
   }
 
   Future<void> _openTodayRecommendations(BuildContext context) async {
@@ -754,35 +750,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     _reactionNoticeRefreshNonce,
                               ),
                               SizedBox(height: _HomeUi.gapSection),
-                              _TodayRoomStatusCard(
-                                todayCandidateAddedCount:
-                                    todayCandidateAddedCount,
-                                todayRoomPostCount: todayRoomPostCount,
-                                pendingCandidateCount: nCandidate,
-                                collectLimit: collectLimit,
-                              ),
-                              SizedBox(height: _HomeUi.gapSection),
-                              if (!recProfileProvider.isDiagnosed &&
-                                  !_roomTypeCardDismissed)
-                                HomeRoomTypeDiagnosisCard(
-                                  onStartDiagnosis: () =>
-                                      _openRoomTypeDiagnosis(context),
-                                  onLater: () => setState(
-                                    () => _roomTypeCardDismissed = true,
-                                  ),
-                                )
-                              else if (recProfileProvider.isDiagnosed)
-                                HomeRoomTypeSummaryCard(
-                                  typeDisplayName: RoomTypeDefinitions
-                                      .displayNameFor(
-                                    recProfileProvider
-                                        .profile!.primaryTypeId,
-                                  ),
-                                ),
-                              if (!recProfileProvider.isDiagnosed &&
-                                      !_roomTypeCardDismissed ||
-                                  recProfileProvider.isDiagnosed)
-                                SizedBox(height: _HomeUi.gapSection),
                               _TodayRoomWorkCard(
                                 todayCandidateAddedCount:
                                     todayCandidateAddedCount,
@@ -793,6 +760,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     recProvider.generationStatus ==
                                         TodayRecommendationGenerationStatus
                                             .loading,
+                                roomTypeHint: recProfileProvider.isDiagnosed
+                                    ? '${RoomTypeDefinitions.displayNameFor(recProfileProvider.profile!.primaryTypeId)}に合わせて提案'
+                                    : null,
                                 onOpenRecommendations: () =>
                                     _openTodayRecommendations(context),
                                 onOpenPendingCandidates: () =>
@@ -802,6 +772,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                   _trace('action=openSearch');
                                   openRakutenSearchScreen(context);
                                 },
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
+                              _TodayRoomStatusCard(
+                                todayCandidateAddedCount:
+                                    todayCandidateAddedCount,
+                                todayRoomPostCount: todayRoomPostCount,
+                                pendingCandidateCount: nCandidate,
+                                collectLimit: collectLimit,
                               ),
                               SizedBox(height: _HomeUi.gapSection),
                               _ReactionCheckCard(
@@ -963,7 +941,7 @@ String _homeReactionSummary(RakutenManagedProduct product) {
   return parts.join(' · ');
 }
 
-/// 1. 今日のROOM状況（今日の目標・投稿上限を統合）
+/// 1. 今日の状況（今日の目標・投稿上限を統合）
 class _TodayRoomStatusCard extends StatelessWidget {
   const _TodayRoomStatusCard({
     required this.todayCandidateAddedCount,
@@ -986,7 +964,7 @@ class _TodayRoomStatusCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('今日のROOM状況', style: _HomeUi.homeCardTitle(context)),
+          Text('今日の状況', style: _HomeUi.homeCardTitle(context)),
           const SizedBox(height: 8),
           IntrinsicHeight(
             child: Row(
@@ -1019,7 +997,7 @@ class _TodayRoomStatusCard extends StatelessWidget {
                 Expanded(
                   child: _HomeStatusMetricColumn(
                     icon: Icons.upload_outlined,
-                    label: 'ROOM投稿',
+                    label: '投稿',
                     count: todayRoomPostCount,
                   ),
                 ),
@@ -1604,7 +1582,7 @@ class _HomeMetricCountText extends StatelessWidget {
   }
 }
 
-/// 2. 今日のROOM作業
+/// 2. 今日やること
 enum _HomeWorkPrimaryAction { recommendations, roomPost, searchMore }
 
 class _TodayRoomWorkCard extends StatelessWidget {
@@ -1613,6 +1591,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
     required this.todayRoomPostCount,
     required this.pendingCandidateCount,
     required this.isRecommendationLoading,
+    this.roomTypeHint,
     required this.onOpenRecommendations,
     required this.onOpenPendingCandidates,
     required this.onOpenSearch,
@@ -1622,6 +1601,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
   final int todayRoomPostCount;
   final int pendingCandidateCount;
   final bool isRecommendationLoading;
+  final String? roomTypeHint;
   final VoidCallback onOpenRecommendations;
   final VoidCallback onOpenPendingCandidates;
   final VoidCallback onOpenSearch;
@@ -1684,23 +1664,23 @@ class _TodayRoomWorkCard extends StatelessWidget {
         return (
           title: 'おすすめコレを見る',
           subtitle: '今日のおすすめ候補を確認しましょう',
-          buttonLabel: 'おすすめコレ',
+          buttonLabel: 'おすすめコレを見る',
           onTap: isRecommendationLoading ? null : onOpenRecommendations,
           semanticsLabel: 'home_recommendation_button',
         );
       case _HomeWorkPrimaryAction.roomPost:
         return (
-          title: 'ROOM投稿する',
+          title: '投稿する',
           subtitle: pendingCandidateCount == 0
               ? '投稿待ちの候補はありません'
               : 'コレ候補$pendingCandidateCount件',
-          buttonLabel: 'コレ候補へ',
+          buttonLabel: '投稿する',
           onTap: onOpenPendingCandidates,
           semanticsLabel: 'home_room_post_button',
         );
       case _HomeWorkPrimaryAction.searchMore:
         return (
-          title: '商品をもっと探す',
+          title: '商品を探す',
           subtitle: '検索してコレ候補に追加しましょう',
           buttonLabel: '商品を探す',
           onTap: onOpenSearch,
@@ -1718,7 +1698,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('今日のROOM作業', style: _HomeUi.homeCardTitle(context)),
+          Text('今日やること', style: _HomeUi.homeCardTitle(context)),
           const SizedBox(height: 8),
           Builder(
             builder: (context) {
@@ -1768,24 +1748,40 @@ class _TodayRoomWorkCard extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 cta.title,
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: _HomeUi.bodyEmphasis(context).copyWith(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                   color: HomeScreenColors.homeTextPrimary,
-                                  height: 1.15,
+                                  height: 1.2,
                                 ),
                               ),
                               const SizedBox(height: 1),
                               Text(
                                 cta.subtitle,
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: _HomeUi.homeCardSubtitle(
                                   context,
-                                ).copyWith(fontSize: 13.5, height: 1.25),
+                                ).copyWith(fontSize: 13, height: 1.25),
                               ),
+                              if (roomTypeHint != null &&
+                                  _primaryAction() ==
+                                      _HomeWorkPrimaryAction.recommendations) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  roomTypeHint!,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: _HomeUi.homeCardSubtitle(context)
+                                      .copyWith(
+                                    fontSize: 12,
+                                    color: HomeScreenColors.homeAccentTeal,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         ),
@@ -1793,44 +1789,31 @@ class _TodayRoomWorkCard extends StatelessWidget {
                         Semantics(
                           label: cta.semanticsLabel,
                           button: true,
-                          child: SizedBox(
-                            width: 120,
-                            height: 46,
-                            child: FilledButton(
-                              onPressed: cta.onTap,
-                              style: FilledButton.styleFrom(
-                                backgroundColor:
-                                    HomeScreenColors.homeAccentTeal,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                textStyle: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                          child: FilledButton(
+                            onPressed: cta.onTap,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: HomeScreenColors.homeAccentTeal,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      cta.buttonLabel,
-                                      maxLines: 1,
-                                      softWrap: false,
-                                    ),
-                                  ),
-                                  const Icon(
-                                    Icons.chevron_right_rounded,
-                                    size: 16,
-                                  ),
-                                ],
+                              minimumSize: const Size(96, 44),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
+                              textStyle: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                height: 1.15,
+                              ),
+                            ),
+                            child: Text(
+                              cta.buttonLabel,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -1903,7 +1886,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
         ),
         Expanded(
           child: _HomeWorkFlowChip(
-            label: 'ROOM投稿',
+            label: '投稿',
             state: step2State,
             onTap: onOpenPendingCandidates,
           ),

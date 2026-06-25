@@ -48,7 +48,7 @@ void main() {
 
       expect(find.byKey(const Key('tutorial_next_button')), findsOneWidget);
       expect(find.byKey(const Key('tutorial_skip_button')), findsOneWidget);
-      expect(find.text('ROOM運用の設定'), findsOneWidget);
+      expect(find.text('ROOMプロフィール'), findsOneWidget);
     });
 
     testWidgets('next button advances steps', (tester) async {

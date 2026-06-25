@@ -563,7 +563,7 @@ class MyPageRoomSettingsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           MyPageSectionHeaderRow(
-            title: 'ROOM運用の設定',
+            title: 'ROOMプロフィール',
             trailingChip: MyPageStatusChip(
               label: basicConfigured ? '基本設定済み' : '未完了',
               variant: basicConfigured
@@ -648,14 +648,12 @@ class MyPagePlanCard extends StatelessWidget {
 class MyPageAppSettingsCard extends StatelessWidget {
   const MyPageAppSettingsCard({
     super.key,
-    required this.onOpenInitialSetup,
     required this.onOpenSavedShops,
     required this.onOpenTutorialReplay,
     this.onOpenDemo,
     this.onOpenDevAutomation,
   });
 
-  final VoidCallback onOpenInitialSetup;
   final VoidCallback onOpenSavedShops;
   final VoidCallback onOpenTutorialReplay;
   final VoidCallback? onOpenDemo;
@@ -669,10 +667,6 @@ class MyPageAppSettingsCard extends StatelessWidget {
         children: [
           const MyPageSectionHeaderRow(title: 'アプリ設定'),
           const SizedBox(height: 4),
-          MyPageNavListTile(
-            title: 'プロフィール設定をまとめて編集',
-            onTap: onOpenInitialSetup,
-          ),
           MyPageNavListTile(
             title: '保存ショップを管理',
             onTap: onOpenSavedShops,
@@ -831,7 +825,6 @@ class MyPageSettingsSection extends StatelessWidget {
         MyPagePlanCard(onOpenPlan: onOpenPlan),
         const SizedBox(height: MyPageScreenUi.gapSection),
         MyPageAppSettingsCard(
-          onOpenInitialSetup: onOpenInitialSetup,
           onOpenSavedShops: onOpenSavedShops ?? () {},
           onOpenTutorialReplay: onOpenTutorialReplay ?? () {},
           onOpenDemo: onOpenDemo,

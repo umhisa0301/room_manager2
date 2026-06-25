@@ -60,8 +60,14 @@ abstract final class InterestCategoryDefinitions {
 
   static const babyKids = InterestCategoryDefinition(
     id: 'baby_kids',
-    displayName: 'ベビー・キッズ',
+    displayName: '育児・子育て',
     searchTerms: ['ベビー', 'キッズ', '育児'],
+  );
+
+  static const parenting = InterestCategoryDefinition(
+    id: 'parenting',
+    displayName: '育児・子育て',
+    searchTerms: ['育児', '子育て', 'ベビー', 'キッズ', 'ママ'],
   );
 
   static const stationeryDesk = InterestCategoryDefinition(
@@ -96,7 +102,7 @@ abstract final class InterestCategoryDefinitions {
     fashion,
     foodSweets,
     gadgetAppliance,
-    babyKids,
+    parenting,
     stationeryDesk,
     pet,
     health,
@@ -104,6 +110,7 @@ abstract final class InterestCategoryDefinitions {
   ];
 
   static InterestCategoryDefinition? byId(String id) {
+    if (id == babyKids.id) return babyKids;
     for (final c in all) {
       if (c.id == id) return c;
     }

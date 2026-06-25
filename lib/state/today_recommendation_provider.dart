@@ -213,6 +213,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
   bool get isCompleted => _bundle?.isCompleted ?? false;
 
   /// 永続化済みバンドルを再読込（他画面での更新や pull-to-refresh 後の表示同期用）。
+  /// 診断プロファイル変更時に当日バンドルを破棄し、次回生成で再構築する。
+  Future<void> invalidateForRecommendationProfileChange() async {
+    _bundle = null;
+    _lastRegenerateAt = null;
+    _lastEnsureAt = null;
+    _lastEnsureSource = null;
+    _errorMessage = null;
+    _generationStatus = TodayRecommendationGenerationStatus.idle;
+    await _repository.clearBundle();
+    notifyListeners();
+  }
+
   void reloadBundleFromStorage() {
     _bundle = _repository.load();
     _errorMessage = null;

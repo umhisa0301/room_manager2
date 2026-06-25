@@ -19,8 +19,6 @@ void main() {
         home: Scaffold(
           body: _TestSummaryCard(
             total: 10,
-            pending: 10,
-            completed: false,
             uiState: uiState,
           ),
         ),
@@ -28,9 +26,10 @@ void main() {
     );
 
     final button = tester.widget<AppSecondaryButton>(
-      find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
+      find.widgetWithText(AppSecondaryButton, '再生成'),
     );
     expect(button.onPressed, isNotNull);
+    expect(find.text('10件の候補'), findsOneWidget);
     expect(find.byKey(const Key('today_recommendation_skip_message')), findsNothing);
   });
 
@@ -49,8 +48,6 @@ void main() {
         home: Scaffold(
           body: _TestSummaryCard(
             total: 10,
-            pending: 10,
-            completed: false,
             uiState: uiState,
           ),
         ),
@@ -58,13 +55,13 @@ void main() {
     );
 
     final button = tester.widget<AppSecondaryButton>(
-      find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
+      find.widgetWithText(AppSecondaryButton, '再生成'),
     );
     expect(button.onPressed, isNull);
     expect(find.text('あと約4分後に再生成できます'), findsOneWidget);
   });
 
-  testWidgets('completed with cooldown elapsed enables button and regeneratable hint', (
+  testWidgets('completed with cooldown elapsed enables regenerate', (
     tester,
   ) async {
     const uiState = RegenerateButtonUiState(
@@ -78,9 +75,7 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: _TestSummaryCard(
-            total: 10,
-            pending: 0,
-            completed: true,
+            total: 3,
             uiState: uiState,
           ),
         ),
@@ -88,77 +83,45 @@ void main() {
     );
 
     final button = tester.widget<AppSecondaryButton>(
-      find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
+      find.widgetWithText(AppSecondaryButton, '再生成'),
     );
     expect(button.onPressed, isNotNull);
-    expect(find.textContaining('翌日'), findsNothing);
-    expect(
-      find.text('すべて確認済みです。新しい候補を見たい場合は再生成できます。'),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('completed during cooldown disables button with wait label', (
-    tester,
-  ) async {
-    const uiState = RegenerateButtonUiState(
-      canPress: false,
-      showCooldownMessage: true,
-      waitLabel: 'あと約4分後に再生成できます',
-      blockReason: 'manualCooldown',
-      needsPeriodicRefresh: true,
-    );
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: _TestSummaryCard(
-            total: 10,
-            pending: 0,
-            completed: true,
-            uiState: uiState,
-          ),
-        ),
-      ),
-    );
-
-    final button = tester.widget<AppSecondaryButton>(
-      find.widgetWithText(AppSecondaryButton, '今日の候補を再生成'),
-    );
-    expect(button.onPressed, isNull);
-    expect(find.text('あと約4分後に再生成できます'), findsOneWidget);
-    expect(find.textContaining('翌日'), findsNothing);
-    expect(find.text('すべて確認済みです。'), findsOneWidget);
+    expect(find.text('3件の候補'), findsOneWidget);
   });
 }
 
 class _TestSummaryCard extends StatelessWidget {
   const _TestSummaryCard({
     required this.total,
-    required this.pending,
-    required this.completed,
     required this.uiState,
   });
 
   final int total;
-  final int pending;
-  final bool completed;
   final RegenerateButtonUiState uiState;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final cooldownHint =
+        uiState.showCooldownMessage && uiState.waitLabel.isNotEmpty
+            ? uiState.waitLabel
+            : '';
+    return Row(
       children: [
-        Text(
-          completed ? '本日のおすすめはチェック完了です' : '本日のおすすめ $total件（未処理 $pending件）',
-        ),
-        Text(uiState.summaryBodyText(completed: completed)),
-        if (uiState.showCooldownMessage)
-          Text(
-            uiState.waitLabel,
-            key: const Key('today_recommendation_skip_message'),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('$total件の候補'),
+              if (cooldownHint.isNotEmpty)
+                Text(
+                  cooldownHint,
+                  key: const Key('today_recommendation_skip_message'),
+                ),
+            ],
           ),
+        ),
         AppSecondaryButton(
-          label: '今日の候補を再生成',
+          label: '再生成',
           onPressed: uiState.canPress ? () {} : null,
         ),
       ],

@@ -50,6 +50,16 @@ class TodayRecommendationRepository {
     }
   }
 
+  Future<void> clearBundle() async {
+    if (kDemoModeEnabled) {
+      return;
+    }
+    await _prefs.remove(_key);
+    if (kDebugMode) {
+      recommendAuditLog('[RECOMMEND_TRACE] savedBundle=false');
+    }
+  }
+
   Map<String, TodayRecommendExposureRecord> loadExposureRecords() {
     if (kDemoModeEnabled) return {};
     final raw = _prefs.getString(_exposureKey);

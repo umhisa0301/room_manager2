@@ -111,6 +111,24 @@ class TodayRecommendationEntry {
   }
 }
 
+/// おすすめコレ画面のセクション表示可否。
+extension TodayRecommendationSectionVisibility on TodayRecommendationSection {
+  static Iterable<TodayRecommendationSection> visibleSections({
+    required List<TodayRecommendationEntry> entries,
+    required int savedShopCount,
+  }) sync* {
+    for (final section in TodayRecommendationSection.values) {
+      if (section == TodayRecommendationSection.sellable && savedShopCount < 1) {
+        continue;
+      }
+      final sectionEntries =
+          entries.where((e) => e.section == section).toList(growable: false);
+      if (sectionEntries.isEmpty) continue;
+      yield section;
+    }
+  }
+}
+
 class TodayRecommendationBundle {
   const TodayRecommendationBundle({
     required this.localDateKey,

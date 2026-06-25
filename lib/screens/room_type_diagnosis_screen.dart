@@ -9,6 +9,8 @@ import '../models/room_recommendation_profile.dart';
 import '../state/room_recommendation_profile_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
+import 'room_type_diagnosis_result_screen.dart';
+import '../state/today_recommendation_provider.dart';
 
 /// ROOMタイプ診断画面（5問以内）。
 class RoomTypeDiagnosisScreen extends StatefulWidget {
@@ -59,11 +61,18 @@ class _RoomTypeDiagnosisScreenState extends State<RoomTypeDiagnosisScreen> {
       interestCategoryIds: _interestCategoryIds.toList(growable: false),
       commentToneId: _commentToneId ?? '',
     );
+    final recProfileProvider =
+        context.read<RoomRecommendationProfileProvider>();
+    final built = await recProfileProvider.saveFromDiagnosis(answers);
     await context
-        .read<RoomRecommendationProfileProvider>()
-        .saveFromDiagnosis(answers);
+        .read<TodayRecommendationProvider>()
+        .invalidateForRecommendationProfileChange();
     if (!mounted) return;
-    Navigator.of(context).pop(true);
+    await Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => RoomTypeDiagnosisResultScreen(profile: built),
+      ),
+    );
   }
 
   void _next() {

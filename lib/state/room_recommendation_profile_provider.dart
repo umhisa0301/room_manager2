@@ -10,6 +10,9 @@ class RoomRecommendationProfileProvider extends ChangeNotifier {
   })  : _repository = repository,
         _profile = repository.load();
 
+  /// アプリ起動中のみ有効な BottomSheet スキップ（永続フラグと併用）。
+  static bool _sessionDiagnosisPromptSkipped = false;
+
   final RoomRecommendationProfileRepository _repository;
   RoomRecommendationProfile? _profile;
 
@@ -17,19 +20,26 @@ class RoomRecommendationProfileProvider extends ChangeNotifier {
 
   bool get isDiagnosed => _profile?.isDiagnosed ?? false;
 
-  bool get isDiagnosisPromptSkipped => _repository.isDiagnosisPromptSkipped();
+  bool get isDiagnosisPromptSkipped =>
+      _sessionDiagnosisPromptSkipped ||
+      _repository.isDiagnosisPromptSkipped();
 
   Future<void> markDiagnosisPromptSkipped() async {
+    _sessionDiagnosisPromptSkipped = true;
     await _repository.setDiagnosisPromptSkipped(true);
     notifyListeners();
   }
 
-  Future<void> saveFromDiagnosis(RoomDiagnosisAnswers answers) async {
+  Future<RoomRecommendationProfile> saveFromDiagnosis(
+    RoomDiagnosisAnswers answers,
+  ) async {
     final built = RoomDiagnosisService.buildProfile(answers);
     await _repository.save(built);
     await _repository.setDiagnosisPromptSkipped(false);
+    _sessionDiagnosisPromptSkipped = false;
     _profile = built;
     notifyListeners();
+    return built;
   }
 
   Future<void> reload() async {
