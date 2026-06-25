@@ -672,11 +672,19 @@ Additional data:
 
 ```json
 {
-  "status": "loading",
-  "subagentComposerId": "00aedc88-64b1-4f8c-b8ab-6eb163b3878c"
+  "status": "success",
+  "subagentComposerId": "00aedc88-64b1-4f8c-b8ab-6eb163b3878c",
+  "terminationReason": "completed"
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "agentId": "00aedc88-64b1-4f8c-b8ab-6eb163b3878c"
+}
+```
+Status: **completed**
 
 
 </details>
@@ -1109,3 +1117,6738 @@ Directory: **c:\dev\app_project\room_manager2** (404 files)
 <summary>Tool use: **glob_file_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+全体像を把握した。これから主要ファイルを読み込んで、実装方法を確認する。</details></think>
+
+_**Agent (default)**_
+
+主要ファイルを読み、実装方針を固めます。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "チュートリアル・初期設定の整理（探し方/ショップ/ジャンル削除）",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "モデル・定義・Repository・Provider追加",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "診断画面・ホーム/マイページ導線・BottomSheet",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "QueryBuilder/Scoring/Reason/CommentPromptサービス",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "おすすめコレ連携（Provider・画面）",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "テスト追加・flutter analyze/test実行",
+      "id": "6",
+      "status": "pending"
+    }
+  ],
+  "success": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\profile_tutorial_flow.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\repository\user_profile_repository.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\user_profile_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\today_recommendation_policy.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "おすすめコレ|TodayRecommendations|recommendation"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "おすすめコレ|TodayRecommendations|recommendation",
+  "topFiles": [
+    {
+      "matchCount": 20,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 20
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "MyPageRoomSettingsCard|genreRow|savedShop|postStyle"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "MyPageRoomSettingsCard|genreRow|savedShop|postStyle",
+  "topFiles": [
+    {
+      "matchCount": 7,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\models\today_recommendation.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_scoreRecommendation|_generate|displayCap|buildPlanSet"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_scoreRecommendation|_generate|displayCap|buildPlanSet",
+  "topFiles": [
+    {
+      "matchCount": 9,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 9
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+today_recommendation_provider を読み込み、プロフィールベースの検索・スコアリングとの統合方法を把握している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 80,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\mypage\\mypage_widgets.dart",
+  "pattern": "class MyPageRoomSettingsCard"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\mypage\\mypage_widgets.dart",
+  "pattern": "class MyPageRoomSettingsCard",
+  "topFiles": [
+    {
+      "matchCount": 81,
+      "uri": "lib\\widgets\\mypage\\mypage_widgets.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+実装規模が大きく、全体像を把握してから着手する必要がある。
+
+実装計画を具体化している。データ定義ファイル、診断結果用の RoomRecommendationProfile モデル、Repository、Provider を新規作成する方針を立てた。
+
+Provider、診断サービス、検索クエリ・スコアリング・理由・コメント生成用のユーティリティ、診断画面とボトムシート、ホームカードの実装ファイルも計画に含めた。
+
+既存ファイルへの変更点も整理した。プロフィール設定フローからジャンルや保存店舗、投稿スタイルのステップを削除する。初期設定画面はニックネームとルームURLのみに絞る。プロバイダー登録、ホーム画面の診断カードとボトムシート、マイページの診断セクションを追加する。今日の推荐画面では3件表示と理由表示を検討している。今日の推荐のクエリ構築とスコアリングを統合する予定だ。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "PageView|_buildPage|children: \\["
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "PageView|_buildPage|children: \\[",
+  "topFiles": [
+    {
+      "matchCount": 16,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 16
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\utils\today_recommendation_plan_builder_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "entries|displayCap|pendingCount"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "entries|displayCap|pendingCount",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib\\screens\\today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "MyPageSetupIncompleteCard|basicConfigured|firstIncompletePage"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "MyPageSetupIncompleteCard|basicConfigured|firstIncompletePage",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "lib/widgets/mypage/mypage_widgets.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/screens/mypage_setup_incomplete_card_test.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": ".specstory/history/2026-06-24_11-54-50Z-tutorial-overlay-implementation-plan.md"
+    },
+    {
+      "matchCount": 3,
+      "uri": ".specstory/history/2026-06-20_21-10-52Z-my-page-ui-adjustments.md"
+    },
+    {
+      "matchCount": 10,
+      "uri": ".specstory/history/2026-06-24_14-31-22Z-profile-settings-adjustment.md"
+    },
+    {
+      "matchCount": 5,
+      "uri": ".specstory/history/2026-05-07_02-00-20Z-初期登録と設定画面の改善提案.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory/history/2026-06-20_20-53-57Z-my-page-screen-redesign.md"
+    },
+    {
+      "matchCount": 25,
+      "uri": ".specstory/history/2026-06-24_14-04-38Z-initial-experience-redesign-for-roommanager.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory/history/2026-05-08_05-25-29Z-投稿スタイルの名称変更とui改善.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 23,
+      "uri": ".specstory/history/2026-06-24_14-14-45Z-profile-setup-flow-changes.md"
+    }
+  ],
+  "totalFiles": 12,
+  "totalMatches": 84
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\theme\home_screen_colors.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+初期設定BottomSheetやマイページカードの表示ロジックを確認している。未設定状態の判定条件を把握するため、mypage_placeholder の incomplete card 条件も調べている。
+
+初期設定とチュートリアルの整理方針を固めている。profile_tutorial_flow.dart は部屋設定カード、ニックネーム、URL、完了ステップのみ残す。easy_initial_setup_screen はステップ0のポストスタイルとステップ2・3（ジャンル・保存店舗）を削除し、ニックネームと部屋URLのみとする。マイページでは既存ユーザー向けにジャンル・保存店舗・ポストスタイルを残すか、それとも非表示にするかを再確認している。
+
+マイページの設定カードからジャンル・保存店舗・ポストスタイルを非表示にする方向を確定した。ROOMタイプ診断セクションを新設し、既存の行は後方互換用に残す。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_buildSetupBottomActions|_StepProfile|postStyle"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_buildSetupBottomActions|_StepProfile|postStyle",
+  "topFiles": [
+    {
+      "matchCount": 60,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 60
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+この改修は規模が大きいため、全体像を把握してから実装を進める必要がある。
+
+ファイル作成を順次進める方針を立てた。データ定義、モデル・リポジトリ・プロバイダ、サービス、診断画面・ウィジェット、既存ファイルの修正、テストの追加を計画している。TodayRecommendationProviderとの統合は最小侵入的に行い、診断結果があればキーワード検索プランを組み立て、スコアリング後にプロファイルに基づくスコアをブレンドする構成にする。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "showMyPageSetupCard|missingGenre|missingSavedShop"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\mypage_placeholder_screen.dart",
+  "pattern": "showMyPageSetupCard|missingGenre|missingSavedShop",
+  "topFiles": [
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 8
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+要件を十分に把握した。これから全ファイルの実装を開始する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_goNext|markFlowCompleted"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_goNext|markFlowCompleted",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+核心ファイルの作成を開始します。
+
+RoomRecommendationProfile モデルを設計しています。primaryTypeId、secondaryTypeIds、interestCategoryIds、priorityRuleIds、searchKeywordPresets、positiveKeywordIds、preferredGenreGroupIds、commentAngleId、commentToneId、diagnosedAt、exclusionPreferenceIds を含む構成を定義しています。
+
+優先条件定義、興味カテゴリ、ルームタイプ、コメントトーンの定義ファイルを設計しています。診断サービスと検索クエリビルダーも作成します。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "Future\u003cvoid\u003e ensureToday|Future\u003cvoid\u003e regenerateToday"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "Future\u003cvoid\u003e ensureToday|Future\u003cvoid\u003e regenerateToday",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+診断結果を保存する RoomRecommendationProfile を、既存のプロフィールデータにオプションとして追加する方針を検討している。
+
+recommendationProfile を ensureToday と regenerateToday に組み込む方法を検討している。_generate 内では RecommendationQueryBuilder でキーワードプランを組み立て、API 制限内で検索を実行する。スコアリングと理由生成も Profile ベースで行う予定だが、_scoreRecommendationForBucket の改修は複雑なため、より良いアプローチを模索している。
+
+_scoreRecommendationForBucket の改修を避けるため、_finalizeFromPool で既存スコアに RecommendationScoringService を加算する方式を検討している。スコアは 0～100 で返し、profile がある場合に既存スコアとブレンドする。検索プランは today_recommendation_policy.dart に ProfileRecommendationPlanBuilder を追加するか、provider 内で RecommendationQueryBuilder を直接使うかを比較している。
+
+RecommendationQueryBuilder で profile から最大 6～8 クエリを生成し、genreId なしの RecommendSearchPlanSpec に変換する。診断済み時はこれらを主要プランとし、API 制限 4 件に絞る。未診断時は既存動作を維持する。診断済み時は _pickProfileRecommendations で role に基づき上位 3 件に絞り込む。</details></think>
+
+_**Agent (default)**_
+
+コアファイルの作成を開始します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\data\room_type_definitions.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\data\interest_category_definitions.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\data\priority_rule_definitions.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\data\comment_tone_definitions.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\models\room_recommendation_profile.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\repository\room_recommendation_profile_repository.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\room_recommendation_profile_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\room_diagnosis_service.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\recommendation_query_builder.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\recommendation_scoring_service.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\recommendation_reason_builder.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\comment_prompt_builder.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\room_diagnosis_service.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+診断画面とUIウィジェットを作成します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\room_type_diagnosis_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\room_type_diagnosis_widgets.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+既存ファイルの修正を開始した。まず profile_tutorial_flow.dart を変更する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+today_recommendation_provider への統合は複雑だ。
+
+プロフィール統合の具体案を整理している。ensureToday などに recommendationProfile を受け渡し、_generate と _finalizeFromPool でプロフィールキーワードプランを組み込む方針を検討中。専用ヘルパー `profile_recommendation_integration.dart` を新設して `buildProfileSearchPlans` を管理する cleaner アプローチも視野に入れている。
+
+ヘルパー `lib/utils/profile_recommendation_integration.dart` に `pickProfileEntries` と `applyProfileScoring` を配置する。provider の変更を最小限に抑え、診断済みプロフィールがあれば `_generate` 内で検索プランを組み込む実装方針を確定した。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "ensureToday\\(|regenerateToday\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "ensureToday\\(|regenerateToday\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": ".\\lib\\services\\dev_automation_runner.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": ".\\lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": ".\\lib\\screens\\today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": ".\\lib\\state\\today_recommendation_provider.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": ".\\test\\state\\today_recommendation_regenerate_cooldown_test.dart"
+    }
+  ],
+  "totalFiles": 5,
+  "totalMatches": 14
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+profile_recommendation_integration.dart を新規作成し、Provider への最小限の変更で診断結果連携を実装する方針を立てている。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\profile_recommendation_integration.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+today_recommendation_provider を修正する必要がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_finalizeFromPool\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_finalizeFromPool\\(",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+today_recommendation_provider へのパッチ適用を計画している。
+
+today_recommendation_provider への具体的な変更点を整理している。ensureToday と regenerateToday に recommendationProfile を追加し、_generate のシグネチャを変更する。planSet build 後に診断済みの場合、mandatoryGenrePlans を上書きする。_finalizeFromPool にも recommendationProfile を渡し、診断済みユーザーにはプロフィール経由の候補選定パスを使う。
+
+_generate のシグネチャに recommendationProfile を追加した。診断済みユーザーでは ProfileRecommendationIntegration から検索プランを生成し、未診断時は従来の処理を流す分岐を実装している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\utils\\today_recommendation_exposure_policy.dart",
+  "pattern": "recently|shown"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\utils\\today_recommendation_exposure_policy.dart",
+  "pattern": "recently|shown",
+  "topFiles": [
+    {
+      "matchCount": 14,
+      "uri": "lib\\utils\\today_recommendation_exposure_policy.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 14
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+`today_recommendation_provider.dart` と関連ファイルを更新します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\today_recommendation_repository.dart",
+  "pattern": "loadExposureRecords"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\today_recommendation_repository.dart",
+  "pattern": "loadExposureRecords",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib\\repository\\today_recommendation_repository.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+exposureRecords は Map<String, TodayRecommendExposureRecord> であり、`.entries` を使うのは正しい。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\config\profile_tutorial_flow.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+home_placeholder_screen の更新に必要なインポートを整備している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "class _HomePlaceholderScreenState|bool _"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "class _HomePlaceholderScreenState|bool _",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+SizedBox の条件分岐ロジックを整理している。
+
+SizedBox の条件分岐を整理した。未診断かつカード未閉じ時は診断カードを表示し、診断済み時はサマリーカードを表示する。その後、mypage_placeholder_screen、mypage_widgets、easy_initial_setup_screen、today_recommendations_screen を更新する。
+
+マイページの未完了設定カードを1ステップ（ルームURLのみ）に変更する。ルーム設定カードからジャンル・保存店舗・投稿スタイル行を削除し、基本設定済みフラグを更新する。プレースホルダー画面に診断カードを追加し、未完了カードの判定条件をルームURLのみに簡略化する。コールバックを省略可能に変更し、差分を最小限にする。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+The string to replace was not found in the file.
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+フォントウェイトをw700に修正した。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+The string to replace was not found in the file.
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\mypage\mypage_widgets.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\mypage_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "regenerateToday"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "regenerateToday",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "MyPageRoomSettingsCard\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "MyPageRoomSettingsCard\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": ".\\lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".\\lib\\widgets\\mypage\\mypage_widgets.dart"
+    }
+  ],
+  "totalFiles": 2,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\services\room_recommendation_profile_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\widgets\room_type_diagnosis_prompt_sheet_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テストコードを修正している。RoomRecommendationProfile の diagnosedAt を const にすると古い Dart で DateTime が const にならないため、その制約を回避する必要がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "genreRow|savedShopRow|postStyleRow|お気に入りジャンル|探し方|3/3|3 完了"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "genreRow|savedShopRow|postStyleRow|お気に入りジャンル|探し方|3/3|3 完了",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "test\\utils\\today_recommendation_genre_distribution_test.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1
+```
+
+```
+Analyzing room_manager2...                                      
+
+warning - The value of the field '_shopRecommendationFailedReason' isn't used - lib\screens\easy_initial_setup_screen.dart:63:11 - unused_field
+warning - The declaration '_openGenrePicker' isn't referenced - lib\screens\easy_initial_setup_screen.dart:193:16 - unused_element
+warning - The declaration '_openPostStylePicker' isn't referenced - lib\screens\easy_initial_setup_screen.dart:239:16 - unused_element
+warning - The declaration '_loadShopRecommendations' isn't referenced - lib\screens\easy_initial_setup_screen.dart:288:16 - unused_element
+warning - The declaration '_saveRecommendedShop' isn't referenced - lib\screens\easy_initial_setup_screen.dart:410:16 - unused_element
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\easy_initial_setup_screen.dart:449:37 - use_build_context_synchronously
+  error - Undefined name 'missingGenre' - lib\screens\easy_initial_setup_screen.dart:468:7 - undefined_identifier
+  error - Undefined name 'missingSavedShop' - lib\screens\easy_initial_setup_screen.dart:469:7 - undefined_identifier
+warning - The declaration '_PostStyleSummary' isn't referenced - lib\screens\easy_initial_setup_screen.dart:793:7 - unused_element
+warning - The declaration '_StepGenres' isn't referenced - lib\screens\easy_initial_setup_screen.dart:955:7 - unused_element
+warning - The declaration '_StepSavedShops' isn't referenced - lib\screens\easy_initial_setup_screen.dart:1026:7 - unused_element
+warning - The declaration 'outlined' isn't referenced - lib\screens\home_placeholder_screen.dart:318:22 - unused_element
+warning - The declaration 'reactionAccent' isn't referenced - lib\screens\home_placeholder_screen.dart:330:22 - unused_element
+warning - The declaration 'tealOutlined' isn't referenced - lib\screens\home_placeholder_screen.dart:352:22 - unused_element
+warning - The declaration '_handleHomeLatestRefresh' isn't referenced - lib\screens\home_placeholder_screen.dart:474:16 - unused_element
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\home_placeholder_screen.dart:489:44 - use_build_context_synchronously
+warning - The declaration '_formatSyncHistoryTimeShort' isn't referenced - lib\screens\home_placeholder_screen.dart:863:8 - unused_element
+warning - The declaration '_homeGoalMessage' isn't referenced - lib\screens\home_placeholder_screen.dart:899:8 - unused_element
+warning - The declaration '_homeReactionSummary' isn't referenced - lib\screens\home_placeholder_screen.dart:954:8 - unused_element
+warning - The declaration '_HomeRefreshPillButton' isn't referenced - lib\screens\home_placeholder_screen.dart:1452:7 - unused_element
+warning - The declaration '_HomeStatusMiniCard' isn't referenced - lib\screens\home_placeholder_screen.dart:1515:7 - unused_element
+warning - The declaration '_HomeTodayProgressCard' isn't referenced - lib\screens\home_placeholder_screen.dart:2907:7 - unused_element
+warning - The declaration '_RoomManagementSection' isn't referenced - lib\screens\home_placeholder_screen.dart:4073:7 - unused_element
+warning - The declaration '_RecentCandidatesHomeSection' isn't referenced - lib\screens\home_placeholder_screen.dart:4174:7 - unused_element
+warning - The declaration '_openPostStylePickerSheet' isn't referenced - lib\screens\mypage_placeholder_screen.dart:54:16 - unused_element
+warning - The declaration '_openFavoriteGenrePickerSheet' isn't referenced - lib\screens\mypage_placeholder_screen.dart:103:16 - unused_element
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:171:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:172:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:207:26 - use_build_context_synchronously
+  error - The getter 'isNegativeInfinity' isn't defined for the type 'double' - lib\state\today_recommendation_provider.dart:1180:34 - undefined_getter
+  error - The getter 'isNegativeInfinity' isn't defined for the type 'double' - lib\state\today_recommendation_provider.dart:1217:37 - undefined_getter
+  error - The getter 'isNegativeInfinity' isn't defined for the type 'double' - lib\utils\profile_recommendation_integration.dart:55:33 - undefined_getter
+  error - The getter 'isNegativeInfinity' isn't defined for the type 'double' - lib\utils\profile_recommendation_integration.dart:76:32 - undefined_getter
+warning - A value for optional parameter 'available' isn't ever given - test\services\billing_purchase_service_test.dart:15:10 - unused_element_parameter
+warning - A value for optional parameter 'buyNonConsumableResult' isn't ever given - test\services\billing_purchase_service_test.dart:17:10 - unused_element_parameter
+warning - A value for optional parameter 'throwOnRestore' isn't ever given - test\services\billing_purchase_service_test.dart:18:10 - unused_element_parameter
+  error - The named parameter 'affiliateUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:90:21 - missing_required_argument
+  error - The named parameter 'imageUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:90:21 - missing_required_argument
+  error - The named parameter 'itemPrice' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:90:21 - missing_required_argument
+  error - The named parameter 'shopName' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:90:21 - missing_required_argument
+  error - The named parameter 'affiliateUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:99:21 - missing_required_argument
+  error - The named parameter 'imageUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:99:21 - missing_required_argument
+  error - The named parameter 'itemPrice' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:99:21 - missing_required_argument
+  error - The named parameter 'shopName' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:99:21 - missing_required_argument
+  error - The named parameter 'affiliateUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:113:21 - missing_required_argument
+  error - The named parameter 'imageUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:113:21 - missing_required_argument
+  error - The named parameter 'itemPrice' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:113:21 - missing_required_argument
+  error - The named parameter 'shopName' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:113:21 - missing_required_argument
+  error - The named parameter 'affiliateUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:137:21 - missing_required_argument
+  error - The named parameter 'imageUrl' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:137:21 - missing_required_argument
+  error - The named parameter 'itemPrice' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:137:21 - missing_required_argument
+  error - The named parameter 'shopName' is required, but there's no corresponding argument - test\services\room_recommendation_profile_test.dart:137:21 - missing_required_argument
+  error - Const variables must be initialized with a constant value - test\services\room_recommendation_profile_test.dart:154:20 - const_initialized_with_non_constant_value
+  error - The constructor being called isn't a const constructor - test\services\room_recommendation_profile_test.dart:154:20 - const_with_non_const
+   info - Angle brackets will be interpreted as HTML - tool\phase4_p2_device_verify.dart:10:20 - unintended_html_in_doc_comment
+
+55 issues found. (ran in 15.5s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+いくつかのエラーを修正する必要がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\models\rakuten_search_item.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+_logEasySetupState のシグネチャと logOnboardingUi の呼び出しを修正している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\profile_recommendation_integration.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\profile_recommendation_integration.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\services\room_recommendation_profile_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "isNegativeInfinity"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "isNegativeInfinity",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\profile_recommendation_integration.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | rg "error -"</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | rg "error -"
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/config/admob_config_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment debug build always uses test environment
+00:00 +1: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment profile-equivalent build uses test environment even if production configured
+00:00 +2: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment release android uses production when configured
+00:00 +3: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment release android without production ID returns null
+00:00 +4: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment release ios uses production when configured
+00:00 +5: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveAdMobEnvironment release without platform match returns null
+00:00 +6: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveHomeBottomBannerAdUnitId null environment returns null
+00:00 +7: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveHomeBottomBannerAdUnitId test environment on android returns test android unit
+00:00 +8: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveHomeBottomBannerAdUnitId production environment on android returns production android unit
+00:00 +9: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveHomeBottomBannerAdUnitId unsupported platform returns null
+00:00 +10: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: AdMobConfig production guard kReleaseAdMobIdsEnabled is true after Monetization-6B setup
+00:00 +11: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: AdMobConfig production guard production android banner is configured with non-test unit ID
+00:00 +12: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: AdMobConfig production guard production today recommendation banner is configured with non-test unit ID
+00:00 +13: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveTodayRecommendationSummaryBannerAdUnitId null environment returns null
+00:00 +14: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveTodayRecommendationSummaryBannerAdUnitId test environment on android returns test android unit
+00:00 +15: C:/dev/app_project/room_manager2/test/config/admob_config_test.dart: resolveTodayRecommendationSummaryBannerAdUnitId production environment on android returns production android unit
+00:00 +16: C:/dev/app_project/room_manager2/test/config/billing_product_config_test.dart: BillingProductConfig basicMonthlyProductId has expected value
+00:00 +17: C:/dev/app_project/room_manager2/test/config/billing_product_config_test.dart: BillingProductConfig basicMonthlyProductId has expected value
+00:00 +18: C:/dev/app_project/room_manager2/test/config/billing_product_config_test.dart: BillingProductConfig proMonthlyProductId has expected value
+00:00 +19: C:/dev/app_project/room_manager2/test/config/billing_product_config_test.dart: BillingProductConfig allProductIds contains both product IDs
+00:01 +20: C:/dev/app_project/room_manager2/test/config/billing_product_config_test.dart: BillingProductConfig product IDs are distinct
+00:01 +21: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint requires kDebugMode and dart-define
+00:01 +22: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint is false when dart-define is not set (default test run)
+00:02 +23: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags isEnabled combines debug path and internal release path
+00:02 +24: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags debug path requires kDebugMode and DEV_AUTOMATION_ENABLED
+00:02 +25: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path requires kReleaseMode
+00:02 +26: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_ENABLED is set
+00:02 +27: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_TOKEN is set
+00:02 +28: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable throws when disabled
+00:02 +29: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +30: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +31: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +32: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +33: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +34: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +35: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +36: C:/dev/app_project/room_manager2/test/config/monetization_config_test.dart: resolveMonetizationFlags pro is true when monetization, subscription, and pro defines are true
+00:02 +37: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs is non-negative
+00:02 +38: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs is non-negative
+00:02 +39: C:/dev/app_project/room_manager2/test/config/monetization_config_test.dart: MonetizationFlags compile-time defaults derived flags match resolveMonetizationFlags for current compile-time defines
+00:02 +40: C:/dev/app_project/room_manager2/test/config/monetization_config_test.dart: MonetizationFlags compile-time defaults debugLogLine contains no secret values
+00:02 +41: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs defaults to 5000 when define omitted at compile time
+00:02 +42: C:/dev/app_project/room_manager2/test/config/monetization_config_test.dart: MonetizationFlagSnapshot.fromCompileTime matches resolveMonetizationFlags for current compile-time defines
+00:03 +43: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimitsFor free plan limits match expected values
+00:03 +44: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimitsFor basic plan limits match expected values
+00:03 +45: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimitsFor pro plan limits match expected values
+00:03 +46: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: clampMonetizationPlan returns free when monetization is disabled
+00:03 +47: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: clampMonetizationPlan returns free when subscription is disabled
+00:03 +48: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: clampMonetizationPlan downgrades pro to basic when pro plan is disabled
+00:03 +49: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: clampMonetizationPlan keeps pro when pro plan is enabled
+00:03 +50: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveCurrentMonetizationPlan defaults to free with compile-time flags
+00:03 +51: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveCurrentMonetizationPlan returns free when monetization is disabled
+00:03 +52: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveCurrentMonetizationPlan returns free when subscription is disabled
+00:03 +53: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveCurrentMonetizationPlan returns purchased basic when subscription is enabled
+00:03 +54: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveCurrentMonetizationPlan downgrades purchased pro when pro plan is disabled
+00:03 +55: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimits returns pro limits when pro is enabled
+00:03 +56: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimits returns basic limits when pro is disabled but basic requested
+00:03 +57: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimits limitsEnforcementEnabled is false when FREE_PLAN_LIMITS_ENABLED is off
+00:03 +58: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePurchasedMonetizationPlan returns free when provider is not registered
+00:03 +59: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePurchasedMonetizationPlan uses registered provider
+00:03 +60: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolvePlanLimitsForCurrentUser defaults to free with limits enforcement off at compile time
+00:03 +61: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveLimitsEnforcementEnabled is false when free plan limits define is off
+00:03 +62: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveLimitsEnforcementEnabled is false when monetization is off even if free limits define is on
+00:03 +63: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: resolveLimitsEnforcementEnabled is true when monetization and free limits defines are on
+00:03 +64: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: monetizationPlanDebugLogLine contains plan and limitsEnabled without secrets
+00:03 +65: C:/dev/app_project/room_manager2/test/config/monetization_plan_config_test.dart: MonetizationFlagSnapshot.fromCompileTime matches MonetizationFlags compile-time values
+00:04 +66: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:04 +67: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:04 +68: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:04 +69: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:04 +70: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:04 +71: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:04 +72: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:05 +73: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:05 +74: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:05 +75: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:05 +76: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:06 +77: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:06 +78: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:06 +79: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:06 +80: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:06 +81: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:07 +82: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:07 +83: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:07 +84: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:07 +85: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:08 +86: C:/dev/app_project/room_manager2/test/repository/operation_tutorial_repository_test.dart: OperationTutorialRepository profile tutorial starts undismissed
+00:08 +87: C:/dev/app_project/room_manager2/test/repository/operation_tutorial_repository_test.dart: OperationTutorialRepository dismiss with completed sets flags
+00:08 +88: C:/dev/app_project/room_manager2/test/repository/operation_tutorial_repository_test.dart: OperationTutorialRepository dismiss with skipped sets flags
+00:08 +89: C:/dev/app_project/room_manager2/test/repository/operation_tutorial_repository_test.dart: OperationTutorialRepository uses keys separate from easy initial setup
+00:08 +90: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:09 +91: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:09 +92: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:09 +93: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:09 +94: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +95: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +96: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +97: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +98: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +99: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +100: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +101: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +102: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +103: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:14 +104: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:14 +105: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:14 +106: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:14 +107: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +107: C:/dev/app_project/room_manager2/test/screens/easy_initial_setup_start_page_test.dart: EasyInitialSetupScreen start page embeddedInEntryHost false with initialPageIndex 0 starts on profile step
+[ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+00:16 +108: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +108: C:/dev/app_project/room_manager2/test/screens/easy_initial_setup_start_page_test.dart: EasyInitialSetupScreen start page does not jump to room url step when room url is unset and initialPageIndex is 0
+[ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+00:16 +109: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:18 +110: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:19 +111: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:19 +112: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +113: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +114: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:21 +115: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:21 +116: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:22 +117: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:23 +118: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +119: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +120: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +121: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +122: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +123: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:25 +123: C:/dev/app_project/room_manager2/test/screens/monetization_plan_screen_test.dart: MonetizationPlanScreen shows Basic start button when basic product is available
+[BILLING_PURCHASE] initialized available=true active=false
+00:25 +124: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:25 +124: C:/dev/app_project/room_manager2/test/screens/monetization_plan_screen_test.dart: MonetizationPlanScreen shows Basic active label when basic entitlement is active
+[BILLING_PURCHASE] initialized available=true active=true
+00:25 +125: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:25 +126: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:26 +127: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:26 +127: C:/dev/app_project/room_manager2/test/screens/monetization_plan_screen_test.dart: MonetizationPlanScreen shows checking status while billing query is loading
+[BILLING_PRODUCT] query started
+00:26 +128: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:26 +129: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:26 +130: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:28 +131: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +132: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +133: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +134: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +135: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +136: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +137: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +138: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:28 +139: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button only when callback is provided
+00:29 +140: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility hidden while profile tutorial is not dismissed
+00:29 +140: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button when dev automation callback is provided
+[DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true
+00:29 +141: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility hidden while profile tutorial is not dismissed
+00:29 +142: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility hidden while profile tutorial is not dismissed
+[ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;UserProfileProvider,
+SavedShopProvider, EasyInitialSetupRepository, OperationTutorialRepository&gt;(dirty, dependencies:
+[_InheritedProviderScope&lt;EasyInitialSetupRepository?&gt;,
+_InheritedProviderScope&lt;OperationTutorialRepository?&gt;, _InheritedProviderScope&lt;SavedShopProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+  OperationTutorialRepository&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/mypage_placeholder_screen.dart:216:16
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _MypagePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/mypage_placeholder_screen.dart:261:25)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (340 frames)
+#394    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#395    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#396    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#867    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#874    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#881    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#888    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#895    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#902    _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#909    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#910    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#911    Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#912    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#913    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#914    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#915    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#916    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#917    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#918    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#919    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#920    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#921    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#922    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#923    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#924    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#925    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#926    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#927    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#928    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#929    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#930    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#931    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#932    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#933    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#934    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#935    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#936    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#937    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#938    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#939    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#940    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#941    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#942    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#943    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#944    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#945    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#946    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#947    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#948    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#949    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#950    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#951    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#952    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#953    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#954    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#955    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#956    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#957    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#958    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#959    StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#960    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#961    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#962    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#963    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#964    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#965    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#966    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#967    RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#968    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#969    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#970    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#971    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#972    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#973    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#974    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#975    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#976    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#977    AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#980    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#981    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#982    WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#985    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#986    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#987    main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart:51:20)
+&lt;asynchronous suspension&gt;
+#988    testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#989    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:29 +142 -1: C:/dev/app_project/room_manager2/test/screens/mypage_tutorial_replay_test.dart: MyPage tutorial replay entry shows replay menu item
+00:29 +142 -1: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility hidden while profile tutorial is not dismissed [E]
+  Test failed. See exception logs above.
+  The test description was: hidden while profile tutorial is not dismissed
+  
+00:30 +142 -1: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility shown when tutorial dismissed and setup incomplete
+[ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;UserProfileProvider,
+SavedShopProvider, EasyInitialSetupRepository, OperationTutorialRepository&gt;(dirty, dependencies:
+[_InheritedProviderScope&lt;EasyInitialSetupRepository?&gt;,
+_InheritedProviderScope&lt;OperationTutorialRepository?&gt;, _InheritedProviderScope&lt;SavedShopProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+  OperationTutorialRepository&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/mypage_placeholder_screen.dart:216:16
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _MypagePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/mypage_placeholder_screen.dart:261:25)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (340 frames)
+#394    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#395    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#396    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#867    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#874    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#881    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#888    _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#895    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#902    _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#909    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#910    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#911    Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#912    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#913    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#914    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#915    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#916    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#917    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#918    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#919    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#920    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#921    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#922    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#923    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#924    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#925    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#926    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#927    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#928    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#929    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#930    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#931    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#932    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#933    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#934    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#935    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#936    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#937    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#938    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#939    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#940    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#941    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#942    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#943    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#944    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#945    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#946    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#947    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#948    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#949    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#950    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#951    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#952    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#953    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#954    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#955    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#956    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#957    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#958    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#959    StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#960    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#961    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#962    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#963    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#964    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#965    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#966    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#967    RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#968    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#969    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#970    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#971    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#972    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#973    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#974    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#975    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#976    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#977    AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#980    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#981    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#982    WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#985    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#986    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#987    main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart:71:20)
+&lt;asynchronous suspension&gt;
+#988    testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#989    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:&lt;Found 0 widgets with text "設定を完了しましょう": []&gt;
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart:79:7)
+&lt;asynchronous suspension&gt;
+#5      testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart line 79
+The test description was:
+  shown when tutorial dismissed and setup incomplete
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:30 +142 -2: C:/dev/app_project/room_manager2/test/screens/mypage_tutorial_replay_test.dart: MyPage tutorial replay entry shows replay menu item
+00:30 +142 -2: C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: MyPageSetupIncompleteCard visibility shown when tutorial dismissed and setup incomplete [E]
+  Test failed. See exception logs above.
+  The test description was: shown when tutorial dismissed and setup incomplete
+  
+00:30 +143 -2: C:/dev/app_project/room_manager2/test/screens/my_page_plan_entry_test.dart: MyPage plan entry shows plan entry in settings section
+00:31 +144 -2: C:/dev/app_project/room_manager2/test/screens/my_page_plan_entry_test.dart: MyPage plan entry shows plan entry in settings section
+00:31 +145 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_bulk_add_lock_test.dart: RakutenSearch bulk add lock UI probe free + limits on hides bulk header and shows hint
+00:32 +146 -2: C:/dev/app_project/room_manager2/test/screens/my_page_plan_entry_test.dart: MyPage plan entry navigates to MonetizationPlanScreen on tap
+00:32 +147 -2: C:/dev/app_project/room_manager2/test/screens/my_page_plan_entry_test.dart: MyPage plan entry navigates to MonetizationPlanScreen on tap
+00:32 +148 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:32 +149 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +150 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +151 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +152 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +153 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +153 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_bulk_add_lock_test.dart: RakutenSearch bulk add guard free + limits on resolves to not allowed
+[MONETIZATION_LIMIT] batchCandidateAdd allowed=false plan=free
+00:33 +154 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +155 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe free + limits on shows lock hint and disables sort
+00:33 +156 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe limits off hides lock hint and enables sort
+00:34 +157 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition lock UI probe basic + limits on enables sort without lock hint
+00:34 +158 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition guard probe free + limits on strips price and sort from condition
+00:34 +159 -2: C:/dev/app_project/room_manager2/test/screens/rakuten_search_condition_lock_test.dart: RakutenSearch advanced condition guard probe basic + limits on keeps price and sort
+00:34 +160 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:34 +161 -2: C:/dev/app_project/room_manager2/test/screens/today_recommendations_bulk_add_lock_test.dart: TodayRecommendations bulk add lock UI probe free + limits on hides bulk header and shows hint
+00:34 +162 -2: C:/dev/app_project/room_manager2/test/screens/today_recommendations_bulk_add_lock_test.dart: TodayRecommendations bulk add lock UI probe free + limits on hides bulk header and shows hint
+00:34 +163 -2: C:/dev/app_project/room_manager2/test/screens/today_recommendations_bulk_add_lock_test.dart: TodayRecommendations bulk add lock UI probe free + limits on hides bulk header and shows hint
+00:35 +164 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:35 +165 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:35 +166 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:36 +167 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:36 +168 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+[SHOP_DISCOVERY_SAVE_SHOP] source=detail shopCode=the-charme shopName=水筒ショップ result=success
+00:36 +169 -2: C:/dev/app_project/room_manager2/test/screens/today_recommendations_summary_card_test.dart: completed with cooldown elapsed enables button and regeneratable hint
+00:36 +170 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +171 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +172 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +173 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +174 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +175 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +176 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +176 -2: C:/dev/app_project/room_manager2/test/services/batch_candidate_add_availability_test.dart: canUseBatchCandidateAdd returns true when limits off
+[MONETIZATION_LIMIT] batchCandidateAdd allowed=true plan=free
+00:36 +177 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:36 +178 -2: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:37 +179 -2: C:/dev/app_project/room_manager2/test/services/billing_product_service_test.dart: BillingProductService queryProducts returns unavailable when store is not available
+[BILLING_PRODUCT] query started
+[BILLING_PRODUCT] query unavailable
+00:37 +180 -2: C:/dev/app_project/room_manager2/test/services/billing_product_service_test.dart: BillingProductService queryProducts maps basic and pro products
+[BILLING_PRODUCT] query started
+[BILLING_PRODUCT] query completed found=2 notFound=0 available=true
+00:37 +181 -2: C:/dev/app_project/room_manager2/test/services/billing_product_service_test.dart: BillingProductService queryProducts keeps notFoundIds without crashing
+[BILLING_PRODUCT] query started
+[BILLING_PRODUCT] query completed found=0 notFound=2 available=true
+00:37 +182 -2: C:/dev/app_project/room_manager2/test/services/billing_product_service_test.dart: BillingProductService queryProducts returns unavailable on exception
+[BILLING_PRODUCT] query started
+[BILLING_PRODUCT] query failed
+00:37 +183 -2: C:/dev/app_project/room_manager2/test/services/billing_product_service_test.dart: BillingProductQueryResult.fromProducts assigns basic and pro by product id
+00:37 +184 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService does not start purchase when basic product is missing
+[BILLING_PURCHASE] initialized available=true active=false
+00:37 +185 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService starts purchase with buyNonConsumable when basic product exists
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] purchase started
+00:37 +186 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService does not purchase pro product
+[BILLING_PURCHASE] initialized available=true active=false
+00:37 +187 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService pending keeps purchasing state
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] purchase started
+[BILLING_PURCHASE] status=pending
+00:37 +188 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService purchased applies basicActive entitlement and saves
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] basic entitlement applied
+[BILLING_PURCHASE] completePurchase called
+00:37 +189 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restored applies basicActive entitlement
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] basic entitlement applied
+00:37 +190 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService canceled does not activate basic
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] purchase started
+[BILLING_PURCHASE] status=canceled
+00:37 +191 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService error does not activate basic
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] status=error
+00:37 +192 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService ignores pro purchase details
+[BILLING_PURCHASE] initialized available=true active=false
+00:37 +193 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restorePurchases sets restoring state
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] restore started
+00:37 +194 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] restore started
+00:37 +195 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +196 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +197 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +198 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +199 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +200 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:37 +201 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +202 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +203 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +204 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +205 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +206 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +207 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:38 +208 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:39 +209 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:39 +210 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:39 +211 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:39 +212 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:39 +213 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +214 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +215 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +216 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +217 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +218 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +219 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +220 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +221 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +222 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +223 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +224 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +225 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +226 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +227 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +228 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +229 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +230 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +231 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +231 -2: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 のときだけ1回リトライして成功すれば通常レスポンスを返す
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=200 page=2 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=true statusCode=200
+00:40 +232 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +232 -2: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 が2回続くときは失敗扱いになる
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=false statusCode=429
+[Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): Rate limit is exceeded.
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:105:24)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:47:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:40 +233 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +233 -2: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 以外の HTTP エラーではリトライしない
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=400 page=1 bytes=23
+[Rakuten] error response body (full, status=400): {"error":"bad_request"}
+[Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): bad_request
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:91:14)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:74:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:40 +234 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:40 +234 -2: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry shopCode 検索でも 429 のときだけ1回リトライする
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=429 page=1 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=1
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=200 page=1 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=1 success=true statusCode=200
+00:40 +235 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +236 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +237 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +238 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +239 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +240 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:41 +240 -2: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天BOOKS URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://books.rakuten.co.jp/rb/1234567890/ reason=unsupportedRakutenService host=books.rakuten.co.jp service=books
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=books.rakuten.co.jp
+00:41 +241 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +241 -2: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天ファッション URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://brandavenue.rakuten.co.jp/item/foo/ reason=unsupportedRakutenService host=brandavenue.rakuten.co.jp service=fashion
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=brandavenue.rakuten.co.jp
+00:42 +242 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +243 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +244 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +245 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +246 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +247 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +248 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +249 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +250 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +251 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +252 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +253 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +254 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +254 -2: C:/dev/app_project/room_manager2/test/services/rakuten_search_condition_availability_test.dart: canUseAdvancedRakutenSearchConditions returns true when limits off
+[MONETIZATION_LIMIT] advancedRakutenSearch allowed=true plan=free
+00:42 +255 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +256 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +257 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +258 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +259 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:42 +260 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +261 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +262 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +263 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +264 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +265 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +266 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService restore idle timeout shows nothing found message
+00:43 +267 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability free 0/1 is allowed
+00:43 +268 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: BillingPurchaseService attaches purchase stream only once
+[BILLING_PURCHASE] initialized available=true active=false
+[BILLING_PURCHASE] basic entitlement applied
+00:43 +269 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability free 1/1 is blocked
+00:43 +270 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability free 1/1 is blocked
+00:43 +271 -2: C:/dev/app_project/room_manager2/test/services/billing_purchase_service_test.dart: entitlementFromBasicPurchase returns null for canceled basic product
+00:43 +272 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability basic 4/5 is allowed
+00:43 +273 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability basic 5/5 is blocked
+00:43 +274 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability pro 9/10 is allowed
+00:43 +275 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: resolveRecommendationGenerationAvailability pro 10/10 is blocked
+00:43 +276 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: isPrimaryRecommendationGeneration ensureToday path counts as primary generation
+00:43 +277 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: isPrimaryRecommendationGeneration manual regenerate with existing entries is not primary
+00:43 +278 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: isPrimaryRecommendationGeneration manual on empty bundle is primary generation
+00:43 +279 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: recordSuccessfulRecommendationGeneration increments only on explicit record call
+00:43 +280 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: recordSuccessfulRecommendationGeneration new day resets used count to 0
+00:43 +281 -2: C:/dev/app_project/room_manager2/test/services/recommendation_generation_limit_test.dart: user messages free blocked message includes basic hint in body builder
+00:44 +282 -2: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:44 +283 -2: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:44 +284 -2: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:44 +285 -2: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:45 +286 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability FREE_PLAN_LIMITS_ENABLED=false allows regardless of count
+00:45 +287 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability MONETIZATION_ENABLED=false allows regardless of count
+00:45 +288 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability free + 0 items allows
+00:45 +289 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability free + 9 items allows
+00:45 +290 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability free + 10 items is not allowed
+00:45 +291 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability basic + 10 items allows with unlimited
+00:45 +292 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportAvailability pro + 10 items allows with unlimited
+00:45 +293 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: countManagedProductsForRoomImportLimit counts candidate, done, and none-without-doneAt as managed
+00:45 +294 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportBatchSize free with 7 items leaves 3 batch slots
+00:45 +295 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportBatchSize free at limit returns 0
+00:45 +296 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: resolveRoomImportBatchSize basic returns pro batch limit
+00:45 +297 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: canRefreshRoomDataForManagedItems returns false when free limit reached with limits on
+[MONETIZATION_LIMIT] roomImport allowed=false plan=free current=10 limit=10
+00:45 +298 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: user messages blocked message mentions free limit and basic plan
+00:45 +299 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: user messages trial hint describes free trial limit
+00:45 +300 -2: C:/dev/app_project/room_manager2/test/services/room_import_limit_test.dart: user messages usage hint shows current count for free plan
+00:45 +301 -2: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:45 +302 -2: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:46 +303 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:46 +304 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:46 +305 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:46 +306 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:46 +307 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:46 +308 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:46 +309 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:46 +310 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:46 +311 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:46 +312 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:46 +313 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:46 +314 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:46 +315 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:46 +316 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:46 +317 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:46 +318 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:46 +319 -2: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:46 +320 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RoomDiagnosisService 診断回答からRoomRecommendationProfileが作成される
+00:46 +321 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RecommendationQueryBuilder practical_lifehack × kitchen で複合検索クエリが生成される
+00:46 +322 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RecommendationQueryBuilder 送料無料が検索クエリに含まれない
+00:46 +323 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RecommendationScoringService 優先条件ワード一致でスコアが上がる
+00:46 +324 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RecommendationScoringService 人気・おすすめ・売れ筋は強加点されない
+00:46 +325 -2: C:/dev/app_project/room_manager2/test/services/room_recommendation_profile_test.dart: RecommendationReasonBuilder 診断済みの場合、おすすめ理由にタイプまたは優先条件が反映される
+00:46 +326 -2: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:46 +327 -2: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:46 +328 -2: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:47 +329 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:47 +330 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:47 +331 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:47 +332 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:47 +333 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:47 +334 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:47 +335 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:47 +336 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:47 +337 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:47 +338 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:47 +339 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:47 +340 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:47 +341 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:47 +342 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:47 +343 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:47 +344 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:47 +345 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:47 +346 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:47 +347 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+00:47 +348 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:47 +349 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:47 +350 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+00:48 +351 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:48 +352 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport unknownGenreRatio=1.0 なら excellent/good にならない
+00:48 +353 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+00:48 +354 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+00:48 +355 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+00:48 +356 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+00:48 +357 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:48 +358 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+00:48 +359 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+00:48 +360 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+00:48 +361 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+00:48 +362 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+00:48 +363 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:48 +364 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+00:48 +365 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+00:48 +366 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+00:48 +367 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+00:48 +368 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+00:48 +369 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:48 +370 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+00:48 +371 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:48 +372 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:48 +373 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:49 +374 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:49 +375 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:49 +376 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:49 +377 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:49 +378 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:49 +379 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:49 +380 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:49 +381 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:49 +382 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:49 +383 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:49 +384 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:49 +385 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:49 +386 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:49 +387 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:49 +388 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:49 +389 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:49 +390 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:49 +391 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:49 +392 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:49 +393 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:49 +394 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:49 +395 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:49 +396 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:49 +397 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+00:49 +398 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:49 +399 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:49 +400 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:49 +401 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:49 +402 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:49 +403 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:49 +404 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:49 +405 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:49 +406 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みショップは displayCandidates から除外される
+00:49 +407 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みでないショップは従来通り displayCandidates に残る
+00:49 +408 -2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge extractDisplayCandidates 単体では保存済み判定を行わない
+00:50 +409 -2: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:50 +410 -2: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+00:50 +411 -2: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+00:50 +412 -2: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+00:50 +413 -2: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:50 +414 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore load returns none when nothing saved
+00:50 +415 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore save and load basicActive entitlement
+00:50 +416 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore clear removes persisted basic entitlement
+00:50 +417 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore readStoredPurchaseEntitlement uses global store
+00:50 +418 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore resolveCurrentMonetizationPlan uses stored basic when flags on
+00:50 +419 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore stored basic is free when SUBSCRIPTION_ENABLED=false
+00:50 +420 -2: C:/dev/app_project/room_manager2/test/services/subscription_entitlement_store_test.dart: SubscriptionEntitlementStore stored basic is free when MONETIZATION_ENABLED=false
+00:51 +421 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) status is none
+00:51 +422 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) isActive is false
+00:51 +423 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) isBasicActive is false
+00:51 +424 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) isProActive is false
+00:51 +425 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) adsRemoved is false
+00:51 +426 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement.none (default) resolvedPlan is free
+00:51 +427 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement basicActive isActive is true
+00:51 +428 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement basicActive isBasicActive is true
+00:51 +429 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement basicActive isProActive is false
+00:51 +430 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement basicActive adsRemoved is true
+00:51 +431 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement basicActive resolvedPlan is basic
+00:51 +432 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement proActive isActive is true
+00:51 +433 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement proActive isBasicActive is false
+00:51 +434 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement proActive isProActive is true
+00:51 +435 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement proActive adsRemoved is true
+00:51 +436 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement proActive resolvedPlan is pro
+00:51 +437 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement with expired expiresAt isActive is false when expiresAt is in the past
+00:51 +438 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement with expired expiresAt isBasicActive is false when expired
+00:51 +439 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement with expired expiresAt adsRemoved is false when expired
+00:51 +440 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: PurchaseEntitlement with expired expiresAt resolvedPlan is free when expired
+00:51 +441 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveMonetizationPlanFromEntitlement none -&gt; free
+00:51 +442 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveMonetizationPlanFromEntitlement basicActive -&gt; basic
+00:51 +443 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveMonetizationPlanFromEntitlement proActive -&gt; pro
+00:51 +444 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveMonetizationPlanFromEntitlement expired basicActive -&gt; free
+00:51 +445 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveCurrentMonetizationPlan with entitlement basicActive entitlement -&gt; basic plan when subscription enabled
+00:51 +446 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveCurrentMonetizationPlan with entitlement proActive entitlement -&gt; pro plan when all enabled
+00:51 +447 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveCurrentMonetizationPlan with entitlement basicActive entitlement -&gt; free when SUBSCRIPTION_ENABLED=false
+00:51 +448 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveCurrentMonetizationPlan with entitlement basicActive entitlement -&gt; free when MONETIZATION_ENABLED=false
+00:51 +449 -2: C:/dev/app_project/room_manager2/test/services/subscription_status_test.dart: resolveCurrentMonetizationPlan with entitlement proActive entitlement -&gt; basic when PRO_PLAN_ENABLED=false
+00:51 +450 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController maybeAutoStart starts when not dismissed
+00:51 +451 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController maybeAutoStart does nothing when dismissed
+00:51 +452 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController forceReplay starts even when dismissed
+00:51 +453 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController skip during replay does not change persisted flags
+00:51 +454 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController complete on last step persists when not replay
+00:51 +455 -2: C:/dev/app_project/room_manager2/test/state/operation_tutorial_controller_test.dart: OperationTutorialController skip persists skipped flag when not replay
+00:52 +456 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:52 +457 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+00:52 +458 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:52 +459 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+00:52 +460 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+00:52 +461 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:52 +462 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:52 +463 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:52 +464 -2: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:53 +465 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +465 -2: C:/dev/app_project/room_manager2/test/state/today_recommendation_regenerate_cooldown_test.dart: TodayRecommendationProvider manual regenerate cooldown manual regenerate blocked immediately after generation
+[GENRE_PREF_LOAD] favoriteGenreIds=100227 favoriteGenreNames= source=recommend
+[TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=1 executedFavoriteGenrePlans=1 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=-
+[TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=10 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=水・ソフトドリンク:10 shopDistribution=Stub Shop:10
+[TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=1 executedFavoriteGenrePlans=1 apiCalls=1 pagesUsed=1 rawItems=10 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=0 excludedZeroReview=0 finalItems=10 fallbackUsed=false assistPlanUsed=false
+[TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution=100227:10 finalShopDistribution=Stub Shop:10
+[RECOMMEND_GUARD] skipReason=manualCooldown
+[TODAY_RECOMMEND_COOLDOWN] canRegenerate=false remainingSeconds=299 remainingMinutes=5 nextAvailableAt=2026-06-25T23:23:53.601837 reason=manualCooldown
+00:54 +466 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +467 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +468 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +469 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +469 -2: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shopDiscoveryUserActionLog は debug ビルドで no-op 例外なし
+[TEST_USER_ACTION] noop
+00:54 +470 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+00:54 +470 -2: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates importantDebugLog は debug ビルドで no-op 例外なし
+[TEST_IMPORTANT] noop
+00:54 +471 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=true does not show SnackBar when blocked
+[GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+00:54 +472 -2: C:/dev/app_project/room_manager2/test/state/room_import_controller_silent_test.dart: RoomImportController.runReactionSync silent silent=false shows SnackBar when blocked
+[GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+00:55 +473 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+00:55 +474 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId が無い場合 normalizedItemUrl から synthetic key が作られる
+00:55 +475 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+00:55 +476 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys alias を生成できる
+00:55 +477 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys itemUrl を正規化できる
+00:55 +478 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+00:55 +479 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+00:55 +480 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false
+00:55 +481 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+00:55 +482 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+00:55 +483 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+00:55 +484 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:56 +484 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:56 +485 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:56 +486 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+00:56 +487 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+00:56 +487 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:56 +488 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:56 +489 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:56 +490 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:56 +491 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:56 +492 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:56 +493 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:56 +494 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+00:56 +495 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+00:56 +496 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+00:56 +497 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 価格なしを判定できる
+00:56 +498 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:56 +499 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:56 +500 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+00:56 +501 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+00:56 +502 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+00:56 +503 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems kProductCatalogEnabled=false のとき no-op
+00:56 +504 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:56 +505 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+00:56 +506 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+00:56 +507 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+00:56 +508 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+00:56 +509 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+00:56 +510 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+00:56 +511 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+00:56 +512 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+00:56 +513 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+00:56 +514 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+00:56 +515 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+00:56 +516 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+00:56 +517 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+00:56 +518 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:56 +519 -2: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:56 +520 -2: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+line-1
+line-2
+line-3
+line-4
+00:56 +521 -2: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer ignores empty messages
+00:56 +522 -2: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer notifies listeners when a line is added
+[DEV_AUTOMATION_TEST] ok
+00:57 +523 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder 推奨順に含まれる genreId は指定順で並ぶ
+00:57 +524 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder 推奨順に含まれない genreId は末尾で名称昇順
+00:57 +525 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder RakutenGenreMasterEntry 一覧を表示順でソート
+00:57 +526 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder ソートは ID 集合を変えない
+00:57 +527 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +528 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +529 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +530 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +531 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +532 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:57 +533 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +534 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +535 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +536 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +537 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +538 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+00:58 +539 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:58 +539 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=3 → generic progress copy
+00:58 +540 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration rootNodes の先頭はレディースファッション
+00:58 +541 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration rootNodes の先頭はレディースファッション
+00:58 +542 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed shows when all recommendations are processed
+00:58 +543 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration getAllGenres も同じ先頭順
+00:58 +544 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while recommendations are pending
+00:58 +545 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration 百貨店・総合通販・ギフトは推奨順の最後付近
+00:58 +546 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while loading
+00:58 +547 -2: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (tearDownAll)
+00:58 +547 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority post milestone wins over rec completed
+00:58 +548 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority post milestone wins over reaction increased
+00:58 +549 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority reaction increased wins over rec completed
+00:58 +550 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased no history → no reaction notice
+00:58 +551 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased single history entry → no reaction notice (baseline guard)
+00:58 +552 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased 2+ history + likeIncreasedItems &gt; 0 → reaction notice
+00:58 +553 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased 2+ history + commentIncreasedItems &gt; 0 → reaction notice
+00:58 +554 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased both like and comment increased → combined body
+00:58 +555 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased dismissed reaction notice key → no notice
+00:58 +556 -2: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select reaction increased no increase counts → no reaction notice
+00:58 +557 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=0 → next=1
+00:58 +558 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=1 → next=5
+00:58 +559 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=5 → next=10
+00:58 +560 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=10 → next=20
+00:58 +561 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=20 → completed/highProgress
+00:58 +562 -2: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount uses rolling-24h label when calendar day is unavailable
+00:59 +563 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBasicPlanPriceDisplay returns loading label while querying
+00:59 +564 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBasicPlanPriceDisplay uses store price when basic product is available
+00:59 +565 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBasicPlanPriceDisplay falls back to planned price when basic is missing
+00:59 +566 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveProPlanPriceLabel uses store price when pro product is available
+00:59 +567 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveProPlanPriceLabel falls back to planned label when pro is missing
+00:59 +568 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBillingStatusMessage returns checking message while loading
+00:59 +569 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBillingStatusMessage returns fetch failed when store unavailable
+00:59 +570 -2: C:/dev/app_project/room_manager2/test/utils/monetization_plan_display_test.dart: resolveBillingStatusMessage returns null when at least one product is found
+00:59 +571 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+00:59 +572 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 商品のみ残ると pool itemCount=1 になる
+00:59 +573 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+00:59 +574 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+00:59 +575 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+00:59 +576 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+00:59 +577 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:59 +578 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+00:59 +579 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+00:59 +580 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+00:59 +581 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+00:59 +582 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+00:59 +583 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+00:59 +584 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了前の read は usesFreshCatalog=false
+00:59 +585 -2: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了後の read は usesFreshCatalog=true
+01:00 +586 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+01:00 +587 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+01:00 +588 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:00 +589 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:00 +590 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+01:00 +591 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+01:00 +592 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+01:00 +593 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+01:00 +594 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+01:00 +595 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+01:00 +596 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+01:00 +597 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+01:00 +598 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+01:00 +599 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+01:00 +600 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+01:00 +601 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+01:00 +602 -2: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+01:00 +603 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+01:00 +604 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+01:00 +605 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+01:00 +606 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+01:00 +607 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+01:00 +608 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage と reviewCount 両方あり
+01:00 +609 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage のみ
+01:00 +610 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewCount のみ
+01:00 +611 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel どちらもない
+01:01 +612 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported item.rakuten.co.jp は対象外にならない
+01:01 +613 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天BOOKS URL は unsupportedRakutenService
+01:01 +614 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天ファッション brandavenue は unsupportedRakutenService
+01:01 +615 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported fashion.rakuten.co.jp は unsupportedRakutenService
+01:01 +616 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が BOOKS を指す場合も対象外
+01:01 +617 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が item.rakuten の場合は対象外にならない
+01:01 +618 -2: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天以外の URL は null
+01:01 +619 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus immediately after generation cannot regenerate
+01:01 +620 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus during 5 minute window cannot regenerate
+01:01 +621 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus after 5 minutes can regenerate
+01:01 +622 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus rate limit cooldown blocks manual regenerate
+01:01 +623 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus expired rate limit falls through to manual cooldown
+01:01 +624 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicy.resolveManualRegenerateCooldownStatus no prior generation allows regenerate
+01:01 +625 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendRegenerateCooldownStatus.userFacingWaitLabel shows minutes while waiting
+01:01 +626 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendRegenerateCooldownStatus.userFacingWaitLabel shows soon label when under one minute
+01:01 +627 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState cooldown elapsed enables button when not completed
+01:01 +628 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState active cooldown disables button and shows wait label
+01:01 +629 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState completed with cooldown elapsed enables button
+01:01 +630 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState completed with active cooldown disables button and shows wait label
+01:02 +631 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState completed with rate limit cooldown disables button
+01:02 +632 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState completed while loading disables button
+01:02 +633 -2: C:/dev/app_project/room_manager2/test/utils/recommend_cooldown_policy_test.dart: RecommendCooldownPolicyUi.resolveRegenerateButtonUiState loading blocks button
+01:02 +634 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+01:02 +635 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+01:02 +636 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+01:02 +637 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+01:02 +638 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+01:02 +639 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+01:02 +640 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+01:02 +641 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+01:02 +642 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+01:02 +643 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+01:02 +644 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+01:02 +645 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+01:02 +646 -2: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+01:02 +647 -2: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+01:02 +648 -2: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+01:03 +649 -2: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+01:03 +650 -2: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+01:03 +651 -2: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+01:03 +652 -2: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+01:03 +653 -2: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+01:03 +654 -2: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+01:03 +655 -2: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+01:03 +656 -2: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+01:03 +657 -2: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl 通常 item.rakuten URL を正規化する
+01:03 +658 -2: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl スラッグ URL を正規化する
+01:03 +659 -2: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl affiliateUrl の pc= から item URL を復元する
+01:03 +660 -2: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.decodeAffiliatePcTargetUrl affiliate 以外は null
+01:04 +661 -2: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+01:04 +662 -2: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+01:04 +663 -2: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+01:04 +664 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+01:04 +665 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+01:04 +666 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+01:04 +667 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+01:04 +668 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+01:04 +669 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+01:04 +670 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+01:04 +671 -2: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+01:05 +672 -2: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+01:05 +673 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+01:05 +674 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+01:05 +675 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+01:05 +676 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+01:05 +677 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+01:05 +678 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+01:05 +679 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+01:05 +680 -2: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+01:05 +681 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+01:05 +682 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+01:05 +683 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+01:05 +684 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+01:05 +685 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+01:05 +686 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+01:05 +687 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+01:05 +688 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+01:05 +689 -2: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+01:06 +690 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+01:06 +691 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+01:06 +692 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+01:06 +693 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+01:06 +694 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+01:06 +695 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+01:06 +696 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+01:06 +697 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+01:06 +698 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+01:06 +699 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+01:06 +700 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+01:06 +701 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+01:07 +702 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+01:07 +703 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+01:07 +704 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+01:07 +705 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+01:07 +706 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+01:07 +707 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+01:07 +708 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+01:07 +709 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+01:08 +710 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+01:08 +711 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+01:08 +712 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+01:08 +713 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+01:08 +714 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+01:08 +715 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+01:08 +716 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+01:08 +717 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+01:08 +718 -2: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+01:08 +719 -2: C:/dev/app_project/room_manager2/test/widgets/add_candidate_entry_sheet_url_visibility_test.dart: URLから追加入口は showUrlAddEntryPoint=false では非表示
+01:09 +720 -2: C:/dev/app_project/room_manager2/test/widgets/admob_banner_ad_slot_test.dart: AdMobBannerAdSlot skips ad load when loadAdForTesting is false
+01:10 +721 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:10 +722 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:10 +722 -2: C:/dev/app_project/room_manager2/test/widgets/admob_banner_ad_slot_test.dart: AdMobBannerAdSlot shows fallback placeholder on load failure
+[ADMOB] homeBottomBanner banner load requested
+[ADMOB] homeBottomBanner skipped: ad unit id is empty
+01:10 +723 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:10 +723 -2: C:/dev/app_project/room_manager2/test/widgets/admob_banner_ad_slot_test.dart: AdMobBannerAdSlot todayRecommendationSummaryBanner shows fallback on load failure
+[ADMOB] todayRecommendationSummaryBanner banner load requested
+[ADMOB] todayRecommendationSummaryBanner skipped: ad unit id is empty
+01:10 +724 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:11 +725 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:11 +726 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:11 +727 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+01:11 +728 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows LegalConsentScreen when terms not accepted
+[ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+01:11 +729 -2: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot shows post milestone notice when data matches
+01:12 +730 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +731 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +732 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +733 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +734 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +735 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:12 +736 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +737 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +738 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +739 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +740 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +741 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+01:14 +742 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+[ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+[ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;RakutenManagedProductProvider,
+RoomActivityEventProvider, UserProfileProvider, TodayRecommendationProvider&gt;(dirty, dependencies:
+[MediaQuery, _InheritedProviderScope&lt;RakutenManagedProductProvider?&gt;,
+_InheritedProviderScope&lt;RoomActivityEventProvider?&gt;,
+_InheritedProviderScope&lt;TodayRecommendationProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+TodayRecommendationProvider&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider,
+UserProfileProvider, TodayRecommendationProvider&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+  TodayRecommendationProvider&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/home_placeholder_screen.dart:652:13
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _HomePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:700:33)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (151 frames)
+#205    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#206    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#207    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (7 frames)
+#214    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#215    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#216    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (25 frames)
+#241    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#242    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#243    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (111 frames)
+#354    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (250 frames)
+#604    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#605    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#606    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#1077   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1084   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1091   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1098   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1105   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1112   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1119   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1126   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1133   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1140   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1147   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1154   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1161   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1168   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1175   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1182   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1189   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1196   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1203   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1210   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1217   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1224   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1231   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1238   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1245   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#1252   _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#1259   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#1260   Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#1261   Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#1262   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1263   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1264   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1265   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1266   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1267   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1268   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1269   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1270   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1271   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1272   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1273   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1274   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1275   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1276   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1277   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1278   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1279   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1280   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1281   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1282   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1283   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1284   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1285   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1286   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1287   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1288   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1289   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1290   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1291   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1292   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1293   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1294   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1295   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1296   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1297   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1298   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1299   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1300   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1301   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1302   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1303   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1304   _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#1305   _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#1306   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1307   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1308   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1309   StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#1310   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1311   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1312   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1313   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1314   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1315   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1316   RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#1317   RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#1318   RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#1319   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1320   BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#1321   BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#1322   BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#1323   AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#1324   RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#1325   SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#1326   SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#1327   AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#1330   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1331   AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#1332   WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#1335   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1336   WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#1337   main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:184:22)
+&lt;asynchronous suspension&gt;
+#1338   testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#1339   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:14 +742 -2: C:/dev/app_project/room_manager2/test/widgets/monetization_ad_slot_test.dart: MonetizationAdSlot placeholder does not respond to tap
+
+Warning: A call to tap() with finder "Found 1 widget with key [&lt;'monetization_ad_slot_rakutenSearchNativeList'&gt;]: [
+  Container-[&lt;'monetization_ad_slot_rakutenSearchNativeList'&gt;](bg: BoxDecoration(color: Color(alpha: 0.9200, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 0.7500, red: 0.8784, green: 0.8784, blue: 0.8784, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(14.0)), constraints: BoxConstraints(w=Infinity, h=100.0)),
+]" derived an Offset (Offset(400.0, 50.0)) that would not hit test on the specified widget.
+Maybe the widget is actually off-screen, or another widget is obscuring it, or the widget cannot receive pointer events.
+The finder corresponds to this RenderBox: RenderConstrainedBox#1c848 relayoutBoundary=up3
+The hit test result at that offset is: HitTestResult(_RenderInkFeatures#9fc41@Offset(400.0, 50.0), RenderPhysicalModel#8a913@Offset(400.0, 50.0), RenderSemanticsAnnotations#91df7@Offset(400.0, 50.0), RenderRepaintBoundary#a4848@Offset(400.0, 50.0), RenderIgnorePointer#3b385@Offset(400.0, 50.0), _RenderSnapshotWidget#b860c@Offset(400.0, 50.0), _RenderSnapshotWidget#bb266@Offset(400.0, 50.0), _RenderSnapshotWidget#ee687@Offset(400.0, 50.0), _RenderSnapshotWidget#8f7c3@Offset(400.0, 50.0), RenderRepaintBoundary#dbc78@Offset(400.0, 50.0), RenderSemanticsAnnotations#38829@Offset(400.0, 50.0), RenderOffstage#e27a8@Offset(400.0, 50.0), RenderSemanticsAnnotations#d801c@Offset(400.0, 50.0), _RenderTheater#77308@Offset(400.0, 50.0), RenderAbsorbPointer#cdcaa@Offset(400.0, 50.0), RenderPointerListener#5c37a@Offset(400.0, 50.0), RenderSemanticsAnnotations#7bc9a@Offset(400.0, 50.0), RenderCustomPaint#0fc79@Offset(400.0, 50.0), RenderSemanticsAnnotations#549e7@Offset(400.0, 50.0), RenderSemanticsAnnotations#05871@Offset(400.0, 50.0), RenderTapRegionSurface#5e824@Offset(400.0, 50.0), RenderSemanticsAnnotations#7e749@Offset(400.0, 50.0), RenderSemanticsAnnotations#f9726@Offset(400.0, 50.0), RenderSemanticsAnnotations#07705@Offset(400.0, 50.0), HitTestEntry&lt;HitTestTarget&gt;#1f07b(_ReusableRenderView#72426), HitTestEntry&lt;HitTestTarget&gt;#a3550(&lt;AutomatedTestWidgetsFlutterBinding&gt;))
+#0      WidgetController._getElementPoint (package:flutter_test/src/controller.dart:2077:25)
+#1      WidgetController.getCenter (package:flutter_test/src/controller.dart:1861:12)
+#2      WidgetController.tap (package:flutter_test/src/controller.dart:1041:7)
+#3      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/monetization_ad_slot_test.dart:146:20)
+&lt;asynchronous suspension&gt;
+#4      testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+#6      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+To silence this warning, pass "warnIfMissed: false" to "tap()".
+To make this warning fatal, set WidgetController.hitTestWarningShouldBeFatal to true.
+
+01:14 +742 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;UserProfileProvider,
+SavedShopProvider, EasyInitialSetupRepository, OperationTutorialRepository&gt;(dirty, dependencies:
+[_InheritedProviderScope&lt;EasyInitialSetupRepository?&gt;,
+_InheritedProviderScope&lt;OperationTutorialRepository?&gt;, _InheritedProviderScope&lt;SavedShopProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+  OperationTutorialRepository&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/mypage_placeholder_screen.dart:216:16
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _MypagePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/mypage_placeholder_screen.dart:261:25)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (151 frames)
+#205    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#206    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#207    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (7 frames)
+#214    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#215    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#216    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (25 frames)
+#241    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#242    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#243    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (111 frames)
+#354    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (250 frames)
+#604    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#605    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#606    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#1077   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1084   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1091   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1098   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1105   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1112   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1119   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1126   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1133   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1140   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1147   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1154   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1161   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1168   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1175   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1182   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1189   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1196   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1203   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1210   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1217   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1224   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1231   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1238   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1245   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#1252   _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#1259   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#1260   Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#1261   Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#1262   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1263   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1264   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1265   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1266   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1267   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1268   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1269   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1270   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1271   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1272   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1273   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1274   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1275   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1276   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1277   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1278   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1279   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1280   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1281   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1282   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1283   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1284   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1285   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1286   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1287   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1288   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1289   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1290   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1291   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1292   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1293   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1294   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1295   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1296   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1297   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1298   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1299   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1300   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1301   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1302   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1303   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1304   _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#1305   _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#1306   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1307   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1308   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1309   StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#1310   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1311   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1312   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1313   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1314   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1315   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1316   RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#1317   RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#1318   RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#1319   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1320   BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#1321   BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#1322   BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#1323   AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#1324   RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#1325   SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#1326   SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#1327   AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#1330   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1331   AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#1332   WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#1335   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1336   WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#1337   main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:184:22)
+&lt;asynchronous suspension&gt;
+#1338   testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#1339   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:14 +743 -2: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed
+[ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown running a test:
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+HomePlaceholderScreen Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that HomePlaceholderScreen is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      ReadContext.read (package:provider/src/provider.dart:683:21)
+#3      _HomePlaceholderScreenState.initState.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:440:21)
+&lt;asynchronous suspension&gt;
+
+The test description was:
+  shows AppShell when terms accepted and easy setup not dismissed
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (3) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:14 +743 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:14 +743 -3: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup not dismissed [E]
+  Test failed. See exception logs above.
+  The test description was: shows AppShell when terms accepted and easy setup not dismissed
+  
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;RakutenManagedProductProvider,
+RoomActivityEventProvider, UserProfileProvider, TodayRecommendationProvider&gt;(dirty, dependencies:
+[MediaQuery, _InheritedProviderScope&lt;RakutenManagedProductProvider?&gt;,
+_InheritedProviderScope&lt;RoomActivityEventProvider?&gt;,
+_InheritedProviderScope&lt;TodayRecommendationProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+TodayRecommendationProvider&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider,
+UserProfileProvider, TodayRecommendationProvider&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+  TodayRecommendationProvider&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/home_placeholder_screen.dart:652:13
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _HomePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:700:33)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#11     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#12     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#13     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#14     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#15     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#16     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#17     AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#20     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#21     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#22     WidgetTester.pump.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:652:53)
+#25     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#26     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#27     main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:188:22)
+&lt;asynchronous suspension&gt;
+#28     testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#29     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: shows AppShell when terms accepted and easy setup not dismissed
+  
+01:14 +744 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:14 +745 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:14 +746 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:14 +747 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:14 +748 -3: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:15 +749 -3: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup dismissed
+01:15 +750 -3: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup dismissed
+[ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+[ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;RakutenManagedProductProvider,
+RoomActivityEventProvider, UserProfileProvider, TodayRecommendationProvider&gt;(dirty, dependencies:
+[MediaQuery, _InheritedProviderScope&lt;RakutenManagedProductProvider?&gt;,
+_InheritedProviderScope&lt;RoomActivityEventProvider?&gt;,
+_InheritedProviderScope&lt;TodayRecommendationProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+TodayRecommendationProvider&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider,
+UserProfileProvider, TodayRecommendationProvider&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+  TodayRecommendationProvider&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/home_placeholder_screen.dart:652:13
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _HomePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:700:33)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (151 frames)
+#205    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#206    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#207    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (7 frames)
+#214    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#215    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#216    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (25 frames)
+#241    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#242    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#243    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (111 frames)
+#354    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (250 frames)
+#604    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#605    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#606    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#1077   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1084   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1091   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1098   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1105   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1112   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1119   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1126   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1133   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1140   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1147   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1154   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1161   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1168   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1175   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1182   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1189   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1196   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1203   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1210   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1217   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1224   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1231   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1238   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1245   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#1252   _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#1259   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#1260   Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#1261   Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#1262   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1263   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1264   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1265   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1266   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1267   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1268   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1269   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1270   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1271   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1272   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1273   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1274   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1275   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1276   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1277   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1278   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1279   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1280   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1281   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1282   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1283   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1284   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1285   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1286   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1287   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1288   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1289   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1290   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1291   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1292   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1293   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1294   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1295   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1296   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1297   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1298   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1299   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1300   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1301   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1302   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1303   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1304   _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#1305   _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#1306   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1307   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1308   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1309   StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#1310   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1311   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1312   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1313   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1314   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1315   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1316   RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#1317   RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#1318   RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#1319   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1320   BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#1321   BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#1322   BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#1323   AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#1324   RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#1325   SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#1326   SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#1327   AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#1330   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1331   AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#1332   WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#1335   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1336   WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#1337   main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:206:22)
+&lt;asynchronous suspension&gt;
+#1338   testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#1339   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;UserProfileProvider,
+SavedShopProvider, EasyInitialSetupRepository, OperationTutorialRepository&gt;(dirty, dependencies:
+[_InheritedProviderScope&lt;EasyInitialSetupRepository?&gt;,
+_InheritedProviderScope&lt;OperationTutorialRepository?&gt;, _InheritedProviderScope&lt;SavedShopProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+OperationTutorialRepository&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;UserProfileProvider, SavedShopProvider, EasyInitialSetupRepository,
+  OperationTutorialRepository&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/mypage_placeholder_screen.dart:216:16
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _MypagePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/mypage_placeholder_screen.dart:261:25)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5705:5)
+#11     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+#12     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (40 frames)
+#52     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#53     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#54     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (151 frames)
+#205    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#206    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#207    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (7 frames)
+#214    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#215    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#216    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (25 frames)
+#241    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#242    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#243    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (111 frames)
+#354    SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (250 frames)
+#604    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#605    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7169:36)
+#606    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:32)
+...     Normal element mounting (471 frames)
+#1077   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1084   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1091   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1098   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1105   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1112   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1119   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1126   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1133   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1140   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1147   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1154   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1161   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1168   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1175   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1182   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1189   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1196   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1203   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1210   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1217   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1224   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1231   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1238   _InheritedProviderScopeElement.mount (package:provider/src/inherited_provider.dart:424:11)
+...     Normal element mounting (7 frames)
+#1245   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (7 frames)
+#1252   _NestedHookElement.mount (package:nested/nested.dart:187:11)
+...     Normal element mounting (7 frames)
+#1259   SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+#1260   Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#1261   Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#1262   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1263   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1264   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1265   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1266   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1267   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1268   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1269   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1270   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1271   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1272   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1273   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1274   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1275   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1276   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1277   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1278   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1279   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1280   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1281   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1282   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1283   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1284   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1285   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1286   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1287   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1288   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1289   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1290   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1291   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1292   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1293   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1294   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1295   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1296   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1297   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1298   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1299   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1300   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1301   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1302   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1303   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1304   _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#1305   _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#1306   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1307   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1308   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1309   StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#1310   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1311   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1312   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1313   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1314   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1315   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1316   RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#1317   RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#1318   RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#1319   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1320   BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#1321   BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#1322   BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#1323   AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#1324   RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#1325   SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#1326   SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#1327   AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#1330   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1331   AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#1332   WidgetTester.pumpWidget.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:598:22)
+#1335   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1336   WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#1337   main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:206:22)
+&lt;asynchronous suspension&gt;
+#1338   testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#1339   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+[ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown running a test:
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+HomePlaceholderScreen Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that HomePlaceholderScreen is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      ReadContext.read (package:provider/src/provider.dart:683:21)
+#3      _HomePlaceholderScreenState.initState.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:440:21)
+&lt;asynchronous suspension&gt;
+
+The test description was:
+  shows AppShell when terms accepted and easy setup dismissed
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (3) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:15 +750 -4: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断促進BottomSheetが表示される
+01:15 +750 -4: C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart: AppEntryHost shows AppShell when terms accepted and easy setup dismissed [E]
+  Test failed. See exception logs above.
+  The test description was: shows AppShell when terms accepted and easy setup dismissed
+  
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+[MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+[MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following ProviderNotFoundException was thrown building Consumer4&lt;RakutenManagedProductProvider,
+RoomActivityEventProvider, UserProfileProvider, TodayRecommendationProvider&gt;(dirty, dependencies:
+[MediaQuery, _InheritedProviderScope&lt;RakutenManagedProductProvider?&gt;,
+_InheritedProviderScope&lt;RoomActivityEventProvider?&gt;,
+_InheritedProviderScope&lt;TodayRecommendationProvider?&gt;,
+_InheritedProviderScope&lt;UserProfileProvider?&gt;]):
+Error: Could not find the correct Provider&lt;RoomRecommendationProfileProvider&gt; above this
+Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+TodayRecommendationProvider&gt; Widget
+
+This happens because you used a &#96;BuildContext&#96; that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your &#96;main.dart&#96; and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a &#96;BuildContext&#96; that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider,
+UserProfileProvider, TodayRecommendationProvider&gt; is under your
+MultiProvider/Provider&lt;RoomRecommendationProfileProvider&gt;.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // Will throw a ProviderNotFoundError, because &#96;context&#96; is associated
+      // to the widget that is the parent of &#96;Provider&lt;Example&gt;&#96;
+      child: Text(context.watch&lt;Example&gt;().toString()),
+    );
+  }
+  &#96;&#96;&#96;
+
+  consider using &#96;builder&#96; like so:
+
+  &#96;&#96;&#96;
+  Widget build(BuildContext context) {
+    return Provider&lt;Example&gt;(
+      create: (_) =&gt; Example(),
+      // we use &#96;builder&#96; to obtain a new &#96;BuildContext&#96; that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch&lt;Example&gt;().toString());
+      }
+    );
+  }
+  &#96;&#96;&#96;
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer4&lt;RakutenManagedProductProvider, RoomActivityEventProvider, UserProfileProvider,
+  TodayRecommendationProvider&gt;
+  Consumer4:file:///C:/dev/app_project/room_manager2/lib/screens/home_placeholder_screen.dart:652:13
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      WatchContext.watch (package:provider/src/provider.dart:727:21)
+#3      _HomePlaceholderScreenState.build.&lt;anonymous closure&gt; (package:room_manager2/screens/home_placeholder_screen.dart:700:33)
+#4      Consumer4.buildWithChild (package:provider/src/consumer.dart:266:19)
+#5      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#6      StatelessElement.build (package:flutter/src/widgets/framework.dart:5791:49)
+#7      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#8      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5723:15)
+#9      Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#10     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#11     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#12     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#13     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#14     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#15     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#16     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#17     AutomatedTestWidgetsFlutterBinding.pump.&lt;anonymous closure&gt; (package:flutter_test/src/binding.dart:1335:9)
+#20     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#21     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#22     WidgetTester.pump.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:652:53)
+#25     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#26     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#27     main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart:210:22)
+&lt;asynchronous suspension&gt;
+#28     testWidgets.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:192:15)
+&lt;asynchronous suspension&gt;
+#29     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+&lt;asynchronous suspension&gt;
+&lt;asynchronous suspension&gt;
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: shows AppShell when terms accepted and easy setup dismissed
+  
+01:16 +751 -4: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断促進BottomSheetが表示される
+01:16 +752 -4: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断促進BottomSheetが表示される
+01:17 +753 -4: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+01:17 +754 -4: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:17 +755 -4: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:17 +756 -4: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:17 +757 -4: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:18 +758 -4: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost next button advances steps
+01:18 +759 -4: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\6f351cee-b6f6-49fc-9278-868842ae84b5.txt",
+  "pattern": "\\[E\\]|FAILED|Error:|Some tests failed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\6f351cee-b6f6-49fc-9278-868842ae84b5.txt",
+  "pattern": "\\[E\\]|FAILED|Error:|Some tests failed",
+  "topFiles": [
+    {
+      "matchCount": 15,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\6f351cee-b6f6-49fc-9278-868842ae84b5.txt"
+    },
+    {
+      "matchCount": 15,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\6f351cee-b6f6-49fc-9278-868842ae84b5.txt"
+    }
+  ],
+  "totalFiles": 2,
+  "totalMatches": 30
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-String "error -"</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-String "error -"
+```
+
+```
+]633;C]633;D;1
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "**/test_helper*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "UserProfileProvider|MultiProvider|testWidgets"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "UserProfileProvider|MultiProvider|testWidgets",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\mypage_setup_incomplete_card_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テスト用ヘルパーの作成か、テストラッパーへの RoomRecommendationProfileProvider 統合を検討している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "files_with_matches",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "MypagePlaceholderScreen|AppEntryHost|HomePlaceholderScreen"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "files_with_matches",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "MypagePlaceholderScreen|AppEntryHost|HomePlaceholderScreen",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "test/widgets/app_entry_host_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/screens/mypage_setup_incomplete_card_test.dart"
+    }
+  ],
+  "totalFiles": 2,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\screens\mypage_setup_incomplete_card_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\screens\mypage_setup_incomplete_card_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 15</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 15
+```
+
+```
+To make this warning fatal, set WidgetController.hitTestWarningShouldBeFatal to true.
+
+01:43 +742 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +743 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +744 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +745 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +746 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +747 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: enabled shows manual reaction check label and is tappable
+01:43 +748 -2: C:/dev/app_project/room_manager2/test/widgets/room_sync_reaction_button_test.dart: disabled shows busy label and is not tappable
+01:44 +749 -2: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE01:44 +750 -2: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE01:44 +751 -2: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE01:45 +752 -2: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しなぁE01:45 +753 -2: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:45 +754 -2: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:45 +755 -2: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:45 +756 -2: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+01:46 +757 -2: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost next button advances steps
+01:46 +758 -2: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools",
+  "pattern": "\\[E\\]"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools",
+  "pattern": "\\[E\\]",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\6f351cee-b6f6-49fc-9278-868842ae84b5.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\97283efe-10e4-4809-aef6-7be4d54e06a2.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\59e9b03b-7f6a-4c50-87c9-56e924ad8217.txt"
+    },
+    {
+      "matchCount": 3,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\b1438443-e39e-4126-8ec9-a0498a999866.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\197fd4bf-3e93-4826-8bb3-e4779f729e32.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\f01a17f4-ec16-43d3-b628-37e172e3d9d3.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\5d2b8d47-c8db-49e8-af33-cdd70c86a32d.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\d3b59aa5-5a5a-4494-b4d2-10656489fa20.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\cbd0cfde-4ae9-4ddb-a933-1d5ca60358cb.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\71a76ebb-d6b8-4a92-a5a7-8cc79e8f102b.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\eb931f12-e757-4672-ac04-2d837497377a.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\2df6b2df-18a7-49f0-9f39-7b0784f9cc2f.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\2e1bb11c-599b-4353-b3ec-507ac2e974a8.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\28d0e8e1-264f-42c1-a171-521a753303ae.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\f8d2f6b7-d42d-4b39-8dd8-240d1581c708.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\d2e58c00-b1da-4438-aa5c-0ea98941eefa.txt"
+    },
+    {
+      "matchCount": 3,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\2b277542-e386-46bd-a5d6-b79bf9b054df.txt"
+    },
+    {
+      "matchCount": 14,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\1bccd5f3-b8d1-4073-97b7-44f44fe84028.txt"
+    },
+    {
+      "matchCount": 14,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\fc2ae585-08e1-4d2a-a094-72f06cc30fed.txt"
+    }
+  ],
+  "totalFiles": 48,
+  "totalMatches": 232
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-String "\[E\]"</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-String "\[E\]"
+```
+
+```
+
+00:14 +127 -1: loading C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart [E]
+00:51 +719 -2: loading C:/dev/app_project/room_manager2/test/widgets/app_entry_host_test.dart [E]
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test test/screens/mypage_setup_incomplete_card_test.dart 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test test/screens/mypage_setup_incomplete_card_test.dart 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart
+test/screens/mypage_setup_incomplete_card_test.dart:21:24: Error: Method not found: 'UserProfileProvider'.
+        create: (_) =&gt; UserProfileProvider(
+                       ^^^^^^^^^^^^^^^^^^^
+00:00 +0 -1: loading C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart [E]
+  Failed to load "C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart":
+  Compilation failed for testPath=C:/dev/app_project/room_manager2/test/screens/mypage_setup_incomplete_card_test.dart: test/screens/mypage_setup_incomplete_card_test.dart:21:24: Error: Method not found: 'UserProfileProvider'.
+          create: (_) =&gt; UserProfileProvider(
+                         ^^^^^^^^^^^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\mypage_setup_incomplete_card_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\screens\mypage_setup_incomplete_card_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\widgets\app_entry_host_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 5</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 5
+```
+
+```
+00:49 +753: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:49 +754: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:49 +755: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:49 +756: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:50 +757: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:50 +758: C:/dev/app_project/room_manager2/test/widgets/room_type_diagnosis_prompt_sheet_test.dart: RoomTypeDiagnosisPromptSheet 未診断の場合、おすすめコレ押下時に診断俁E��BottomSheetが表示されめE00:50 +759: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+00:50 +760: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+00:50 +761: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost shows overlay when tutorial active
+00:51 +762: C:/dev/app_project/room_manager2/test/widgets/tutorial_overlay_host_test.dart: TutorialOverlayHost next button advances steps
+00:51 +763: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-String "error -"</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-String "error -"
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-Object -Last 3</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-Object -Last 3
+```
+
+```
+   info - Angle brackets will be interpreted as HTML - tool\phase4_p2_device_verify.dart:10:20 - unintended_html_in_doc_comment
+
+31 issues found. (ran in 8.1s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "チュートリアル・初期設定の整理（探し方/ショップ/ジャンル削除）",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "モデル・定義・Repository・Provider追加",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "診断画面・ホーム/マイページ導線・BottomSheet",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "QueryBuilder/Scoring/Reason/CommentPromptサービス",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "おすすめコレ連携（Provider・画面）",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "テスト追加・flutter analyze/test実行",
+      "id": "6",
+      "status": "completed"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "チュートリアル・初期設定の整理（探し方/ショップ/ジャンル削除）",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "モデル・定義・Repository・Provider追加",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "診断画面・ホーム/マイページ導線・BottomSheet",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "QueryBuilder/Scoring/Reason/CommentPromptサービス",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "おすすめコレ連携（Provider・画面）",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "テスト追加・flutter analyze/test実行",
+      "id": "6",
+      "status": "pending"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+flutter analyze の結果、警告と情報のみ31件が報告された。エラーはない。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && git diff --name-only && git ls-files --others --exclude-standard</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && git diff --name-only && git ls-files --others --exclude-standard
+```
+
+```
+.specstory/history/2026-06-24_11-54-50Z-tutorial-overlay-implementation-plan.md
+.specstory/history/2026-06-24_14-04-38Z-initial-experience-redesign-for-roommanager.md
+.specstory/history/2026-06-24_14-14-45Z-profile-setup-flow-changes.md
+.specstory/statistics.json
+lib/config/profile_tutorial_flow.dart
+lib/main.dart
+lib/screens/easy_initial_setup_screen.dart
+lib/screens/home_placeholder_screen.dart
+lib/screens/mypage_placeholder_screen.dart
+lib/screens/today_recommendations_screen.dart
+lib/state/today_recommendation_provider.dart
+lib/widgets/mypage/mypage_widgets.dart
+test/screens/mypage_setup_incomplete_card_test.dart
+test/widgets/app_entry_host_test.dart
+.specstory/history/2026-06-25_14-01-54Z-room-recommendation-profile-implementation.md
+lib/data/comment_tone_definitions.dart
+lib/data/interest_category_definitions.dart
+lib/data/priority_rule_definitions.dart
+lib/data/room_type_definitions.dart
+lib/models/room_recommendation_profile.dart
+lib/repository/room_recommendation_profile_repository.dart
+lib/screens/room_type_diagnosis_screen.dart
+lib/services/comment_prompt_builder.dart
+lib/services/recommendation_query_builder.dart
+lib/services/recommendation_reason_builder.dart
+lib/services/recommendation_scoring_service.dart
+lib/services/room_diagnosis_service.dart
+lib/state/room_recommendation_profile_provider.dart
+lib/utils/profile_recommendation_integration.dart
+lib/widgets/room_type_diagnosis_widgets.dart
+test/services/room_recommendation_profile_test.dart
+test/widgets/room_type_diagnosis_prompt_sheet_test.dart
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+実装が完了しました。以下に報告します。
+
+## 1. 変更ファイル一覧
+
+**新規追加**
+- `lib/data/room_type_definitions.dart`
+- `lib/data/interest_category_definitions.dart`
+- `lib/data/priority_rule_definitions.dart`
+- `lib/data/comment_tone_definitions.dart`
+- `lib/models/room_recommendation_profile.dart`
+- `lib/repository/room_recommendation_profile_repository.dart`
+- `lib/state/room_recommendation_profile_provider.dart`
+- `lib/services/room_diagnosis_service.dart`
+- `lib/services/recommendation_query_builder.dart`
+- `lib/services/recommendation_scoring_service.dart`
+- `lib/services/recommendation_reason_builder.dart`
+- `lib/services/comment_prompt_builder.dart`
+- `lib/utils/profile_recommendation_integration.dart`
+- `lib/screens/room_type_diagnosis_screen.dart`
+- `lib/widgets/room_type_diagnosis_widgets.dart`
+- `test/services/room_recommendation_profile_test.dart`
+- `test/widgets/room_type_diagnosis_prompt_sheet_test.dart`
+
+**既存変更**
+- `lib/config/profile_tutorial_flow.dart`
+- `lib/main.dart`
+- `lib/screens/easy_initial_setup_screen.dart`
+- `lib/screens/home_placeholder_screen.dart`
+- `lib/screens/mypage_placeholder_screen.dart`
+- `lib/screens/today_recommendations_screen.dart`
+- `lib/state/today_recommendation_provider.dart`
+- `lib/widgets/mypage/mypage_widgets.dart`
+- `test/screens/mypage_setup_incomplete_card_test.dart`
+- `test/widgets/app_entry_host_test.dart`
+
+---
+
+## 2. 追加したモデル・Repository・Provider・Service
+
+| 種別 | 名称 |
+|---|---|
+| モデル | `RoomRecommendationProfile`, `RoomDiagnosisAnswers`, `RecommendationSlotRole` |
+| Repository | `RoomRecommendationProfileRepository`（キー: `room_recommendation_profile_v1`） |
+| Provider | `RoomRecommendationProfileProvider` |
+| Service | `RoomDiagnosisService`, `RecommendationQueryBuilder`, `RecommendationScoringService`, `RecommendationReasonBuilder`, `CommentPromptBuilder` |
+| 統合 | `ProfileRecommendationIntegration` |
+
+---
+
+## 3. 削除または非表示にしたチュートリアル項目
+
+**プロフィールガイド（`profile_tutorial_flow.dart`）から削除**
+- お気に入りジャンル
+- 保存ショップ
+- 探し方（投稿スタイル）
+
+**残した項目**
+- ROOM運用の設定カード
+- ニックネーム
+- ROOM URL
+- ガイド完了
+
+**かんたん初期設定（`easy_initial_setup_screen.dart`）**
+- 2ステップ化：ニックネーム → ROOM URL のみ
+- 探し方・ジャンル・保存ショップのステップを削除
+
+**マイページ設定カード**
+- ジャンル・保存ショップ・探し方の行を非表示
+- 未完了判定を ROOM URL のみに変更
+
+---
+
+## 4. 診断画面の質問内容（4問、Q5はモデルのみ）
+
+| # | 質問 | 選択 |
+|---|---|---|
+| Q1 | ROOMで紹介したい商品は？ | 4タイプから1つ |
+| Q2 | おすすめコレで重視したいものは？ | 最大3つ |
+| Q3 | よく見たい・紹介したいジャンルは？ | 最大5つ（アプリ独自カテゴリ） |
+| Q4 | 投稿文の雰囲気は？ | 4文体から1つ |
+
+Q5（除外候補）は `exclusionPreferenceIds` フィールドのみ用意。画面は未実装。
+
+---
+
+## 5. 優先条件ワード辞書の実装場所
+
+`lib/data/priority_rule_definitions.dart`
+
+- 6ルール（`practical_lifehack`, `visual_sns`, `review_trust`, `value_balance`, `gift_event`, `seasonal_trend`）
+- 表示名・検索ワード・加点ワード・コメント訴求軸を分離
+- `bannedKeywords`（送料無料）と `weakBoostKeywords`（人気・おすすめ等）も定義
+
+---
+
+## 6. おすすめコレへの反映内容
+
+**診断済みの場合**
+- `RecommendationQueryBuilder` で「優先条件 × 関心カテゴリ」の複合クエリを最大8件生成
+- `TodayRecommendationProvider` がプロファイル由来のキーワード検索プランを優先実行
+- `RecommendationScoringService` でプロファイル加点（最大25+20+15+15+10+10+3点）
+- 上位3件を役割付きで選定（あなた向け / 安心候補 / 発見候補）
+- `RecommendationReasonBuilder` でカードに理由文を表示
+
+**未診断の場合**
+- 既存のジャンル・ショップベースロジックにフォールバック
+- おすすめコレ押下時に診断促進 BottomSheet を表示
+
+---
+
+## 7. AIコメント生成準備として追加した内容
+
+`CommentPromptBuilder` + `CommentPromptDto`
+
+商品情報に加え、以下をプロンプト用テキスト/DTOにまとめられます。
+- ROOMタイプ、関心カテゴリ、優先条件
+- コメント訴求軸、コメント文体
+- おすすめ理由
+
+API接続は未実装です。
+
+---
+
+## 8. flutter analyze / flutter test の結果
+
+| コマンド | 結果 |
+|---|---|
+| `flutter test` | **763件すべて成功** |
+| `flutter analyze` | **エラー0件**（警告・info 31件。既存の未使用コード等を含む） |
+
+---
+
+## 導線まとめ
+
+- **ホーム（未診断）**: 診断促進カード（「かんたん診断する」「あとで」）
+- **ホーム（診断済み）**: 「あなたのROOMタイプ：○○型」サマリーカード
+- **おすすめコレ押下（未診断）**: BottomSheet → 診断 or 診断せずに見る
+- **マイページ**: ROOMタイプ診断カード（状態表示・診断/やり直しボタン）
+
+既存の Material3・ティール/グリーン基調・白カードのUI方針に合わせて実装しています。ピンク系の新規追加はありません。
