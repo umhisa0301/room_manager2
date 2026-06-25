@@ -1,0 +1,680 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-26 01:18:09
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260626_011809.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260626_011809.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260626_011809.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260626_011809.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260626_011809.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\terminal_output_20260626_011809.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 10780).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             17.9s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.1s
+D/FlutterJNI(20718): Beginning load of flutter...
+D/FlutterJNI(20718): flutter (null) was loaded normally!
+I/flutter (20718): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (20718): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (20718): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (20718): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (20718): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (20718): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (20718): [ADMOB] initialization skipped ads=false
+Syncing files to device SHG08...                                
+I/flutter (20718): [BILLING_PURCHASE] initialized available=true active=false
+D/CompatibilityChangeReporter(20718): Compat change id reported: 194532703; UID 10519; state: ENABLED
+D/CompatibilityChangeReporter(20718): Compat change id reported: 253665015; UID 10519; state: ENABLED
+Syncing files to device SHG08...                                    84ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:55346/bNmcpqHXnr0=/
+I/flutter (20718): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (20718): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer(20718): Skipped 100 frames!  The application may be doing too much work on its main thread.
+I/flutter (20718): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (20718): [AUTO_REACTION_SYNC] scheduled
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20718): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:55346/bNmcpqHXnr0=/
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20718): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (20718): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/WebViewFactory(20718): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(20718): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(20718): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(20718): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(20718): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(20718): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(20718): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/cr_LibraryLoader(20718): Successfully loaded native library
+I/cr_CachingUmaRecorder(20718): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(20718): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(20718): #registerProvider() provider:WV.wk@fd1a5b2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(20718): #setManagerAndSource() 0
+I/cr_policy(20718): registerReceiver succeeded after 1ms
+I/cr_DisplayManager(20718): Is Display Topology available: false
+I/cr_CombinedPProvider(20718): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(20718): Compat change id reported: 183155436; UID 10519; state: ENABLED
+I/cr_AppResProvider(20718): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(20718): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(20718): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(20718): #flushPolicies()
+W/chromium(20718): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 37234479
+D/CompatibilityChangeReporter(20718): Compat change id reported: 214741472; UID 10519; state: ENABLED
+I/flutter (20718): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=人気 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BA%BA%E6%B0%97&minReviewCount=5&minReviewAverage=3.4&sort=-reviewCount
+I/cr_AppResProvider(20718): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(20718): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(20718): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(20718): #flushPolicies()
+I/CameraManagerGlobal(20718): Connecting to camera service
+D/CompatibilityChangeReporter(20718): Compat change id reported: 171228096; UID 10519; state: ENABLED
+D/CompatibilityChangeReporter(20718): Compat change id reported: 193247900; UID 10519; state: ENABLED
+I/Choreographer(20718): Skipped 112 frames!  The application may be doing too much work on its main thread.
+I/PlatformViewsController(20718): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(20718): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(20718): Compat change id reported: 236825255; UID 10519; state: ENABLED
+W/libc    (20718): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(20718): type=1400 audit(0.0:54553): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(20718): Davey! duration=1898ms; Flags=1, FrameTimelineVsyncId=98911690, IntendedVsync=519999491570690, Vsync=520001358237282, InputEventId=0, HandleInputStart=520001370418664, AnimationStart=520001370420019, PerformTraversalsStart=520001370420696, DrawStart=520001380499602, FrameDeadline=519999508237356, FrameInterval=520001370016008, FrameStartTime=16666666, SyncQueued=520001381301425, SyncStart=520001381512519, IssueDrawCommandsStart=520001382044810, SwapBuffers=520001388181477, FrameCompleted=520001390255748, DequeueBufferDuration=2333177, QueueBufferDuration=1353386, GpuCompleted=520001389275018, SwapBuffersCompleted=520001390255748, DisplayPresentTime=0, CommandSubmissionCompleted=520001388181477, 
+W/o.room_manager2(20718): type=1400 audit(0.0:54554): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (20718): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/AdrenoVK-0(20718): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(20718): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(20718): Local Branch            : 
+I/AdrenoVK-0(20718): Build Date              : 08/23/22
+I/AdrenoVK-0(20718): Remote Branch           : 
+I/AdrenoVK-0(20718): Remote Branch           : 
+I/AdrenoVK-0(20718): Reconstruct Branch      : 
+I/AdrenoVK-0(20718): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(20718): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(20718): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (20718): [Rakuten] response status=200 page=1 bytes=255592
+I/flutter (20718): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (20718): [Rakuten] repository search total mapped=30
+I/flutter (20718): [Rakuten] search mapped item count=30
+I/flutter (20718): [Rakuten] search before filter count=30
+I/flutter (20718): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (20718): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (20718): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=-
+I/flutter (20718): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=10 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=101766:1|509412:1|405033:1|216136:1|110409:1|502917:1|564277:1|214104:1|201184:1|216081:1 shopDistribution=e-kit(いーきっと):1|アンド ハビット:1|カステラ専門店【長崎 心泉堂】:1|Z-CRAFT:1|北海道別海町:1|おせんべい・おかきの老舗 もち吉:1|ケースbyケース:1|福岡県飯塚市:1|あだちねっと 美米屋:1|ハンコヤストア:1
+I/flutter (20718): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 apiCalls=1 pagesUsed=1 rawItems=17 excludedManaged=0 excludedDismissed=0 excludedShownRecently=20 excludedNoImage=0 excludedNoPrice=0 excludedSafety=3 excludedZeroReview=0 finalItems=10 fallbackUsed=true assistPlanUsed=false
+I/flutter (20718): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=e-kit(いーきっと):1|アンド ハビット:1|カステラ専門店【長崎 心泉堂】:1|Z-CRAFT:1|北海道別海町:1|おせんべい・おかきの老舗 もち吉:1|ケースbyケース:1|福岡県飯塚市:1|あだちねっと 美米屋:1|ハンコヤストア:1
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(20718): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(20718): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(20718): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+I/flutter (20718): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+W/o.room_manager2(20718): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(20718): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/TRuntime.CctTransportBackend(20718): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+E/FeatureFlagsImplExport(20718): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+W/pool-2-thread-1(20718): type=1400 audit(0.0:54556): avc:  denied  { search } for  name="/" dev="sda10" ino=2 scontext=u:r:untrusted_app:s0:c7,c258,c512,c768 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0 app=com.stepbytestudio.room_manager2
+I/TRuntime.CctTransportBackend(20718): Status Code: 200
+W/WindowOnBackDispatcher(20718): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(20718): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_001.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_002.png
+I/flutter (20718): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_003.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_004.png
+I/flutter (20718): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高評価 雑貨 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E8%A9%95%E4%BE%A1+%E9%9B%91%E8%B2%A8&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [RECOMMEND_GUARD] skipReason=alreadyGenerating
+I/flutter (20718): [RECOMMEND_GUARD] skipReason=recentEnsure
+I/flutter (20718): [Rakuten] response status=200 page=1 bytes=207709
+I/flutter (20718): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (20718): [Rakuten] repository search total mapped=30
+I/flutter (20718): [Rakuten] search mapped item count=30
+I/flutter (20718): [Rakuten] search before filter count=30
+I/flutter (20718): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (20718): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高評価 ペット genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E8%A9%95%E4%BE%A1+%E3%83%9A%E3%83%83%E3%83%88&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] response status=200 page=1 bytes=234334
+I/flutter (20718): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (20718): [Rakuten] repository search total mapped=30
+I/flutter (20718): [Rakuten] search mapped item count=30
+I/flutter (20718): [Rakuten] search before filter count=30
+I/flutter (20718): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (20718): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高評価 家電 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E8%A9%95%E4%BE%A1+%E5%AE%B6%E9%9B%BB&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] response status=429 page=1 bytes=128
+I/flutter (20718): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (20718): [RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=1000 page=1
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高評価 家電 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E8%A9%95%E4%BE%A1+%E5%AE%B6%E9%9B%BB&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_005.png
+I/flutter (20718): [Rakuten] proxy network error page=1: TimeoutException after 0:00:28.000000: Future not completed
+I/flutter (20718): [RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=1 success=false statusCode=unknown
+I/flutter (20718): [Rakuten] searchItems failed page=1 attempt=1: TimeoutException after 0:00:28.000000: Future not completed
+I/flutter (20718): #0      Future.timeout.<anonymous closure> (dart:async/future_impl.dart:1042:24)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #1      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:374:18)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #2      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:105:24)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #4      RakutenSearchRepository.search (package:room_manager2/repository/rakuten_search_repository.dart:366:21)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #5      TodayRecommendationProvider._runSearchPlan (package:room_manager2/state/today_recommendation_provider.dart:1439:20)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #6      TodayRecommendationProvider._generate.runPlan (package:room_manager2/state/today_recommendation_provider.dart:776:16)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #7      TodayRecommendationProvider._generate (package:room_manager2/state/today_recommendation_provider.dart:906:20)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #8      TodayRecommendationProvider.regenerateToday (package:room_manager2/state/today_recommendation_provider.dart:391:25)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #9      TodayRecommendationProvider.ensureToday (package:room_manager2/state/today_recommendation_provider.dart:313:5)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): #10     RoomTypeDiagnosisResultScreen._openRecommendations (package:room_manager2/screens/room_type_diagnosis_result_screen.dart:148:5)
+I/flutter (20718): <asynchronous suspension>
+I/flutter (20718): 
+I/flutter (20718): #3      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+I/flutter (20718): [Rakuten] retrying page=1 after short delay…
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高評価 家電 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E8%A9%95%E4%BE%A1+%E5%AE%B6%E9%9B%BB&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] response status=200 page=1 bytes=208313
+I/flutter (20718): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (20718): [Rakuten] repository search total mapped=30
+I/flutter (20718): [Rakuten] search mapped item count=30
+I/flutter (20718): [Rakuten] search before filter count=30
+I/flutter (20718): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (20718): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高レビュー 雑貨 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC+%E9%9B%91%E8%B2%A8&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] response status=429 page=1 bytes=128
+I/flutter (20718): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (20718): [RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=1000 page=1
+I/flutter (20718): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=高レビュー 雑貨 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20718): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20718): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%AB%98%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC+%E9%9B%91%E8%B2%A8&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (20718): [Rakuten] response status=200 page=1 bytes=89505
+I/flutter (20718): [RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=1 success=true statusCode=200
+I/flutter (20718): [Rakuten] page=1 parsedItems=18 / raw=18
+I/flutter (20718): [Rakuten] repository search total mapped=18
+I/flutter (20718): [Rakuten] search mapped item count=18
+I/flutter (20718): [Rakuten] search before filter count=18
+I/flutter (20718): [Rakuten] recommendation purpose skip app-side filter count=18
+I/flutter (20718): [RakutenGenre][SUMMARY] total=18 resolved=18 unresolved=0 usedMaster=18 rawGenreNameEmpty=18
+I/flutter (20718): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=4 executedFavoriteGenrePlans=4 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=4 earlyStopReason=-
+I/flutter (20718): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=568194:2|567542:1 shopDistribution=MONO KOTO DEPT.:1|TOKAIZ公式 楽天市場店:1|STORE白い箱:1
+I/flutter (20718): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=4 executedFavoriteGenrePlans=4 apiCalls=4 pagesUsed=1,1,1,1 rawItems=87 excludedManaged=7 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=3 excludedZeroReview=18 finalItems=3 fallbackUsed=false assistPlanUsed=false
+I/flutter (20718): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=MONO KOTO DEPT.:1|TOKAIZ公式 楽天市場店:1|STORE白い箱:1
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=299000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RECOMMEND_GUARD] skipReason=recentEnsure
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=298000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=297000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=296000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=295000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=294000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=293000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=292000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=291000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=290000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=289000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=288000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=287000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=285000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=284000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_006.png
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=283000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=282000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=281000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECT_ALL] checked=true selected=3
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=280000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=279000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=278000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=277000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=276000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=275000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=274000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=273000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=272000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=271000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=270000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=269000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=268000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_007.png
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=267000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=266000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=265000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=264000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=263000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=262000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_BULK_ADD_START] selected=3
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=261000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=hayaritsushin:10003736 pending=0→1 done=0→0
+I/flutter (20718): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/hayaritsushin/hairironcase/
+I/flutter (20718): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/hayaritsushin/hairironcase/
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=261000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+W/cr_media(20718): BLUETOOTH_CONNECT permission is missing.
+W/cr_media(20718): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media(20718): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=2 selected=0 alreadyAdded=1 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=2 selected=3 alreadyAdded=1 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=stravel:10008401 pending=1→2 done=0→0
+I/flutter (20718): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/stravel/80002260/
+W/VideoCapabilities(20718): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities(20718): Unsupported mime image/vnd.android.heic
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=shiroihako:10000011 pending=2→3 done=0→0
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=1 selected=3 alreadyAdded=2 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=260000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=1 selected=0 alreadyAdded=2 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/shiroihako/siori/
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [TODAY_RECOMMEND_BULK_ADD_RESULT] success=3 alreadyAdded=0 failed=0
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=260000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=259000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=258000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/chromium(20718): [INFO:CONSOLE:1455] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/hayaritsushin/hairironcase/ (1455)
+I/chromium(20718): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/chromium(20718): [INFO:CONSOLE:179] "Uncaught ReferenceError: jQuery is not defined", source: https://www.rakuten.ne.jp/gold/hayaritsushin/footer.html?1203 (179)
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=257000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=hayaritsushin%3A10003736&scid=we_room_upc60
+I/flutter (20718): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/stravel/80002260/
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+W/chromium(20718): [WARNING:net/spdy/spdy_session.cc:3161] Received HEADERS for invalid stream 41
+W/chromium(20718): [WARNING:net/spdy/spdy_session.cc:3161] Received HEADERS for invalid stream 45
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=256000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/chromium(20718): [INFO:CONSOLE:1113] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/stravel/80002260/ (1113)
+I/chromium(20718): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=stravel%3A10008401&scid=we_room_upc60
+I/flutter (20718): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/shiroihako/siori/
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=255000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/chromium(20718): [INFO:CONSOLE:1108] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/shiroihako/siori/ (1108)
+I/chromium(20718): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\room_manager2_shot_008.png
+I/chromium(20718): [INFO:CONSOLE:1110] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/shiroihako/siori/ (1110)
+I/chromium(20718): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=254000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=shiroihako%3A10000011&scid=we_room_upc60
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+E/FrameEvents(20718): updateAcquireFence: Did not find frame.
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=253000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/chromium(20718): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=252000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (20718): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=251000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-26T01:23:07.585286 bundleGeneratedAt=2026-06-26T01:23:07.585286
+I/flutter (20718): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter (20718): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/chromium(20718): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium(20718): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium(20718): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MWQxZjE3MjdmMA.js (1)
+I/chromium(20718): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium(20718): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium(20718): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MWQxZjE3MjdmOQ.js (1)
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=3→3 done=0→0
+I/flutter (20718): [MANAGED_PRODUCT_LOAD] source=screen pending=3 done=0 filter= tab=candidate
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [MANAGED_PRODUCT_SAVE] action=addDone productId=shiroihako:10000011 pending=3→2 done=0→1
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shiroihako:10000011 reviewAverage=4.73 reviewCount=112 displayText=評価 ★4.7（112件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=stravel:10008401 reviewAverage=4.63 reviewCount=149 displayText=評価 ★4.6（149件）
+I/flutter (20718): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hayaritsushin:10003736 reviewAverage=4.62 reviewCount=327 displayText=評価 ★4.6（327件）
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260626_011809.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260626_011809.mp4 (1776501 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260626_011809\terminal_output_20260626_011809.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260626_011809.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260626_011809.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260626_011809.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260626_011809.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260626_011809.log
+
+Done.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
