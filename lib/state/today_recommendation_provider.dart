@@ -25,6 +25,7 @@ import '../utils/today_recommendation_exposure_policy.dart';
 import '../utils/today_recommendation_genre_distribution.dart';
 import '../utils/today_recommendation_genre_page_store.dart';
 import '../utils/profile_recommendation_integration.dart';
+import '../utils/today_recommendation_visible_selection.dart';
 import '../utils/today_recommendation_catalog.dart';
 import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
@@ -901,28 +902,32 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .where((e) => e.isNotEmpty)
         .toSet();
 
-    int profilePreviewEntryCount() {
+    int profilePreviewVisibleCount() {
       if (!profileDiagnosed || recommendationProfile == null) return 0;
-      return _finalizeFromPool(
-        pool: pool,
-        metaById: metaById,
-        favoriteGenreIds: favoriteGenreIds,
-        favoriteGenreIdList: favoriteGenreIds.toList(growable: false),
-        savedShopIds: savedShopIds,
-        preferredGenreWords: genreWords,
-        doneItems: doneItems,
-        candidateItems: candidateItems,
-        postStyles: postStyles,
-        soldOutcomeItems: soldOutcomeItems,
-        reactedOutcomeItems: reactedOutcomeItems,
-        likedOnlyOutcomeItems: likedOnlyOutcomeItems,
-        recentCandidatesForBridge: recentCandidates,
-        staleCandidatesForBridge: staleCandidates,
-        reactionProfile: reactionProfile,
-        recommendationProfile: recommendationProfile,
-        excludeProductIds: excludeIds,
-        recentlyShownProductIds: recentlyShownProductIds,
-      ).entries.length;
+      return TodayRecommendationVisibleSelection.visibleCount(
+        _finalizeFromPool(
+          pool: pool,
+          metaById: metaById,
+          favoriteGenreIds: favoriteGenreIds,
+          favoriteGenreIdList: favoriteGenreIds.toList(growable: false),
+          savedShopIds: savedShopIds,
+          preferredGenreWords: genreWords,
+          doneItems: doneItems,
+          candidateItems: candidateItems,
+          postStyles: postStyles,
+          soldOutcomeItems: soldOutcomeItems,
+          reactedOutcomeItems: reactedOutcomeItems,
+          likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+          recentCandidatesForBridge: recentCandidates,
+          staleCandidatesForBridge: staleCandidates,
+          reactionProfile: reactionProfile,
+          recommendationProfile: recommendationProfile,
+          excludeProductIds: excludeIds,
+          recentlyShownProductIds: recentlyShownProductIds,
+          savedShopCount: savedShops.length,
+        ).entries,
+        savedShops.length,
+      );
     }
 
     if (!apiSkippedByCatalog) {
@@ -936,16 +941,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
         final ok = await runPlan(mandatoryGenrePlans[i]);
         if (!ok) {
           if (profileDiagnosed &&
-              profilePreviewEntryCount() >=
-                  ProfileRecommendationIntegration.profileDisplayCap) {
+              profilePreviewVisibleCount() >=
+                  TodayRecommendationPolicy.visibleDisplayCap) {
             earlyStopReason = 'rateLimitedWithEnoughCandidates';
           }
           break;
         }
         executedFavoriteGenrePlans += 1;
         if (profileDiagnosed &&
-            profilePreviewEntryCount() >=
-                ProfileRecommendationIntegration.profileDisplayCap) {
+            profilePreviewVisibleCount() >=
+                TodayRecommendationPolicy.visibleDisplayCap) {
           earlyStopReason = 'targetReached';
           break;
         }
@@ -974,22 +979,28 @@ class TodayRecommendationProvider extends ChangeNotifier {
       recommendationProfile: recommendationProfile,
       excludeProductIds: excludeIds,
       recentlyShownProductIds: recentlyShownProductIds,
+      savedShopCount: savedShops.length,
+    );
+
+    final previewVisibleCount = TodayRecommendationVisibleSelection.visibleCount(
+      previewAfterGenres.entries,
+      savedShops.length,
     );
 
     if (!apiSkippedByCatalog &&
         assistPlan != null &&
         TodayRecommendationExecutionPolicy.shouldRunAssistPlan(
-          finalizedEntryCount: previewAfterGenres.entries.length,
+          finalizedEntryCount: previewVisibleCount,
           hasAssistPlan: true,
           apiCallsSoFar: apiCalls,
+          displayCap: TodayRecommendationPolicy.visibleDisplayCap,
         )) {
       final ok = await runPlan(assistPlan);
       if (!ok) {
         // rate limited
       }
     } else if (assistPlan != null &&
-        previewAfterGenres.entries.length >=
-            TodayRecommendationPolicy.displayCap) {
+        previewVisibleCount >= TodayRecommendationPolicy.visibleDisplayCap) {
       earlyStopReason ??= 'assistSkippedSufficientFinalItems';
     }
 
@@ -1025,6 +1036,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       recommendationProfile: recommendationProfile,
       excludeProductIds: excludeIds,
       recentlyShownProductIds: recentlyShownProductIds,
+      savedShopCount: savedShops.length,
     );
 
     if (pool.isEmpty && allPlansNoItems) {
@@ -1199,6 +1211,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     RoomRecommendationProfile? recommendationProfile,
     Set<String> excludeProductIds = const {},
     Set<String> recentlyShownProductIds = const {},
+    int savedShopCount = 0,
   }) {
     final scored = <_ScoredRecommendation>[];
     for (final item in pool.values) {
@@ -1277,6 +1290,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final profileEntries = ProfileRecommendationIntegration.pickTopThreeWithRoles(
         candidates: profileCandidates,
         profile: recommendationProfile!,
+        savedShopCount: savedShopCount,
       );
       final shopDistribution = <String, int>{};
       for (final e in profileEntries) {
@@ -1351,8 +1365,32 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .where((e) => _passesRecommendFinalDisplayGate(e.item))
         .toList(growable: false);
 
+    final backfillEntries = scored
+        .map(
+          (e) => TodayRecommendationEntry(
+            item: e.item,
+            reason: e.reason,
+            section: e.section,
+            score: e.score,
+            priceScore: e.priceScore,
+          ),
+        )
+        .toList(growable: false);
+    final visibleResult = TodayRecommendationVisibleSelection.ensureVisibleCap(
+      entries: entries,
+      savedShopCount: savedShopCount,
+      backfillPool: backfillEntries,
+    );
+    final visibleEntries = visibleResult.entries;
+    if (kDebugMode && visibleResult.fallbackReason != null) {
+      recommendAuditLog(
+        '[TODAY_RECOMMEND_VISIBLE_CAP] fallbackReason=${visibleResult.fallbackReason} '
+        'visible=${visibleEntries.length}',
+      );
+    }
+
     final sourceGenreByProductId = <String, String>{};
-    for (final e in entries) {
+    for (final e in visibleEntries) {
       final id = e.item.productId.trim();
       if (id.isEmpty) continue;
       sourceGenreByProductId[id] =
@@ -1360,29 +1398,29 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
     final sourceGenreDistribution =
         TodayRecommendationGenreDistribution.distributionBySourceGenre(
-      pickedProductIds: entries.map((e) => e.item.productId.trim()).toList(),
+      pickedProductIds: visibleEntries.map((e) => e.item.productId.trim()).toList(),
       sourceGenreByProductId: sourceGenreByProductId,
       favoriteGenreIds: favoriteGenreIdList,
     );
     final shopDistribution = <String, int>{};
-    for (final e in entries) {
+    for (final e in visibleEntries) {
       final shop = e.item.shopName.trim().isEmpty
           ? (e.item.shopCode.trim().isEmpty ? '-' : e.item.shopCode.trim())
           : e.item.shopName.trim();
       shopDistribution[shop] = (shopDistribution[shop] ?? 0) + 1;
     }
 
-    final personalCount = entries
+    final personalCount = visibleEntries
         .where((e) => e.section == TodayRecommendationSection.popular)
         .length;
-    final relaxedCount = entries
+    final relaxedCount = visibleEntries
         .where((e) => e.section == TodayRecommendationSection.sellable)
         .length;
-    final discoveryCount = entries
+    final discoveryCount = visibleEntries
         .where((e) => e.section == TodayRecommendationSection.fresh)
         .length;
     return (
-      entries: entries,
+      entries: visibleEntries,
       personalCount: personalCount,
       relaxedCount: relaxedCount,
       discoveryCount: discoveryCount,

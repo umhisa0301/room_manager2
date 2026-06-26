@@ -9,22 +9,34 @@ import 'package:room_manager2/services/rakuten_api_service.dart';
 import 'package:room_manager2/state/today_recommendation_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-RakutenSearchItem _stubItem(int index) => RakutenSearchItem(
-      productId: 'stub-shop:item$index',
-      itemName: 'キッチン 便利 時短 商品$index',
+RakutenSearchItem _stubItem(int index) {
+  final names = [
+    'キッチン 便利 時短 グッズ',
+    'ペット用 自動給水器',
+    '収納ボックス 折りたたみ',
+    'ガジェット 充電器 急速',
+    'ギフト カタログ 選べる',
+    '家電 コードレス 掃除機',
+    'インテリア ラグ 北欧',
+    'アウトドア チェア 軽量',
+  ];
+  return RakutenSearchItem(
+      productId: 'stub-shop-$index:item$index',
+      itemName: names[index % names.length],
       itemPrice: 1500 + index * 100,
-      itemUrl: 'https://item.rakuten.co.jp/stub-shop/item$index/',
+      itemUrl: 'https://item.rakuten.co.jp/stub-shop-$index/item$index/',
       affiliateUrl: '',
       imageUrl:
-          'https://thumbnail.image.rakuten.co.jp/@0_mall/stub-shop/cabinet/a.jpg',
+          'https://thumbnail.image.rakuten.co.jp/@0_mall/stub-shop-$index/cabinet/a.jpg',
       shopName: 'Stub Shop $index',
       shopCode: 'stub-shop-$index',
-      shopUrl: 'https://www.rakuten.co.jp/stub-shop/',
+      shopUrl: 'https://www.rakuten.co.jp/stub-shop-$index/',
       genreId: '100227',
       genreName: 'キッチン',
       reviewCount: 20 + index,
       reviewAverage: 4.2,
     );
+}
 
 class _CountingProfileSearchRepository extends RakutenSearchRepository {
   _CountingProfileSearchRepository({

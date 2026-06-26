@@ -916,19 +916,17 @@ List<RakutenManagedProduct> _homeRecentReactedProducts(
   return reacted.take(2).toList(growable: false);
 }
 
-String _homeGoalProgressSummary(int postCount) {
+String _homeGoalPostedCountLabel(int postCount) => '$postCount件 投稿済み';
+
+String _homeGoalRemainingLabel(int postCount) {
   final snap = HomePostMilestoneSnapshot.fromPostCount(
     postCount,
     useCalendarDayLabel: true,
   );
-  if (snap.isHighProgress) {
-    return '$postCount件投稿済み';
-  }
+  if (snap.isHighProgress) return '目標達成';
   final next = snap.nextMilestone;
-  if (next == null) {
-    return '$postCount件投稿済み';
-  }
-  return '$postCount件投稿済み　$next件まであと${next - postCount}件';
+  if (next == null) return '';
+  return '$next件まであと${next - postCount}件';
 }
 
 String _homeReactionSummary(RakutenManagedProduct product) {
@@ -1007,18 +1005,45 @@ class _TodayRoomStatusCard extends StatelessWidget {
           const SizedBox(height: 10),
           Divider(height: 1, color: HomeScreenColors.homeCardBorder),
           const SizedBox(height: 8),
-          Text(
-            '今日の目標',
-            style: _HomeUi.bodyEmphasis(context).copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: HomeScreenColors.homeTextPrimary,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            _homeGoalProgressSummary(todayRoomPostCount),
-            style: _HomeUi.homeCardSubtitle(context).copyWith(fontSize: 12.5),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '今日の目標',
+                      style: _HomeUi.bodyEmphasis(context).copyWith(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: HomeScreenColors.homeTextPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _homeGoalRemainingLabel(todayRoomPostCount),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: _HomeUi.homeCardSubtitle(context).copyWith(
+                        fontSize: 11.5,
+                        color: HomeScreenColors.homeTextSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                _homeGoalPostedCountLabel(todayRoomPostCount),
+                textAlign: TextAlign.right,
+                style: _HomeUi.bodyEmphasis(context).copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.homeTextPrimary,
+                  height: 1.2,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 6),
           _HomeGoalProgressBar(postCount: todayRoomPostCount),
@@ -1184,39 +1209,71 @@ class _HomeGoalProgressBar extends StatelessWidget {
           },
         ),
         const SizedBox(height: 4),
-        Row(
-          children: [
-            for (final milestone in _milestones)
-              Expanded(
-                child: Text(
-                  _homeGoalMarkerLabel(postCount, milestone),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: HomeScreenColors.homeTextSecondary,
-                    height: 1.2,
-                  ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final currentIdx = _milestones.indexWhere(
+              (m) =>
+                  _homeGoalBadgeState(postCount, m) ==
+                  _HomeGoalBadgeState.current,
+            );
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Row(
+                  children: [
+                    for (final milestone in _milestones)
+                      Expanded(
+                        child: Text(
+                          '$milestone件',
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: _HomeUi.tapHint(context).copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: HomeScreenColors.homeTextSecondary,
+                            height: 1.2,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-              ),
-          ],
+                if (currentIdx >= 0)
+                  Positioned(
+                    top: -14,
+                    left: constraints.maxWidth *
+                            (currentIdx / (_milestones.length - 1)) -
+                        22,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 1,
+                      ),
+                      decoration: BoxDecoration(
+                        color: HomeScreenColors.homeAccentTealLight,
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                          color: HomeScreenColors.homeAccentTealBorder
+                              .withValues(alpha: 0.7),
+                        ),
+                      ),
+                      child: Text(
+                        '挑戦中',
+                        style: _HomeUi.tapHint(context).copyWith(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: HomeScreenColors.homeAccentTeal,
+                          height: 1.1,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ],
     );
-  }
-}
-
-String _homeGoalMarkerLabel(int postCount, int milestone) {
-  final state = _homeGoalBadgeState(postCount, milestone);
-  switch (state) {
-    case _HomeGoalBadgeState.achieved:
-      return '$milestone件 達成';
-    case _HomeGoalBadgeState.current:
-      return '$milestone件 挑戦中';
-    case _HomeGoalBadgeState.pending:
-      return '$milestone件 未達';
   }
 }
 
@@ -1662,27 +1719,27 @@ class _TodayRoomWorkCard extends StatelessWidget {
     switch (_primaryAction()) {
       case _HomeWorkPrimaryAction.recommendations:
         return (
-          title: 'おすすめコレを見る',
-          subtitle: '今日のおすすめ候補を確認しましょう',
-          buttonLabel: 'おすすめコレを見る',
+          title: '今日の候補を確認',
+          subtitle: 'おすすめコレをチェックしましょう',
+          buttonLabel: 'おすすめコレ',
           onTap: isRecommendationLoading ? null : onOpenRecommendations,
           semanticsLabel: 'home_recommendation_button',
         );
       case _HomeWorkPrimaryAction.roomPost:
         return (
-          title: '投稿する',
+          title: '候補を投稿',
           subtitle: pendingCandidateCount == 0
               ? '投稿待ちの候補はありません'
               : 'コレ候補$pendingCandidateCount件',
-          buttonLabel: '投稿する',
+          buttonLabel: '投稿へ',
           onTap: onOpenPendingCandidates,
           semanticsLabel: 'home_room_post_button',
         );
       case _HomeWorkPrimaryAction.searchMore:
         return (
-          title: '商品を探す',
-          subtitle: '検索してコレ候補に追加しましょう',
-          buttonLabel: '商品を探す',
+          title: '候補を増やす',
+          subtitle: '商品を検索して追加できます',
+          buttonLabel: '探す',
           onTap: onOpenSearch,
           semanticsLabel: 'home_search_more_button',
         );
@@ -2640,17 +2697,11 @@ class _DataUpdateCard extends StatelessWidget {
               Text(
                 hasRoomProfileUrl
                     ? 'ROOM投稿の取込と反応確認を行えます'
-                    : 'ROOMプロフィールURLを登録すると同期できます',
+                    : 'ROOMプロフィールURLを登録すると、コレ済み商品や反応チェックを更新できます。',
                 style: _HomeUi.homeCardSubtitle(context),
               ),
               const SizedBox(height: 8),
               if (!hasRoomProfileUrl) ...[
-                Text(
-                  key: const Key('room_import_not_configured_message'),
-                  'ROOMプロフィールURLを登録すると同期できます',
-                  style: _HomeUi.homeCardSubtitle(context),
-                ),
-                const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: onOpenRoomUrl,
                   style: OutlinedButton.styleFrom(

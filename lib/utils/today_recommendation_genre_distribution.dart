@@ -60,6 +60,7 @@ abstract final class TodayRecommendationGenreDistribution {
     required List<TodayRecommendPickCandidate> candidates,
     required List<String> favoriteGenreIds,
     int cap = displayCap,
+    int maxPerShop = TodayRecommendationPolicy.maxPerShopInTop,
   }) {
     if (candidates.isEmpty || cap <= 0) return const [];
 
@@ -124,7 +125,7 @@ abstract final class TodayRecommendationGenreDistribution {
       }
       final shop = c.shopCode.trim();
       if (shop.isNotEmpty &&
-          (shopCounts[shop] ?? 0) >= TodayRecommendationPolicy.maxPerShopInTop) {
+          (shopCounts[shop] ?? 0) >= maxPerShop) {
         score -= 80;
       }
       if ((priceBandCounts[c.priceBand] ?? 0) >= 4) {
@@ -163,8 +164,7 @@ abstract final class TodayRecommendationGenreDistribution {
         }
         final shop = c.shopCode.trim();
         if (shop.isNotEmpty &&
-            (shopCounts[shop] ?? 0) >=
-                TodayRecommendationPolicy.maxPerShopInTop) {
+            (shopCounts[shop] ?? 0) >= maxPerShop) {
           continue;
         }
         final genre = c.itemGenreId.trim();

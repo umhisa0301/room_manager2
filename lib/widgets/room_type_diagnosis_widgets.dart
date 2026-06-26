@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/tutorial/tutorial_target_keys.dart';
+
 import '../theme/home_screen_colors.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
@@ -156,6 +158,7 @@ class _MyPageRoomTypeDiagnosisCardState extends State<MyPageRoomTypeDiagnosisCar
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return MyPageCard(
+      key: TutorialTargetKeys.roomTypeDiagnosisCard,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

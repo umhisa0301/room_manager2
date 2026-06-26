@@ -65,8 +65,8 @@ void main() {
                       height: 120,
                     ),
                     Container(
-                      key: TutorialTargetKeys.nicknameRow,
-                      height: 48,
+                      key: TutorialTargetKeys.roomTypeDiagnosisCard,
+                      height: 120,
                     ),
                   ],
                 ),
@@ -84,7 +84,7 @@ void main() {
       await tester.tap(find.byKey(const Key('tutorial_next_button')));
       await tester.pump();
       expect(controller.stepIndex, 1);
-      expect(find.text('ニックネーム'), findsOneWidget);
+      expect(find.text('ROOMタイプ診断'), findsOneWidget);
     });
   });
 }

@@ -8,6 +8,9 @@ abstract final class TodayRecommendationPolicy {
   /// 1 回の生成で表示する最大件数。
   static const int displayCap = 10;
 
+  /// おすすめコレ画面に表示する目標件数（非表示セクションはカウントしない）。
+  static const int visibleDisplayCap = 3;
+
   /// 1 回の生成での楽天 API 呼び出し上限（ページングなし・1 プラン = 1 回）。
   static const int maxApiCallsPerGeneration = 4;
 

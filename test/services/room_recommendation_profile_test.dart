@@ -501,6 +501,7 @@ void main() {
           ),
         ],
         profile: profile,
+        savedShopCount: 1,
       );
 
       expect(entries.length, 3);

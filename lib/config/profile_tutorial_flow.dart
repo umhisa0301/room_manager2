@@ -13,18 +13,9 @@ const OperationTutorialFlow profileTutorialFlow = OperationTutorialFlow(
       body: 'ここでニックネームやROOM URLなど、ROOM運用に必要な基本設定を行います。',
     ),
     OperationTutorialStep(
-      targetKey: TutorialTargetKeys.nicknameRow,
-      title: 'ニックネーム',
-      body: '表示名として使われます。任意ですが、設定しておくとホーム画面などで名前が表示されます。',
-    ),
-    OperationTutorialStep(
-      targetKey: TutorialTargetKeys.roomUrlRow,
-      title: 'ROOM URL',
-      body: 'あなたの楽天ROOMのURLを登録します。コレ同期や反応チェックなどに使われます。',
-    ),
-    OperationTutorialStep(
-      title: 'ガイド完了',
-      body: '基本設定の場所は把握できました。各項目をタップして、いつでも編集できます。',
+      targetKey: TutorialTargetKeys.roomTypeDiagnosisCard,
+      title: 'ROOMタイプ診断',
+      body: 'あなたに合うコレ候補や投稿文の方向性を提案しやすくします。',
     ),
   ],
 );

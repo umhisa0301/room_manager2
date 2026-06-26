@@ -3,7 +3,9 @@ import '../models/room_recommendation_profile.dart';
 import '../models/today_recommendation.dart';
 import '../services/recommendation_reason_builder.dart';
 import '../services/recommendation_scoring_service.dart';
+import '../utils/recommendation_diversity_utils.dart';
 import '../utils/today_recommendation_policy.dart';
+import '../utils/today_recommendation_visible_selection.dart';
 
 /// 診断プロファイルとおすすめコレ生成の橋渡し。
 abstract final class ProfileRecommendationIntegration {
@@ -74,6 +76,7 @@ abstract final class ProfileRecommendationIntegration {
       RecommendationScoreResult profileScore,
     })> candidates,
     required RoomRecommendationProfile profile,
+    int savedShopCount = 0,
   }) {
     final valid = candidates
         .where((e) => e.score != double.negativeInfinity)
@@ -83,6 +86,20 @@ abstract final class ProfileRecommendationIntegration {
 
     final picked = <TodayRecommendationEntry>[];
     final usedIds = <String>{};
+    var allowDuplicateShop = false;
+
+    bool passesDiversity(RakutenSearchItem item) {
+      return RecommendationDiversityUtils.passesDiversityGate(
+        item: item,
+        picked: picked,
+        allowDuplicateShop: allowDuplicateShop,
+      );
+    }
+
+    TodayRecommendationSection personalSection(int savedShopCount) {
+      if (savedShopCount < 1) return TodayRecommendationSection.popular;
+      return TodayRecommendationSection.sellable;
+    }
 
     TodayRecommendationEntry? takeFirstWhere(
       bool Function(({
@@ -99,6 +116,7 @@ abstract final class ProfileRecommendationIntegration {
         final id = c.item.productId.trim();
         if (id.isEmpty || usedIds.contains(id)) continue;
         if (!test(c)) continue;
+        if (!passesDiversity(c.item)) continue;
         usedIds.add(id);
         return TodayRecommendationEntry(
           item: c.item,
@@ -119,7 +137,7 @@ abstract final class ProfileRecommendationIntegration {
     final personal = takeFirstWhere(
       (c) => c.profileScore.categoryScore > 0 && c.profileScore.priorityScore > 0,
       RecommendationSlotRole.personalFit,
-      TodayRecommendationSection.sellable,
+      personalSection(savedShopCount),
     );
     if (personal != null) picked.add(personal);
 
@@ -160,27 +178,65 @@ abstract final class ProfileRecommendationIntegration {
         );
     if (discovery != null) picked.add(discovery);
 
-    for (final c in valid) {
-      if (picked.length >= profileDisplayCap) break;
-      final id = c.item.productId.trim();
-      if (id.isEmpty || usedIds.contains(id)) continue;
-      usedIds.add(id);
-      picked.add(
-        TodayRecommendationEntry(
-          item: c.item,
-          reason: RecommendationReasonBuilder.build(
-            profile: profile,
+    void fillRemaining() {
+      for (final c in valid) {
+        if (picked.length >= profileDisplayCap) break;
+        final id = c.item.productId.trim();
+        if (id.isEmpty || usedIds.contains(id)) continue;
+        if (!passesDiversity(c.item)) continue;
+        usedIds.add(id);
+        final section = savedShopCount < 1 &&
+                c.section == TodayRecommendationSection.sellable
+            ? TodayRecommendationSection.popular
+            : c.section;
+        picked.add(
+          TodayRecommendationEntry(
             item: c.item,
-            scoreResult: c.profileScore,
-            slot: RecommendationSlotRole.personalFit,
+            reason: RecommendationReasonBuilder.build(
+              profile: profile,
+              item: c.item,
+              scoreResult: c.profileScore,
+              slot: RecommendationSlotRole.personalFit,
+            ),
+            section: section,
+            score: c.score,
+            priceScore: c.priceScore,
           ),
-          section: c.section,
-          score: c.score,
-          priceScore: c.priceScore,
-        ),
-      );
+        );
+      }
     }
 
-    return picked;
+    fillRemaining();
+
+    if (picked.length < profileDisplayCap) {
+      allowDuplicateShop = true;
+      fillRemaining();
+    }
+
+    final backfill = valid
+        .map(
+          (c) => TodayRecommendationEntry(
+            item: c.item,
+            reason: RecommendationReasonBuilder.build(
+              profile: profile,
+              item: c.item,
+              scoreResult: c.profileScore,
+              slot: RecommendationSlotRole.personalFit,
+            ),
+            section: savedShopCount < 1 &&
+                    c.section == TodayRecommendationSection.sellable
+                ? TodayRecommendationSection.popular
+                : c.section,
+            score: c.score,
+            priceScore: c.priceScore,
+          ),
+        )
+        .toList(growable: false);
+
+    return TodayRecommendationVisibleSelection.ensureVisibleCap(
+      entries: picked,
+      savedShopCount: savedShopCount,
+      backfillPool: backfill,
+    ).entries;
   }
 }

@@ -567,7 +567,7 @@ class RakutenSearchPrimaryButton extends StatelessWidget {
     final button = SizedBox(
       width: expand ? double.infinity : null,
       height: height,
-      child: FilledButton.icon(
+      child: FilledButton(
         onPressed: isLoading ? null : onPressed,
         style: FilledButton.styleFrom(
           foregroundColor: RakutenSearchScreenUi.textOnPrimary,
@@ -579,16 +579,12 @@ class RakutenSearchPrimaryButton extends StatelessWidget {
           elevation: 1.2,
           shadowColor: primary.withValues(alpha: 0.22),
           minimumSize: Size(0, height),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: AppTextStyles.button.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.15,
-          ),
         ),
-        icon: isLoading
+        child: isLoading
             ? SizedBox(
                 width: 18,
                 height: 18,
@@ -599,11 +595,34 @@ class RakutenSearchPrimaryButton extends StatelessWidget {
                   ),
                 ),
               )
-            : icon ?? const SizedBox.shrink(),
-        label: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(label, maxLines: 1, softWrap: false),
-        ),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) ...[
+                    IconTheme.merge(
+                      data: const IconThemeData(size: 16),
+                      child: icon!,
+                    ),
+                    const SizedBox(width: 4),
+                  ],
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.visible,
+                      softWrap: true,
+                      style: AppTextStyles.button.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 13.5,
+                        letterSpacing: -0.15,
+                        height: 1.15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
 
@@ -635,7 +654,7 @@ class RakutenSearchOutlineButton extends StatelessWidget {
     final button = SizedBox(
       width: expand ? double.infinity : null,
       height: height,
-      child: OutlinedButton.icon(
+      child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: primary,
@@ -648,29 +667,42 @@ class RakutenSearchOutlineButton extends StatelessWidget {
           ),
           elevation: 0,
           minimumSize: Size(0, height),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: AppTextStyles.button.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.15,
-            color: primary,
-          ),
         ),
-        icon: icon ?? const SizedBox.shrink(),
-        label: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            label,
-            maxLines: 1,
-            softWrap: false,
-            style: AppTextStyles.button.copyWith(
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.15,
-              color: enabled ? primary : AppColors.textTertiary,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              IconTheme.merge(
+                data: IconThemeData(
+                  size: 16,
+                  color: enabled ? primary : AppColors.textTertiary,
+                ),
+                child: icon!,
+              ),
+              const SizedBox(width: 4),
+            ],
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+                softWrap: true,
+                style: AppTextStyles.button.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13,
+                  letterSpacing: -0.15,
+                  height: 1.15,
+                  color: enabled ? primary : AppColors.textTertiary,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
