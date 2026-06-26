@@ -1,3 +1,15 @@
+/// ホーム「今日の目標」マイルストーンの表示状態。
+enum HomeGoalMilestoneState {
+  /// 達成済み（postedCount >= milestone）
+  achieved,
+
+  /// 次の目標（挑戦中）
+  inProgress,
+
+  /// 未到達
+  pending,
+}
+
 /// ホーム「今日の小さな目標」用マイルストーン判定（UI専用・純粋関数）。
 class HomePostMilestoneSnapshot {
   const HomePostMilestoneSnapshot({
@@ -36,6 +48,38 @@ class HomePostMilestoneSnapshot {
   }
 
   bool isMilestoneReached(int milestone) => postCount >= milestone;
+
+  /// マイルストーン表示状態（達成済み / 挑戦中 / 未達）。
+  static HomeGoalMilestoneState milestoneState(int count, int milestone) {
+    final c = count < 0 ? 0 : count;
+    if (c >= milestone) return HomeGoalMilestoneState.achieved;
+    final snap = HomePostMilestoneSnapshot.fromPostCount(
+      c,
+      useCalendarDayLabel: true,
+    );
+    if (snap.nextMilestone == milestone) {
+      return HomeGoalMilestoneState.inProgress;
+    }
+    return HomeGoalMilestoneState.pending;
+  }
+
+  /// 全体進捗（0.0〜1.0）。最大マイルストーン 20 件を基準とする。
+  static double overallProgress(int count) {
+    final c = count < 0 ? 0 : count;
+    return (c / milestones.last).clamp(0.0, 1.0);
+  }
+
+  /// 「{next}件まであと{remaining}件」形式のラベル。
+  static String remainingProgressLabel(int count) {
+    final snap = HomePostMilestoneSnapshot.fromPostCount(
+      count < 0 ? 0 : count,
+      useCalendarDayLabel: true,
+    );
+    if (snap.isHighProgress) return '目標達成';
+    final next = snap.nextMilestone;
+    if (next == null) return '';
+    return '$next件まであと${next - snap.postCount}件';
+  }
 
   double get segmentProgress {
     if (isHighProgress) return 1;

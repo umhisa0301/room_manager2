@@ -18,6 +18,7 @@ import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/home_post_milestone.dart';
+import '../widgets/home_goal_milestone_progress.dart';
 import '../models/room_activity_event.dart';
 import '../state/room_activity_event_provider.dart';
 import '../utils/room_reaction_status_display.dart';
@@ -884,23 +885,10 @@ String _homeGoalMessage(int postCount) {
   return 'まずは1件投稿しましょう';
 }
 
-int _homeCurrentGoalMilestone(int postCount) {
-  if (postCount >= 20) return 20;
-  if (postCount >= 10) return 20;
-  if (postCount >= 5) return 10;
-  if (postCount >= 1) return 5;
-  return 1;
-}
+String _homeGoalPostedCountLabel(int postCount) => '$postCount件 投稿済み';
 
-enum _HomeGoalBadgeState { achieved, current, pending }
-
-_HomeGoalBadgeState _homeGoalBadgeState(int postCount, int milestone) {
-  if (postCount >= milestone) return _HomeGoalBadgeState.achieved;
-  if (_homeCurrentGoalMilestone(postCount) == milestone) {
-    return _HomeGoalBadgeState.current;
-  }
-  return _HomeGoalBadgeState.pending;
-}
+String _homeGoalRemainingLabel(int postCount) =>
+    HomePostMilestoneSnapshot.remainingProgressLabel(postCount);
 
 List<RakutenManagedProduct> _homeRecentReactedProducts(
   List<RakutenManagedProduct> items,
@@ -914,19 +902,6 @@ List<RakutenManagedProduct> _homeRecentReactedProducts(
         ).compareTo(roomReactionAnalyticsReactionScore(a)),
       );
   return reacted.take(2).toList(growable: false);
-}
-
-String _homeGoalPostedCountLabel(int postCount) => '$postCount件 投稿済み';
-
-String _homeGoalRemainingLabel(int postCount) {
-  final snap = HomePostMilestoneSnapshot.fromPostCount(
-    postCount,
-    useCalendarDayLabel: true,
-  );
-  if (snap.isHighProgress) return '目標達成';
-  final next = snap.nextMilestone;
-  if (next == null) return '';
-  return '$next件まであと${next - postCount}件';
 }
 
 String _homeReactionSummary(RakutenManagedProduct product) {
@@ -1006,47 +981,44 @@ class _TodayRoomStatusCard extends StatelessWidget {
           Divider(height: 1, color: HomeScreenColors.homeCardBorder),
           const SizedBox(height: 8),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '今日の目標',
-                      style: _HomeUi.bodyEmphasis(context).copyWith(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: HomeScreenColors.homeTextPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _homeGoalRemainingLabel(todayRoomPostCount),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: _HomeUi.homeCardSubtitle(context).copyWith(
-                        fontSize: 11.5,
-                        color: HomeScreenColors.homeTextSecondary,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '今日の目標',
+                  style: _HomeUi.bodyEmphasis(context).copyWith(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: HomeScreenColors.homeTextPrimary,
+                  ),
                 ),
               ),
               Text(
                 _homeGoalPostedCountLabel(todayRoomPostCount),
                 textAlign: TextAlign.right,
                 style: _HomeUi.bodyEmphasis(context).copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.homeTextPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: HomeScreenColors.homeTextSecondary,
                   height: 1.2,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
-          _HomeGoalProgressBar(postCount: todayRoomPostCount),
+          const SizedBox(height: 4),
+          Text(
+            _homeGoalRemainingLabel(todayRoomPostCount),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: _HomeUi.bodyEmphasis(context).copyWith(
+              fontSize: 13.5,
+              fontWeight: FontWeight.w700,
+              color: HomeScreenColors.homeTextPrimary,
+              height: 1.25,
+            ),
+          ),
+          const SizedBox(height: 10),
+          HomeGoalMilestoneProgress(postCount: todayRoomPostCount),
           const SizedBox(height: 6),
           _HomePostLimitSection(collectLimit: collectLimit),
         ],
@@ -1093,238 +1065,6 @@ class _HomeStatusMetricColumn extends StatelessWidget {
           _HomeMetricCountText(count: count),
         ],
       ),
-    );
-  }
-}
-
-class _HomeGoalProgressBar extends StatelessWidget {
-  const _HomeGoalProgressBar({required this.postCount});
-
-  final int postCount;
-
-  static const _milestones = HomePostMilestoneSnapshot.milestones;
-  static const _markerSize = 22.0;
-  static const _barHeight = 3.0;
-
-  static double _markerFraction(int index) {
-    if (_milestones.length <= 1) return 0;
-    return index / (_milestones.length - 1);
-  }
-
-  static int _lastAchievedIndex(int count) {
-    var idx = -1;
-    for (var i = 0; i < _milestones.length; i++) {
-      if (count >= _milestones[i]) idx = i;
-    }
-    return idx;
-  }
-
-  static double _progressFraction(int count) {
-    if (count >= _milestones.last) return 1.0;
-    for (var i = 0; i < _milestones.length - 1; i++) {
-      final lo = _milestones[i];
-      final hi = _milestones[i + 1];
-      if (count < hi) {
-        final segStart = _markerFraction(i);
-        final segEnd = _markerFraction(i + 1);
-        final ratio = hi == lo ? 0.0 : (count - lo) / (hi - lo);
-        return segStart + (segEnd - segStart) * ratio;
-      }
-    }
-    return 1.0;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final achievedIdx = _lastAchievedIndex(postCount);
-    final greenEnd = achievedIdx >= 0 ? _markerFraction(achievedIdx) : 0.0;
-    final progressEnd = _progressFraction(postCount);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final trackWidth = constraints.maxWidth;
-            final inset = _markerSize / 2;
-            final innerWidth = trackWidth - _markerSize;
-
-            return SizedBox(
-              height: _markerSize,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.centerLeft,
-                children: [
-                  Positioned(
-                    left: inset,
-                    right: inset,
-                    top: (_markerSize - _barHeight) / 2,
-                    child: Container(
-                      height: _barHeight,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE5E7EB),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
-                  if (greenEnd > 0)
-                    Positioned(
-                      left: inset,
-                      top: (_markerSize - _barHeight) / 2,
-                      width: innerWidth * greenEnd,
-                      child: Container(
-                        height: _barHeight,
-                        decoration: BoxDecoration(
-                          color: HomeScreenColors.homeSuccess,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                    ),
-                  if (progressEnd > greenEnd)
-                    Positioned(
-                      left: inset + innerWidth * greenEnd,
-                      top: (_markerSize - _barHeight) / 2,
-                      width: innerWidth * (progressEnd - greenEnd),
-                      child: Container(
-                        height: _barHeight,
-                        decoration: BoxDecoration(
-                          color: HomeScreenColors.homeAccentTeal,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      for (final milestone in _milestones)
-                        _HomeGoalMarker(
-                          milestone: milestone,
-                          state: _homeGoalBadgeState(postCount, milestone),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 4),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final currentIdx = _milestones.indexWhere(
-              (m) =>
-                  _homeGoalBadgeState(postCount, m) ==
-                  _HomeGoalBadgeState.current,
-            );
-            return Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Row(
-                  children: [
-                    for (final milestone in _milestones)
-                      Expanded(
-                        child: Text(
-                          '$milestone件',
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: _HomeUi.tapHint(context).copyWith(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: HomeScreenColors.homeTextSecondary,
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                if (currentIdx >= 0)
-                  Positioned(
-                    top: -14,
-                    left: constraints.maxWidth *
-                            (currentIdx / (_milestones.length - 1)) -
-                        22,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 1,
-                      ),
-                      decoration: BoxDecoration(
-                        color: HomeScreenColors.homeAccentTealLight,
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: HomeScreenColors.homeAccentTealBorder
-                              .withValues(alpha: 0.7),
-                        ),
-                      ),
-                      child: Text(
-                        '挑戦中',
-                        style: _HomeUi.tapHint(context).copyWith(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          color: HomeScreenColors.homeAccentTeal,
-                          height: 1.1,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _HomeGoalMarker extends StatelessWidget {
-  const _HomeGoalMarker({required this.milestone, required this.state});
-
-  final int milestone;
-  final _HomeGoalBadgeState state;
-
-  @override
-  Widget build(BuildContext context) {
-    late final Color fill;
-    late final Color border;
-    late final Widget child;
-
-    switch (state) {
-      case _HomeGoalBadgeState.achieved:
-        fill = HomeScreenColors.homeSuccess;
-        border = HomeScreenColors.homeSuccess;
-        child = const Icon(Icons.check_rounded, size: 12, color: Colors.white);
-      case _HomeGoalBadgeState.current:
-        fill = HomeScreenColors.homeAccentTeal;
-        border = HomeScreenColors.homeAccentTeal;
-        child = const Icon(Icons.star_rounded, size: 12, color: Colors.white);
-      case _HomeGoalBadgeState.pending:
-        fill = const Color(0xFFF3F4F6);
-        border = const Color(0xFFD1D5DB);
-        child = Icon(
-          Icons.add_rounded,
-          size: 12,
-          color: HomeScreenColors.homeMutedText.withValues(alpha: 0.7),
-        );
-    }
-
-    return Container(
-      width: 22,
-      height: 22,
-      decoration: BoxDecoration(
-        color: fill,
-        shape: BoxShape.circle,
-        border: Border.all(color: border, width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 2,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: child,
     );
   }
 }
@@ -1731,7 +1471,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
           subtitle: pendingCandidateCount == 0
               ? '投稿待ちの候補はありません'
               : 'コレ候補$pendingCandidateCount件',
-          buttonLabel: '投稿へ',
+          buttonLabel: '投稿する',
           onTap: onOpenPendingCandidates,
           semanticsLabel: 'home_room_post_button',
         );

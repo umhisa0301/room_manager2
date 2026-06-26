@@ -10,7 +10,8 @@ const OperationTutorialFlow profileTutorialFlow = OperationTutorialFlow(
     OperationTutorialStep(
       targetKey: TutorialTargetKeys.roomSettingsCard,
       title: 'ROOMプロフィール',
-      body: 'ここでニックネームやROOM URLなど、ROOM運用に必要な基本設定を行います。',
+      body:
+          'ニックネームとROOM URLを登録します。URLを登録すると、投稿済み商品の取り込みや反応チェックに使えます。',
     ),
     OperationTutorialStep(
       targetKey: TutorialTargetKeys.roomTypeDiagnosisCard,

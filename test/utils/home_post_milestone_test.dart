@@ -59,4 +59,82 @@ void main() {
       expect(snap.countSummaryLine, '直近24時間で3件投稿できています');
     });
   });
+
+  group('HomePostMilestoneSnapshot.milestoneState', () {
+    test('postedCount=0: 1件は挑戦中、他は未達', () {
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(0, 1),
+        HomeGoalMilestoneState.inProgress,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(0, 5),
+        HomeGoalMilestoneState.pending,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(0, 10),
+        HomeGoalMilestoneState.pending,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(0, 20),
+        HomeGoalMilestoneState.pending,
+      );
+    });
+
+    test('postedCount=1: 1件は達成済み、5件は挑戦中', () {
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(1, 1),
+        HomeGoalMilestoneState.achieved,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(1, 5),
+        HomeGoalMilestoneState.inProgress,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(1, 10),
+        HomeGoalMilestoneState.pending,
+      );
+    });
+
+    test('postedCount=5: 5件は達成済み、10件は挑戦中', () {
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(5, 1),
+        HomeGoalMilestoneState.achieved,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(5, 5),
+        HomeGoalMilestoneState.achieved,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(5, 10),
+        HomeGoalMilestoneState.inProgress,
+      );
+      expect(
+        HomePostMilestoneSnapshot.milestoneState(5, 20),
+        HomeGoalMilestoneState.pending,
+      );
+    });
+  });
+
+  group('HomePostMilestoneSnapshot.remainingProgressLabel', () {
+    test('postedCount=0 は 1件まであと1件', () {
+      expect(
+        HomePostMilestoneSnapshot.remainingProgressLabel(0),
+        '1件まであと1件',
+      );
+    });
+
+    test('postedCount=1 は 5件まであと4件', () {
+      expect(
+        HomePostMilestoneSnapshot.remainingProgressLabel(1),
+        '5件まであと4件',
+      );
+    });
+
+    test('postedCount=5 は 10件まであと5件', () {
+      expect(
+        HomePostMilestoneSnapshot.remainingProgressLabel(5),
+        '10件まであと5件',
+      );
+    });
+  });
 }

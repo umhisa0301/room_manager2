@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
+import '../config/room_import_debug_ui_config.dart';
 import '../config/room_import_enrichment_verify_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_reaction_sync_batch_result.dart';
@@ -248,7 +248,7 @@ abstract final class RoomPostImportFlow {
             child: Text(result.fatalErrorMessage!.trim()),
           ),
           actions: [
-            if (kDebugMode) ...[
+            if (RoomImportDebugUiConfig.showDebugActions) ...[
               TextButton(
                 onPressed: () async {
                   await RoomImportDebugLogBuffer.copyToClipboard();
@@ -620,12 +620,15 @@ abstract final class RoomPostImportFlow {
                     height: 1.15,
                   ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  '新しいROOM投稿をコレ済に追加しました。',
-                  textAlign: TextAlign.center,
-                  style: bodySecondary,
-                ),
+                if (added > 0) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    '投稿済みの商品をコレ済に追加しました。',
+                    key: const Key('room_import_result_subtitle'),
+                    textAlign: TextAlign.center,
+                    style: bodySecondary,
+                  ),
+                ],
                 if (added > 0 && productInfoLine.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   Text(
@@ -667,7 +670,7 @@ abstract final class RoomPostImportFlow {
                     ),
                   ),
                 ],
-                if (kDebugMode) ...[
+                if (RoomImportDebugUiConfig.showDebugActions) ...[
                   const SizedBox(height: 20),
                   const Divider(height: 1),
                   const SizedBox(height: 8),
@@ -736,6 +739,9 @@ abstract final class RoomPostImportFlow {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => Navigator.pop(ctx),
+                  style: TextButton.styleFrom(
+                    foregroundColor: HomeScreenColors.homeAccentTeal,
+                  ),
                   child: const Text('閉じる'),
                 ),
               ],
@@ -788,9 +794,22 @@ String _importPreviewPriceLabel(RakutenManagedProduct product) {
 class _ImportedProductPreviewTile extends StatelessWidget {
   const _ImportedProductPreviewTile({required this.product});
 
-  static const Color _roomReactionPink = Color(0xFFE91E63);
-
   final RakutenManagedProduct product;
+
+  static ButtonStyle _outlineButtonStyle() {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.homeAccentTeal,
+      backgroundColor: Colors.white,
+      side: BorderSide(
+        color: HomeScreenColors.homeAccentTeal.withValues(alpha: 0.85),
+        width: 1.2,
+      ),
+      elevation: 0,
+      minimumSize: const Size(0, 38),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -840,11 +859,11 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        maxLines: 2,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w700,
-                          height: 1.25,
+                          height: 1.3,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -871,10 +890,10 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                               );
                               final isReaction = chip == '反応あり';
                               final color = isReaction
-                                  ? _roomReactionPink
+                                  ? HomeScreenColors.homeAccentTeal
                                   : (chip == '未確認'
                                         ? AppColors.textTertiary
-                                        : const Color(0xFF1B5E20));
+                                        : HomeScreenColors.homeSuccess);
                               return DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: color.withValues(alpha: 0.1),
@@ -903,9 +922,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                             Text(
                               '♡${product.roomLikeCount}',
                               style: theme.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w700,
                                 color: product.roomLikeCount! > 0
-                                    ? _roomReactionPink
+                                    ? HomeScreenColors.homeAccentTeal
                                     : AppColors.textTertiary,
                               ),
                             ),
@@ -913,9 +932,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                             Text(
                               '💬${product.roomCommentCount}',
                               style: theme.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w700,
                                 color: product.roomCommentCount! > 0
-                                    ? _roomReactionPink
+                                    ? HomeScreenColors.homeAccentTeal
                                     : AppColors.textTertiary,
                               ),
                             ),
@@ -926,7 +945,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -938,7 +957,12 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                           context,
                           url: product.roomUrl.trim(),
                         ),
-                  icon: const Icon(Icons.open_in_new_rounded, size: 16),
+                  style: _outlineButtonStyle(),
+                  icon: Icon(
+                    Icons.open_in_new_rounded,
+                    size: 16,
+                    color: HomeScreenColors.homeAccentTeal,
+                  ),
                   label: const Text('ROOMで見る'),
                 ),
                 OutlinedButton.icon(
@@ -952,7 +976,12 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                       context,
                     ).showSnackBar(SnackBar(content: Text(err)));
                   },
-                  icon: const Icon(Icons.shopping_bag_outlined, size: 16),
+                  style: _outlineButtonStyle(),
+                  icon: Icon(
+                    Icons.shopping_bag_outlined,
+                    size: 16,
+                    color: HomeScreenColors.homeAccentTeal,
+                  ),
                   label: const Text('楽天で見る'),
                 ),
               ],

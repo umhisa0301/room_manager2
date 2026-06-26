@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/profile_tutorial_flow.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
@@ -139,6 +141,29 @@ void main() {
       expect(profileTutorialFlow.steps.length, 2);
       expect(profileTutorialFlow.steps[0].title, 'ROOMプロフィール');
       expect(profileTutorialFlow.steps[1].title, 'ROOMタイプ診断');
+    });
+
+    test('ROOMプロフィールの説明が現行UIに合わせている', () {
+      expect(
+        profileTutorialFlow.steps[0].body,
+        contains('ニックネームとROOM URL'),
+      );
+      expect(
+        profileTutorialFlow.steps[0].body,
+        contains('投稿済み商品の取り込み'),
+      );
+      expect(profileTutorialFlow.steps[0].body, isNot(contains('個人情報')));
+      expect(profileTutorialFlow.steps[0].body, isNot(contains('個人設定')));
+    });
+  });
+
+  group('homeTodayWorkCard copy', () {
+    test('投稿ステップのボタン文言は投稿する', () {
+      final source = File(
+        'lib/screens/home_placeholder_screen.dart',
+      ).readAsStringSync();
+      expect(source, contains("buttonLabel: '投稿する'"));
+      expect(source, isNot(contains("buttonLabel: '投稿へ'")));
     });
   });
 }
