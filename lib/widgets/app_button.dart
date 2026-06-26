@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-/// Primary CTA button. Brand pink is intentionally concentrated here.
+/// Primary CTA button. Brand teal is intentionally concentrated here.
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
     super.key,

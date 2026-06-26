@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../models/rakuten_managed_product.dart';
 import '../../models/room_activity_event.dart';
-import '../../navigation/app_shell_controller.dart';
 import '../../services/rakuten_room_home_stats.dart';
 import '../../services/room_collect_post_limit.dart';
 import '../../services/room_kpi_calculator.dart';
@@ -18,7 +17,7 @@ import '../../widgets/app_card.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
 
-/// 活動画面「実績」タブ（達成感・上限・ログ・週次）。
+/// 活動画面「実績」タブ（達成感・上限・週次）。
 class ActivityAchievementTab extends StatefulWidget {
   const ActivityAchievementTab({
     super.key,
@@ -42,12 +41,11 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<
+    return Consumer2<
       RakutenManagedProductProvider,
-      RoomActivityEventProvider,
-      AppShellController
+      RoomActivityEventProvider
     >(
-      builder: (context, room, act, shell, _) {
+      builder: (context, room, act, _) {
         final items = room.items;
         final events = act.events;
         final now = DateTime.now();
@@ -116,13 +114,6 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
                 items: items,
                 events: events,
                 anchor: now,
-              ),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              _TodayActivityLogSection(
-                events: events,
-                items: items,
-                now: now,
-                shell: shell,
               ),
             ],
           ),
@@ -534,293 +525,6 @@ class _AchievementHeroCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TodayActivityLogSection extends StatefulWidget {
-  const _TodayActivityLogSection({
-    required this.events,
-    required this.items,
-    required this.now,
-    required this.shell,
-  });
-
-  final List<RoomActivityEvent> events;
-  final List<RakutenManagedProduct> items;
-  final DateTime now;
-  final AppShellController shell;
-
-  @override
-  State<_TodayActivityLogSection> createState() =>
-      _TodayActivityLogSectionState();
-}
-
-class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
-  bool _expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final todayStart =
-        DateTime(widget.now.year, widget.now.month, widget.now.day);
-    final tomorrowStart = todayStart.add(const Duration(days: 1));
-    final list = widget.events
-        .where(
-          (e) =>
-              e.type != RoomActivityEventType.importedFromRoom &&
-              !e.createdAt.isBefore(todayStart) &&
-              e.createdAt.isBefore(tomorrowStart),
-        )
-        .toList(growable: false)
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
-    if (list.isEmpty) {
-      return AppCard(
-        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-        elevated: true,
-        radius: ActivityScreenLayout.cardRadius,
-        borderColor: ActivityScreenUi.border,
-        backgroundColor: ActivityScreenUi.surface,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '今日のログ',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
-            ),
-            const SizedBox(height: 14),
-            Icon(
-              Icons.history_rounded,
-              size: 40,
-              color: ActivityScreenUi.emptyStateIcon,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'まだログはありません',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'ROOMコレで商品を動かすと、ここに活動が積み上がります',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textSecondary,
-                    height: 1.4,
-                    fontSize: 15,
-                  ),
-            ),
-            const SizedBox(height: 14),
-            OutlinedButton.icon(
-              onPressed: () => widget.shell.openRoomCollect(initialTabIndex: 0),
-              icon: const Icon(Icons.collections_bookmark_outlined),
-              label: const Text('ROOMコレを開く'),
-              style: ActivityScreenUi.compactOutlinedButtonStyle(
-                theme: Theme.of(context),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final cap = _expanded ? list.length : list.length.clamp(0, 3);
-    final hasMore = list.length > 3;
-
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      borderColor: ActivityScreenUi.border,
-      backgroundColor: ActivityScreenUi.surface,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '今日のログ',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20,
-                  color: ActivityScreenUi.textPrimary,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '最新の活動です',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ActivityScreenUi.textSecondary,
-                  height: 1.35,
-                  fontSize: 14,
-                ),
-          ),
-          const SizedBox(height: 12),
-          for (var i = 0; i < cap; i++) ...[
-            if (i > 0)
-              Divider(
-                height: 1,
-                color: AppColors.divider.withValues(alpha: 0.5),
-              ),
-            _ActivityLogTile(
-              event: list[i],
-              product: activityFindProduct(widget.items, list[i].productId),
-            ),
-          ],
-          if (hasMore)
-            Align(
-              alignment: Alignment.center,
-              child: TextButton.icon(
-                onPressed: () => setState(() => _expanded = !_expanded),
-                icon: Icon(
-                  _expanded ? Icons.expand_less : Icons.expand_more,
-                  color: ActivityScreenUi.primary,
-                ),
-                label: Text(
-                  _expanded ? '閉じる' : 'もっと見る',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: ActivityScreenUi.primary,
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActivityLogTile extends StatelessWidget {
-  const _ActivityLogTile({
-    required this.event,
-    required this.product,
-  });
-
-  final RoomActivityEvent event;
-  final RakutenManagedProduct? product;
-
-  @override
-  Widget build(BuildContext context) {
-    final caption = _caption(event.type);
-    final time =
-        '${event.createdAt.hour.toString().padLeft(2, '0')}:${event.createdAt.minute.toString().padLeft(2, '0')}';
-
-    final leading = _usesProductVisual(event.type)
-        ? _ProductThumb(url: product?.imageUrl ?? '')
-        : CircleAvatar(
-            backgroundColor: ActivityScreenUi.avatarBg,
-            child: Icon(Icons.notes_rounded, color: ActivityScreenUi.avatarIcon),
-          );
-
-    return InkWell(
-      onTap: () => activityNavigateForProductId(
-        context,
-        productId: event.productId,
-      ),
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            leading,
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    caption,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _subtitle(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    time,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textTertiary,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
-          ],
-        ),
-      ),
-    );
-  }
-
-  bool _usesProductVisual(RoomActivityEventType t) {
-    return t != RoomActivityEventType.openedRakuten;
-  }
-
-  String _caption(RoomActivityEventType t) {
-    return switch (t) {
-      RoomActivityEventType.candidateAdded => '候補に追加',
-      RoomActivityEventType.movedToCored => 'アプリでコレ済にした',
-      RoomActivityEventType.openedRakuten => '楽天ページを開く',
-      RoomActivityEventType.feedbackLiked => '評価を変更：反応あり',
-      RoomActivityEventType.feedbackSold => '評価を変更：売れた',
-      RoomActivityEventType.feedbackWeak => '評価を変更：その他',
-      RoomActivityEventType.deleted => '候補から削除',
-      RoomActivityEventType.importedFromRoom => 'ROOMから取り込み',
-    };
-  }
-
-  String _subtitle() {
-    final name = product?.itemName.trim() ?? '';
-    switch (event.type) {
-      case RoomActivityEventType.openedRakuten:
-        return name.isEmpty ? '商品ページへ遷移' : name;
-      default:
-        return name.isEmpty ? '商品情報を取得できませんでした' : name;
-    }
-  }
-}
-
-class _ProductThumb extends StatelessWidget {
-  const _ProductThumb({required this.url});
-
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    final u = url.trim();
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: 48,
-        height: 48,
-        color: AppColors.surfaceVariant,
-        child: u.isEmpty
-            ? Icon(Icons.image_not_supported_outlined,
-                color: AppColors.textTertiary)
-            : Image.network(
-                u,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.broken_image_outlined,
-                  color: AppColors.textTertiary,
-                ),
-              ),
       ),
     );
   }

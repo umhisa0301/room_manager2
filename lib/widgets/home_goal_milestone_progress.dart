@@ -26,83 +26,62 @@ class HomeGoalMilestoneProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = HomePostMilestoneSnapshot.overallProgress(postCount);
+    final hintStyle = _hintStyle(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final trackWidth = constraints.maxWidth;
-            final inset = _markerSize / 2;
-            final innerWidth = trackWidth - _markerSize;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final trackWidth = constraints.maxWidth;
+        final inset = _markerSize / 2;
+        final innerWidth = trackWidth - _markerSize;
+        final barTop = (_markerSize - _barHeight) / 2;
 
-            return SizedBox(
-              height: _markerSize,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.centerLeft,
-                children: [
-                  Positioned(
-                    left: inset,
-                    right: inset,
-                    top: (_markerSize - _barHeight) / 2,
-                    child: Container(
-                      height: _barHeight,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE5E7EB),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
-                  if (progress > 0)
-                    Positioned(
-                      left: inset,
-                      top: (_markerSize - _barHeight) / 2,
-                      width: innerWidth * progress,
-                      child: Container(
-                        height: _barHeight,
-                        decoration: BoxDecoration(
-                          color: HomeScreenColors.homeAccentTeal,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      for (final milestone in _milestones)
-                        _HomeGoalMarker(
-                          milestone: milestone,
-                          state: HomePostMilestoneSnapshot.milestoneState(
-                            postCount,
-                            milestone,
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 6),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
+          clipBehavior: Clip.none,
           children: [
-            for (final milestone in _milestones)
-              Expanded(
-                child: _HomeGoalMilestoneColumn(
-                  milestone: milestone,
-                  state: HomePostMilestoneSnapshot.milestoneState(
-                    postCount,
-                    milestone,
-                  ),
-                  hintStyle: _hintStyle(context),
+            Positioned(
+              left: inset,
+              right: inset,
+              top: barTop,
+              child: Container(
+                height: _barHeight,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE5E7EB),
+                  borderRadius: BorderRadius.circular(999),
                 ),
               ),
+            ),
+            if (progress > 0)
+              Positioned(
+                left: inset,
+                top: barTop,
+                width: innerWidth * progress,
+                child: Container(
+                  height: _barHeight,
+                  decoration: BoxDecoration(
+                    color: HomeScreenColors.homeAccentTeal,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                ),
+              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final milestone in _milestones)
+                  Expanded(
+                    child: _HomeGoalMilestoneColumn(
+                      milestone: milestone,
+                      state: HomePostMilestoneSnapshot.milestoneState(
+                        postCount,
+                        milestone,
+                      ),
+                      hintStyle: hintStyle,
+                    ),
+                  ),
+              ],
+            ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -134,16 +113,20 @@ class _HomeGoalMilestoneColumn extends StatelessWidget {
     return Column(
       key: Key('home_goal_milestone_column_$milestone'),
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        _HomeGoalMarker(milestone: milestone, state: state),
+        const SizedBox(height: 6),
         Text(
           '$milestone件',
+          key: Key('home_goal_milestone_label_$milestone'),
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: labelStyle,
         ),
-        const SizedBox(height: 4),
-        if (state == HomeGoalMilestoneState.inProgress)
+        if (state == HomeGoalMilestoneState.inProgress) ...[
+          const SizedBox(height: 4),
           Container(
             key: Key('home_goal_in_progress_badge_$milestone'),
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
@@ -165,8 +148,8 @@ class _HomeGoalMilestoneColumn extends StatelessWidget {
                 height: 1.1,
               ),
             ),
-          )
-        else
+          ),
+        ] else
           const SizedBox(height: HomeGoalMilestoneProgress._badgeReserveHeight),
       ],
     );

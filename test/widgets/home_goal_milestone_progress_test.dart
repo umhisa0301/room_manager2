@@ -45,15 +45,61 @@ void main() {
       );
       expect(find.text('挑戦中'), findsOneWidget);
 
-      final labelFinder = find.descendant(
-        of: find.byKey(const Key('home_goal_milestone_column_1')),
-        matching: find.text('1件'),
-      );
+      final labelFinder = find.byKey(const Key('home_goal_milestone_label_1'));
       final badgeFinder = find.byKey(const Key('home_goal_in_progress_badge_1'));
       expect(
         tester.getTopLeft(badgeFinder).dy,
         greaterThan(tester.getBottomLeft(labelFinder).dy),
       );
+    });
+
+    testWidgets('1件/5件/10件/20件ラベルが各マーカーと同じカラム中央に揃う', (
+      tester,
+    ) async {
+      await pumpProgress(tester, 0);
+
+      for (final milestone in [1, 5, 10, 20]) {
+        final markerFinder = find.byKey(Key('home_goal_marker_$milestone'));
+        final labelFinder = find.byKey(Key('home_goal_milestone_label_$milestone'));
+        final markerCenter = tester.getCenter(markerFinder);
+        final labelCenter = tester.getCenter(labelFinder);
+        expect(
+          (markerCenter.dx - labelCenter.dx).abs(),
+          lessThan(1.0),
+          reason: '$milestone件ラベルがマーカーとX座標でずれている',
+        );
+        expect(
+          labelCenter.dy,
+          greaterThan(markerCenter.dy),
+          reason: '$milestone件ラベルはマーカーの下にあるべき',
+        );
+      }
+    });
+
+    testWidgets('各マイルストーンは Expanded カラム内にマーカーとラベルを持つ', (
+      tester,
+    ) async {
+      await pumpProgress(tester, 3);
+
+      for (final milestone in [1, 5, 10, 20]) {
+        final columnFinder =
+            find.byKey(Key('home_goal_milestone_column_$milestone'));
+        expect(columnFinder, findsOneWidget);
+        expect(
+          find.descendant(
+            of: columnFinder,
+            matching: find.byKey(Key('home_goal_marker_$milestone')),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: columnFinder,
+            matching: find.byKey(Key('home_goal_milestone_label_$milestone')),
+          ),
+          findsOneWidget,
+        );
+      }
     });
 
     testWidgets('postedCount=1 で1件はチェック、5件は挑戦中', (tester) async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 楽天ROOM風のアプリ用カラーパレット。
-/// 背景は白〜薄グレー、アクセントはピンク〜マゼンタ系。
+/// 背景は白〜薄グレー、アクセントはティール〜グリーン系。
 class AppColors {
   AppColors._();
 
@@ -16,18 +16,18 @@ class AppColors {
   /// カードやチップのホバー/押下時の薄い背景
   static const Color surfaceVariant = Color(0xFFF5F5F5);
 
-  // --- アクセント（ピンク〜マゼンタ）---
+  // --- アクセント（ティール〜グリーン）---
   /// メインアクセント（ボタン・選択・リンク）
-  static const Color accentPrimary = Color(0xFFE91E8C);
+  static const Color accentPrimary = Color(0xFF0F766E);
 
   /// サブアクセント（グラデーション・ハイライト）
-  static const Color accentSecondary = Color(0xFFFF6090);
+  static const Color accentSecondary = Color(0xFF0E7490);
 
   /// アクセントの薄い背景（チップ・バッジ背景）
-  static const Color accentLight = Color(0xFFFFE5F0);
+  static const Color accentLight = Color(0xFFEAFBF7);
 
   /// アクセントのさらに薄い背景（ホバー等）
-  static const Color accentLightest = Color(0xFFFFF0F5);
+  static const Color accentLightest = Color(0xFFF0FDF9);
 
   // --- テキスト ---
   static const Color textPrimary = Color(0xFF1A1A1A);

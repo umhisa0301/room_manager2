@@ -159,13 +159,20 @@ class _MyPageRoomTypeDiagnosisCardState extends State<MyPageRoomTypeDiagnosisCar
     final theme = Theme.of(context);
     return MyPageCard(
       key: TutorialTargetKeys.roomTypeDiagnosisCard,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const MyPageSectionHeaderRow(title: 'ROOMタイプ診断'),
-          const SizedBox(height: 10),
+          MyPageSectionHeaderRow(
+            title: 'ROOMタイプ診断',
+            trailingChip: widget.isDiagnosed
+                ? const MyPageStatusChip(
+                    label: '診断済み',
+                    variant: MyPageStatusChipVariant.set,
+                  )
+                : null,
+          ),
           if (!widget.isDiagnosed) ...[
+            const SizedBox(height: 6),
             Text(
               'あなたに合うコレ候補や投稿文の方向性を提案しやすくします。',
               style: theme.textTheme.bodySmall?.copyWith(
@@ -181,28 +188,40 @@ class _MyPageRoomTypeDiagnosisCardState extends State<MyPageRoomTypeDiagnosisCar
               onPressed: widget.onStartDiagnosis,
             ),
           ] else ...[
-            Text(
-              'あなたのタイプ',
-              style: theme.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: MyPageScreenUi.textPrimary,
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'あなたのタイプ',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: MyPageScreenUi.textPrimary,
+                        fontWeight: FontWeight.w600,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      widget.typeDisplayName,
+                      key: const Key('room_type_diagnosis_result_name'),
+                      textAlign: TextAlign.right,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: MyPageScreenUi.primary,
+                        fontWeight: FontWeight.w700,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            RoomTypeBadge(
-              typeDisplayName: widget.typeDisplayName,
-              compact: true,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'おすすめコレに反映されています',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: MyPageScreenUi.textSecondary,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Divider(height: 1, color: MyPageScreenUi.cardBorder),
             if (_detailsExpanded) ...[
-              const SizedBox(height: 14),
               if (widget.interestLabel.isNotEmpty)
                 _DetailRow(label: '関心ジャンル', value: widget.interestLabel),
               if (widget.priorityLabel.isNotEmpty) ...[
@@ -216,30 +235,44 @@ class _MyPageRoomTypeDiagnosisCardState extends State<MyPageRoomTypeDiagnosisCar
                   value: widget.commentToneLabel,
                 ),
               ],
+              const SizedBox(height: 8),
+              Divider(height: 1, color: MyPageScreenUi.cardBorder),
             ],
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => setState(() => _detailsExpanded = !_detailsExpanded),
-              style: MyPageScreenUi.linkTextButtonStyle(),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(_detailsExpanded ? '詳細を閉じる' : '詳細を見る'),
-                  Icon(
-                    _detailsExpanded
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
-                    size: 20,
+                  Expanded(
+                    child: TextButton(
+                      key: const Key('room_type_diagnosis_details_button'),
+                      onPressed: () =>
+                          setState(() => _detailsExpanded = !_detailsExpanded),
+                      style: MyPageScreenUi.linkTextButtonStyle(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(_detailsExpanded ? '詳細を閉じる' : '詳細を見る'),
+                          Icon(
+                            _detailsExpanded
+                                ? Icons.keyboard_arrow_up_rounded
+                                : Icons.keyboard_arrow_down_rounded,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      key: const Key('room_type_diagnosis_retake_button'),
+                      onPressed: widget.onRetakeDiagnosis,
+                      style: MyPageScreenUi.linkTextButtonStyle(),
+                      child: const Text('診断をやり直す'),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 4),
-            OutlinedButton(
-              onPressed: widget.onRetakeDiagnosis,
-              style: MyPageScreenUi.outlineButtonStyle(height: 44),
-              child: const Text('診断をやり直す'),
             ),
           ],
         ],
