@@ -11,12 +11,7 @@ import 'package:room_manager2/services/subscription_status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _FakePurchaseGateway implements InAppPurchasePurchaseGateway {
-  _FakePurchaseGateway({
-    this.available = true,
-    this.productDetails = const [],
-    this.buyNonConsumableResult = true,
-    this.throwOnRestore = false,
-  });
+  _FakePurchaseGateway({this.productDetails = const []});
 
   final bool available;
   final List<ProductDetails> productDetails;
@@ -38,7 +33,9 @@ class _FakePurchaseGateway implements InAppPurchasePurchaseGateway {
   Future<bool> isAvailable() async => available;
 
   @override
-  Future<ProductDetailsResponse> queryProductDetails(Set<String> productIds) async {
+  Future<ProductDetailsResponse> queryProductDetails(
+    Set<String> productIds,
+  ) async {
     return ProductDetailsResponse(
       productDetails: productDetails
           .where((details) => productIds.contains(details.id))
@@ -145,10 +142,7 @@ void main() {
     });
 
     BillingPurchaseService createService() {
-      return BillingPurchaseService(
-        gateway: gateway,
-        entitlementStore: store,
-      );
+      return BillingPurchaseService(gateway: gateway, entitlementStore: store);
     }
 
     test('does not start purchase when basic product is missing', () async {
@@ -161,20 +155,25 @@ void main() {
       expect(gateway.buyNonConsumableCallCount, 0);
     });
 
-    test('starts purchase with buyNonConsumable when basic product exists', () async {
-      final service = createService();
-      await service.initialize();
+    test(
+      'starts purchase with buyNonConsumable when basic product exists',
+      () async {
+        final service = createService();
+        await service.initialize();
 
-      final result = await service.purchaseBasic(basicProduct: _basicBillingProduct());
+        final result = await service.purchaseBasic(
+          basicProduct: _basicBillingProduct(),
+        );
 
-      expect(result.status, PurchaseActionStatus.started);
-      expect(gateway.buyNonConsumableCallCount, 1);
-      expect(
-        gateway.lastPurchaseParam?.productDetails.id,
-        BillingProductConfig.basicMonthlyProductId,
-      );
-      expect(service.isPurchasing, isTrue);
-    });
+        expect(result.status, PurchaseActionStatus.started);
+        expect(gateway.buyNonConsumableCallCount, 1);
+        expect(
+          gateway.lastPurchaseParam?.productDetails.id,
+          BillingProductConfig.basicMonthlyProductId,
+        );
+        expect(service.isPurchasing, isTrue);
+      },
+    );
 
     test('does not purchase pro product', () async {
       final service = createService();
@@ -200,9 +199,7 @@ void main() {
       await service.initialize();
       unawaited(service.purchaseBasic(basicProduct: _basicBillingProduct()));
 
-      gateway.emitPurchases([
-        _purchaseDetails(status: PurchaseStatus.pending),
-      ]);
+      gateway.emitPurchases([_purchaseDetails(status: PurchaseStatus.pending)]);
       await Future<void>.delayed(Duration.zero);
 
       expect(service.isPurchasing, isTrue);
@@ -244,7 +241,9 @@ void main() {
       final service = createService();
       await service.initialize();
 
-      final purchaseFuture = service.purchaseBasic(basicProduct: _basicBillingProduct());
+      final purchaseFuture = service.purchaseBasic(
+        basicProduct: _basicBillingProduct(),
+      );
       await Future<void>.delayed(Duration.zero);
       await service.handlePurchaseDetailsForTest(
         _purchaseDetails(status: PurchaseStatus.canceled),
@@ -261,10 +260,7 @@ void main() {
       await service.initialize();
 
       await service.handlePurchaseDetailsForTest(
-        _purchaseDetails(
-          status: PurchaseStatus.error,
-          errorMessage: 'failed',
-        ),
+        _purchaseDetails(status: PurchaseStatus.error, errorMessage: 'failed'),
       );
 
       expect(service.entitlement.isBasicActive, isFalse);
