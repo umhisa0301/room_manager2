@@ -1,0 +1,1029 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-27 20:14:33
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260627_201433.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260627_201433.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260627_201433.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260627_201433.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260627_201433.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433\terminal_output_20260627_201433.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 15996).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                              4.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.7s
+D/FlutterJNI( 6088): Beginning load of flutter...
+D/FlutterJNI( 6088): flutter (null) was loaded normally!
+I/flutter ( 6088): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 6088): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter ( 6088): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter ( 6088): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter ( 6088): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter ( 6088): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 6088): [ADMOB] initialization skipped ads=false
+I/flutter ( 6088): [BILLING_PURCHASE] initialized available=true active=false
+Syncing files to device SHG08...                                    75ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:50855/fYP0JUp98Ho=/
+I/flutter ( 6088): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer( 6088): Skipped 64 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:50855/fYP0JUp98Ho=/
+I/WebViewFactory( 6088): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders( 6088): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 6088): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 6088): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 6088): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 6088): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader( 6088): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/chromium( 6088): [0627/201451.167069:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/chromium( 6088): [0627/201451.173900:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 6088): Successfully loaded native library
+I/cr_CachingUmaRecorder( 6088): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 6088): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 6088): #registerProvider() provider:WV.wk@957ed67 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_policy( 6088): registerReceiver succeeded after 1ms
+I/cr_PolicyProvider( 6088): #setManagerAndSource() 0
+I/cr_DisplayManager( 6088): Is Display Topology available: false
+I/cr_CombinedPProvider( 6088): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 6088): Compat change id reported: 183155436; UID 10526; state: ENABLED
+I/cr_AppResProvider( 6088): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6088): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6088): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6088): #flushPolicies()
+W/chromium( 6088): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+D/CompatibilityChangeReporter( 6088): Compat change id reported: 214741472; UID 10526; state: ENABLED
+I/cr_AppResProvider( 6088): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6088): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6088): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6088): #flushPolicies()
+I/CameraManagerGlobal( 6088): Connecting to camera service
+D/CompatibilityChangeReporter( 6088): Compat change id reported: 171228096; UID 10526; state: ENABLED
+D/CompatibilityChangeReporter( 6088): Compat change id reported: 193247900; UID 10526; state: ENABLED
+I/Choreographer( 6088): Skipped 51 frames!  The application may be doing too much work on its main thread.
+I/PlatformViewsController( 6088): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 6088): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 6088): Compat change id reported: 236825255; UID 10526; state: ENABLED
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76095): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 6088): Davey! duration=903ms; Flags=1, FrameTimelineVsyncId=120682834, IntendedVsync=674567017237405, Vsync=674567867237371, InputEventId=0, HandleInputStart=674567876070535, AnimationStart=674567876072098, PerformTraversalsStart=674567876072775, DrawStart=674567883766004, FrameDeadline=674567033904071, FrameInterval=674567875697306, FrameStartTime=16666666, SyncQueued=674567885533921, SyncStart=674567885634181, IssueDrawCommandsStart=674567886324129, SwapBuffers=674567919517671, FrameCompleted=674567921131629, DequeueBufferDuration=2955573, QueueBufferDuration=1155156, GpuCompleted=674567920726941, SwapBuffersCompleted=674567921131629, DisplayPresentTime=0, CommandSubmissionCompleted=674567919517671, 
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76096): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 6088): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 6088): Build Date              : 08/23/22
+I/AdrenoVK-0( 6088): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 6088): Local Branch            : 
+I/AdrenoVK-0( 6088): Remote Branch           : 
+I/AdrenoVK-0( 6088): Remote Branch           : 
+I/AdrenoVK-0( 6088): Reconstruct Branch      : 
+I/AdrenoVK-0( 6088): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 6088): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+D/ProfileInstaller( 6088): Installing profile for com.stepbytestudio.room_manager2
+I/flutter ( 6088): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [AUTO_REACTION_SYNC] scheduled
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter ( 6088): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter ( 6088): [TODAY_RECOMMEND_VISIBLE_CAP] visible=0 cap=3 fallbackReason=insufficientVisibleCandidates
+I/flutter ( 6088): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=人気 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6088): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6088): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BA%BA%E6%B0%97&minReviewCount=5&minReviewAverage=3.4&sort=-reviewCount
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter ( 6088): [Rakuten] response status=200 page=1 bytes=255220
+I/flutter ( 6088): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter ( 6088): [Rakuten] repository search total mapped=30
+I/flutter ( 6088): [Rakuten] search mapped item count=30
+I/flutter ( 6088): [Rakuten] search before filter count=30
+I/flutter ( 6088): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter ( 6088): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter ( 6088): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=-
+I/flutter ( 6088): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=201117:1|503020:1|566732:1 shopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:1
+I/flutter ( 6088): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 apiCalls=1 pagesUsed=1 rawItems=27 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=3 excludedZeroReview=0 finalItems=3 fallbackUsed=true assistPlanUsed=false
+I/flutter ( 6088): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:1
+I/flutter ( 6088): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+W/WindowOnBackDispatcher( 6088): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6088): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 6088): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter ( 6088): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=便利グッズ 収納 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6088): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6088): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BE%BF%E5%88%A9%E3%82%B0%E3%83%83%E3%82%BA+%E5%8F%8E%E7%B4%8D&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [Rakuten] response status=200 page=1 bytes=229635
+I/flutter ( 6088): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter ( 6088): [Rakuten] repository search total mapped=30
+I/flutter ( 6088): [Rakuten] search mapped item count=30
+I/flutter ( 6088): [Rakuten] search before filter count=30
+I/flutter ( 6088): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter ( 6088): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter ( 6088): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 skippedFavoriteGenrePlans=2 assistPlanExecuted=false apiCalls=1 earlyStopReason=targetReached
+I/flutter ( 6088): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=567450:1|567515:1|403809:1 shopDistribution=Luckyhill 楽天市場店:1|Gutto楽天市場店:1|シェリーショップ:1
+I/flutter ( 6088): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 apiCalls=1 pagesUsed=1 rawItems=30 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=0 excludedZeroReview=0 finalItems=3 fallbackUsed=false assistPlanUsed=false
+I/flutter ( 6088): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=Luckyhill 楽天市場店:1|Gutto楽天市場店:1|シェリーショップ:1
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=299000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=recentEnsure
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=298000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=297000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=296000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=295000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=294000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=293000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=292000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=291000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECT_ALL] checked=true selected=3
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=290000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=289000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/TRuntime.CctTransportBackend( 6088): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=288000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+W/pool-2-thread-1( 6088): type=1400 audit(0.0:76097): avc:  denied  { search } for  name="/" dev="sda10" ino=2 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0 app=com.stepbytestudio.room_manager2
+E/FeatureFlagsImplExport( 6088): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+I/TRuntime.CctTransportBackend( 6088): Status Code: 200
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_ADD_START] selected=3
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=3 selected=3 alreadyAdded=0 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=287000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=luckyhill:10000105 pending=0→1 done=0→0
+I/flutter ( 6088): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/luckyhill/nz-37tp/
+I/flutter ( 6088): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/luckyhill/nz-37tp/
+W/cr_media( 6088): BLUETOOTH_CONNECT permission is missing.
+W/cr_media( 6088): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media( 6088): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=2 selected=3 alreadyAdded=1 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=3 bulkButtonVisible=true
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=287000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=forthon:10000732 pending=1→2 done=0→0
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=2 selected=2 alreadyAdded=1 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=2 bulkButtonVisible=true
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+W/VideoCapabilities( 6088): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities( 6088): Unsupported mime image/vnd.android.heic
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/forthon/r511/
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=shelly-shop:10000106 pending=2→3 done=0→0
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=1 selected=2 alreadyAdded=2 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=2 bulkButtonVisible=true
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/shelly-shop/two-p/
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=1 alreadyAdded=3 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=1 bulkButtonVisible=true
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_ADD_RESULT] success=3 alreadyAdded=0 failed=0
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=285000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:0] "Refused to execute script from 'https://www.rakuten.ne.jp/js/jquery.magnific-popup.min.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.", source: https://www.rakuten.ne.jp/gold/luckyhill/header7.html (0)
+I/chromium( 6088): [INFO:CONSOLE:25] "Uncaught SyntaxError: missing ) after argument list", source: https://www.rakuten.ne.jp/gold/luckyhill/header7.html (25)
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=284000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=true guardReason=manualCooldown remainingMs=283000 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=2026-06-27T20:15:38.677805 bundleGeneratedAt=2026-06-27T20:15:38.677805
+I/flutter ( 6088): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 selectable=0 selected=0 alreadyAdded=3 skipped=0
+I/flutter ( 6088): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/chromium( 6088): [INFO:CONSOLE:884] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/luckyhill/nz-37tp/ (884)
+I/chromium( 6088): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:0] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/luckyhill/nz-37tp/ (0)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:237] "Uncaught TypeError: $(...).magnificPopup is not a function", source: https://www.rakuten.ne.jp/gold/luckyhill/header7.html (237)
+I/chromium( 6088): [INFO:CONSOLE:2] "jQuery.Deferred exception: $(...).magnificPopup is not a function TypeError: $(...).magnificPopup is not a function
+I/chromium( 6088):     at HTMLDocument.<anonymous> (https://www.rakuten.ne.jp/gold/luckyhill/header7.html:30:16)
+I/chromium( 6088):     at e (https://code.jquery.com/jquery-3.4.1.min.js:2:29453)
+I/chromium( 6088):     at t (https://code.jquery.com/jquery-3.4.1.min.js:2:29755) undefined", source: https://code.jquery.com/jquery-3.4.1.min.js (2)
+I/flutter ( 6088): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=luckyhill%3A10000105&scid=we_room_upc60
+I/flutter ( 6088): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/forthon/r511/
+I/chromium( 6088): [INFO:CONSOLE:2] "Uncaught TypeError: $(...).magnificPopup is not a function", source: https://code.jquery.com/jquery-3.4.1.min.js (2)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_FAILED
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_FAILED
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_FAILED
+W/chromium( 6088): [WARNING:net/spdy/spdy_session.cc:3161] Received HEADERS for invalid stream 101
+W/chromium( 6088): [WARNING:net/spdy/spdy_session.cc:3161] Received HEADERS for invalid stream 5
+W/chromium( 6088): [WARNING:net/spdy/spdy_session.cc:3161] Received HEADERS for invalid stream 77
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:1321] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/forthon/r511/ (1321)
+I/chromium( 6088): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium( 6088): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:0] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/forthon/r511/ (0)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=forthon%3A10000732&scid=we_room_upc60
+I/flutter ( 6088): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/shelly-shop/two-p/
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:1398] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/shelly-shop/two-p/ (1398)
+I/chromium( 6088): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/chromium( 6088): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=shelly-shop%3A10000106&scid=we_room_upc60
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/Chrome_InProcGp( 6088): type=1400 audit(0.0:76098): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/cr_MediaCodecBridge( 6088): create MediaCodec video decoder, mime video/avc, decoder name c2.qti.avc.decoder, block_model=false
+D/CCodec  ( 6088): allocate(c2.qti.avc.decoder)
+I/Codec2Client( 6088): Available Codec2 services: "default" "software"
+I/CCodec  ( 6088): setting up 'default' as default (vendor) store
+I/CCodec  ( 6088): Created component [c2.qti.avc.decoder]
+D/CCodecConfig( 6088): read media type: video/avc
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_luma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_chroma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_luma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_chroma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_luma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_chroma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_luma
+D/ReflectedParamUpdater( 6088): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_chroma
+D/ReflectedParamUpdater( 6088): ignored struct field vendor.qti-ext-dec-panscan.window
+D/CCodecConfig( 6088): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6088): ignoring local param default.color (0x5200180b) as it is already supported
+D/CCodecConfig( 6088): ignoring local param raw.hdr-static-info (0xd200180a) as it is already supported
+I/CCodecConfig( 6088): query failed after returning 17 values (BAD_INDEX)
+D/CCodecConfig( 6088): c2 config diff is Dict {
+D/CCodecConfig( 6088):   c2::i32 algo.priority.value = 0
+D/CCodecConfig( 6088):   c2::float algo.rate.value = 30
+D/CCodecConfig( 6088):   c2::u32 algo.secure-mode.value = 0
+D/CCodecConfig( 6088):   c2::float coded.frame-rate.value = 30
+D/CCodecConfig( 6088):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6088):   c2::u32 coded.pl.profile = 20484
+D/CCodecConfig( 6088):   c2::u32 coded.vui.color.matrix = 255
+D/CCodecConfig( 6088):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6088):   c2::u32 coded.vui.color.range = 0
+D/CCodecConfig( 6088):   c2::u32 coded.vui.color.transfer = 255
+D/CCodecConfig( 6088):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6088):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6088):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6088):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6088):   c2::u32 input.buffers.max-size.value = 3133440
+D/CCodecConfig( 6088):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6088):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6088):   c2::u32 output.delay.value = 1
+D/CCodecConfig( 6088):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6088):   c2::u32 raw.color.matrix = 255
+D/CCodecConfig( 6088):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6088):   c2::u32 raw.color.range = 0
+D/CCodecConfig( 6088):   c2::u32 raw.color.transfer = 255
+D/CCodecConfig( 6088):   c2::float raw.hdr-static-info.mastering.blue.x = 0
+D/CCodecConfig( 6088):   c2::float raw.hdr-static-info.mastering.blue.y = 0
+D/CCodecConfig( 6088):   c2::float raw.hdr-static-info.mastering.gre
+W/ColorUtils( 6088): expected specified color aspects (0:0:255:255)
+I/MediaCodec( 6088): MediaCodec will operate in async mode
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/ThreadPoolForeg( 6088): type=1400 audit(0.0:76099): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/MediaCodec( 6088): flushMediametrics
+D/SurfaceUtils( 6088): connecting to surface 0xb400007cdf005ff0, reason connectToSurface
+I/MediaCodec( 6088): [c2.qti.avc.decoder] setting surface generation to 6234113
+D/SurfaceUtils( 6088): disconnecting from surface 0xb400007cdf005ff0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6088): connecting to surface 0xb400007cdf005ff0, reason connectToSurface(reconnect)
+D/CCodec  ( 6088): [c2.qti.avc.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6088): no c2 equivalents for color-standard
+D/CCodecConfig( 6088): no c2 equivalents for native-window
+D/CCodecConfig( 6088): no c2 equivalents for flags
+D/CCodecConfig( 6088): c2 config diff is   c2::u32 default.color.matrix = 1
+D/CCodecConfig( 6088):   c2::u32 default.color.primaries = 1
+D/CCodecConfig( 6088):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6088):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6088):   c2::u32 raw.max-size.height = 360
+D/CCodecConfig( 6088):   c2::u32 raw.max-size.width = 640
+D/CCodecConfig( 6088):   c2::u32 raw.size.height = 360
+W/Codec2Client( 6088): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6088): client requested max input size 176640, which is smaller than what component recommended (3133440); overriding with component recommendation.
+W/CCodec  ( 6088): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6088): encoding statistics level = 0
+D/CCodec  ( 6088): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6088):   int32_t feature-secure-playback = 0
+D/CCodec  ( 6088):   int32_t frame-rate = 30
+D/CCodec  ( 6088):   int32_t height = 360
+D/CCodec  ( 6088):   int32_t max-input-size = 3133440
+D/CCodec  ( 6088):   string mime = "video/avc"
+D/CCodec  ( 6088):   int32_t priority = 0
+D/CCodec  ( 6088):   int32_t profile = 8
+D/CCodec  ( 6088):   int32_t width = 640
+D/CCodec  ( 6088):   Rect crop(0, 0, 639, 359)
+D/CCodec  ( 6088): }
+D/CCodec  ( 6088): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6088):   int32_t android._color-format = 0
+D/CCodec  ( 6088):   int32_t android._video-scaling = 1
+D/CCodec  ( 6088):   int32_t android._dataspace = 281346048
+D/CCodec  ( 6088):   int32_t color-standard = 130820
+D/CCodec  ( 6088):   int32_t color-range = 2
+D/CCodec  ( 6088):   int32_t color-transfer = 65791
+D/CCodec  ( 6088):   int32_t sar-height = 1
+D/CCodec  ( 6088):   int32_t rotation-degrees = 0
+D/CCodec  ( 6088):   Buffer hdr-static-info = {
+D/CCodec  ( 6088):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodec  ( 6088):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodec  ( 6088):   }
+D/CCodec  ( 6088):   int32_t sar-width = 1
+D/CCodec  ( 6088):   Rect crop(0, 0, 639, 359)
+D/CCodec  ( 6088):   int32_t width = 640
+D/CCodec  ( 6088):   int32_t feature-secure-playback = 0
+D/CCodec  ( 6088):   int32_t frame-rate = 30
+D/CCodec  ( 6088):   int32_t height = 360
+D/CCodec  ( 6088):   int32_t max-height = 360
+D/CCodec  ( 6088):   int32_t max-width = 640
+D/CCodec  ( 6088):   string mime = "video/raw"
+D/CCodec  ( 6088):   int32_t priority = 0
+D/CCodec  ( 6088):   int32_t color-format = 2130708361
+D/CCodec  ( 6088): }
+I/CCodecConfig( 6088): query failed after returning 17 values (BAD_INDEX)
+D/MediaCodec( 6088): keep callback message for reclaim
+W/Codec2Client( 6088): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6088): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6088): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Query input allocators returned 0 params => BAD_INDEX (6)
+D/C2Store ( 6088): Using ION
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Created input block pool with allocatorID 16 => poolID 17 - OK (0)
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] start: max output delay 12
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Query output allocators returned 0 params => BAD_INDEX (6)
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Created output block pool with allocatorID 18 => poolID 79 - OK
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Configured output block pool ids 79 => OK
+D/Codec2-OutputBufferQueue( 6088): remote graphic buffer migration 0/0
+D/Codec2Client( 6088): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6088): setOutputSurface -- generation=6234113 consumer usage=0x900
+D/Codec2Client( 6088): Surface configure completed
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] start: updating output delay 1
+D/CCodecConfig( 6088): c2 config diff is   c2::u32 output.delay.value = 10
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] onWorkDone: updating output delay 10
+I/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] onWorkDone: updating max output delay 17
+D/Codec2-OutputBufferQueue( 6088): set max dequeue count 17 from update
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] Ignoring stale input buffer done callback: last flush index = 0, frameIndex = 0
+D/CCodecConfig( 6088): c2 config diff is   c2::u32 raw.color.matrix = 1
+D/CCodecConfig( 6088):   c2::u32 raw.color.primaries = 1
+D/CCodecConfig( 6088):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6088):   c2::u32 raw.color.transfer = 3
+D/CCodecConfig( 6088):   c2::u32 raw.crop.height = 360
+D/CCodecConfig( 6088):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6088):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6088):   c2::u32 raw.crop.width = 640
+D/CCodecBuffers( 6088): [c2.qti.avc.decoder#20:2D-Output] popFromStashAndRegister: at 0us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6088):   int32_t android._color-format = 0
+D/CCodecBuffers( 6088):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6088):   int32_t android._dataspace = 260
+D/CCodecBuffers( 6088):   int32_t color-standard = 1
+D/CCodecBuffers( 6088):   int32_t color-range = 2
+D/CCodecBuffers( 6088):   int32_t color-transfer = 3
+D/CCodecBuffers( 6088):   int32_t sar-height = 1
+D/CCodecBuffers( 6088):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6088):   Buffer hdr-static-info = {
+D/CCodecBuffers( 6088):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodecBuffers( 6088):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodecBuffers( 6088):   }
+D/CCodecBuffers( 6088):   int32_t sar-width = 1
+D/CCodecBuffers( 6088):   Rect crop(0, 0, 639, 359)
+D/CCodecBuffers( 6088):   int32_t width = 640
+D/CCodecBuffers( 6088):   int32_t feature-secure-playback = 0
+D/CCodecBuffers( 6088):   int32_t frame-rate = 30
+D/CCodecBuffers( 6088):   int32_t height = 360
+D/CCodecBuffers( 6088):   int32_t max-height = 360
+D/CCodecBuffers( 6088):   int32_t max-width = 640
+D/CCodecBuffers( 6088):   string mime = "video/raw"
+D/CCodecBuffers( 6088):   int32_t priority = 0
+D/CCodecBuffers( 6088):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6088): }
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433\room_manager2_shot_001.png
+I/chromium( 6088): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter ( 6088): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+D/BufferPoolAccessor2.0( 6088): bufferpool2 0xb400007cff024ed8 : 5(15667200 size) total buffers - 4(12533760 size) used buffers - 8/13 (recycle/alloc) - 5/10 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6088): evictor expired: 1, evicted: 1
+W/WindowOnBackDispatcher( 6088): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6088): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/chromium( 6088): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium( 6088): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium( 6088): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTVhMzJkODhiMA.js (1)
+I/chromium( 6088): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium( 6088): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium( 6088): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTVhMzJkODhiOQ.js (1)
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=3→3 done=0→0
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=3 done=0 filter= tab=candidate
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addDone productId=shelly-shop:10000106 pending=3→2 done=0→1
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shelly-shop:10000106 reviewAverage=4.42 reviewCount=4646 displayText=評価 ★4.4（4646件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+W/cr_MediaCodecBridge( 6088): Releasing: c2.qti.avc.decoder
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/SurfaceUtils( 6088): connecting to surface 0xb400007cdef797d0, reason connectToSurface
+I/MediaCodec( 6088): [c2.qti.avc.decoder] setting surface generation to 6234114
+D/SurfaceUtils( 6088): disconnecting from surface 0xb400007cdef797d0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6088): connecting to surface 0xb400007cdef797d0, reason connectToSurface(reconnect)
+D/Codec2-OutputBufferQueue( 6088): remote graphic buffer migration 0/0
+D/Codec2Client( 6088): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6088): setOutputSurface -- generation=6234114 consumer usage=0x900
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 0 is not owned by the producer (state = ACQUIRED)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [ImageReader-1x1f22u256m2-6088-0](id:17c800000004,api:3,p:6088,c:6088) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/Codec2Client( 6088): Surface configure completed
+D/SurfaceUtils( 6088): disconnecting from surface 0xb400007cdf005ff0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6088): [c2.qti.avc.decoder#20] MediaCodec discarded an unknown buffer
+W/cr_MediaCodecBridge( 6088): Codec released
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 0 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 13 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 14 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 15 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 16 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 17 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6088): [MediaCodec.release](id:17c800000005,api:3,p:6088,c:6088) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/BufferPoolAccessor2.0( 6088): bufferpool2 0xb400007cff024ed8 : 0(0 size) total buffers - 0(0 size) used buffers - 8/13 (recycle/alloc) - 5/10 (fetch/transfer)
+D/SurfaceUtils( 6088): disconnecting from surface 0xb400007cdef797d0, reason disconnectFromSurface
+I/hw-BpHwBinder( 6088): onLastStrongRef automatically unlinking death recipients
+D/MediaCodec( 6088): flushMediametrics
+D/MediaCodec( 6088): flushMediametrics
+W/MediaCodec( 6088): no metrics handle found
+D/BufferPoolAccessor2.0( 6088): bufferpool2 0xb400007cff024ed8 : 0(0 size) total buffers - 0(0 size) used buffers - 8/13 (recycle/alloc) - 5/10 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6088): evictor expired: 1, evicted: 1
+W/o.room_manager2( 6088): Cleared Reference was only reachable from finalizer (only reported once)
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/OpenGLRenderer( 6088): Unable to match the desired swap behavior.
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/o.room_manager2( 6088): type=1400 audit(0.0:76368): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/o.room_manager2( 6088): type=1400 audit(0.0:76369): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/o.room_manager2( 6088): type=1400 audit(0.0:76370): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addDone productId=forthon:10000732 pending=2→1 done=1→2
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=forthon:10000732 reviewAverage=4.31 reviewCount=944 displayText=評価 ★4.3（944件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76771): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/OpenGLRenderer( 6088): Unable to match the desired swap behavior.
+W/o.room_manager2( 6088): type=1400 audit(0.0:76772): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/o.room_manager2( 6088): type=1400 audit(0.0:76773): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=addDone productId=luckyhill:10000105 pending=1→0 done=2→3
+I/flutter ( 6088): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=luckyhill:10000105 reviewAverage=4.7 reviewCount=2155 displayText=評価 ★4.7（2155件）
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76997): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/OpenGLRenderer( 6088): Unable to match the desired swap behavior.
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76998): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6088): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6088): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6088): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6088): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6088): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6088): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6088): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6088): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6088): type=1400 audit(0.0:76999): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c14,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6088): updateAcquireFence: Did not find frame.
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/Choreographer( 6088): Skipped 30 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher( 6088): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6088): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433\room_manager2_shot_002.png
+I/flutter ( 6088): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher( 6088): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6088): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433\room_manager2_shot_003.png
+I/flutter ( 6088): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6088): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+I/flutter ( 6088): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=3 filter= tab=candidate
+I/flutter ( 6088): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=3→3
+I/flutter ( 6088): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=3 filter= tab=
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260627_201433.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260627_201433.mp4 (48287517 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260627_201433\terminal_output_20260627_201433.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260627_201433.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260627_201433.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260627_201433.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260627_201433.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260627_201433.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
