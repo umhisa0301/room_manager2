@@ -165,5 +165,16 @@ void main() {
       expect(source, contains("buttonLabel: '投稿する'"));
       expect(source, isNot(contains("buttonLabel: '投稿へ'")));
     });
+
+    test('今日やることCTAは共通TextStyleで18px太字', () {
+      final source = File(
+        'lib/screens/home_placeholder_screen.dart',
+      ).readAsStringSync();
+      expect(source, contains('_homeTodayWorkCtaTextStyle'));
+      expect(source, contains('fontSize: 18'));
+      expect(source, contains('fontWeight: FontWeight.w700'));
+      expect(source, contains("buttonLabel: '探す'"));
+      expect(source, contains('textStyle: _homeTodayWorkCtaTextStyle'));
+    });
   });
 }

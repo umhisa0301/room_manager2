@@ -81,6 +81,18 @@ class OperationTutorialController extends ChangeNotifier {
     unawaited(_finish(skipped: true));
   }
 
+  /// ハイライト対象タップ時にガイドを閉じる（リプレイ時は永続化しない）。
+  Future<void> closeForTargetAction() async {
+    final flow = _activeFlow;
+    if (flow == null) return;
+    final id = flow.id;
+    final replay = _forceReplay;
+    _clearActive();
+    if (!replay) {
+      await _repository.dismiss(id: id);
+    }
+  }
+
   Future<void> _finish({bool completed = false, bool skipped = false}) async {
     final flow = _activeFlow;
     if (flow == null) return;

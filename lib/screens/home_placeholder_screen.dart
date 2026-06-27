@@ -1382,6 +1382,12 @@ class _HomeMetricCountText extends StatelessWidget {
 /// 2. 今日やること
 enum _HomeWorkPrimaryAction { recommendations, roomPost, searchMore }
 
+const _homeTodayWorkCtaTextStyle = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w700,
+  height: 1.15,
+);
+
 class _TodayRoomWorkCard extends StatelessWidget {
   const _TodayRoomWorkCard({
     required this.todayCandidateAddedCount,
@@ -1592,23 +1598,19 @@ class _TodayRoomWorkCard extends StatelessWidget {
                               backgroundColor: HomeScreenColors.homeAccentTeal,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
+                                horizontal: 12,
                                 vertical: 10,
                               ),
-                              minimumSize: const Size(96, 44),
+                              minimumSize: const Size(104, 44),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              textStyle: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                height: 1.15,
-                              ),
+                              textStyle: _homeTodayWorkCtaTextStyle,
                             ),
                             child: Text(
                               cta.buttonLabel,
-                              maxLines: 2,
+                              maxLines: 1,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                             ),
