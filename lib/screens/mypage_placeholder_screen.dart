@@ -213,9 +213,10 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
       ),
       body: SafeArea(
         top: false,
-        child: Consumer4<UserProfileProvider, SavedShopProvider,
-            EasyInitialSetupRepository, OperationTutorialRepository>(
-          builder: (context, profileProvider, saved, setup, tutorial, _) {
+        child: Consumer5<UserProfileProvider, SavedShopProvider,
+            EasyInitialSetupRepository, OperationTutorialRepository,
+            OperationTutorialController>(
+          builder: (context, profileProvider, saved, setup, tutorialRepo, tutorialCtl, _) {
             final profile = profileProvider.profile;
             final missingRoomUrl = !profile.hasRoomUrl;
             final showMyPageSetupCard =
@@ -244,10 +245,11 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             }
 
             final profileTutorialDismissed =
-                tutorial.isDismissed(OperationTutorialId.profile);
+                tutorialRepo.isDismissed(OperationTutorialId.profile);
+            final tutorialActive = tutorialCtl.isActive;
             final showSetupPrompt = showMyPageSetupCard &&
-                !_setupPromptDismissed &&
-                profileTutorialDismissed;
+                ((!_setupPromptDismissed && profileTutorialDismissed) ||
+                    tutorialActive);
 
             Widget buildRoomSettingsCard() {
               return MyPageRoomSettingsCard(

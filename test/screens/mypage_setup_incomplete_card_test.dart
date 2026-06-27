@@ -6,10 +6,12 @@ import 'package:room_manager2/repository/operation_tutorial_repository.dart';
 import 'package:room_manager2/repository/saved_shop_repository.dart';
 import 'package:room_manager2/repository/user_profile_repository.dart';
 import 'package:room_manager2/screens/mypage_placeholder_screen.dart';
+import 'package:room_manager2/state/operation_tutorial_controller.dart';
 import 'package:room_manager2/state/saved_shop_provider.dart';
 import 'package:room_manager2/state/user_profile_provider.dart';
 import 'package:room_manager2/repository/room_recommendation_profile_repository.dart';
 import 'package:room_manager2/state/room_recommendation_profile_provider.dart';
+import 'package:room_manager2/widgets/tutorial/tutorial_target_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _wrap({
@@ -31,6 +33,11 @@ Widget _wrap({
       ),
       ChangeNotifierProvider(
         create: (_) => OperationTutorialRepository(prefs),
+      ),
+      ChangeNotifierProvider(
+        create: (ctx) => OperationTutorialController(
+          ctx.read<OperationTutorialRepository>(),
+        ),
       ),
       ChangeNotifierProvider(
         create: (_) => RoomRecommendationProfileProvider(
@@ -64,6 +71,58 @@ void main() {
       await tester.pump();
 
       expect(find.text('設定を完了しましょう'), findsNothing);
+    });
+
+    testWidgets('shown while profile tutorial is active', (tester) async {
+      SharedPreferences.setMockInitialValues({
+        EasyInitialSetupRepository.completedKey: false,
+        OperationTutorialRepository.profileDismissedKey: false,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      late OperationTutorialController tutorialController;
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => UserProfileProvider(
+                repository: UserProfileRepository(prefs),
+              ),
+            ),
+            ChangeNotifierProvider(
+              create: (_) =>
+                  SavedShopProvider(repository: SavedShopRepository(prefs)),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => EasyInitialSetupRepository(prefs),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => OperationTutorialRepository(prefs),
+            ),
+            ChangeNotifierProvider(
+              create: (ctx) {
+                tutorialController = OperationTutorialController(
+                  ctx.read<OperationTutorialRepository>(),
+                );
+                return tutorialController;
+              },
+            ),
+            ChangeNotifierProvider(
+              create: (_) => RoomRecommendationProfileProvider(
+                repository: RoomRecommendationProfileRepository(prefs),
+              ),
+            ),
+          ],
+          child: const MaterialApp(home: MypagePlaceholderScreen()),
+        ),
+      );
+      await tester.pump();
+
+      tutorialController.startProfileTutorial(forceReplay: false);
+      await tester.pump();
+
+      expect(find.text('設定を完了しましょう'), findsOneWidget);
+      expect(find.byKey(TutorialTargetKeys.setupIncompleteCard), findsOneWidget);
     });
 
     testWidgets('shown when tutorial dismissed and setup incomplete', (

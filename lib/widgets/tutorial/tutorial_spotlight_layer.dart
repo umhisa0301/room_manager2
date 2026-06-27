@@ -34,15 +34,25 @@ class _TutorialSpotlightLayerState extends State<TutorialSpotlightLayer> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshTargetRect());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _prepareTarget());
   }
 
   @override
   void didUpdateWidget(covariant TutorialSpotlightLayer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.targetKey != widget.targetKey) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _refreshTargetRect());
+      WidgetsBinding.instance.addPostFrameCallback((_) => _prepareTarget());
     }
+  }
+
+  Future<void> _prepareTarget() async {
+    if (!mounted) return;
+    final key = widget.targetKey;
+    if (key != null) {
+      await ensureTargetVisible(key);
+      if (!mounted) return;
+    }
+    _refreshTargetRect();
   }
 
   void _refreshTargetRect() {
@@ -63,7 +73,10 @@ class _TutorialSpotlightLayerState extends State<TutorialSpotlightLayer> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // 視覚のみ。既存 UI のタップを妨げない。
+        ModalBarrier(
+          dismissible: false,
+          color: Colors.transparent,
+        ),
         IgnorePointer(
           child: CustomPaint(
             painter: _SpotlightPainter(

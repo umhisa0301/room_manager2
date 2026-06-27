@@ -45,6 +45,7 @@ import '../utils/rakuten_search_session_cache.dart';
 import '../utils/search_result_envelope.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
+import '../utils/rakuten_search_filter_summary.dart';
 import '../utils/room_sync_log.dart';
 import '../utils/shop_catalog_mapper.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
@@ -2217,50 +2218,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     final chips = <Widget>[];
     final accent = HomeScreenColors.homeAccentTeal;
-    final modeLabel = switch (_currentSearchModeSegment()) {
-      SearchModeSegment.product => '商品名',
-      SearchModeSegment.genre => 'ジャンル',
-      SearchModeSegment.savedShop => '保存ショップ',
-      SearchModeSegment.shopDiscovery => 'ショップ発掘',
-    };
-    chips.add(_searchSummaryChip(label: modeLabel, selected: true, accent: accent));
 
-    if (_sortLivesInResultsHeader(search)) {
-      final sort = _mode == _RakutenSearchMode.genre
-          ? _effectiveGenreSort()
-          : _effectiveKeywordSort();
-      chips.add(
-        _searchSummaryChip(
-          label: rakutenKeywordSearchSortHeaderLabel(sort),
-          accent: accent,
-        ),
-      );
-    }
-
-    if (_parseInt(_minReviewCountController.text) != null ||
-        _parseDouble(_minReviewAverageController.text) != null) {
-      final avg = _parseDouble(_minReviewAverageController.text);
-      final label = avg != null && avg >= 4
-          ? 'レビュー4以上'
-          : 'レビューあり';
-      chips.add(_searchSummaryChip(label: label, accent: accent));
-    }
-    if (_excludeKeywordController.text.trim().isNotEmpty) {
-      chips.add(_searchSummaryChip(label: '除外条件あり', accent: accent));
-    }
+    final hasReviewFilter =
+        _parseInt(_minReviewCountController.text) != null ||
+        _parseDouble(_minReviewAverageController.text) != null;
+    final avg = _parseDouble(_minReviewAverageController.text);
     final min = _parseInt(_minPriceController.text);
     final max = _parseInt(_maxPriceController.text);
-    if (min != null || max != null) {
-      chips.add(
-        _searchSummaryChip(
-          label: _priceRangeSummaryLine(),
-          accent: accent,
-        ),
-      );
+    for (final label in rakutenSearchFilterSummaryChipLabels(
+      hasReviewFilter: hasReviewFilter,
+      reviewAverageAtLeastFour: avg != null && avg >= 4,
+      hasExcludeKeyword: _excludeKeywordController.text.trim().isNotEmpty,
+      hasPriceRange: min != null || max != null,
+      priceRangeLabel: _priceRangeSummaryLine(),
+    )) {
+      chips.add(_searchSummaryChip(label: label, accent: accent));
     }
 
     return chips;
   }
+
 
   Widget _searchSummaryChip({
     required String label,

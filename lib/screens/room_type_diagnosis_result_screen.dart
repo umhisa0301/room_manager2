@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data/room_type_definitions.dart';
 import '../models/room_recommendation_profile.dart';
+import '../navigation/app_shell_controller.dart';
 import '../services/room_diagnosis_service.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
@@ -32,7 +34,9 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
       priorityRuleIds: profile.priorityRuleIds,
     );
 
-    return Scaffold(
+    return PopScope(
+      canPop: true,
+      child: Scaffold(
       backgroundColor: MyPageScreenUi.canvas,
       appBar: AppBar(
         title: const Text('診断結果'),
@@ -100,22 +104,31 @@ class RoomTypeDiagnosisResultScreen extends StatelessWidget {
             ],
             const SizedBox(height: 28),
             MyPagePrimaryButton(
+              key: const Key('diagnosis_result_go_home'),
               label: 'ホームへ戻る',
               onPressed: () => _goHome(context),
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: () => _goHome(context),
+              key: const Key('diagnosis_result_go_mypage'),
+              onPressed: () => _goMyPage(context),
               style: MyPageScreenUi.outlineButtonStyle(height: 48),
               child: const Text('マイページへ戻る'),
             ),
           ],
         ),
       ),
+    ),
     );
   }
 
   void _goHome(BuildContext context) {
+    context.read<AppShellController>().selectTab(0);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _goMyPage(BuildContext context) {
+    context.read<AppShellController>().selectTab(4);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

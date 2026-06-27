@@ -491,6 +491,7 @@ class MyPageSetupIncompleteCard extends StatelessWidget {
     final progress = completedCount / stepDone.length;
 
     return MyPageCard(
+      key: TutorialTargetKeys.setupIncompleteCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

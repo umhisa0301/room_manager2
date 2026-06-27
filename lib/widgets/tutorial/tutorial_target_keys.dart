@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// 操作ガイドのハイライト対象ウィジェット用 Key（一元管理）。
 abstract final class TutorialTargetKeys {
+  static const setupIncompleteCard = Key('tutorial_mypage_setup_incomplete_card');
   static const roomSettingsCard = Key('tutorial_mypage_room_settings_card');
   static const roomTypeDiagnosisCard = Key('tutorial_mypage_room_type_diagnosis_card');
   static const nicknameRow = Key('tutorial_mypage_nickname_row');
