@@ -49,11 +49,6 @@ class CommonDraggableEdgeFab extends StatefulWidget {
   /// FAB 上端の Y（body 左上基準）
   static const String prefTop = 'room_fab_dy';
 
-  static const String prefDragHintSeen = 'room_fab_drag_hint_seen_v1';
-
-/// 初回のみ「×で半収納」ヒントを表示したか
-  static const String prefChevronHintSeen = 'room_fab_chevron_hint_seen_v1';
-
   /// コメントタブの＋FAB（正方形の一辺）
   static const double plusFabSize = 56;
 
@@ -74,7 +69,6 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   void initState() {
     super.initState();
     _loadPrefs();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowFirstHint());
   }
 
   double _minTop(double topInset) =>
@@ -121,23 +115,6 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
     try {
       final p = await SharedPreferences.getInstance();
       await p.setDouble(CommonDraggableEdgeFab.prefTop, t);
-    } catch (_) {}
-  }
-
-  Future<void> _maybeShowFirstHint() async {
-    try {
-      final p = await SharedPreferences.getInstance();
-      if (!mounted) return;
-      if (p.getBool(CommonDraggableEdgeFab.prefDragHintSeen) == true) {
-        return;
-      }
-      await p.setBool(CommonDraggableEdgeFab.prefDragHintSeen, true);
-      if (!mounted) return;
-      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        const SnackBar(
-          content: Text('コメントへ移動。長押しで位置を調整できます'),
-        ),
-      );
     } catch (_) {}
   }
 
