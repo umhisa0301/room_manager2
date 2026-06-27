@@ -1,43 +1,36 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/profile_tutorial_targets.dart';
-import 'package:room_manager2/widgets/tutorial/tutorial_target_keys.dart';
+import 'package:room_manager2/models/operation_tutorial_target_action_id.dart';
 
 void main() {
-  group('resolveProfileTutorialStepTargetKey', () {
-    test('未設定時 step0 は設定完了カード', () {
+  group('resolveProfileTutorialStepTargetAction', () {
+    test('未設定時 step0 は profileSetup', () {
       expect(
-        resolveProfileTutorialStepTargetKey(
+        resolveProfileTutorialStepTargetAction(
           stepIndex: 0,
           showMyPageSetupCard: true,
         ),
-        TutorialTargetKeys.setupIncompleteCard,
+        OperationTutorialTargetActionId.profileSetup,
       );
     });
 
-    test('設定済み時 step0 は ROOMプロフィールカード', () {
+    test('設定済み step0 は profileEdit', () {
       expect(
-        resolveProfileTutorialStepTargetKey(
+        resolveProfileTutorialStepTargetAction(
           stepIndex: 0,
           showMyPageSetupCard: false,
         ),
-        TutorialTargetKeys.roomSettingsCard,
+        OperationTutorialTargetActionId.profileEdit,
       );
     });
 
-    test('step1 は ROOMタイプ診断カード', () {
+    test('step1 は roomTypeDiagnosis', () {
       expect(
-        resolveProfileTutorialStepTargetKey(
-          stepIndex: 1,
-          showMyPageSetupCard: true,
-        ),
-        TutorialTargetKeys.roomTypeDiagnosisCard,
-      );
-      expect(
-        resolveProfileTutorialStepTargetKey(
+        resolveProfileTutorialStepTargetAction(
           stepIndex: 1,
           showMyPageSetupCard: false,
         ),
-        TutorialTargetKeys.roomTypeDiagnosisCard,
+        OperationTutorialTargetActionId.roomTypeDiagnosis,
       );
     });
   });

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/profile_tutorial_actions.dart';
 import '../../config/profile_tutorial_targets.dart';
 import '../../models/operation_tutorial_id.dart';
+import '../../models/operation_tutorial_target_action_id.dart';
 import '../../repository/easy_initial_setup_repository.dart';
 import '../../state/operation_tutorial_controller.dart';
 import '../../state/user_profile_provider.dart';
@@ -33,6 +35,35 @@ class TutorialOverlayHost extends StatelessWidget {
     );
   }
 
+  OperationTutorialTargetActionId? _resolveTargetAction(
+    BuildContext context,
+    OperationTutorialController tutorial,
+  ) {
+    final step = tutorial.currentStep;
+    if (step == null) return null;
+    if (tutorial.activeFlow?.id == OperationTutorialId.profile) {
+      final profile = context.read<UserProfileProvider>().profile;
+      final setup = context.read<EasyInitialSetupRepository>();
+      final showMyPageSetupCard =
+          !setup.initialSetupCompleted && !profile.hasRoomUrl;
+      return resolveProfileTutorialStepTargetAction(
+        stepIndex: tutorial.stepIndex,
+        showMyPageSetupCard: showMyPageSetupCard,
+      );
+    }
+    return step.targetActionId;
+  }
+
+  Future<void> _handleTargetTap(
+    BuildContext context,
+    OperationTutorialController tutorial,
+    OperationTutorialTargetActionId action,
+  ) async {
+    await tutorial.closeForTargetAction();
+    if (!context.mounted) return;
+    await executeProfileTutorialTargetAction(context, action);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<OperationTutorialController>(
@@ -42,10 +73,11 @@ class TutorialOverlayHost extends StatelessWidget {
           return child;
         }
         final targetKey = _resolveTargetKey(context, tutorial);
+        final targetAction = _resolveTargetAction(context, tutorial);
         return Stack(
           fit: StackFit.expand,
           children: [
-            AbsorbPointer(child: child),
+            child,
             TutorialSpotlightLayer(
               key: ValueKey<Object?>(
                 '${tutorial.stepIndex}:${targetKey?.toString() ?? ''}',
@@ -57,6 +89,9 @@ class TutorialOverlayHost extends StatelessWidget {
               isLastStep: tutorial.isLastStep,
               onNext: tutorial.nextStep,
               onSkip: tutorial.skip,
+              onTargetTap: targetAction == null
+                  ? null
+                  : () => _handleTargetTap(context, tutorial, targetAction),
             ),
           ],
         );

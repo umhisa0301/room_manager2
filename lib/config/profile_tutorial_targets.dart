@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../models/operation_tutorial_target_action_id.dart';
 import '../widgets/tutorial/tutorial_target_keys.dart';
 
 /// プロフィール操作ガイドのステップごとに、マイページ状態に応じたハイライト Key を返す。
@@ -14,6 +15,23 @@ Key? resolveProfileTutorialStepTargetKey({
           : TutorialTargetKeys.roomSettingsCard;
     case 1:
       return TutorialTargetKeys.roomTypeDiagnosisCard;
+    default:
+      return null;
+  }
+}
+
+/// プロフィール操作ガイドのステップごとに、マイページ状態に応じた targetAction を返す。
+OperationTutorialTargetActionId? resolveProfileTutorialStepTargetAction({
+  required int stepIndex,
+  required bool showMyPageSetupCard,
+}) {
+  switch (stepIndex) {
+    case 0:
+      return showMyPageSetupCard
+          ? OperationTutorialTargetActionId.profileSetup
+          : OperationTutorialTargetActionId.profileEdit;
+    case 1:
+      return OperationTutorialTargetActionId.roomTypeDiagnosis;
     default:
       return null;
   }

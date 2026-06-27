@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'tutorial_target_locator.dart';
 import 'tutorial_tooltip_card.dart';
 
-/// ハイライト＋説明カード。タップは基本的に透過し、説明カードのみ操作可能。
+/// スポットライトのハイライト余白（描画とタップ領域で共有）。
+const tutorialSpotlightHighlightPadding = 8.0;
+
+/// ハイライト＋説明カード。背面操作は暗幕でブロックし、対象領域はオーバーレイ側で代行する。
 class TutorialSpotlightLayer extends StatefulWidget {
   const TutorialSpotlightLayer({
     super.key,
@@ -14,6 +17,7 @@ class TutorialSpotlightLayer extends StatefulWidget {
     required this.isLastStep,
     required this.onNext,
     required this.onSkip,
+    this.onTargetTap,
   });
 
   final Key? targetKey;
@@ -23,6 +27,7 @@ class TutorialSpotlightLayer extends StatefulWidget {
   final bool isLastStep;
   final VoidCallback onNext;
   final VoidCallback onSkip;
+  final VoidCallback? onTargetTap;
 
   @override
   State<TutorialSpotlightLayer> createState() => _TutorialSpotlightLayerState();
@@ -40,7 +45,8 @@ class _TutorialSpotlightLayerState extends State<TutorialSpotlightLayer> {
   @override
   void didUpdateWidget(covariant TutorialSpotlightLayer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.targetKey != widget.targetKey) {
+    if (oldWidget.targetKey != widget.targetKey ||
+        oldWidget.onTargetTap != widget.onTargetTap) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _prepareTarget());
     }
   }
@@ -68,12 +74,14 @@ class _TutorialSpotlightLayerState extends State<TutorialSpotlightLayer> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final bottomInset = media.padding.bottom + 72;
-  final tooltipBottom = bottomInset + 8;
+    final tooltipBottom = bottomInset + 8;
+    final targetRect = _targetRect;
+    final onTargetTap = widget.onTargetTap;
 
     return Stack(
       fit: StackFit.expand,
       children: [
-        ModalBarrier(
+        const ModalBarrier(
           dismissible: false,
           color: Colors.transparent,
         ),
@@ -81,11 +89,21 @@ class _TutorialSpotlightLayerState extends State<TutorialSpotlightLayer> {
           child: CustomPaint(
             painter: _SpotlightPainter(
               screenSize: media.size,
-              targetRect: _targetRect,
+              targetRect: targetRect,
             ),
             child: const SizedBox.expand(),
           ),
         ),
+        if (targetRect != null && onTargetTap != null)
+          Positioned.fromRect(
+            rect: targetRect.inflate(tutorialSpotlightHighlightPadding),
+            child: GestureDetector(
+              key: const Key('tutorial_target_tap_area'),
+              behavior: HitTestBehavior.opaque,
+              onTap: onTargetTap,
+              child: const SizedBox.expand(),
+            ),
+          ),
         Positioned(
           left: 16,
           right: 16,
@@ -114,7 +132,6 @@ class _SpotlightPainter extends CustomPainter {
   final Rect? targetRect;
 
   static const _overlayColor = Color(0x99000000);
-  static const _highlightPadding = 8.0;
   static const _highlightRadius = 12.0;
 
   @override
@@ -122,10 +139,10 @@ class _SpotlightPainter extends CustomPainter {
     final overlayPath = Path()
       ..addRect(Rect.fromLTWH(0, 0, screenSize.width, screenSize.height));
 
-  Path clipPath = overlayPath;
+    Path clipPath = overlayPath;
     final rect = targetRect;
     if (rect != null) {
-      final padded = rect.inflate(_highlightPadding);
+      final padded = rect.inflate(tutorialSpotlightHighlightPadding);
       final hole = RRect.fromRectAndRadius(
         padded,
         const Radius.circular(_highlightRadius),
@@ -140,7 +157,7 @@ class _SpotlightPainter extends CustomPainter {
     canvas.drawPath(clipPath, Paint()..color = _overlayColor);
 
     if (rect != null) {
-      final padded = rect.inflate(_highlightPadding);
+      final padded = rect.inflate(tutorialSpotlightHighlightPadding);
       final border = RRect.fromRectAndRadius(
         padded,
         const Radius.circular(_highlightRadius),
