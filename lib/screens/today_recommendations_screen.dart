@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
 import '../services/recommendation_generation_limit.dart';
+import '../navigation/app_shell_controller.dart';
 import '../services/batch_candidate_add_availability.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -24,7 +25,6 @@ import '../widgets/app_button.dart';
 import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
-import '../widgets/search_bulk_selection_header.dart';
 import '../utils/product_price_display.dart';
 import '../utils/product_card_rakuten_open.dart';
 import '../widgets/monetization/monetization_ad_slot.dart';
@@ -41,10 +41,6 @@ class TodayRecommendationsScreen extends StatefulWidget {
 
 class _TodayRecommendationsScreenState
     extends State<TodayRecommendationsScreen> with WidgetsBindingObserver {
-  final Set<String> _selectedProductIds = <String>{};
-  bool _isBulkAdding = false;
-  int _bulkProcessed = 0;
-  int _bulkTotal = 0;
   Timer? _regenerateUiRefreshTimer;
 
   @override
@@ -115,107 +111,6 @@ class _TodayRecommendationsScreenState
     );
   }
 
-  Future<void> _bulkAddCandidates(
-    BuildContext context,
-    List<TodayRecommendationEntry> selectable,
-  ) async {
-    if (_isBulkAdding || _selectedProductIds.isEmpty) return;
-    final batchAddState = resolveBatchCandidateAddAvailability();
-    if (!batchAddState.allowed) {
-      _showBatchAddLockedMessage(context, batchAddState);
-      return;
-    }
-    final bulkCtl = context.read<BulkOperationStateController>();
-    if (bulkCtl.isRoomTourSearchBlocking) {
-      bulkCtl.guardBlockingOperations(context);
-      return;
-    }
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('候補にまとめて追加'),
-        content: const Text(
-          '選択した商品を候補に追加します。登録中は他の商品登録を一時停止します。よろしいですか？',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            style: TodayRecommendationsScreenUi.dismissTextButtonStyle(),
-            child: const Text('キャンセル'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: TodayRecommendationsScreenUi.primaryButtonStyle(height: 40),
-            child: const Text('開始する'),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-    final targets = selectable
-        .where((e) => _selectedProductIds.contains(e.item.productId))
-        .toList(growable: false);
-    if (kDebugMode) {
-      debugPrint(
-        '[TODAY_RECOMMEND_BULK_ADD_START] selected=${targets.length}',
-      );
-    }
-    bulkCtl.setBulkCandidateRegistering(true);
-    setState(() {
-      _isBulkAdding = true;
-      _bulkProcessed = 0;
-      _bulkTotal = targets.length;
-    });
-    var success = 0;
-    var alreadyAdded = 0;
-    var failed = 0;
-    final rec = context.read<TodayRecommendationProvider>();
-    final managed = context.read<RakutenManagedProductProvider>();
-    try {
-      for (var i = 0; i < targets.length; i++) {
-        if (!mounted) break;
-        setState(() => _bulkProcessed = i);
-        final entry = targets[i];
-        final err = await rec.markAddedCandidate(
-          managedProvider: managed,
-          item: entry.item,
-        );
-        if (err == null) {
-          success++;
-        } else if (err.contains('登録済') || err.contains('候補')) {
-          alreadyAdded++;
-        } else {
-          failed++;
-        }
-      }
-    } finally {
-      bulkCtl.setBulkCandidateRegistering(false);
-      if (mounted) {
-        setState(() {
-          _isBulkAdding = false;
-          _bulkProcessed = _bulkTotal;
-          _selectedProductIds.clear();
-        });
-      }
-    }
-    if (kDebugMode) {
-      debugPrint(
-        '[TODAY_RECOMMEND_BULK_ADD_RESULT] success=$success '
-        'alreadyAdded=$alreadyAdded failed=$failed',
-      );
-    }
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '候補に追加しました（$success件）'
-          '${alreadyAdded > 0 ? '・登録済み $alreadyAdded件' : ''}'
-          '${failed > 0 ? '・失敗 $failed件' : ''}',
-        ),
-      ),
-    );
-  }
-
   Future<void> _regenerate() async {
     if (!mounted) return;
     final recommender = context.read<TodayRecommendationProvider>();
@@ -258,20 +153,6 @@ class _TodayRecommendationsScreenState
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         key: const Key('today_recommendation_generation_limit_snackbar'),
-        content: Text(body),
-        duration: const Duration(seconds: 6),
-      ),
-    );
-  }
-
-  void _showBatchAddLockedMessage(
-    BuildContext context,
-    BatchCandidateAddAvailabilityState state,
-  ) {
-    final body = buildBatchCandidateAddLockedBody(state);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        key: const Key('today_recommendation_bulk_add_locked_snackbar'),
         content: Text(body),
         duration: const Duration(seconds: 6),
       ),
@@ -353,11 +234,11 @@ class _TodayRecommendationsScreenState
               entries: bundle.entries,
               savedShopCount: savedShopCount,
             );
-            final selectable = visibleEntries
+            final pendingCount = visibleEntries
                 .where(
                   (e) => e.decision == TodayRecommendationDecision.pending,
                 )
-                .toList(growable: false);
+                .length;
             final alreadyAdded = bundle.entries
                 .where(
                   (e) =>
@@ -370,33 +251,14 @@ class _TodayRecommendationsScreenState
             if (kDebugMode) {
               debugPrint(
                 '[TODAY_RECOMMEND_SELECTION_RENDER] total=${bundle.entries.length} '
-                'selectable=${selectable.length} selected=${_selectedProductIds.length} '
-                'alreadyAdded=$alreadyAdded skipped=$skipped',
-              );
-            }
-            if (kDebugMode) {
-              debugPrint(
-                '[TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=${selectable.isNotEmpty} '
-                'checkboxShape=square selectedCount=${_selectedProductIds.length} '
-                'bulkButtonVisible=${_selectedProductIds.isNotEmpty}',
+                'pending=$pendingCount alreadyAdded=$alreadyAdded skipped=$skipped',
               );
             }
             final regenerateUi = rec.regenerateButtonUiState();
             final batchAddState = resolveBatchCandidateAddAvailability();
-            final bulkSelectAllowed =
-                batchAddState.allowed && selectable.isNotEmpty;
             rec.logRegenerateButtonState(trigger: 'resultRender');
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
-              final visibleIds =
-                  selectable.map((e) => e.item.productId).toSet();
-              if (_selectedProductIds.any((id) => !visibleIds.contains(id))) {
-                setState(() {
-                  _selectedProductIds.removeWhere(
-                    (id) => !visibleIds.contains(id),
-                  );
-                });
-              }
               _syncRegenerateUiRefresh();
             });
             return KeyedSubtree(
@@ -412,41 +274,11 @@ class _TodayRecommendationsScreenState
                   placement: MonetizationAdPlacement
                       .todayRecommendationSummaryBanner,
                 ),
-                if (bulkSelectAllowed)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
-                    child: SearchBulkSelectionHeader(
-                      key: const Key('today_recommendation_bulk_selection_header'),
-                      screen: 'todayRecommendations',
-                      selectedCount: _selectedProductIds.length,
-                      totalSelectable: selectable.length,
-                      enabled: !_isBulkAdding,
-                      onToggleAll: (selectAll) {
-                        setState(() {
-                          if (selectAll) {
-                            _selectedProductIds
-                              ..clear()
-                              ..addAll(
-                                selectable.map((e) => e.item.productId),
-                              );
-                          } else {
-                            _selectedProductIds.clear();
-                          }
-                        });
-                        if (kDebugMode) {
-                          debugPrint(
-                            '[TODAY_RECOMMEND_SELECT_ALL] checked=$selectAll '
-                            'selected=${_selectedProductIds.length}',
-                          );
-                        }
-                      },
-                    ),
-                  )
-                else if (selectable.isNotEmpty &&
+                if (pendingCount > 0 &&
                     batchAddState.limitsEnforcementEnabled &&
                     !batchAddState.allowed)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
                     child: Text(
                       batchCandidateAddLockedMessage(),
                       key: const Key('today_recommendation_bulk_add_locked_hint'),
@@ -458,64 +290,23 @@ class _TodayRecommendationsScreenState
                   ),
                 Expanded(
                   child: ListView.builder(
-                    padding: EdgeInsets.fromLTRB(
-                      20,
-                      0,
-                      20,
-                      _selectedProductIds.isNotEmpty ? 88 : 24,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
                     itemCount: rows.length,
                     itemBuilder: (context, index) {
                       final row = rows[index];
                       if (row.section != null) {
                         return _RecommendationSectionHeader(
                           section: row.section!,
-                          topPadding: index == 0 ? 0 : 6,
+                          topPadding: index == 0 ? 2 : 8,
                         );
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: _RecommendationCard(
-                          entry: row.entry!,
-                          bulkSelectEnabled: bulkSelectAllowed &&
-                              row.entry!.decision ==
-                                  TodayRecommendationDecision.pending,
-                          isSelected: _selectedProductIds
-                              .contains(row.entry!.item.productId),
-                          onToggleSelected: () {
-                            final id = row.entry!.item.productId;
-                            setState(() {
-                              if (_selectedProductIds.contains(id)) {
-                                _selectedProductIds.remove(id);
-                              } else {
-                                _selectedProductIds.add(id);
-                              }
-                            });
-                          },
-                        ),
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _RecommendationCard(entry: row.entry!),
                       );
                     },
                   ),
                 ),
-                if (_selectedProductIds.isNotEmpty && batchAddState.allowed)
-                  SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                      child: MyPagePrimaryButton(
-                        key: const Key('today_recommendation_bulk_add_button'),
-                        label: _isBulkAdding
-                            ? '追加中…（$_bulkProcessed/$_bulkTotal）'
-                            : 'まとめて候補に追加（${_selectedProductIds.length}件）',
-                        icon: const Icon(Icons.playlist_add_check_rounded),
-                        isLoading: _isBulkAdding,
-                        height: 48,
-                        onPressed: _isBulkAdding
-                            ? null
-                            : () => _bulkAddCandidates(context, selectable),
-                      ),
-                    ),
-                  ),
               ],
             ),
             );
@@ -565,7 +356,7 @@ class _RecommendationSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 4),
+      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 6),
       child: Text(
         _sectionTitle(section),
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -651,43 +442,20 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _RecommendationCard extends StatelessWidget {
-  const _RecommendationCard({
-    required this.entry,
-    this.bulkSelectEnabled = false,
-    this.isSelected = false,
-    this.onToggleSelected,
-  });
+  const _RecommendationCard({required this.entry});
 
   final TodayRecommendationEntry entry;
-  final bool bulkSelectEnabled;
-  final bool isSelected;
-  final VoidCallback? onToggleSelected;
 
   @override
   Widget build(BuildContext context) {
     final item = entry.item;
     return AppCard(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       radius: 16,
       elevated: true,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (bulkSelectEnabled)
-            Padding(
-              padding: const EdgeInsets.only(right: 0, top: 0),
-              child: SizedBox(
-                width: 36,
-                height: 36,
-                child: Checkbox(
-                  value: isSelected,
-                  onChanged: (_) => onToggleSelected?.call(),
-                  activeColor: TodayRecommendationsScreenUi.primary,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                ),
-              ),
-            ),
           _ProductImageWithStatus(entry: entry),
           const SizedBox(width: 10),
           Expanded(
@@ -719,7 +487,7 @@ class _RecommendationCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 5),
                 Text(
                   ProductPriceDisplay.formatYen(item.itemPrice),
                   maxLines: 1,
@@ -730,7 +498,7 @@ class _RecommendationCard extends StatelessWidget {
                     height: 1.08,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 4),
                 Text(
                   '評価 ${item.reviewAverage.toStringAsFixed(2)} / 評価数 ${item.reviewCount}',
                   maxLines: 1,
@@ -740,10 +508,10 @@ class _RecommendationCard extends StatelessWidget {
                     height: 1.18,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 6),
                 _RecommendationTagWrap(entry: entry),
-                const SizedBox(height: 8),
-                _ActionRow(entry: entry),
+                const SizedBox(height: 10),
+                _CardActionArea(entry: entry),
               ],
             ),
           ),
@@ -757,16 +525,21 @@ enum _CompactActionStyle { primary, secondary, weak }
 
 class _CompactActionButton extends StatelessWidget {
   const _CompactActionButton({
+    super.key,
     required this.label,
     required this.style,
     required this.onPressed,
     this.icon,
+    this.expand = false,
+    this.semanticLabel,
   });
 
   final String label;
   final _CompactActionStyle style;
   final VoidCallback? onPressed;
   final IconData? icon;
+  final bool expand;
+  final String? semanticLabel;
 
   static const double _minHeight = 40;
 
@@ -790,44 +563,52 @@ class _CompactActionButton extends StatelessWidget {
         : _isSecondary
         ? TodayRecommendationsScreenUi.primaryBorder
         : AppColors.divider.withValues(alpha: 0.82);
-    return SizedBox(
-      height: _minHeight,
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          foregroundColor: foreground,
-          disabledForegroundColor: _isPrimary
-              ? AppColors.textOnAccent.withValues(alpha: 0.55)
-              : AppColors.textSecondary,
-          backgroundColor: background,
-          disabledBackgroundColor: AppColors.surfaceVariant,
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          minimumSize: const Size(0, _minHeight),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: border, width: _isSecondary ? 1.5 : 1),
-          ),
-          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-            fontSize: 12,
-            letterSpacing: -0.2,
-          ),
+    final button = TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: foreground,
+        disabledForegroundColor: _isPrimary
+            ? AppColors.textOnAccent.withValues(alpha: 0.55)
+            : AppColors.textSecondary,
+        backgroundColor: background,
+        disabledBackgroundColor: AppColors.surfaceVariant,
+        padding: EdgeInsets.symmetric(
+          horizontal: expand ? 12 : 8,
+          vertical: 8,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 14),
-              const SizedBox(width: 3),
-            ],
-            Flexible(
-              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
-            ),
-          ],
+        minimumSize: Size(expand ? double.infinity : 0, _minHeight),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: border, width: _isSecondary ? 1.5 : 1),
+        ),
+        textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+          fontWeight: FontWeight.w800,
+          fontSize: 13,
         ),
       ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 16),
+            const SizedBox(width: 4),
+          ],
+          Text(label, maxLines: 1, softWrap: false),
+        ],
+      ),
+    );
+    final sized = SizedBox(
+      width: expand ? double.infinity : null,
+      height: _minHeight,
+      child: button,
+    );
+    if (semanticLabel == null) return sized;
+    return Semantics(
+      button: true,
+      label: semanticLabel,
+      child: sized,
     );
   }
 }
@@ -885,94 +666,151 @@ class _ProductTag extends StatelessWidget {
   }
 }
 
-class _ActionRow extends StatelessWidget {
-  const _ActionRow({required this.entry});
+class _CardActionArea extends StatefulWidget {
+  const _CardActionArea({required this.entry});
 
   final TodayRecommendationEntry entry;
 
   @override
+  State<_CardActionArea> createState() => _CardActionAreaState();
+}
+
+class _CardActionAreaState extends State<_CardActionArea> {
+  bool _isAddingCandidate = false;
+
+  TodayRecommendationEntry get entry => widget.entry;
+
+  bool get _isPending =>
+      entry.decision == TodayRecommendationDecision.pending && !_isAddingCandidate;
+
+  bool get _isAdded =>
+      entry.decision == TodayRecommendationDecision.addedCandidate;
+
+  bool get _canSkip => entry.decision == TodayRecommendationDecision.pending;
+
+  void _openPostManagement(BuildContext context) {
+    final shell = context.read<AppShellController>();
+    final nav = Navigator.of(context);
+    nav.pop();
+    shell.openRoomCollect(
+      initialTabIndex: 0,
+      focusCandidateProductId: entry.item.productId,
+    );
+  }
+
+  Future<void> _addCandidate(BuildContext context) async {
+    if (_isAddingCandidate || !_isPending) return;
+    final bulk = context.read<BulkOperationStateController>();
+    if (bulk.isRoomTourSearchBlocking) {
+      roomSyncUiGuardLog(
+        'blockedAction=recommendCandidateAdd '
+        'currentJob=${bulk.roomTourBlockingJobLabel} '
+        'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
+      );
+      bulk.guardBlockingOperations(context);
+      return;
+    }
+    setState(() => _isAddingCandidate = true);
+    final rec = context.read<TodayRecommendationProvider>();
+    final managed = context.read<RakutenManagedProductProvider>();
+    final err = await rec.markAddedCandidate(
+      managedProvider: managed,
+      item: entry.item,
+    );
+    if (!mounted) return;
+    setState(() => _isAddingCandidate = false);
+    if (err != null) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('候補に追加できませんでした'),
+          content: Text(err),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('候補に追加しました')),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final enabled = entry.decision == TodayRecommendationDecision.pending;
     return Consumer<BulkOperationStateController>(
       builder: (context, bulk, _) {
         final syncLocked = bulk.isRoomTourSearchBlocking;
-        return Row(
+        return Column(
+          key: const Key('today_recommendation_card_cta'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 5,
-              child: _CompactActionButton(
-                label: '楽天で見る',
-                style: _CompactActionStyle.secondary,
-                onPressed: () {
-                  AppActionService.openUrl(
-                    context,
-                    url: entry.item.browserLaunchUrl,
-                  );
-                },
-              ),
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-              flex: 6,
-              child: _CompactActionButton(
-                label: '候補に追加',
-                icon: Icons.add_rounded,
+            if (_isPending || _isAddingCandidate)
+              _CompactActionButton(
+                key: const Key('today_recommendation_add_candidate_button'),
+                label: _isAddingCandidate ? '追加中…' : '候補に追加',
+                icon: _isAddingCandidate ? null : Icons.add_rounded,
                 style: _CompactActionStyle.primary,
-                onPressed: !enabled
-                    ? null
-                    : syncLocked
-                    ? () {
-                        roomSyncUiGuardLog(
-                          'blockedAction=recommendCandidateAdd '
-                          'currentJob=${bulk.roomTourBlockingJobLabel} '
-                          'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
-                        );
-                        bulk.guardBlockingOperations(context);
-                      }
-                    : () async {
-                        final rec = context.read<TodayRecommendationProvider>();
-                        final managed = context
-                            .read<RakutenManagedProductProvider>();
-                        final err = await rec.markAddedCandidate(
-                          managedProvider: managed,
-                          item: entry.item,
-                        );
-                        if (!context.mounted) return;
-                        if (err != null) {
-                          await showDialog<void>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text('候補に追加できませんでした'),
-                              content: Text(err),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(ctx).pop(),
-                                  child: const Text('閉じる'),
-                                ),
-                              ],
-                            ),
-                          );
-                          return;
-                        }
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
-                      },
+                expand: true,
+                onPressed: _isAddingCandidate || syncLocked
+                    ? syncLocked && !_isAddingCandidate
+                        ? () {
+                            roomSyncUiGuardLog(
+                              'blockedAction=recommendCandidateAdd '
+                              'currentJob=${bulk.roomTourBlockingJobLabel} '
+                              'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
+                            );
+                            bulk.guardBlockingOperations(context);
+                          }
+                        : null
+                    : () => _addCandidate(context),
+              )
+            else if (_isAdded)
+              _CompactActionButton(
+                key: const Key('today_recommendation_post_button'),
+                label: '投稿する',
+                style: _CompactActionStyle.primary,
+                expand: true,
+                semanticLabel: 'today_recommendation_post_button',
+                onPressed: () => _openPostManagement(context),
               ),
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-              flex: 4,
-              child: _CompactActionButton(
-                label: '見送る',
-                style: _CompactActionStyle.weak,
-                onPressed: enabled
-                    ? () async {
-                        final rec = context.read<TodayRecommendationProvider>();
-                        await rec.markSkipped(entry.item.productId);
-                      }
-                    : null,
-              ),
+            if (_isPending || _isAddingCandidate || _isAdded)
+              const SizedBox(height: 6),
+            Row(
+              children: [
+                Expanded(
+                  child: _CompactActionButton(
+                    key: const Key('today_recommendation_open_rakuten_button'),
+                    label: '楽天で見る',
+                    style: _CompactActionStyle.secondary,
+                    onPressed: () {
+                      AppActionService.openUrl(
+                        context,
+                        url: entry.item.browserLaunchUrl,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _CompactActionButton(
+                    key: const Key('today_recommendation_skip_button'),
+                    label: '見送る',
+                    style: _CompactActionStyle.weak,
+                    onPressed: _canSkip
+                        ? () async {
+                            final rec =
+                                context.read<TodayRecommendationProvider>();
+                            await rec.markSkipped(entry.item.productId);
+                          }
+                        : null,
+                  ),
+                ),
+              ],
             ),
           ],
         );

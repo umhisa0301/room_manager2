@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/monetization_config.dart';
 import 'package:room_manager2/config/monetization_plan_config.dart';
 import 'package:room_manager2/services/batch_candidate_add_availability.dart';
-import 'package:room_manager2/widgets/search_bulk_selection_header.dart';
 
 MonetizationFlagSnapshot _limitsOnFlags() => resolveMonetizationFlags(
       monetizationEnabled: true,
@@ -29,7 +28,7 @@ void main() {
           home: Scaffold(
             body: _BulkAddUiProbe(
               batchAddState: state,
-              selectableCount: 3,
+              pendingCount: 3,
             ),
           ),
         ),
@@ -41,7 +40,7 @@ void main() {
       expect(find.byKey(const Key('today_recommendation_bulk_add_button')), findsNothing);
     });
 
-    testWidgets('limits off shows bulk header and no lock hint', (tester) async {
+    testWidgets('limits off hides bulk header and lock hint', (tester) async {
       final offFlags = resolveMonetizationFlags(
         monetizationEnabled: true,
         adsEnabled: false,
@@ -60,19 +59,18 @@ void main() {
           home: Scaffold(
             body: _BulkAddUiProbe(
               batchAddState: state,
-              selectableCount: 3,
-              selectedCount: 2,
+              pendingCount: 3,
             ),
           ),
         ),
       );
 
-      expect(find.byKey(const Key('today_recommendation_bulk_selection_header')), findsOneWidget);
+      expect(find.byKey(const Key('today_recommendation_bulk_selection_header')), findsNothing);
       expect(find.byKey(const Key('today_recommendation_bulk_add_locked_hint')), findsNothing);
-      expect(find.byKey(const Key('today_recommendation_bulk_add_button')), findsOneWidget);
+      expect(find.byKey(const Key('today_recommendation_bulk_add_button')), findsNothing);
     });
 
-    testWidgets('selectable=0 shows neither header nor lock hint', (tester) async {
+    testWidgets('pending=0 shows neither header nor lock hint', (tester) async {
       final state = resolveBatchCandidateAddAvailability(
         flags: _limitsOnFlags(),
         purchasedPlanOverride: MonetizationPlan.free,
@@ -83,7 +81,7 @@ void main() {
           home: Scaffold(
             body: _BulkAddUiProbe(
               batchAddState: state,
-              selectableCount: 0,
+              pendingCount: 0,
             ),
           ),
         ),
@@ -100,38 +98,22 @@ void main() {
 class _BulkAddUiProbe extends StatelessWidget {
   const _BulkAddUiProbe({
     required this.batchAddState,
-    required this.selectableCount,
-    this.selectedCount = 0,
+    required this.pendingCount,
   });
 
   final BatchCandidateAddAvailabilityState batchAddState;
-  final int selectableCount;
-  final int selectedCount;
+  final int pendingCount;
 
   @override
   Widget build(BuildContext context) {
-    final bulkSelectAllowed = batchAddState.allowed && selectableCount > 0;
     return Column(
       children: [
-        if (bulkSelectAllowed)
-          SearchBulkSelectionHeader(
-            key: const Key('today_recommendation_bulk_selection_header'),
-            screen: 'todayRecommendations',
-            selectedCount: selectedCount,
-            totalSelectable: selectableCount,
-            onToggleAll: (_) {},
-          )
-        else if (selectableCount > 0 &&
+        if (pendingCount > 0 &&
             batchAddState.limitsEnforcementEnabled &&
             !batchAddState.allowed)
           Text(
             batchCandidateAddLockedMessage(),
             key: const Key('today_recommendation_bulk_add_locked_hint'),
-          ),
-        if (selectedCount > 0 && batchAddState.allowed)
-          Text(
-            'まとめて候補に追加（$selectedCount件）',
-            key: const Key('today_recommendation_bulk_add_button'),
           ),
       ],
     );
