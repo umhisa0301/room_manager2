@@ -63,7 +63,7 @@ abstract final class RoomPostImportFlow {
               child: SingleChildScrollView(
                 child: SelectableText(
                   RoomImportDebugLogBuffer.dump(),
-                  style: const TextStyle(fontSize: 11, height: 1.25),
+                  style: const TextStyle(fontSize: 12, height: 1.25),
                 ),
               ),
             ),
@@ -778,7 +778,7 @@ abstract final class RoomPostImportFlow {
       return '追加できませんでした';
     }
     if (r.processedCount == 0) {
-      return '新しい投稿は見つかりませんでした';
+      return '追加できる投稿はありませんでした';
     }
     return '追加はありませんでした';
   }
@@ -815,7 +815,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final title = product.itemName.trim().isEmpty
-        ? '（タイトル未取得）'
+        ? '（商品名なし）'
         : product.itemName.trim();
     final provider = context.read<RakutenManagedProductProvider>();
 

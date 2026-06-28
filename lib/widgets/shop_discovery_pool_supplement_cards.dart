@@ -150,7 +150,7 @@ class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: HomeScreenColors.statusAccentStrong,
                     fontWeight: FontWeight.w700,
-                    fontSize: 10.5,
+                    fontSize: 12,
                   ),
                 ),
               ),
@@ -163,7 +163,7 @@ class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
               color: HomeScreenColors.metricTileCaptionColor,
               height: 1.35,
               fontWeight: FontWeight.w500,
-              fontSize: 11.5,
+              fontSize: 12,
             ),
           ),
         ],

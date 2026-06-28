@@ -298,7 +298,7 @@ class _TodayRecommendationsScreenState
                 child: AppScreenLoadingCenter(
                   title: 'おすすめコレを準備しています',
                   subtitle:
-                      '関心ジャンルと重視する条件をもとに、紹介しやすい商品を集めています。',
+                      'あなたに合う商品を集めています。',
                 ),
               );
             }
@@ -310,7 +310,7 @@ class _TodayRecommendationsScreenState
                   title: 'おすすめを表示できませんでした',
                   message: rec.errorMessage!,
                   onRetry: _regenerate,
-                  retryLabel: 'もう一度生成する',
+                  retryLabel: '候補を作り直す',
                 ),
               );
             }
@@ -1020,7 +1020,7 @@ class _DecisionBadge extends StatelessWidget {
     late final Color fg;
     switch (decision) {
       case TodayRecommendationDecision.pending:
-        text = '未処理';
+        text = '未確認';
         bg = AppColors.surfaceVariant;
         fg = AppColors.textSecondary;
       case TodayRecommendationDecision.skipped:
@@ -1043,7 +1043,7 @@ class _DecisionBadge extends StatelessWidget {
         text,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: fg,
-          fontSize: 9.5,
+          fontSize: 12,
           fontWeight: FontWeight.w700,
         ),
       ),

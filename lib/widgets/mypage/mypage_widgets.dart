@@ -498,7 +498,7 @@ class MyPageSetupIncompleteCard extends StatelessWidget {
           const MyPageSectionHeaderRow(title: '設定を完了しましょう'),
           const SizedBox(height: 8),
           Text(
-            '不足している設定を完了すると、候補提案が使いやすくなります',
+            '不足している設定を完了すると、おすすめ候補を見つけやすくなります',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: MyPageScreenUi.textSecondary,
                   height: 1.45,
@@ -566,7 +566,7 @@ class MyPageRoomSettingsCard extends StatelessWidget {
           MyPageSectionHeaderRow(
             title: 'ROOMプロフィール',
             trailingChip: MyPageStatusChip(
-              label: basicConfigured ? '基本設定済み' : '未完了',
+              label: basicConfigured ? '設定済み' : '未完了',
               variant: basicConfigured
                   ? MyPageStatusChipVariant.set
                   : MyPageStatusChipVariant.unset,

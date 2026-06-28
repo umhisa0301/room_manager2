@@ -150,7 +150,7 @@ void main() {
       );
       expect(
         profileTutorialFlow.steps[0].body,
-        contains('投稿済み商品の取り込み'),
+        contains('投稿済み商品や反応を確認しやすく'),
       );
       expect(profileTutorialFlow.steps[0].body, isNot(contains('個人情報')));
       expect(profileTutorialFlow.steps[0].body, isNot(contains('個人設定')));

@@ -138,7 +138,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
     final reviewCountStyle =
         RoomColleProductListCardLayout.metaTextStyle(theme)?.copyWith(
-          fontSize: 10.5,
+          fontSize: 12,
           fontWeight: FontWeight.w500,
           height: 1.2,
           color: HomeScreenColors.metricTileCaptionColor,
@@ -249,7 +249,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: genreLineStyle.copyWith(
-                                fontSize: 10,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: HomeScreenColors.homeAccentTeal.withValues(
                                   alpha: 0.92,
@@ -444,7 +444,7 @@ class _SourceContextChip extends StatelessWidget {
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.textTertiary,
             fontWeight: FontWeight.w600,
-            fontSize: 10,
+            fontSize: 12,
             height: 1.15,
             letterSpacing: 0.02,
           ),

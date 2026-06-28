@@ -130,7 +130,7 @@ class ProductCard extends StatelessWidget {
                   product.quickComment!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
-                    fontSize: 11,
+                    fontSize: 12,
                     fontStyle: FontStyle.italic,
                   ),
                   maxLines: 1,
@@ -162,7 +162,7 @@ class ProductCard extends StatelessWidget {
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.accentPrimary,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -186,7 +186,7 @@ class ProductCard extends StatelessWidget {
             tag,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.accentPrimary,
-              fontSize: 10,
+              fontSize: 12,
             ),
           ),
         );

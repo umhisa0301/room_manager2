@@ -127,7 +127,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
       children: [
         if (roomTourSearchBlocked) ...[
           Text(
-            'ROOM同期中です。新しい商品検索は同期完了後に利用できます。',
+            '投稿・反応を更新中です。新しい商品検索は更新完了後に利用できます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.titlePrimary,
               fontWeight: FontWeight.w600,
@@ -308,7 +308,7 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
                     child: Text(
                       'おすすめ',
                       style: AppTextStyles.label.copyWith(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: accent,
                       ),

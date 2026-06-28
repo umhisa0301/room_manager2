@@ -189,7 +189,7 @@ class _HomeInAppNoticeCard extends StatelessWidget {
                   Text(
                     notice.body,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 11.5,
+                      fontSize: 12,
                       height: 1.35,
                       fontWeight: FontWeight.w500,
                       color: HomeScreenColors.bodyOnSection.withValues(
@@ -214,7 +214,7 @@ class _HomeInAppNoticeCard extends StatelessWidget {
                       child: Text(
                         notice.actionLabel!.trim(),
                         style: const TextStyle(
-                          fontSize: 11.5,
+                          fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

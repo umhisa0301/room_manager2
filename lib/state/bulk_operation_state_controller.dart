@@ -7,7 +7,7 @@ import '../models/room_reaction_sync_history_entry.dart';
 /// DB 更新を伴う一括処理の競合防止用（ROOM取り込み・一括候補登録・メタデータ補完など）。
 class BulkOperationStateController extends ChangeNotifier {
   static const String blockingSnackMessage =
-      '処理中です。完了後に操作してください';
+      '更新中です。完了してから操作してください';
   bool _roomImport = false;
   bool _roomReactionSync = false;
   bool _bulkCandidate = false;
@@ -100,8 +100,8 @@ class BulkOperationStateController extends ChangeNotifier {
 
   /// 探す系ブロック時にユーザーへ見せる説明（SnackBar / シート内）。
   static const String roomTourSearchBlockedUserMessage =
-      'ROOM同期中です。\n'
-      '新しい商品検索は同期完了後に利用できます。\n'
+      '投稿・反応を更新中です。\n'
+      '新しい商品検索は更新完了後に利用できます。\n'
       'コレ済一覧の確認はそのまま行えます。';
 
   bool get isAnyBlockingOperationRunning =>
@@ -110,7 +110,7 @@ class BulkOperationStateController extends ChangeNotifier {
   /// ROOM 巡回系（取り込み・反応同期・補完）のどれが動いているか。null は該当なし。
   String? get blockingRoomTourUserMessage {
     if (_roomImport) {
-      return '現在投稿済み商品を取り込み中です。完了後にお試しください。';
+      return '投稿を取り込んでいます。完了後にお試しください。';
     }
     if (_roomReactionSync) {
       return '現在反応を確認中です。完了後にお試しください。';

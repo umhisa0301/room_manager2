@@ -216,7 +216,7 @@ class RakutenSearchLoadingView extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
               height: 1.32,
-              fontSize: 11.8,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -228,7 +228,7 @@ class RakutenSearchLoadingView extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
                 height: 1.28,
-                fontSize: 10.5,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -378,7 +378,7 @@ class RakutenSearchErrorView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: HomeScreenColors.footnoteMuted,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               height: 1.32,
             ),
@@ -495,7 +495,7 @@ class RakutenSearchEmptyView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: HomeScreenColors.homeTextSecondary,
                     height: 1.35,
-                    fontSize: 11.5,
+                    fontSize: 12,
                   ),
                 ),
               ),
@@ -526,7 +526,7 @@ class RakutenSearchEmptyView extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
-                fontSize: 10.5,
+                fontSize: 12,
                 height: 1.32,
                 fontWeight: FontWeight.w500,
               ),

@@ -275,7 +275,7 @@ abstract final class _HomeUi {
   static TextStyle tapHint(BuildContext context) {
     final base = Theme.of(context).textTheme.labelSmall;
     return (base ?? const TextStyle()).copyWith(
-      fontSize: 11.5,
+      fontSize: 12,
       height: 1.32,
       color: HomeScreenColors.footnoteMuted,
     );
@@ -1195,7 +1195,7 @@ class _HomeLimitDetailRow extends StatelessWidget {
               child: Text(
                 '$label  $used / $max件',
                 style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 11.5,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: HomeScreenColors.homeLimitRowText,
                 ),
@@ -1204,7 +1204,7 @@ class _HomeLimitDetailRow extends StatelessWidget {
             Text(
               percentLabel,
               style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 11.5,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: HomeScreenColors.homeMutedText,
               ),
@@ -1330,7 +1330,7 @@ class _HomeStatusMiniCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: _HomeUi.homeMetricLabel(context).copyWith(
-                    fontSize: 11.5,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF6B7280),
                   ),
@@ -1343,7 +1343,7 @@ class _HomeStatusMiniCard extends StatelessWidget {
             footnote,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: _HomeUi.homeFootnote(context).copyWith(fontSize: 11),
+            style: _HomeUi.homeFootnote(context).copyWith(fontSize: 12),
           ),
         ],
       ),
@@ -1484,7 +1484,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
       case _HomeWorkPrimaryAction.searchMore:
         return (
           title: '候補を増やす',
-          subtitle: '商品を検索して追加できます',
+          subtitle: 'コレ候補にしたい商品を探しましょう',
           buttonLabel: '探す',
           onTap: onOpenSearch,
           semanticsLabel: 'home_search_more_button',
@@ -1542,7 +1542,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                 child: Text(
                                   '次にやる',
                                   style: _HomeUi.tapHint(context).copyWith(
-                                    fontSize: 11,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
@@ -1782,7 +1782,7 @@ class _HomeWorkFlowChip extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: iconColor,
                 ),
@@ -1836,7 +1836,7 @@ class _ReactionCheckCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        '反応チェック',
+                        '最近の反応',
                         style: _HomeUi.homeCardTitle(context),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -1863,7 +1863,7 @@ class _ReactionCheckCard extends StatelessWidget {
                         child: Text(
                           '未確認 $unconfirmedReactionCount件',
                           style: _HomeUi.tapHint(context).copyWith(
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.w800,
                             color: HomeScreenColors.homeUnreadBadge,
                           ),
@@ -2064,7 +2064,11 @@ Future<void> _homeHandleRoomImport(
     builder: (ctx) => AlertDialog(
       key: const Key('room_import_confirm_dialog'),
       title: const Text('ROOM投稿を取り込む'),
-      content: const Text('ROOM投稿を取り込みます。\n処理中は検索や登録操作を一時停止します。\nよろしいですか？'),
+      content: const Text(
+        'ROOM投稿を取り込みます。\n'
+        '更新が終わるまで、探す・候補追加は一時停止します。\n'
+        'よろしいですか？',
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
@@ -2122,7 +2126,7 @@ Future<void> _homeHandleReactionSync(
     }
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ROOMデータの更新が終わってから、反応の確認を行ってください')),
+        const SnackBar(content: Text('投稿の取り込みが終わってから、反応を確認してください')),
       );
     }
     return;
@@ -2352,7 +2356,7 @@ class _DataUpdateCard extends StatelessWidget {
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=reaction visible=$showReactionButton '
-          'enabled=$reactionButtonEnabled label=${syncBusy && reactionOnly ? reactionButtonLabel : '反応データ取得'} '
+          'enabled=$reactionButtonEnabled label=${syncBusy && reactionOnly ? reactionButtonLabel : '反応を確認'} '
           'reason=${syncBusy ? 'busyDisabled' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
         );
         roomSyncEmptyButtonAuditLog(
@@ -2368,7 +2372,7 @@ class _DataUpdateCard extends StatelessWidget {
           button: 'reaction',
           visible: showReactionButton,
           enabled: reactionButtonEnabled,
-          label: syncBusy && reactionOnly ? reactionButtonLabel : '反応データ取得',
+          label: syncBusy && reactionOnly ? reactionButtonLabel : '反応を確認',
           reason: showReactionButton
               ? (reactionButtonEnabled ? 'rendered' : 'disabledWhileBusy')
               : 'notImportedYetOrHidden',
@@ -2434,12 +2438,12 @@ class _DataUpdateCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('データ更新', style: _HomeUi.homeCardTitle(context)),
+              Text('投稿・反応の更新', style: _HomeUi.homeCardTitle(context)),
               const SizedBox(height: 4),
               Text(
                 hasRoomProfileUrl
-                    ? 'ROOM投稿の取込と反応確認を行えます'
-                    : 'ROOMプロフィールURLを登録すると、コレ済み商品や反応チェックを更新できます。',
+                    ? '投稿済み商品や反応を最新にできます'
+                    : 'ROOM URLを登録すると、投稿済み商品や反応を確認しやすくなります。',
                 style: _HomeUi.homeCardSubtitle(context),
               ),
               const SizedBox(height: 8),
@@ -2480,7 +2484,7 @@ class _DataUpdateCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'ROOMデータを更新中です',
+                          '投稿と反応を更新しています',
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(fontWeight: FontWeight.w800),
                         ),
@@ -2580,7 +2584,7 @@ class _DataUpdateCard extends StatelessWidget {
                               label: Text(
                                 syncBusy && reactionOnly
                                     ? reactionButtonLabel
-                                    : '反応データ取得',
+                                    : '反応を確認',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -2841,7 +2845,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
               softWrap: true,
               textAlign: TextAlign.center,
               style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 11.5,
+                fontSize: 12,
                 height: 1.3,
                 color: HomeScreenColors.footnoteMuted,
                 fontWeight: FontWeight.w600,
@@ -2872,7 +2876,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
                 Text(
                   '投稿しすぎ防止の目安',
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 9.5,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: HomeScreenColors.footnoteMuted,
                   ),
@@ -2905,7 +2909,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 9.5,
+                    fontSize: 12,
                     height: 1.25,
                     color: HomeScreenColors.footnoteMuted,
                     fontWeight: FontWeight.w500,
@@ -2983,7 +2987,7 @@ class _HomePostMilestoneSection extends StatelessWidget {
                 child: Text(
                   snapshot.sectionTitle,
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.w800,
                     color: HomeScreenColors.accentSectionHeading,
                     letterSpacing: 0.1,
@@ -2994,7 +2998,7 @@ class _HomePostMilestoneSection extends StatelessWidget {
                 Text(
                   countSummary,
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: HomeScreenColors.bodyOnSection,
                   ),
@@ -3097,7 +3101,7 @@ class _HomeMilestoneChip extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: _HomeUi.tapHint(
           context,
-        ).copyWith(fontSize: 10, fontWeight: FontWeight.w800, color: textColor),
+        ).copyWith(fontSize: 12, fontWeight: FontWeight.w800, color: textColor),
       ),
     );
   }
@@ -3122,7 +3126,7 @@ class _HomeTodayStatusChip extends StatelessWidget {
       child: Text(
         label,
         style: _HomeUi.tapHint(context).copyWith(
-          fontSize: 10.5,
+          fontSize: 12,
           fontWeight: FontWeight.w700,
           color: HomeScreenColors.footnoteMuted,
           height: 1.1,
@@ -3789,7 +3793,7 @@ class _HomeNotificationBellState extends State<_HomeNotificationBell> {
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text('反応未確認 $unconfirmed件'),
-                    subtitle: const Text('反応チェックカードから確認できます'),
+                    subtitle: const Text('最近の反応から確認できます'),
                     onTap: () => Navigator.pop(ctx),
                   ),
                 if (notice == null && unconfirmed <= 0)
@@ -3833,7 +3837,7 @@ class _HomeNotificationBellState extends State<_HomeNotificationBell> {
           offset: const Offset(4, -4),
           label: Text(
             '$badgeCount',
-            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
           ),
           backgroundColor: HomeScreenColors.homeUnreadBadge,
           child: const Icon(
@@ -4691,15 +4695,15 @@ class _ExtractionChip extends StatelessWidget {
         bg = AppColors.surfaceVariant;
         fg = AppColors.textSecondary;
       case RakutenUrlExtractionStatus.extracting:
-        label = 'URL取得中';
+        label = 'URL確認中';
         bg = const Color(0xFFFFF8E1);
         fg = const Color(0xFFF57F17);
       case RakutenUrlExtractionStatus.success:
-        label = 'URL取得済み';
+        label = 'URL準備完了';
         bg = const Color(0xFFE8F5E9);
         fg = const Color(0xFF2E7D32);
       case RakutenUrlExtractionStatus.failed:
-        label = 'URL取得失敗';
+        label = 'URL未準備';
         bg = AppColors.error.withValues(alpha: 0.12);
         fg = AppColors.error;
     }

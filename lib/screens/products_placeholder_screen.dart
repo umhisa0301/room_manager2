@@ -162,7 +162,7 @@ class _RoomColleFilterButton extends StatelessWidget {
                                       '$activeCount',
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w800,
                                         height: 1.1,
                                       ),
@@ -392,7 +392,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -408,7 +408,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -424,7 +424,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -440,7 +440,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -456,7 +456,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -524,7 +524,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
           labelStyle: TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.metricTileTitleColor,
           ),
@@ -542,7 +542,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
             backgroundColor: HomeScreenColors.roomMetricTileFill,
             side: BorderSide(color: HomeScreenColors.metricTileOutline),
             labelStyle: TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w700,
               color: HomeScreenColors.metricTileTitleColor,
             ),
@@ -2204,7 +2204,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'コレ候補と投稿済み商品を管理できます',
+                      'コレ候補と投稿済みの商品を確認できます',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 14,
                         color: HomeScreenColors.homeTextSecondary,
@@ -3003,7 +3003,7 @@ class _RoomManagedProductListTabState
         switch (surface) {
           case _RoomColleListSurface.loading:
             return const AppScreenLoadingCenter(
-              title: '一覧を読み込み中',
+              title: '読み込み中',
               subtitle: '端末に保存した一覧を読み込んでいます。しばらくお待ちください。',
             );
 
@@ -3781,7 +3781,7 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: HomeScreenColors.footnoteMuted,
-                    fontSize: 11,
+                    fontSize: 12,
                     height: 1.35,
                     fontWeight: FontWeight.w500,
                   ),
@@ -3844,7 +3844,7 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: HomeScreenColors.footnoteMuted,
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

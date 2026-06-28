@@ -13,7 +13,7 @@ enum RoomImportUiPhase {
 
 /// ホーム / マイページの ROOM 同期カードで共有する文言。
 abstract final class RoomSyncCardCopy {
-  static const title = 'ROOMデータ更新';
+  static const title = '投稿・反応の更新';
 
   static const subtitle =
       'ROOM投稿を取り込み、いいね・コメントを確認します。';
@@ -28,16 +28,16 @@ abstract final class RoomSyncCardCopy {
   /// 同期中（自動／手動いずれも）の反応ボタン表示。
   static const reactionCheckBusyLabel = '反応を確認中…';
 
-  /// ROOMデータ更新セクション内の自動確認説明（1行）。
+  /// 投稿・反応の更新セクション内の自動確認説明（1行）。
   static const autoReactionCheckHint =
       '反応は一定時間ごとに自動で確認します。必要なときは手動でも確認できます。';
 
   static String importPhaseLabel(RoomImportUiPhase phase) {
     switch (phase) {
       case RoomImportUiPhase.checkingTargets:
-        return '取り込み対象を確認しています';
+        return '取り込む投稿を確認しています';
       case RoomImportUiPhase.importingPosts:
-        return '新しい投稿を取り込んでいます';
+        return '投稿を取り込んでいます';
       case RoomImportUiPhase.checkingProductInfo:
         return '商品情報を確認しています';
       case RoomImportUiPhase.checkingReactions:

@@ -71,7 +71,7 @@ abstract final class RoomColleProductListCardLayout {
     return theme.textTheme.bodySmall?.copyWith(
       color: HomeScreenColors.metricTileCaptionColor,
       height: 1.22,
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
     );
   }
@@ -80,7 +80,7 @@ abstract final class RoomColleProductListCardLayout {
     return theme.textTheme.bodySmall?.copyWith(
       color: HomeScreenColors.metricTileCaptionColor,
       height: 1.22,
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
     );
   }
@@ -89,7 +89,7 @@ abstract final class RoomColleProductListCardLayout {
     return theme.textTheme.bodySmall?.copyWith(
       color: const Color(0xFF888888),
       height: 1.15,
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
     );
   }

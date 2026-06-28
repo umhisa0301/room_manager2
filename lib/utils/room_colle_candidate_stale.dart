@@ -75,7 +75,7 @@ class RoomColleCandidateStaleChip extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: 9.5,
+            fontSize: 12,
             height: 1.15,
             fontWeight: spec.fontWeight,
             color: spec.foregroundColor,

@@ -17,7 +17,7 @@ class HomeGoalMilestoneProgress extends StatelessWidget {
   static TextStyle _hintStyle(BuildContext context) {
     final base = Theme.of(context).textTheme.labelSmall;
     return (base ?? const TextStyle()).copyWith(
-      fontSize: 11.5,
+      fontSize: 12,
       height: 1.32,
       color: HomeScreenColors.footnoteMuted,
     );
@@ -100,7 +100,7 @@ class _HomeGoalMilestoneColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = hintStyle.copyWith(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: state == HomeGoalMilestoneState.inProgress
           ? FontWeight.w700
           : FontWeight.w500,
@@ -142,7 +142,7 @@ class _HomeGoalMilestoneColumn extends StatelessWidget {
             child: Text(
               '挑戦中',
               style: hintStyle.copyWith(
-                fontSize: 9,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: HomeScreenColors.homeAccentTeal,
                 height: 1.1,

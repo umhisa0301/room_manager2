@@ -140,7 +140,7 @@ String? _detectImportOutcome(WidgetTester tester) {
         find.textContaining('件を取り込みました').evaluate().isNotEmpty) {
       return 'success';
     }
-    if (find.text('新しい投稿は見つかりませんでした').evaluate().isNotEmpty ||
+    if (find.text('追加できる投稿はありませんでした').evaluate().isNotEmpty ||
         find.text('追加はありませんでした').evaluate().isNotEmpty) {
       return 'empty';
     }

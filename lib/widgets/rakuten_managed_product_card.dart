@@ -225,7 +225,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     final timestampStyle = RoomColleProductListCardLayout.metaTextStyle(theme);
     final reactionStyle =
         (timestampStyle ?? theme.textTheme.bodySmall ?? const TextStyle())
-            .copyWith(fontSize: 11, fontWeight: FontWeight.w700);
+            .copyWith(fontSize: 12, fontWeight: FontWeight.w700);
 
     if (!isCandidate) {
       _debugLogReactionStatusChip();
@@ -280,12 +280,12 @@ class RakutenManagedProductCard extends StatelessWidget {
                               ),
                               if (!enrichNeed.needsPrice)
                                 const _SmallBadge(
-                                  label: '価格取得済み',
+                                  label: '価格確認済み',
                                   color: Color(0xFF64748B),
                                 ),
                               if (!enrichNeed.needsImage)
                                 const _SmallBadge(
-                                  label: '画像取得済み',
+                                  label: '画像あり',
                                   color: Color(0xFF64748B),
                                 ),
                             ],
@@ -375,7 +375,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: (priceStyle ?? const TextStyle()).copyWith(
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textSecondary,
                           ),
@@ -485,7 +485,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           visualDensity: VisualDensity.compact,
           shape: const StadiumBorder(),
           textStyle: const TextStyle(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             height: 1.1,
           ),
@@ -927,6 +927,7 @@ class _SmallBadge extends StatelessWidget {
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: color,
             fontWeight: FontWeight.w800,
+            fontSize: 12,
             height: 1.15,
           ),
         ),

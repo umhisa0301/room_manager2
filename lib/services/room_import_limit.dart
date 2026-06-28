@@ -154,11 +154,11 @@ int resolveRoomImportPostBatchEnrichLimit(RoomImportAvailabilityState state) {
 
 /// 無料版向けの体験版ヒント。
 String roomImportLimitTrialHint() =>
-    '無料版ではROOMデータ更新は10件までお試しできます。';
+    '無料版では投稿・反応の更新は10件までお試しできます。';
 
 /// 上限到達時のユーザー向けメッセージ。
 String roomImportLimitBlockedMessage() =>
-    '無料版ではROOMデータ更新は10件までです。'
+    '無料版では投稿・反応の更新は10件までです。'
     'Basicプランでは上限なく同期できる予定です。';
 
 /// SnackBar 等用の全文。

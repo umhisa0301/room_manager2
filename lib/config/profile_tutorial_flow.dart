@@ -12,13 +12,13 @@ const OperationTutorialFlow profileTutorialFlow = OperationTutorialFlow(
       targetKey: TutorialTargetKeys.roomSettingsCard,
       title: 'ROOMプロフィール',
       body:
-          'ニックネームとROOM URLを登録します。URLを登録すると、投稿済み商品の取り込みや反応チェックに使えます。',
+          'ニックネームとROOM URLを登録します。URLを登録すると、投稿済み商品や反応を確認しやすくなります。',
     ),
     OperationTutorialStep(
       targetKey: TutorialTargetKeys.roomTypeDiagnosisCard,
       targetActionId: OperationTutorialTargetActionId.roomTypeDiagnosis,
       title: 'ROOMタイプ診断',
-      body: 'あなたに合うコレ候補や投稿文の方向性を提案しやすくします。',
+      body: 'おすすめ候補や投稿文の方向性が分かりやすくなります。',
     ),
   ],
 );

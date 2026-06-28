@@ -1579,7 +1579,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w600,
                 height: 1.3,
-                fontSize: 11.5,
+                fontSize: 12,
               ),
             ),
           ),
@@ -1927,10 +1927,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (loading) return null;
     final bulk = _cachedBulkCtl ?? context.read<BulkOperationStateController>();
     if (bulk.isBulkCandidateRegistering || _isBulkRegistering) {
-      return '登録処理中です。完了後にお試しください';
+      return '候補を追加しています。完了後にお試しください';
     }
     if (bulk.isRoomTourSearchBlocking) {
-      return 'ROOM同期中です。完了後にお試しください';
+      return '投稿・反応を更新中です。完了後にお試しください';
     }
     final scoped = _effectiveShopCodeForApi(context);
     if (scoped == null) return 'ショップを選択してください';
@@ -1961,7 +1961,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         final message = running
             ? '候補に追加中です：$_bulkRegisterProcessed / $_bulkRegisterTotal件\n登録中は他の商品登録を実行できません'
-            : (bulk.blockingRoomTourUserMessage ?? '処理中です。完了後にお試しください');
+            : (bulk.blockingRoomTourUserMessage ?? '更新中です。完了後にお試しください');
         return Material(
           color: RakutenSearchScreenUi.primaryLight.withValues(alpha: 0.85),
           child: Padding(
@@ -2131,7 +2131,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
         const SizedBox(height: 2),
         Text(
-          '商品名や条件からコレ候補を追加できます',
+          'キーワードやジャンルから、コレ候補を見つけられます',
           style: RakutenSearchScreenUi.screenSubtitleStyle(context),
         ),
       ],
@@ -2260,7 +2260,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: FontWeight.w700,
           color: selected ? Colors.white : accent,
           height: 1.1,
@@ -5166,7 +5166,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           }
         } else {
           failed++;
-          if (err.contains('ROOM同期中') || err.contains('処理中')) {
+          if (err.contains('投稿・反応を更新中') || err.contains('更新中')) {
             syncBusyBlocked++;
           }
           bulkRegisterItemResultLog(
@@ -5312,7 +5312,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: HomeScreenColors.homeAccentTeal,
-            fontSize: 11,
+            fontSize: 12,
           ),
         ),
         side: BorderSide(
@@ -6663,7 +6663,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     color: HomeScreenColors.metricTileCaptionColor,
                     height: 1.35,
                     fontWeight: FontWeight.w500,
-                    fontSize: 11.5,
+                    fontSize: 12,
                   ),
                 ),
                 Text(
@@ -7211,7 +7211,7 @@ class _RakutenSearchConditionFilterButton extends StatelessWidget {
                                     '$activeCount',
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 10,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),

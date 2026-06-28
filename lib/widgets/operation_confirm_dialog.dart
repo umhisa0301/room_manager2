@@ -11,7 +11,9 @@ Future<bool> showRoomImportConfirmDialog(
     builder: (ctx) => AlertDialog(
       title: const Text('ROOM投稿を取り込む'),
       content: const Text(
-        'ROOM投稿を取り込みます。\n処理中は検索や登録操作を一時停止します。\nよろしいですか？',
+        'ROOM投稿を取り込みます。\n'
+        '更新が終わるまで、探す・候補追加は一時停止します。\n'
+        'よろしいですか？',
       ),
       actions: [
         TextButton(
@@ -45,7 +47,7 @@ Future<bool> showRoomReactionSyncConfirmDialog(
       title: const Text('反応を確認する'),
       content: const Text(
         'ROOM投稿のいいね・コメントを確認します。\n'
-        '処理中は検索や登録操作を一時停止します。\n'
+        '更新が終わるまで、探す・候補追加は一時停止します。\n'
         'よろしいですか？',
       ),
       actions: [

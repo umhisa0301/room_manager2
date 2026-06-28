@@ -174,7 +174,7 @@ class _MyPageRoomTypeDiagnosisCardState extends State<MyPageRoomTypeDiagnosisCar
           if (!widget.isDiagnosed) ...[
             const SizedBox(height: 6),
             Text(
-              'あなたに合うコレ候補や投稿文の方向性を提案しやすくします。',
+              'あなたに合うコレ候補や投稿文の方向性が分かりやすくなります。',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: MyPageScreenUi.textSecondary,
                 height: 1.45,
