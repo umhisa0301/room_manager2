@@ -21,6 +21,7 @@ import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../state/bulk_operation_state_controller.dart';
+import '../utils/product_price_display.dart';
 import '../utils/product_image_resolve.dart';
 import '../utils/room_import_pending_user_copy.dart';
 import '../utils/room_reaction_status_display.dart';
@@ -489,7 +490,7 @@ abstract final class RoomPostImportFlow {
         'productId=${p.productId} title=${p.itemName.trim().isEmpty ? '(empty)' : p.itemName.trim()} '
         'hasImage=${ProductImageResolve.displayImageUrlForManaged(p).isNotEmpty} '
         'price=${p.itemPrice} '
-        'formattedPrice=${p.itemPrice > 0 ? RoomColleProductListCardLayout.formatPriceYen(p.itemPrice) : '-'} '
+        'formattedPrice=${ProductPriceDisplay.formatYen(p.itemPrice)} '
         'shopName=${p.shopName.trim()} genreName=${p.genreName.trim()}',
       );
     }
@@ -805,7 +806,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
         width: 1.2,
       ),
       elevation: 0,
-      minimumSize: const Size(0, 38),
+      minimumSize: const Size(0, 40),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );

@@ -33,13 +33,13 @@ class ProductOpenActionButtons extends StatelessWidget {
     if (logStyleAudit && kDebugMode) {
       debugPrint(
         '[ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=$screen '
-        'compact=$compact usesOutlineButton=true height=${compact ? 36 : 40}',
+        'compact=$compact usesOutlineButton=true height=40',
       );
     }
 
     final roomUrl = product.roomUrl.trim();
     final rakutenUrl = product.rakutenOpenUrl.trim();
-    final height = compact ? 36.0 : 40.0;
+    const height = 40.0;
     const gap = 6.0;
 
     return LayoutBuilder(

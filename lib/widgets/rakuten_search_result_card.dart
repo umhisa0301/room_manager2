@@ -115,7 +115,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     final rightPad = compact ? _rightColumnPaddingCompact : _rightColumnPadding;
     final titleMaxLines = RoomColleProductListCardLayout.titleMaxLines;
     final thumbW = compact ? _compactThumbWidth : _searchThumbWidth;
-    final buttonH = 52.0;
+    final buttonH = 44.0;
 
     searchProductCardLayoutAuditLog(
       'imageSize=$thumbW titleMaxLines=$titleMaxLines '

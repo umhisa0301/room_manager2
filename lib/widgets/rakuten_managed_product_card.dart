@@ -14,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/display_text_utils.dart';
+import '../utils/product_price_display.dart';
 import '../utils/product_card_rakuten_open.dart';
 import '../utils/rakuten_product_rating_display.dart';
 import '../utils/shop_display_resolve.dart';
@@ -83,7 +84,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     try {
       return RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
     } catch (_) {
-      return '価格 —';
+      return ProductPriceDisplay.unknownPriceLabel;
     }
   }
 
@@ -835,7 +836,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           style: _cardPrimaryButtonStyle(enabled: true),
           child: const FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text('ROOM投稿へ', maxLines: 1),
+            child: Text('ROOMで投稿', maxLines: 1),
           ),
         );
 

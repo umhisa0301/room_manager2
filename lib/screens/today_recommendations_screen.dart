@@ -25,6 +25,7 @@ import '../widgets/mypage/mypage_widgets.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_bulk_selection_header.dart';
+import '../utils/product_price_display.dart';
 import '../utils/product_card_rakuten_open.dart';
 import '../widgets/monetization/monetization_ad_slot.dart';
 
@@ -720,7 +721,7 @@ class _RecommendationCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _formatPrice(item.itemPrice),
+                  ProductPriceDisplay.formatYen(item.itemPrice),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -752,14 +753,83 @@ class _RecommendationCard extends StatelessWidget {
   }
 }
 
-String _formatPrice(int price) {
-  final raw = price.toString();
-  final buffer = StringBuffer();
-  for (var i = 0; i < raw.length; i++) {
-    if (i > 0 && (raw.length - i) % 3 == 0) buffer.write(',');
-    buffer.write(raw[i]);
+enum _CompactActionStyle { primary, secondary, weak }
+
+class _CompactActionButton extends StatelessWidget {
+  const _CompactActionButton({
+    required this.label,
+    required this.style,
+    required this.onPressed,
+    this.icon,
+  });
+
+  final String label;
+  final _CompactActionStyle style;
+  final VoidCallback? onPressed;
+  final IconData? icon;
+
+  static const double _minHeight = 40;
+
+  bool get _isPrimary => style == _CompactActionStyle.primary;
+  bool get _isSecondary => style == _CompactActionStyle.secondary;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = _isPrimary
+        ? AppColors.textOnAccent
+        : _isSecondary
+        ? TodayRecommendationsScreenUi.primary
+        : AppColors.textSecondary;
+    final background = _isPrimary
+        ? TodayRecommendationsScreenUi.primary
+        : _isSecondary
+        ? Colors.white
+        : Colors.transparent;
+    final border = _isPrimary
+        ? TodayRecommendationsScreenUi.primary
+        : _isSecondary
+        ? TodayRecommendationsScreenUi.primaryBorder
+        : AppColors.divider.withValues(alpha: 0.82);
+    return SizedBox(
+      height: _minHeight,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: foreground,
+          disabledForegroundColor: _isPrimary
+              ? AppColors.textOnAccent.withValues(alpha: 0.55)
+              : AppColors.textSecondary,
+          backgroundColor: background,
+          disabledBackgroundColor: AppColors.surfaceVariant,
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+          minimumSize: const Size(0, _minHeight),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: border, width: _isSecondary ? 1.5 : 1),
+          ),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            fontSize: 12,
+            letterSpacing: -0.2,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 14),
+              const SizedBox(width: 3),
+            ],
+            Flexible(
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
+          ],
+        ),
+      ),
+    );
   }
-  return '¥$buffer';
 }
 
 class _RecommendationTagWrap extends StatelessWidget {
@@ -829,10 +899,10 @@ class _ActionRow extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              flex: 6,
+              flex: 5,
               child: _CompactActionButton(
                 label: '楽天で見る',
-                style: _CompactActionStyle.primary,
+                style: _CompactActionStyle.secondary,
                 onPressed: () {
                   AppActionService.openUrl(
                     context,
@@ -841,13 +911,13 @@ class _ActionRow extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(width: 5),
+            const SizedBox(width: 6),
             Expanded(
-              flex: 4,
+              flex: 6,
               child: _CompactActionButton(
-                label: '候補',
-                icon: Icons.bookmark_add_rounded,
-                style: _CompactActionStyle.medium,
+                label: '候補に追加',
+                icon: Icons.add_rounded,
+                style: _CompactActionStyle.primary,
                 onPressed: !enabled
                     ? null
                     : syncLocked
@@ -890,7 +960,7 @@ class _ActionRow extends StatelessWidget {
                       },
               ),
             ),
-            const SizedBox(width: 5),
+            const SizedBox(width: 6),
             Expanded(
               flex: 4,
               child: _CompactActionButton(
@@ -907,83 +977,6 @@ class _ActionRow extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-enum _CompactActionStyle { primary, medium, weak }
-
-class _CompactActionButton extends StatelessWidget {
-  const _CompactActionButton({
-    required this.label,
-    required this.style,
-    required this.onPressed,
-    this.icon,
-  });
-
-  final String label;
-  final _CompactActionStyle style;
-  final VoidCallback? onPressed;
-  final IconData? icon;
-
-  bool get _isPrimary => style == _CompactActionStyle.primary;
-  bool get _isMedium => style == _CompactActionStyle.medium;
-
-  @override
-  Widget build(BuildContext context) {
-    final foreground = _isPrimary
-        ? AppColors.textOnAccent
-        : _isMedium
-        ? TodayRecommendationsScreenUi.primary
-        : AppColors.textSecondary;
-    final background = _isPrimary
-        ? TodayRecommendationsScreenUi.primary
-        : _isMedium
-        ? Colors.white
-        : Colors.transparent;
-    final border = _isPrimary
-        ? TodayRecommendationsScreenUi.primary
-        : _isMedium
-        ? TodayRecommendationsScreenUi.primaryBorder
-        : AppColors.divider.withValues(alpha: 0.82);
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 34),
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          foregroundColor: foreground,
-          disabledForegroundColor: _isPrimary
-              ? AppColors.textOnAccent.withValues(alpha: 0.55)
-              : AppColors.textSecondary,
-          backgroundColor: background,
-          disabledBackgroundColor: AppColors.surfaceVariant,
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-          minimumSize: const Size(0, 34),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(999),
-            side: BorderSide(color: border),
-          ),
-          textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.2,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 13),
-              const SizedBox(width: 2),
-            ],
-            Flexible(
-              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

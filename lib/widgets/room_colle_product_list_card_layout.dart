@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../utils/product_price_display.dart';
 
 /// ROOM コレ一覧と検索結果の商品行カードで共有するレイアウト・タイポの単一情報源。
 abstract final class RoomColleProductListCardLayout {
@@ -42,10 +43,7 @@ abstract final class RoomColleProductListCardLayout {
   static EdgeInsets get rightColumnPadding =>
       const EdgeInsets.fromLTRB(10, 8, 12, 8);
 
-  static String formatPriceYen(int n) {
-    if (n < 0) return '価格 —';
-    return '¥${n.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
-  }
+  static String formatPriceYen(int n) => ProductPriceDisplay.formatYen(n);
 
   static TextStyle? titleTextStyle(ThemeData theme) {
     return theme.textTheme.titleSmall?.copyWith(
