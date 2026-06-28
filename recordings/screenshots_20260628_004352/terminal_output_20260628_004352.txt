@@ -73,3 +73,8 @@ I/flutter (20874): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCom
 I/flutter (20874): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
 I/flutter (20874): [AUTO_REACTION_SYNC] scheduled
 I/flutter (20874): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
