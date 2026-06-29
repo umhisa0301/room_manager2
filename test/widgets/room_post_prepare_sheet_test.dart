@@ -7,6 +7,7 @@ import 'package:room_manager2/repository/pending_collect_notice_repository.dart'
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
+import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
@@ -39,8 +40,13 @@ class _InstantStubPostCommentGenerationService
   const _InstantStubPostCommentGenerationService();
 
   @override
-  Future<String> generate(PostCommentGenerationInput input) async {
-    return 'AI生成テスト文';
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    return const PostCommentGenerationResult(
+      body: 'AI生成テスト文',
+      fullText: 'AI生成テスト文',
+    );
   }
 }
 
@@ -49,7 +55,9 @@ class _FailingPostCommentGenerationService
   const _FailingPostCommentGenerationService();
 
   @override
-  Future<String> generate(PostCommentGenerationInput input) async {
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
     throw Exception('stub failure');
   }
 }
@@ -203,7 +211,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('room_post_prepare_ai_error')), findsOneWidget);
-      expect(find.textContaining('失敗'), findsOneWidget);
+      expect(find.textContaining('作成できませんでした'), findsOneWidget);
     });
 
     testWidgets('ROOM button disabled when URL not ready', (tester) async {

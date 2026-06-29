@@ -1,3 +1,4 @@
+import '../models/post_comment_generation_result.dart';
 import '../models/post_comment_profile_context.dart';
 import '../models/post_style_settings.dart';
 import 'stub_post_comment_builder.dart';
@@ -38,7 +39,7 @@ class PostCommentGenerationInput {
 
 /// 投稿文のAI生成（OpenAI 等の実装は将来差し替え）。
 abstract class PostCommentGenerationService {
-  Future<String> generate(PostCommentGenerationInput input);
+  Future<PostCommentGenerationResult> generate(PostCommentGenerationInput input);
 }
 
 /// API未接続段階のスタブ。商品情報と投稿スタイル設定から仮の投稿文を返す。
@@ -54,10 +55,13 @@ class StubPostCommentGenerationService implements PostCommentGenerationService {
   final PostStyleSettings? defaultStyleSettings;
 
   @override
-  Future<String> generate(PostCommentGenerationInput input) async {
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
     await Future<void>.delayed(delay);
     final style =
         input.styleSettings ?? defaultStyleSettings ?? PostStyleSettings.defaults();
-    return StubPostCommentBuilder.build(input: input, style: style);
+    final text = StubPostCommentBuilder.build(input: input, style: style);
+    return PostCommentGenerationResult(body: text, fullText: text);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +6,9 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
+import '../services/post_comment_generation_exception.dart';
 import '../services/post_comment_generation_service.dart';
+import '../services/post_comment_generation_service_factory.dart';
 import '../state/post_style_settings_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
@@ -57,7 +60,7 @@ Future<void> showRoomPostPrepareBottomSheet({
                 item: item,
                 recommendationReason: recommendationReason,
                 generationService:
-                    generationService ?? const StubPostCommentGenerationService(),
+                    generationService ?? PostCommentGenerationServiceFactory.create(),
               ),
             ),
           ),
@@ -116,6 +119,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         product.extractedUrl.trim().isNotEmpty;
   }
 
+  static const _aiGenerationErrorMessage =
+      '投稿文を作成できませんでした。時間をおいてもう一度お試しください。';
+
   Future<void> _generateAiComment() async {
     if (_aiLoading) return;
     setState(() {
@@ -124,7 +130,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     });
     try {
       final styleSettings = context.read<PostStyleSettingsProvider>().settings;
-      final text = await widget.generationService.generate(
+      final result = await widget.generationService.generate(
         PostCommentGenerationInput(
           itemName: widget.item.itemName,
           recommendationReason: widget.recommendationReason,
@@ -136,14 +142,25 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       );
       if (!mounted) return;
       setState(() {
-        _bodyController.text = text;
+        _bodyController.text = result.displayText;
         _aiLoading = false;
+      });
+    } on PostCommentGenerationException catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+          '[PostComment] generation failed code=${e.code}: ${e.message}',
+        );
+      }
+      if (!mounted) return;
+      setState(() {
+        _aiLoading = false;
+        _aiError = _aiGenerationErrorMessage;
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
         _aiLoading = false;
-        _aiError = '投稿文の作成に失敗しました。もう一度お試しください。';
+        _aiError = _aiGenerationErrorMessage;
       });
     }
   }

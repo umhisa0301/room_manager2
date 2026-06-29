@@ -14,17 +14,17 @@ void main() {
 
     test('generates comment from product info', () async {
       const service = StubPostCommentGenerationService(delay: Duration.zero);
-      final text = await service.generate(input);
+      final result = await service.generate(input);
 
-      expect(text, contains('テスト商品'));
-      expect(text, contains('売れ筋'));
-      expect(text, contains('￥1,500'));
-      expect(text, contains('#楽天ROOM'));
+      expect(result.displayText, contains('テスト商品'));
+      expect(result.displayText, contains('売れ筋'));
+      expect(result.displayText, contains('￥1,500'));
+      expect(result.displayText, contains('#楽天ROOM'));
     });
 
     test('uses fallback reason when empty', () async {
       const service = StubPostCommentGenerationService(delay: Duration.zero);
-      final text = await service.generate(
+      final result = await service.generate(
         const PostCommentGenerationInput(
           itemName: '商品A',
           recommendationReason: '',
@@ -34,13 +34,13 @@ void main() {
         ),
       );
 
-      expect(text, contains('気になった一品です'));
-      expect(text, contains('￥ー'));
+      expect(result.displayText, contains('気になった一品です'));
+      expect(result.displayText, contains('￥ー'));
     });
 
     test('reflects casual tone', () async {
       const service = StubPostCommentGenerationService(delay: Duration.zero);
-      final text = await service.generate(
+      final result = await service.generate(
         PostCommentGenerationInput(
           itemName: input.itemName,
           recommendationReason: input.recommendationReason,
@@ -55,14 +55,14 @@ void main() {
         ),
       );
 
-      expect(text, contains('見つけたよ'));
-      expect(text, contains('見てみてね'));
-      expect(text, isNot(contains('#楽天ROOM')));
+      expect(result.displayText, contains('見つけたよ'));
+      expect(result.displayText, contains('見てみてね'));
+      expect(result.displayText, isNot(contains('#楽天ROOM')));
     });
 
     test('adds hashtags when enabled', () async {
       const service = StubPostCommentGenerationService(delay: Duration.zero);
-      final text = await service.generate(
+      final result = await service.generate(
         PostCommentGenerationInput(
           itemName: input.itemName,
           recommendationReason: input.recommendationReason,
@@ -76,14 +76,14 @@ void main() {
         ),
       );
 
-      expect(text, contains('#楽天ROOM'));
-      expect(text, contains('#おすすめ'));
-      expect(text, isNot(contains('#コスパ')));
+      expect(result.displayText, contains('#楽天ROOM'));
+      expect(result.displayText, contains('#おすすめ'));
+      expect(result.displayText, isNot(contains('#コスパ')));
     });
 
     test('respects body length limits for short setting', () async {
       const service = StubPostCommentGenerationService(delay: Duration.zero);
-      final text = await service.generate(
+      final result = await service.generate(
         PostCommentGenerationInput(
           itemName: input.itemName,
           recommendationReason: input.recommendationReason,
@@ -102,8 +102,8 @@ void main() {
       final limits = PostStyleSettings.defaults()
           .copyWith(length: PostLength.short)
           .generationLimits;
-      expect(text.length, greaterThanOrEqualTo(limits.minBodyChars));
-      expect(text.length, lessThanOrEqualTo(limits.maxBodyChars));
+      expect(result.displayText.length, greaterThanOrEqualTo(limits.minBodyChars));
+      expect(result.displayText.length, lessThanOrEqualTo(limits.maxBodyChars));
     });
 
     test('does not exceed maxTotalChars with hashtags', () async {
@@ -119,7 +119,7 @@ void main() {
           PostFocusPoint.reviews,
         ],
       );
-      final text = await service.generate(
+      final result = await service.generate(
         PostCommentGenerationInput(
           itemName: 'とても長い商品名の収納バスケットセット',
           recommendationReason:
@@ -132,8 +132,8 @@ void main() {
       );
 
       final limits = style.generationLimits;
-      expect(text.length, lessThanOrEqualTo(limits.maxTotalChars));
-      expect(text, contains('#楽天ROOM'));
+      expect(result.displayText.length, lessThanOrEqualTo(limits.maxTotalChars));
+      expect(result.displayText, contains('#楽天ROOM'));
     });
 
     test('uses defaultStyleSettings when input omits style', () async {
@@ -152,8 +152,8 @@ void main() {
         ),
       );
 
-      final text = await service.generate(input);
-      expect(text, contains('ご紹介いたします'));
+      final result = await service.generate(input);
+      expect(result.displayText, contains('ご紹介いたします'));
     });
   });
 }
