@@ -126,5 +126,65 @@ void main() {
       expect(settings.focusPoints, [PostFocusPoint.costPerformance]);
       expect(settings.targetAudience, PostTargetAudience.general);
     });
+
+    test('fromJson does not crash on null or malformed types', () {
+      expect(() => PostStyleSettings.fromJson(null), returnsNormally);
+      final settings = PostStyleSettings.fromJson({
+        'kaomoji_enabled': 'not-a-bool',
+        'avoid_overstatement': 1,
+        'focus_points': 'not-a-list',
+        'updated_at': 'not-a-date',
+      });
+      expect(settings.kaomojiEnabled, isFalse);
+      expect(settings.avoidOverstatement, isTrue);
+      expect(settings.focusPoints, PostStyleSettings.defaults().focusPoints);
+    });
+
+    test('fromJson limits focusPoints to max 3', () {
+      final settings = PostStyleSettings.fromJson({
+        'focus_points': [
+          'cost_performance',
+          'convenience',
+          'reviews',
+          'design',
+          'cute',
+        ],
+      });
+      expect(settings.focusPoints.length, PostStyleSettings.maxFocusPoints);
+      expect(settings.focusPoints, [
+        PostFocusPoint.costPerformance,
+        PostFocusPoint.convenience,
+        PostFocusPoint.reviews,
+      ]);
+    });
+
+    test('fromJson removes duplicate focusPoints', () {
+      final settings = PostStyleSettings.fromJson({
+        'focus_points': [
+          'cost_performance',
+          'cost_performance',
+          'daily_use',
+        ],
+      });
+      expect(settings.focusPoints, [
+        PostFocusPoint.costPerformance,
+        PostFocusPoint.dailyUse,
+      ]);
+    });
+
+    test('normalizeFocusPoints enforces max and dedup', () {
+      final normalized = PostStyleSettings.normalizeFocusPoints([
+        PostFocusPoint.gift,
+        PostFocusPoint.gift,
+        PostFocusPoint.cute,
+        PostFocusPoint.design,
+        PostFocusPoint.reviews,
+      ]);
+      expect(normalized, [
+        PostFocusPoint.gift,
+        PostFocusPoint.cute,
+        PostFocusPoint.design,
+      ]);
+    });
   });
 }

@@ -106,6 +106,36 @@ void main() {
       expect(text.length, lessThanOrEqualTo(limits.maxBodyChars));
     });
 
+    test('does not exceed maxTotalChars with hashtags', () async {
+      const service = StubPostCommentGenerationService(delay: Duration.zero);
+      final style = PostStyleSettings.defaults().copyWith(
+        length: PostLength.detailed,
+        hashtagLevel: HashtagLevel.standard,
+        emojiLevel: EmojiLevel.medium,
+        kaomojiEnabled: true,
+        focusPoints: const [
+          PostFocusPoint.costPerformance,
+          PostFocusPoint.convenience,
+          PostFocusPoint.reviews,
+        ],
+      );
+      final text = await service.generate(
+        PostCommentGenerationInput(
+          itemName: 'とても長い商品名の収納バスケットセット',
+          recommendationReason:
+              '部屋になじみやすく、口コミ評価も高いアイテムです。毎日の片付けに役立ちそうです。',
+          itemPrice: 1980,
+          reviewAverage: 4.8,
+          reviewCount: 120,
+          styleSettings: style,
+        ),
+      );
+
+      final limits = style.generationLimits;
+      expect(text.length, lessThanOrEqualTo(limits.maxTotalChars));
+      expect(text, contains('#楽天ROOM'));
+    });
+
     test('uses defaultStyleSettings when input omits style', () async {
       final service = StubPostCommentGenerationService(
         delay: Duration.zero,

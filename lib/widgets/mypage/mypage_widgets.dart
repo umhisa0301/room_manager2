@@ -651,12 +651,14 @@ class MyPageAppSettingsCard extends StatelessWidget {
     super.key,
     required this.onOpenSavedShops,
     required this.onOpenTutorialReplay,
+    this.onOpenPostStyleSettings,
     this.onOpenDemo,
     this.onOpenDevAutomation,
   });
 
   final VoidCallback onOpenSavedShops;
   final VoidCallback onOpenTutorialReplay;
+  final VoidCallback? onOpenPostStyleSettings;
   final VoidCallback? onOpenDemo;
   final VoidCallback? onOpenDevAutomation;
 
@@ -668,6 +670,10 @@ class MyPageAppSettingsCard extends StatelessWidget {
         children: [
           const MyPageSectionHeaderRow(title: 'アプリ設定'),
           const SizedBox(height: 4),
+          if (onOpenPostStyleSettings != null)
+            MyPagePostStyleSettingsEntry(
+              onTap: onOpenPostStyleSettings!,
+            ),
           MyPageNavListTile(
             title: '保存ショップを管理',
             onTap: onOpenSavedShops,
@@ -790,6 +796,71 @@ void _showComingSoonSnackBar(BuildContext context, String feature) {
   );
 }
 
+/// 投稿スタイル設定への導線行。
+class MyPagePostStyleSettingsEntry extends StatelessWidget {
+  const MyPagePostStyleSettingsEntry({
+    super.key,
+    required this.onTap,
+  });
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Semantics(
+          label: 'mypage_post_style_settings_entry',
+          button: true,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '投稿スタイル設定',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: MyPageScreenUi.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.35,
+                                ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'AI投稿文の文体・長さ・ハッシュタグを調整',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: MyPageScreenUi.textSecondary,
+                                  height: 1.35,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: MyPageScreenUi.textSecondary,
+                      size: 22,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Divider(height: 1, color: MyPageScreenUi.cardBorder),
+      ],
+    );
+  }
+}
+
 /// 後方互換: 既存テストが参照する設定セクション。
 class MyPageSettingsSection extends StatelessWidget {
   const MyPageSettingsSection({
@@ -800,6 +871,7 @@ class MyPageSettingsSection extends StatelessWidget {
     required this.onOpenInitialSetup,
     this.onOpenSavedShops,
     this.onOpenTutorialReplay,
+    this.onOpenPostStyleSettings,
   });
 
   final VoidCallback onOpenPlan;
@@ -808,6 +880,7 @@ class MyPageSettingsSection extends StatelessWidget {
   final VoidCallback onOpenInitialSetup;
   final VoidCallback? onOpenSavedShops;
   final VoidCallback? onOpenTutorialReplay;
+  final VoidCallback? onOpenPostStyleSettings;
 
   static bool _devAutomationEntryVisibilityLogged = false;
 
@@ -828,6 +901,7 @@ class MyPageSettingsSection extends StatelessWidget {
         MyPageAppSettingsCard(
           onOpenSavedShops: onOpenSavedShops ?? () {},
           onOpenTutorialReplay: onOpenTutorialReplay ?? () {},
+          onOpenPostStyleSettings: onOpenPostStyleSettings,
           onOpenDemo: onOpenDemo,
           onOpenDevAutomation: onOpenDevAutomation,
         ),

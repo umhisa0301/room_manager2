@@ -14,7 +14,8 @@ class PostStyleSettingsProvider extends ChangeNotifier {
   PostStyleSettings get settings => _settings;
 
   Future<void> saveSettings(PostStyleSettings next) async {
-    final stamped = next.copyWith(updatedAt: DateTime.now().toUtc());
+    final normalized = next.normalized();
+    final stamped = normalized.copyWith(updatedAt: DateTime.now().toUtc());
     await _repository.save(stamped);
     _settings = stamped;
     notifyListeners();
@@ -23,5 +24,9 @@ class PostStyleSettingsProvider extends ChangeNotifier {
   Future<void> reload() async {
     _settings = _repository.load();
     notifyListeners();
+  }
+
+  Future<void> resetToDefaults() async {
+    await saveSettings(PostStyleSettings.defaults());
   }
 }

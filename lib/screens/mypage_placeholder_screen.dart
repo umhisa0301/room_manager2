@@ -36,6 +36,7 @@ import 'closed_test_demo_screen.dart';
 import 'dev_automation_screen.dart';
 import 'easy_initial_setup_screen.dart';
 import 'monetization_plan_screen.dart';
+import 'post_style_settings_screen.dart';
 import 'saved_shops_screen.dart';
 
 export '../widgets/mypage/mypage_widgets.dart' show MyPageSettingsSection;
@@ -200,6 +201,12 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     );
   }
 
+  void _openPostStyleSettings(BuildContext context) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(builder: (_) => const PostStyleSettingsScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomPad =
@@ -333,6 +340,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       : null,
                   onOpenInitialSetup: () => _openEasyInitialSetup(context),
                   onOpenSavedShops: openSavedShops,
+                  onOpenPostStyleSettings: () => _openPostStyleSettings(context),
                   onOpenTutorialReplay: () {
                     context
                         .read<OperationTutorialController>()

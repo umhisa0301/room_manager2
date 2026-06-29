@@ -214,6 +214,8 @@ class PostGenerationLimits {
 
 /// 投稿文の書き方設定（[UserProfile.postStyles] とは別概念）。
 class PostStyleSettings {
+  static const int maxFocusPoints = 3;
+
   const PostStyleSettings({
     required this.tone,
     required this.length,
@@ -359,18 +361,41 @@ class PostStyleSettings {
   static PostStyleSettings fromJson(Map<String, dynamic>? json) {
     if (json == null) return defaults();
     return PostStyleSettings(
-      tone: PostTone.fromJsonKey(json['tone'] as String?),
-      length: PostLength.fromJsonKey(json['length'] as String?),
-      emojiLevel: EmojiLevel.fromJsonKey(json['emoji_level'] as String?),
-      kaomojiEnabled: json['kaomoji_enabled'] as bool? ?? false,
-      hashtagLevel: HashtagLevel.fromJsonKey(json['hashtag_level'] as String?),
+      tone: PostTone.fromJsonKey(_stringOrNull(json['tone'])),
+      length: PostLength.fromJsonKey(_stringOrNull(json['length'])),
+      emojiLevel: EmojiLevel.fromJsonKey(_stringOrNull(json['emoji_level'])),
+      kaomojiEnabled: _boolOr(json['kaomoji_enabled'], false),
+      hashtagLevel: HashtagLevel.fromJsonKey(
+        _stringOrNull(json['hashtag_level']),
+      ),
       focusPoints: _focusPointsFromJson(json['focus_points']),
       targetAudience: PostTargetAudience.fromJsonKey(
-        json['target_audience'] as String?,
+        _stringOrNull(json['target_audience']),
       ),
-      avoidOverstatement: json['avoid_overstatement'] as bool? ?? true,
+      avoidOverstatement: _boolOr(json['avoid_overstatement'], true),
       updatedAt: _parseUpdatedAt(json['updated_at']),
     );
+  }
+
+  /// 重複排除・最大件数制限を適用したコピーを返す。
+  PostStyleSettings normalized() {
+    final normalizedPoints = normalizeFocusPoints(focusPoints);
+    if (identical(normalizedPoints, focusPoints)) return this;
+    return copyWith(focusPoints: normalizedPoints);
+  }
+
+  static List<PostFocusPoint> normalizeFocusPoints(
+    List<PostFocusPoint> raw,
+  ) {
+    final seen = <PostFocusPoint>{};
+    final points = <PostFocusPoint>[];
+    for (final point in raw) {
+      if (seen.add(point) && points.length < maxFocusPoints) {
+        points.add(point);
+      }
+    }
+    if (points.isEmpty) return defaults().focusPoints;
+    return points;
   }
 
   static List<PostFocusPoint> _focusPointsFromJson(dynamic raw) {
@@ -380,8 +405,22 @@ class PostStyleSettings {
     final points = raw
         .map((e) => PostFocusPoint.fromJsonKey(e?.toString()))
         .toList();
-    if (points.isEmpty) return defaults().focusPoints;
-    return points;
+    return normalizeFocusPoints(points);
+  }
+
+  static String? _stringOrNull(dynamic raw) {
+    if (raw == null) return null;
+    return raw.toString();
+  }
+
+  static bool _boolOr(dynamic raw, bool fallback) {
+    if (raw is bool) return raw;
+    if (raw is String) {
+      final lower = raw.toLowerCase();
+      if (lower == 'true') return true;
+      if (lower == 'false') return false;
+    }
+    return fallback;
   }
 
   static DateTime _parseUpdatedAt(dynamic raw) {
