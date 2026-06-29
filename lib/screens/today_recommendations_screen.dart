@@ -28,6 +28,7 @@ import '../widgets/app_screen_status.dart';
 import '../utils/product_price_display.dart';
 import '../utils/product_card_rakuten_open.dart';
 import '../widgets/monetization/monetization_ad_slot.dart';
+import '../widgets/room_post_prepare_sheet.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
   const TodayRecommendationsScreen({super.key, this.skipInitialEnsure = false});
@@ -688,6 +689,8 @@ class _CardActionAreaState extends State<_CardActionArea> {
 
   bool get _canSkip => entry.decision == TodayRecommendationDecision.pending;
 
+  /// 投稿管理タブへ遷移する従来導線（別画面からの再利用用に保持）。
+  // ignore: unused_element
   void _openPostManagement(BuildContext context) {
     final shell = context.read<AppShellController>();
     final nav = Navigator.of(context);
@@ -695,6 +698,14 @@ class _CardActionAreaState extends State<_CardActionArea> {
     shell.openRoomCollect(
       initialTabIndex: 0,
       focusCandidateProductId: entry.item.productId,
+    );
+  }
+
+  void _openPostPrepareSheet(BuildContext context) {
+    showRoomPostPrepareBottomSheet(
+      context: context,
+      item: entry.item,
+      recommendationReason: entry.reason,
     );
   }
 
@@ -776,7 +787,7 @@ class _CardActionAreaState extends State<_CardActionArea> {
                 style: _CompactActionStyle.primary,
                 expand: true,
                 semanticLabel: 'today_recommendation_post_button',
-                onPressed: () => _openPostManagement(context),
+                onPressed: () => _openPostPrepareSheet(context),
               ),
             if (_isPending || _isAddingCandidate || _isAdded)
               const SizedBox(height: 6),

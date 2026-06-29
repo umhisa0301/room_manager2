@@ -263,6 +263,38 @@ void main() {
       expect(find.byKey(const Key('today_recommendation_post_button')), findsOneWidget);
     });
 
+    testWidgets('投稿する opens post prepare sheet without navigating away', (
+      tester,
+    ) async {
+      final managedRepo = RakutenManagedProductRepository(prefs);
+      await managedRepo.registerCandidateFromSearchItem(_entry().item);
+      await managedRepo.markExtractionExtracting('shop:item001');
+
+      final bundle = TodayRecommendationBundle(
+        localDateKey: '2024-06-01',
+        generatedAt: DateTime.parse('2024-06-01T08:00:00.000Z'),
+        entries: [
+          _entry(
+            decision: TodayRecommendationDecision.addedCandidate,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        await _wrapTodayScreen(prefs: prefs, bundle: bundle),
+      );
+      await _openTodayScreen(tester);
+
+      expect(find.text('今日のおすすめコレ候補'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('today_recommendation_post_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('room_post_prepare_sheet')), findsOneWidget);
+      expect(find.text('投稿の準備'), findsOneWidget);
+      expect(find.text('今日のおすすめコレ候補'), findsOneWidget);
+    });
+
     test('markAddedCandidate keeps add flow working', () async {
       final todayRepo = TodayRecommendationRepository(prefs);
       final bundle = TodayRecommendationBundle(
