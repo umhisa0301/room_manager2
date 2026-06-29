@@ -974,3 +974,605 @@ _**Agent (default)**_
 <summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Phase 2a で作成された product_card_action_row.dart の有無を確認している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **0** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (0 files)
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "**/*test*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "post_management_item_|Semantics.*label"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "post_management_item_|Semantics.*label",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\rakuten_managed_product_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\models\rakuten_managed_product.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+モデルに投稿文フィールドがあるか確認する。コメント画面も調査対象とする。300px幅以下の画面での完了アクションのレイアウト挙動を調べる。
+
+Phase 2a の完了ステータスを確認中。候補タブの現状を詳細に把握した。上部にバッジと削除ボタンを配置する。下部に楽天で見る（アウトライン）と投稿する（プライマリ）を並べる。ボタン高さは40pxでフォント13px。Semantics も定義済み。次に済タブの構成を確認する。
+
+済タブはバッジと反応数、商品情報、売れた/反応あり/微妙のフィードバックツールバー、および楽天で見る・ROOMで投稿（またはROOMで見る）の2ボタンを配置する。300px未満では縦並びになる。
+
+今日の候補画面は楽天で見る・候補に追加・見送るを1行に並べる。投稿文生成は含まれない。
+
+product_card_action_row.dart は未作成である。
+
+候補タブの「投稿する」はPhase 2aの「ROOMで投稿」と一致していない。
+
+済タブでは roomUrl がない場合「ROOMで投稿」が使われる。この不整合は導線設計に影響する。
+
+候補追加後のユーザー行動フローを整理した。snackbar 表示後に手動で投稿管理画面へ遷移する。shell からの遷移時は focusCandidateProductId でスクロールやハイライトが可能。
+
+投稿文生成は ROOM 投稿より先に行われる準備作業である。この順序がボタン配置の優先順位を決める重要な要素となる。
+
+「ROOMで投稿」は実際に ROOM を開いてアイテムを済タブへ移動する動作である。現状の「投稿する」ボタンはこの動作を実行している。そのため「投稿文を作る」は ROOM 投稿より前に配置する必要がある。ユーザーは候補追加後、まず投稿文を生成してコピーし、その後 ROOM へ遷移して貼り付けて投稿する流れになる。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\comments_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "**/*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\product_detail_screen.dart",
+  "pattern": "投稿|ROOM|候補"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\product_detail_screen.dart",
+  "pattern": "投稿|ROOM|候補",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Glob pattern "**/*" matches every file and is not allowed. Use a more specific glob or no glob.
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\products_placeholder_screen.dart",
+  "pattern": "collectPostingBlocked|onCollectPressed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\products_placeholder_screen.dart",
+  "pattern": "collectPostingBlocked|onCollectPressed",
+  "topFiles": [
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\products_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 8
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **5** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (5 files)
+
+| File |
+|------|
+| `../integration_test/add_candidate_from_url_e2e_test.dart` |
+| `../integration_test/tab_tour_rakuten_product_search_test.dart` |
+| `../integration_test/today_recommendation_e2e_test.dart` |
+| `../integration_test\room_import_e2e_test.dart` |
+| `../integration_test/room_import_e2e_test.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\.specstory\history\2026-06-28_14-59-32Z-room-manager-phase-2-improvements.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Phase 2a は実装済みだが、今回の調査ではスキップされている。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\.specstory\history\2026-06-28_14-59-32Z-room-manager-phase-2-improvements.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\products_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\integration_test\today_recommendation_e2e_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査に必要な文脈が揃った。これから、各案の比較・推奨案・画面ごとの配置方針・ボタン文言案・表示方針・実装対象ファイル・テスト方針・未確定事項を含む包括的な設計調査レポートを作成する。
+
+調査結果を整理している。候補タブは1行に「楽天で見る」と「投稿する」を並べ、削除ボタンは右上に配置する案が有力だ。済タブはフィードバック行の後に「楽天で見る」や「ROOMで投稿」を並べる構成を検討している。Phase 2aでは価格表示を統一したが、候補タブの文言は未変更で、product_card_action_row.dart は未作成である。案A（1行目に「投稿文を作る」「ROOMで投稿」、2行目に「楽天で見る」）は、2aの統一CTA前提と整合し、投稿文生成後の左優先表示も準備ワークフローに適している。
+
+案Aの2行配置は、カード高さ＋約48pxでレイアウト定数に収まる。2行目の「楽天で見る」は全幅に配置し、セカンダリ導線として適している。ただし1行目に複数のprimaryボタンを置くと規約に反するため、どちらか一方はoutlineスタイルにする必要がある。
+
+案B（1行目に「ROOMで投稿」「投稿文を作る」、2行目に「楽天で見る」）は既存投稿フローを優先し、ユーザーの主行動認識に沿う。案C（別画面へ分離）はカードがシンプルになるが、ナビゲーションの摩擦が増す。
+
+別画面への分離は、候補タブをハブとするワークフローを破壊するため見送る。投稿文生成は準備的・任意の操作なのでセカンダリ（アウトライン）にし、ROOMで投稿は終端アクションとしてプライマリに据える。楽天で見るは参考情報として最下部またはプライマリ行の左側に配置するのが自然だ。
+
+削除ボタンは右上に配置し、Semantics が既に存在するため競合しない。Phase 2a では 32px は破壊的アクションとして許容範囲と判断した。
+
+済タブには「投稿文を作る」を置かない。既存の投稿済みアイテムは別のワークフローであり、3列の制限にも抵触するため、候補追加後の遷移フローを維持する。
+
+投稿文生成後の表示は、バッジ「投稿文あり」、登録日下の1行プレビュー、またはバトムシート内のチップのいずれかを検討している。モデルには generatedPostText と generatedAt を追加する必要がある。
+
+Semantics と Key の命名案を確定させた。`post_management_item_generate_post_button`、`post_management_item_post_button`、`post_management_item_open_rakuten_button`、および `post_management_candidate_card_{productId}` を検討している。
+
+テスト方針も整理した。`phase2a_product_cards_test.dart` に2行レイアウトと Semantics のテストを追加する。`home_ux_refinement_test` で「投稿する」と「ROOMで投稿」の文言差異を検証する。`products_placeholder` と `today_recommendation` の CTA 統合テストは未実装なので、これらを網羅する必要がある。
+
+実装順序は以下の通りだ。
+1. 生成投稿テキストのモデルと永続化
+2. Phase 2a で遅延していた ProductCardActionRow ウィジェットの
+
+未確定事項を整理した。生成UIの形式（バトムシート・全画面・インライン展開）、プライマリボタンの割り当て、永続化方式（ローカルのみかサーバーか）、モネタイズ制限、コメントテンプレートとの関係性、生成後のコピーフロー、再生成動作、および同一PR内で「投稿する」を「ROOMで投稿」に変更するかどうかを検討する必要がある。カード高さはThumbスロットの130px以上を前提とする。
+
+カード高さの具体値を算出した。2行目の追加は約48px増加し、既存カードは186px以上を想定できる。320px未満の画面ではExpandedで2列配置し、6文字ラベルはFittedBoxで調整する必要がある。Phase 2aのスコープで「候補に追加」に記載された「ROOMで投稿」が未反映の可能性を確認している。
+
+候補カードの「投稿する」は、ホーム画面の「投稿する」（候補追加）とは意味が異なる。候補カードでは collectRoomAndLaunch 全フローを実行する。済タブでは ROOMで投稿 で ROOM 投稿ページを開く。Phase 2b で統一するなら、候補カードの文言も「ROOMで投稿」に変更すべきだ。このギャップをレポートに明記する。</details></think>
+
+_**Agent (default)**_
+
+# Phase 2b 設計調査：コレ候補カードへの「投稿文を作る」導線
+
+調査のみ実施しました。実装は行っていません。
+
+---
+
+## 現状サマリー（Phase 2a 後）
+
+Phase 2a で価格表示（`￥ー`）・おすすめコレ CTA（40px・役割修正）・探す結果カード（44px）は統一済みです。一方、**コレ候補カードの 2 行 CTA 化と `ProductCardActionRow` は意図的に見送り**されています。
+
+### コレ候補タブ（`RakutenManagedProductCard` candidate）
+
+```
+上段: [コレ候補バッジ…] + 右上 [削除]
+中段: サムネ(130px) + 商品情報（評価・ショップ/ジャンル・登録日）
+下段: [楽天で見る Outline 40px] [投稿する Primary 40px]  ← 1行のみ
+```
+
+- 削除は右上 pill（`minimumSize: 44×32`）で CTA 行と分離済み
+- Semantics: `post_management_item_remove_button` / `post_management_item_open_rakuten_button` / `post_management_item_post_button`
+- **文言ギャップ**: コレ済は `ROOMで投稿` に統一済みだが、候補はまだ `投稿する`（`collectRoomAndLaunch` = コレ済化＋ROOM 起動）
+
+### コレ済タブ（done）
+
+```
+バッジ行 + 反応数
+商品情報
+[売れた][反応あり][微妙]  ← 36px × 3（候補より縦幅大）
+[楽天で見る][ROOMで見る] or [楽天で見る][ROOMで投稿]
+```
+
+- `LayoutBuilder` で幅 300px 未満は縦積み（`Wrap`）
+- 投稿文生成の置き場はさらに窮屈
+
+### おすすめコレ（`TodayRecommendationsScreen`）
+
+```
+[楽天で見る Secondary] [候補に追加 Primary] [見送る Weak]  ← 40px・1行3列
+```
+
+- 追加後: SnackBar「候補に追加しました」→ ユーザーが投稿管理へ遷移
+- `focusCandidateProductId` で候補タブへスクロール＋1秒ハイライト可能
+
+---
+
+## 1. 案 A / B / C の比較
+
+| 観点 | 案A: 1行目 [投稿文を作る][ROOMで投稿] / 2行目 [楽天で見る] | 案B: 1行目 [ROOMで投稿][投稿文を作る] / 2行目 [楽天で見る] | 案C: カード外（詳細 or 別画面） |
+|------|------|------|------|
+| **カード高さ** | +約48px（40+8+40）。許容範囲。コレ済より候補の方が余裕あり | 同左 | カード高さは増えない |
+| **Primary の役割** | 2つ並列で Primary 化しやすく、視覚的競合リスク | ROOMで投稿を Primary にしやすく、既存設計と整合 | カードは現状維持 |
+| **操作優先度** | 投稿文生成を先に見せる（新機能の発見向き） | 既存の投稿導線を優先（即投稿ユーザー向き） | 候補一覧からは1タップ増 |
+| **楽天で見る** | 2行目全幅 Secondary — 参照系を下段に分離でき自然 | 同左 | カード内は現状のまま |
+| **削除ボタン** | 右上のまま共存可 | 同左 | 影響なし |
+| **実装コスト** | `_candidateActions` を 2 行化 + 文言統一 | 同左 | 新画面/遷移・状態同期が追加 |
+| **テスト** | 既存 Semantics に1つ追加、2行レイアウトの widget test | 同左 | 画面遷移の integration test が必要 |
+| **Phase 2a 方針** | Phase 2 前調査の推奨案と一致 | 投稿導線優先で現行 UX に近い | 2 前調査の「候補タブがハブ」方針とやや乖離 |
+
+---
+
+## 2. 推奨案
+
+**案B をベースにした配置（役割を明確化した Modified B）** を推奨します。
+
+```
+コレ候補カード
+  上段: バッジ + [削除]（現状維持）
+  下段:
+    1行目: [ROOMで投稿 Primary] [投稿文を作る Secondary/Outline]
+    2行目: [楽天で見る Secondary 全幅]
+```
+
+### 理由
+
+1. **ユーザー旅程**: 候補追加 →（任意で投稿文生成）→ ROOM 投稿 → コレ済。終端アクションは ROOM 投稿のまま Primary が自然。
+2. **投稿文生成は Primary にしない**: 準備・補助操作。Primary を2つ並べると Phase 2a で固めた役割体系が崩れる。
+3. **案A との差**: 左配置で新機能を強調できるが、`collectRoomAndLaunch` はコレ済化を伴うため、誤タップコストが大きい操作を左 Primary に置くリスクがある。
+4. **案C は Phase 2b 初版には不向き**: `product_detail_screen.dart` に投稿導線はなく、候補一覧からのワンストップが失われる。
+
+---
+
+## 3. 画面ごとの配置方針
+
+| 画面 / タブ | 投稿文生成 | 配置・備考 |
+|------------|-----------|-----------|
+| **投稿管理・コレ候補** | **置く（主導線）** | 上記 2 行 CTA。`投稿する` → `ROOMで投稿` に統一 |
+| **投稿管理・コレ済** | **Phase 2b では置かない** | 反応トグル + 2 CTA で既に縦幅最大。生成済みテキストの「閲覧・コピー」は 2c 以降 |
+| **おすすめコレ** | **置かない** | 1行3列・40px で限界。役割は「候補に追加」のみ |
+| **探す結果** | **置かない** | Phase 2 方針どおり |
+| **ホーム最近候補プレビュー** | **置かない** | タップ遷移のみ |
+| **取り込み完了** | **置かない** | 同上 |
+| **コメント（テンプレート）** | **間接連携** | 生成文のコピー先。カードからの直接遷移は必須にしない |
+
+### おすすめコレ → 候補追加後の導線
+
+現状どおり **投稿管理コレ候補タブで完結** が自然です。
+
+- 追加直後に投稿文生成を置かない（おすすめ画面は候補登録に専念）
+- 必要なら SnackBar に「投稿管理で投稿文を作れます」程度の補足は検討可（2b 本体では必須ではない）
+- 既存の `focusCandidateProductId` + ハイライトで、ホーム「投稿する」→ 候補一覧の導線はそのまま活かす
+
+---
+
+## 4. ボタン文言案
+
+| 操作 | 推奨文言 | 備考 |
+|------|---------|------|
+| AI 投稿文生成（未生成） | **投稿文を作る** | Phase 2 前調査と一致。短く 6 文字で 2 列に収まる |
+| AI 投稿文生成（生成済み） | **投稿文を見る** or **作り直す** | 初版は単一ボタン「投稿文を見る」+ シート内「作り直す」がシンプル |
+| ROOM 投稿（候補） | **ROOMで投稿** | `投稿する` から統一（コレ済と揃える） |
+| 楽天商品ページ | **楽天で見る** | 現状維持 |
+| 候補削除 | **削除** | ダイアログは「候補から外す」で OK |
+| 生成中 | **作成中…** | `isLoading` 時。ボタン disabled |
+
+**避けたい文言**: 「投稿文を生成する」（長い）、「AIに書いてもらう」（機能説明は Tooltip へ）
+
+---
+
+## 5. 投稿文生成後の表示方針
+
+カード内は **コンパクトな状態表示**、本文は **ボトムシート or 専用パネル** に分離するのがよいです。
+
+### 推奨（Phase 2b）
+
+| 要素 | 方針 |
+|------|------|
+| **バッジ** | 上段バッジ行に `投稿文あり`（teal 系、既存 `ROOM URLあり` と並べる） |
+| **プレビュー** | メタ行（登録日）の下に 1 行省略（`maxLines: 1`、12px secondary）— 任意・2b 後半でも可 |
+| **詳細** | タップ or「投稿文を見る」で BottomSheet：全文・コピー・作り直す |
+| **永続化** | `RakutenManagedProduct` に `generatedPostText` / `generatedPostAt` 等を追加（ローカル） |
+| **コレ済移行後** | 候補から消えるため、2b ではコレ済側表示は不要 |
+
+SnackBar のみは一覧で状態が分からないため、**バッジ + シート** の組み合わせを推奨します。
+
+---
+
+## 6. 実装対象ファイル候補
+
+### 新規
+
+| ファイル | 役割 |
+|---------|------|
+| `lib/widgets/product_card_action_row.dart` | 2 行 CTA 共通（Phase 2a 見送り分） |
+| `lib/services/post_text_generation_service.dart`（仮） | API / ローカル生成 |
+| `lib/widgets/post_text_generation_sheet.dart`（仮） | 生成・表示・コピー UI |
+| `test/widgets/product_card_action_row_test.dart` | 2 行レイアウト regression |
+
+### 既存（主な変更）
+
+| ファイル | 変更内容 |
+|---------|---------|
+| `lib/widgets/rakuten_managed_product_card.dart` | `_candidateActions` 2 行化、Semantics/Key、文言統一 |
+| `lib/models/rakuten_managed_product.dart` | 生成文フィールド |
+| `lib/repository/rakuten_managed_product_repository.dart` | 永続化 |
+| `lib/screens/products_placeholder_screen.dart` | コールバック配線（必要なら） |
+| `test/widgets/phase2a_product_cards_test.dart` | 候補 CTA 2 行・Semantics 追加 |
+
+### 触らない（2b 初版）
+
+- `today_recommendations_screen.dart`
+- `rakuten_search_result_card.dart`
+- `product_detail_screen.dart`（案C を採らない場合）
+
+---
+
+## 7. テスト方針
+
+### Widget test（優先）
+
+| テスト | 内容 |
+|--------|------|
+| `phase2a_product_cards_test.dart` 拡張 | 候補: `ROOMで投稿` + `投稿文を作る` + `楽天で見る` の 3 ボタン存在 |
+| 同上 | `投稿文を作る` の Semantics label |
+| 同上 | 幅 320px / 280px で 2 行が崩れない（`FittedBox` 確認） |
+| 同上 | `collectPostingBlocked` 時は ROOMで投稿のみ disabled |
+| 新規 `product_card_action_row_test.dart` | Primary + Outline 1 行、Secondary 全幅 1 行 |
+
+### 既存への影響
+
+| ファイル | 影響 |
+|---------|------|
+| `home_ux_refinement_test.dart` | ホームは `投稿する` のまま（候補カード文言とは別軸） |
+| `today_recommendations_phase2a_test.dart` | 変更なし |
+| `room_unconfirmed_display_copy_test.dart` | 影響小 |
+
+### Integration test
+
+| 現状 | 2b で追加推奨 |
+|------|-------------|
+| `today_recommendation_e2e_test.dart` はおすすめ〜候補追加まで | 投稿管理コレ候補で「投稿文を作る」タップ → シート表示（API モック or スタブ） |
+| 投稿管理の widget / e2e は **未整備** | `post_management_tab_candidates` Semantics でタブ遷移テスト |
+
+Semantics テストは現状 **未カバー**（`post_management_item_*` の assert なし）。2b で最低 1 件追加を推奨します。
+
+---
+
+## 8. 実装前に決めるべき未確定事項
+
+| # | 論点 | 選択肢 / メモ |
+|---|------|-------------|
+| 1 | **生成 UI** | BottomSheet（推奨）/ 全画面 / カード内インライン展開 |
+| 2 | **API** | stepbyte-api-server 連携か、ローカルスタブか |
+| 3 | **課金・上限** | 1日 N 回、Basic 限定など（おすすめ再生成と同型？） |
+| 4 | **入力コンテキスト** | ニックネーム・診断結果・商品情報のどこまで送るか |
+| 5 | **生成済みの上書き** | 自動上書き / 確認ダイアログ |
+| 6 | **ROOMで投稿との順序強制** | 生成なしでも投稿可（推奨）/ 生成を促すソフトガード |
+| 7 | **候補の `投稿する` 統一タイミング** | 2b と同 PR で `ROOMで投稿` にするか（推奨: 同 PR） |
+| 8 | **コメントテンプレート連携** | 生成文をテンプレート保存するか（2b 外でも可） |
+| 9 | **ProductCardActionRow の共通化範囲** | 候補のみ先出し vs コレ済も同時リファクタ |
+| 10 | **生成失敗時 UX** | カード内エラー表示 vs シート内のみ |
+
+---
+
+## 9. 調査観点への回答（11 項目）
+
+| # | 観点 | 結論 |
+|---|------|------|
+| 1 | 高さ・余白 | **案A/B どちらも可**（+48px）。案C は高さは増えないが導線が遠い |
+| 2 | Primary | **ROOMで投稿のみ Primary**。投稿文を作るは Secondary |
+| 3 | 優先順位 | **ROOMで投稿 > 投稿文を作る > 楽天で見る** |
+| 4 | 楽天で見る | **2 行目全幅 Secondary**（参照系の分離） |
+| 5 | 削除 | **現位置（右上）でよい** |
+| 6 | コレ済タブ | **2b では置かない** |
+| 7 | おすすめコレ | **置かない方針でよい** |
+| 8 | 生成後表示 | **バッジ + BottomSheet**（一覧に 1 行プレビューは任意） |
+| 9 | Key / Semantics | `post_management_item_generate_post_button` 追加。既存 3 つは維持 |
+| 10 | テスト | `phase2a_product_cards_test` 拡張 + 新規 action row test + e2e 検討 |
+| 11 | 実装順序 | 下記 |
+
+---
+
+## 10. 推奨実装順序
+
+```
+Step 1  データモデル（generatedPostText 等）+ Repository 永続化
+Step 2  ProductCardActionRow（2行レイアウト骨格）
+Step 3  RakutenManagedProductCard 候補 CTA 2行化 + 投稿する→ROOMで投稿
+Step 4  投稿文生成 Service（API / スタブ）
+Step 5  生成 BottomSheet（生成・コピー・作り直す）
+Step 6  バッジ「投稿文あり」+ Semantics / Key
+Step 7  Widget test 拡張
+Step 8  （任意）integration test・課金ガード
+```
+
+---
+
+## 補足：Phase 2a からの残課題
+
+- 候補カードがまだ **`投稿する`** のまま（コレ済は `ROOMで投稿`）
+- **`product_card_action_row.dart` 未作成** — 2b の最初の構造作業として着手するのがよい
+- コレ候補カードの CTA 行は **現状 1 行・40px** — 3 ボタンを 1 行に押し込むと `FittedBox` でも窮屈になるため、**2 行化は 2b の前提条件**
+
+実装に進む際は、まず **Step 2〜3（レイアウト骨格 + 文言統一）を API なしで先行**し、UI が固まってから生成機能を載せる進め方が安全です。

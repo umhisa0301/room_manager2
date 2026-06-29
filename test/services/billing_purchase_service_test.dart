@@ -11,12 +11,7 @@ import 'package:room_manager2/services/subscription_status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _FakePurchaseGateway implements InAppPurchasePurchaseGateway {
-  _FakePurchaseGateway({
-    this.available = true,
-    this.productDetails = const [],
-    this.buyNonConsumableResult = true,
-    this.throwOnRestore = false,
-  });
+  _FakePurchaseGateway({this.productDetails = const []});
 
   final bool available;
   final List<ProductDetails> productDetails;
