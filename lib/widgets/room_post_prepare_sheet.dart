@@ -6,6 +6,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
 import '../services/post_comment_generation_service.dart';
+import '../state/post_style_settings_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
@@ -122,6 +123,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       _aiError = null;
     });
     try {
+      final styleSettings = context.read<PostStyleSettingsProvider>().settings;
       final text = await widget.generationService.generate(
         PostCommentGenerationInput(
           itemName: widget.item.itemName,
@@ -129,6 +131,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
           itemPrice: widget.item.itemPrice,
           reviewAverage: widget.item.reviewAverage,
           reviewCount: widget.item.reviewCount,
+          styleSettings: styleSettings,
         ),
       );
       if (!mounted) return;

@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:room_manager2/models/rakuten_managed_product.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
 import 'package:room_manager2/repository/pending_collect_notice_repository.dart';
+import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
+import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:room_manager2/state/rakuten_managed_product_provider.dart';
 import 'package:room_manager2/state/room_activity_event_provider.dart';
 import 'package:room_manager2/widgets/app_button.dart';
@@ -74,6 +76,11 @@ Future<Widget> _wrapSheet({
 
   return MultiProvider(
     providers: [
+      ChangeNotifierProvider(
+        create: (_) => PostStyleSettingsProvider(
+          repository: PostStyleSettingsRepository(prefs),
+        ),
+      ),
       ChangeNotifierProvider(
         create: (_) => RoomActivityEventProvider(
           repository: RoomActivityEventRepository(prefs),

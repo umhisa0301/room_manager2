@@ -1,4 +1,5 @@
-import '../utils/product_price_display.dart';
+import '../models/post_style_settings.dart';
+import 'stub_post_comment_builder.dart';
 
 /// AI投稿文生成の入力。
 class PostCommentGenerationInput {
@@ -8,6 +9,7 @@ class PostCommentGenerationInput {
     required this.itemPrice,
     required this.reviewAverage,
     required this.reviewCount,
+    this.styleSettings,
   });
 
   final String itemName;
@@ -15,6 +17,12 @@ class PostCommentGenerationInput {
   final int itemPrice;
   final double reviewAverage;
   final int reviewCount;
+
+  /// 未指定時は [PostStyleSettings.defaults] を利用。
+  final PostStyleSettings? styleSettings;
+
+  PostStyleSettings get effectiveStyleSettings =>
+      styleSettings ?? PostStyleSettings.defaults();
 }
 
 /// 投稿文のAI生成（OpenAI 等の実装は将来差し替え）。
@@ -22,28 +30,23 @@ abstract class PostCommentGenerationService {
   Future<String> generate(PostCommentGenerationInput input);
 }
 
-/// API未接続段階のスタブ。商品情報から仮の投稿文を返す。
+/// API未接続段階のスタブ。商品情報と投稿スタイル設定から仮の投稿文を返す。
 class StubPostCommentGenerationService implements PostCommentGenerationService {
   const StubPostCommentGenerationService({
     this.delay = const Duration(milliseconds: 500),
+    this.defaultStyleSettings,
   });
 
   final Duration delay;
 
+  /// 入力にスタイル未指定のときのフォールバック（Provider 注入用）。
+  final PostStyleSettings? defaultStyleSettings;
+
   @override
   Future<String> generate(PostCommentGenerationInput input) async {
     await Future<void>.delayed(delay);
-    final name = input.itemName.trim().isNotEmpty ? input.itemName.trim() : 'この商品';
-    final reason = input.recommendationReason.trim().isNotEmpty
-        ? input.recommendationReason.trim()
-        : '気になった一品です';
-    final price = ProductPriceDisplay.formatYen(input.itemPrice);
-    final rating = input.reviewAverage.toStringAsFixed(2);
-    final count = input.reviewCount;
-
-    return '【$name】\n\n'
-        '$reason\n'
-        '価格は$price。レビュー平均 $rating（$count件）も参考になります。\n'
-        '気になった方はぜひチェックしてみてください！';
+    final style =
+        input.styleSettings ?? defaultStyleSettings ?? PostStyleSettings.defaults();
+    return StubPostCommentBuilder.build(input: input, style: style);
   }
 }

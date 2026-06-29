@@ -38,7 +38,9 @@ import 'repository/user_profile_repository.dart';
 import 'repository/saved_shop_repository.dart';
 import 'repository/today_recommendation_repository.dart';
 import 'repository/room_recommendation_profile_repository.dart';
+import 'repository/post_style_settings_repository.dart';
 import 'state/user_profile_provider.dart';
+import 'state/post_style_settings_provider.dart';
 import 'state/room_import_controller.dart';
 import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
@@ -104,6 +106,7 @@ void main() async {
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
   final roomRecommendationProfileRepository =
       RoomRecommendationProfileRepository(prefs);
+  final postStyleSettingsRepository = PostStyleSettingsRepository(prefs);
   final genreMasterRepository = GenreMasterRepository(prefs: prefs);
   await _bootstrapRakutenGenreNameCache(genreMasterRepository);
   await GenreMasterService.instance.load();
@@ -138,6 +141,7 @@ void main() async {
       savedShopRepository: savedShopRepository,
       todayRecommendationRepository: todayRecommendationRepository,
       roomRecommendationProfileRepository: roomRecommendationProfileRepository,
+      postStyleSettingsRepository: postStyleSettingsRepository,
       genreMasterRepository: genreMasterRepository,
       prefs: prefs,
       billingPurchaseService: billingPurchaseService,
@@ -163,6 +167,7 @@ class MyApp extends StatelessWidget {
     required this.savedShopRepository,
     required this.todayRecommendationRepository,
     required this.roomRecommendationProfileRepository,
+    required this.postStyleSettingsRepository,
     required this.genreMasterRepository,
     required this.prefs,
     required this.billingPurchaseService,
@@ -183,6 +188,7 @@ class MyApp extends StatelessWidget {
   final SavedShopRepository savedShopRepository;
   final TodayRecommendationRepository todayRecommendationRepository;
   final RoomRecommendationProfileRepository roomRecommendationProfileRepository;
+  final PostStyleSettingsRepository postStyleSettingsRepository;
   final GenreMasterRepository genreMasterRepository;
   final SharedPreferences prefs;
   final BillingPurchaseService billingPurchaseService;
@@ -272,6 +278,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => RoomRecommendationProfileProvider(
             repository: roomRecommendationProfileRepository,
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PostStyleSettingsProvider(
+            repository: postStyleSettingsRepository,
           ),
         ),
         ChangeNotifierProvider(
