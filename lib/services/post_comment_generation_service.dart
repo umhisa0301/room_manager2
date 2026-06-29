@@ -1,3 +1,4 @@
+import '../models/post_comment_profile_context.dart';
 import '../models/post_style_settings.dart';
 import 'stub_post_comment_builder.dart';
 
@@ -9,7 +10,11 @@ class PostCommentGenerationInput {
     required this.itemPrice,
     required this.reviewAverage,
     required this.reviewCount,
+    this.genreName = '',
+    this.genreId = '',
+    this.shopName = '',
     this.styleSettings,
+    this.profileContext,
   });
 
   final String itemName;
@@ -17,9 +22,15 @@ class PostCommentGenerationInput {
   final int itemPrice;
   final double reviewAverage;
   final int reviewCount;
+  final String genreName;
+  final String genreId;
+  final String shopName;
 
   /// 未指定時は [PostStyleSettings.defaults] を利用。
   final PostStyleSettings? styleSettings;
+
+  /// ROOM診断プロファイル由来のコンテキスト。API 送信時のみ利用。
+  final PostCommentProfileContext? profileContext;
 
   PostStyleSettings get effectiveStyleSettings =>
       styleSettings ?? PostStyleSettings.defaults();
