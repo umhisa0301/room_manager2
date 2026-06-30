@@ -211,9 +211,33 @@ void main() {
       expect(find.text('￥2,980'), findsOneWidget);
       expect(find.textContaining('レビュー 4.35'), findsOneWidget);
       expect(find.textContaining('42件'), findsOneWidget);
+      expect(find.text('投稿文'), findsOneWidget);
       expect(find.byKey(const Key('room_post_prepare_body_field')), findsOneWidget);
       expect(find.text('AIで作り直す'), findsOneWidget);
       expect(find.text('コピーしてROOMを開く'), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_clear_button')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('AI regenerate button is on the body label row', (tester) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      final label = find.text('投稿文');
+      final aiButton = find.byKey(const Key('room_post_prepare_ai_button'));
+      expect(label, findsOneWidget);
+      expect(aiButton, findsOneWidget);
+      final labelRow = find.ancestor(
+        of: label,
+        matching: find.byType(Row),
+      );
+      expect(
+        find.descendant(of: labelRow, matching: aiButton),
+        findsOneWidget,
+      );
     });
 
     testWidgets('body field accepts input', (tester) async {
@@ -436,7 +460,7 @@ void main() {
       );
     });
 
-    testWidgets('copy and open room copies text and marks collected',
+    testWidgets('copy and open room copies text then launches ROOM',
         (tester) async {
       await tester.pumpWidget(
         await _wrapSheet(
@@ -450,8 +474,12 @@ void main() {
       expect(find.text('AI生成テスト文'), findsOneWidget);
 
       const launcherChannel = MethodChannel('plugins.flutter.io/url_launcher');
+      final callLog = <String>[];
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(launcherChannel, (call) async => true);
+          .setMockMethodCallHandler(launcherChannel, (call) async {
+        callLog.add(call.method);
+        return true;
+      });
       addTearDown(() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(launcherChannel, null);
@@ -463,10 +491,12 @@ void main() {
       expect(roomButton.onPressed, isNotNull);
 
       String? copiedText;
+      final actionLog = <String>[];
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(SystemChannels.platform, (call) async {
         if (call.method == 'Clipboard.setData') {
           copiedText = call.arguments['text'] as String?;
+          actionLog.add('clipboard');
         }
         return null;
       });
@@ -475,16 +505,71 @@ void main() {
             .setMockMethodCallHandler(SystemChannels.platform, null);
       });
 
-      roomButton.onPressed!();
+      await tester.tap(find.byKey(const Key('room_post_prepare_room_button')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
-      await tester.pump(const Duration(seconds: 3));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
       expect(copiedText, 'AI生成テスト文');
+      expect(actionLog, ['clipboard']);
 
       final managedRepo = RakutenManagedProductRepository(prefs);
       final product = managedRepo.getByProductId('shop:item001');
       expect(product?.status, RakutenManagedProductStatus.done);
+      expect(callLog, contains('launch'));
+      expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
+    });
+
+    testWidgets('clear button shows confirm dialog and clears on accept',
+        (tester) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_clear_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('投稿文をクリアしますか？'), findsOneWidget);
+      expect(find.text('入力中の投稿文が削除されます。'), findsOneWidget);
+
+      await tester.tap(find.text('クリア'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('AI生成テスト文'), findsNothing);
+      final field = tester.widget<TextField>(
+        find.byKey(const Key('room_post_prepare_body_field')),
+      );
+      expect(field.controller?.text, isEmpty);
+    });
+
+    testWidgets('clear confirm cancel keeps body text', (tester) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_clear_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('キャンセル'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+    });
+
+    testWidgets('楽天で見る and 閉じる are on the same row', (tester) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      final rakuten = find.byKey(const Key('room_post_prepare_rakuten_button'));
+      final close = find.byKey(const Key('room_post_prepare_close_button'));
+      expect(rakuten, findsOneWidget);
+      expect(close, findsOneWidget);
+
+      final rakutenTop = tester.getTopLeft(rakuten);
+      final closeTop = tester.getTopLeft(close);
+      expect(rakutenTop.dy, closeTop.dy);
     });
 
     testWidgets('楽天で見る button is visible', (tester) async {

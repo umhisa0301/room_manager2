@@ -94,6 +94,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   String? _aiError;
   bool _autoGenerateStarted = false;
   bool _userEditedBody = false;
+  bool _postingToRoom = false;
 
   static const _aiRegenerateButtonLabel = 'AIで作り直す';
   static const _copyAndOpenRoomButtonLabel = 'コピーしてROOMを開く';
@@ -168,6 +169,37 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     );
   }
 
+  Future<bool?> _showClearBodyConfirmDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('投稿文をクリアしますか？'),
+        content: const Text('入力中の投稿文が削除されます。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('キャンセル'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('クリア'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _onClearBody() async {
+    if (_bodyController.text.trim().isEmpty || _aiLoading) return;
+    final confirmed = await _showClearBodyConfirmDialog();
+    if (confirmed != true || !mounted) return;
+    setState(() {
+      _bodyController.clear();
+      _userEditedBody = false;
+      _aiError = null;
+    });
+  }
+
   void _applyGeneratedText(String text) {
     _bodyController.text = text;
     _userEditedBody = false;
@@ -218,14 +250,49 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     }
   }
 
-  Future<void> _postToRoom(BuildContext context) async {
+  Future<void> _postToRoom() async {
+    if (_postingToRoom || !mounted) return;
+    setState(() => _postingToRoom = true);
+
+    final productId = widget.item.productId.trim();
     final provider = context.read<RakutenManagedProductProvider>();
-    final text = _bodyController.text.trim();
-    if (text.isNotEmpty) {
-      await Clipboard.setData(ClipboardData(text: text));
+    final navigator = Navigator.of(context);
+    final launchContext = navigator.context;
+
+    try {
+      final text = _bodyController.text.trim();
+      if (text.isNotEmpty) {
+        await Clipboard.setData(ClipboardData(text: text));
+        if (kDebugMode) {
+          debugPrint('[ROOM_POST_PREPARE] copyText done');
+        }
+      }
+      if (!mounted) return;
+
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_POST_PREPARE] collectRoomAndLaunch start productId=$productId',
+        );
+      }
+
+      // モーダル上の context だと URL 起動が失敗することがあるため、先に閉じる。
+      navigator.pop();
+
+      if (!launchContext.mounted) return;
+      final ok = await provider.collectRoomAndLaunch(launchContext, productId);
+
+      if (kDebugMode) {
+        debugPrint(
+          ok
+              ? '[ROOM_POST_PREPARE] collectRoomAndLaunch done'
+              : '[ROOM_POST_PREPARE] launch failed reason=collectRoomAndLaunch returned false',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _postingToRoom = false);
+      }
     }
-    if (!context.mounted) return;
-    await provider.collectRoomAndLaunch(context, widget.item.productId);
   }
 
   @override
@@ -250,7 +317,45 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
             ),
             const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
             RoomPostPrepareProductSummary(item: widget.item),
-            const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
+            const SizedBox(height: AppDimensions.spacingSm),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '投稿文',
+                  style: AppTextStyles.label.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const Spacer(),
+                AppSecondaryButton(
+                  key: const Key('room_post_prepare_ai_button'),
+                  label: _aiRegenerateButtonLabel,
+                  icon: const Icon(Icons.auto_awesome_rounded, size: 16),
+                  onPressed: _aiLoading ? null : _onRegenerateAiComment,
+                ),
+                ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: _bodyController,
+                  builder: (context, value, _) {
+                    final hasText = value.text.trim().isNotEmpty;
+                    return Semantics(
+                      button: true,
+                      label: 'room_post_prepare_clear_button',
+                      enabled: hasText && !_aiLoading,
+                      child: IconButton(
+                        key: const Key('room_post_prepare_clear_button'),
+                        tooltip: '投稿文をクリア',
+                        onPressed: hasText && !_aiLoading ? _onClearBody : null,
+                        icon: const Icon(Icons.delete_outline),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: AppDimensions.spacingXs),
             Semantics(
               label: 'room_post_prepare_body_field',
               textField: true,
@@ -353,41 +458,43 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
               ),
             ],
             const SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
-            AppSecondaryButton(
-              key: const Key('room_post_prepare_ai_button'),
-              label: _aiRegenerateButtonLabel,
-              icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-              onPressed: _aiLoading ? null : _onRegenerateAiComment,
-              expand: true,
-            ),
-            const SizedBox(height: AppDimensions.spacingSm),
             AppPrimaryButton(
               key: const Key('room_post_prepare_room_button'),
               label: _copyAndOpenRoomButtonLabel,
               icon: const Icon(Icons.open_in_new_rounded),
-              onPressed: roomUrlReady ? () => _postToRoom(context) : null,
+              isLoading: _postingToRoom,
+              onPressed: roomUrlReady && !_postingToRoom ? _postToRoom : null,
               expand: true,
             ),
             const SizedBox(height: AppDimensions.spacingSm),
-            AppSecondaryButton(
-              key: const Key('room_post_prepare_rakuten_button'),
-              label: '楽天で見る',
-              icon: const Icon(Icons.storefront_rounded, size: 18),
-              onPressed: () {
-                AppActionService.openUrl(
-                  context,
-                  url: widget.item.browserLaunchUrl,
-                );
-              },
-              expand: true,
+            Row(
+              children: [
+                Expanded(
+                  child: AppSecondaryButton(
+                    key: const Key('room_post_prepare_rakuten_button'),
+                    label: '楽天で見る',
+                    icon: const Icon(Icons.storefront_rounded, size: 16),
+                    onPressed: () {
+                      AppActionService.openUrl(
+                        context,
+                        url: widget.item.browserLaunchUrl,
+                      );
+                    },
+                    expand: true,
+                  ),
+                ),
+                const SizedBox(width: AppDimensions.spacingSm),
+                Expanded(
+                  child: AppSecondaryButton(
+                    key: const Key('room_post_prepare_close_button'),
+                    label: '閉じる',
+                    onPressed: () => Navigator.of(context).pop(),
+                    expand: true,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: AppDimensions.spacingSm),
-            AppSecondaryButton(
-              key: const Key('room_post_prepare_close_button'),
-              label: '閉じる',
-              onPressed: () => Navigator.of(context).pop(),
-              expand: true,
-            ),
+            const SizedBox(height: AppDimensions.spacingXs),
           ],
         );
       },
