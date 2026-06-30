@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/rakuten_managed_product.dart';
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
 import '../services/recommendation_generation_limit.dart';
@@ -667,6 +668,48 @@ class _ProductTag extends StatelessWidget {
   }
 }
 
+enum _RecommendationCardCtaState {
+  pending,
+  addedNotCollected,
+  collected,
+}
+
+RakutenManagedProduct? _managedProductForEntry(
+  RakutenManagedProductProvider provider,
+  TodayRecommendationEntry entry,
+) {
+  final id = entry.item.productId.trim();
+  for (final p in provider.items) {
+    if (p.productId == id) return p;
+  }
+  return null;
+}
+
+bool _isManagedProductCollected(RakutenManagedProduct? product) {
+  if (product == null) return false;
+  return RakutenManagedProduct.isMemberForStatusTab(
+    product,
+    RakutenManagedProductStatus.done,
+  );
+}
+
+_RecommendationCardCtaState _recommendationCardCtaState({
+  required TodayRecommendationDecision decision,
+  required RakutenManagedProduct? managedProduct,
+}) {
+  if (_isManagedProductCollected(managedProduct)) {
+    return _RecommendationCardCtaState.collected;
+  }
+  switch (decision) {
+    case TodayRecommendationDecision.pending:
+      return _RecommendationCardCtaState.pending;
+    case TodayRecommendationDecision.addedCandidate:
+      return _RecommendationCardCtaState.addedNotCollected;
+    case TodayRecommendationDecision.skipped:
+      return _RecommendationCardCtaState.pending;
+  }
+}
+
 class _CardActionArea extends StatefulWidget {
   const _CardActionArea({required this.entry});
 
@@ -680,12 +723,6 @@ class _CardActionAreaState extends State<_CardActionArea> {
   bool _isAddingCandidate = false;
 
   TodayRecommendationEntry get entry => widget.entry;
-
-  bool get _isPending =>
-      entry.decision == TodayRecommendationDecision.pending && !_isAddingCandidate;
-
-  bool get _isAdded =>
-      entry.decision == TodayRecommendationDecision.addedCandidate;
 
   bool get _canSkip => entry.decision == TodayRecommendationDecision.pending;
 
@@ -709,8 +746,36 @@ class _CardActionAreaState extends State<_CardActionArea> {
     );
   }
 
+  Future<void> _openRoom(BuildContext context) async {
+    final provider = context.read<RakutenManagedProductProvider>();
+    final product = _managedProductForEntry(provider, entry);
+    if (product == null) return;
+    final postUrl = product.extractedUrl.trim();
+    final canOpen =
+        product.extractionStatus == RakutenUrlExtractionStatus.success &&
+        postUrl.isNotEmpty;
+    if (!canOpen) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ROOM用URLがまだ取得できていません')),
+      );
+      return;
+    }
+    await AppActionService.openUrl(context, url: postUrl);
+  }
+
   Future<void> _addCandidate(BuildContext context) async {
-    if (_isAddingCandidate || !_isPending) return;
+    if (_isAddingCandidate ||
+        _recommendationCardCtaState(
+              decision: entry.decision,
+              managedProduct: _managedProductForEntry(
+                context.read<RakutenManagedProductProvider>(),
+                entry,
+              ),
+            ) !=
+            _RecommendationCardCtaState.pending) {
+      return;
+    }
     final bulk = context.read<BulkOperationStateController>();
     if (bulk.isRoomTourSearchBlocking) {
       roomSyncUiGuardLog(
@@ -753,14 +818,25 @@ class _CardActionAreaState extends State<_CardActionArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BulkOperationStateController>(
-      builder: (context, bulk, _) {
+    return Consumer2<BulkOperationStateController, RakutenManagedProductProvider>(
+      builder: (context, bulk, managedProvider, _) {
         final syncLocked = bulk.isRoomTourSearchBlocking;
+        final ctaState = _recommendationCardCtaState(
+          decision: entry.decision,
+          managedProduct: _managedProductForEntry(managedProvider, entry),
+        );
+        final showAddCandidate =
+            entry.decision == TodayRecommendationDecision.pending &&
+            (ctaState == _RecommendationCardCtaState.pending || _isAddingCandidate);
+        final showPost = ctaState == _RecommendationCardCtaState.addedNotCollected;
+        final showOpenRoom = ctaState == _RecommendationCardCtaState.collected;
+        final showPrimaryCta =
+            showAddCandidate || showPost || showOpenRoom;
         return Column(
           key: const Key('today_recommendation_card_cta'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (_isPending || _isAddingCandidate)
+            if (showAddCandidate)
               _CompactActionButton(
                 key: const Key('today_recommendation_add_candidate_button'),
                 label: _isAddingCandidate ? '追加中…' : '候補に追加',
@@ -780,7 +856,7 @@ class _CardActionAreaState extends State<_CardActionArea> {
                         : null
                     : () => _addCandidate(context),
               )
-            else if (_isAdded)
+            else if (showPost)
               _CompactActionButton(
                 key: const Key('today_recommendation_post_button'),
                 label: '投稿する',
@@ -788,9 +864,18 @@ class _CardActionAreaState extends State<_CardActionArea> {
                 expand: true,
                 semanticLabel: 'today_recommendation_post_button',
                 onPressed: () => _openPostPrepareSheet(context),
+              )
+            else if (showOpenRoom)
+              _CompactActionButton(
+                key: const Key('today_recommendation_open_room_button'),
+                label: 'ROOMを開く',
+                icon: Icons.open_in_new_rounded,
+                style: _CompactActionStyle.primary,
+                expand: true,
+                semanticLabel: 'today_recommendation_open_room_button',
+                onPressed: () => _openRoom(context),
               ),
-            if (_isPending || _isAddingCandidate || _isAdded)
-              const SizedBox(height: 6),
+            if (showPrimaryCta) const SizedBox(height: 6),
             Row(
               children: [
                 Expanded(
@@ -837,42 +922,62 @@ class _ProductImageWithStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        _Thumb(imageUrl: entry.item.imageUrl, entry: entry),
-        Positioned(
-          top: 4,
-          right: 4,
-          child: _DecisionBadge(decision: entry.decision),
-        ),
-      ],
+    return Consumer<RakutenManagedProductProvider>(
+      builder: (context, managedProvider, _) {
+        final managedProduct = _managedProductForEntry(managedProvider, entry);
+        final collected = _isManagedProductCollected(managedProduct);
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _Thumb(imageUrl: entry.item.imageUrl, entry: entry),
+            Positioned(
+              top: 4,
+              right: 4,
+              child: _DecisionBadge(
+                decision: entry.decision,
+                collected: collected,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
 class _DecisionBadge extends StatelessWidget {
-  const _DecisionBadge({required this.decision});
+  const _DecisionBadge({
+    required this.decision,
+    required this.collected,
+  });
+
   final TodayRecommendationDecision decision;
+  final bool collected;
 
   @override
   Widget build(BuildContext context) {
     late final String text;
     late final Color bg;
     late final Color fg;
-    switch (decision) {
-      case TodayRecommendationDecision.pending:
-        text = '未確認';
-        bg = AppColors.surfaceVariant;
-        fg = AppColors.textSecondary;
-      case TodayRecommendationDecision.skipped:
-        text = '見送り';
-        bg = const Color(0xFFFFF3E0);
-        fg = const Color(0xFFEF6C00);
-      case TodayRecommendationDecision.addedCandidate:
-        text = '候補追加済';
-        bg = const Color(0xFFE8F5E9);
-        fg = const Color(0xFF2E7D32);
+    if (collected) {
+      text = 'コレ済み';
+      bg = TodayRecommendationsScreenUi.primaryLight;
+      fg = TodayRecommendationsScreenUi.primary;
+    } else {
+      switch (decision) {
+        case TodayRecommendationDecision.pending:
+          text = '未確認';
+          bg = AppColors.surfaceVariant;
+          fg = AppColors.textSecondary;
+        case TodayRecommendationDecision.skipped:
+          text = '見送り';
+          bg = const Color(0xFFFFF3E0);
+          fg = const Color(0xFFEF6C00);
+        case TodayRecommendationDecision.addedCandidate:
+          text = '候補追加済';
+          bg = const Color(0xFFE8F5E9);
+          fg = const Color(0xFF2E7D32);
+      }
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),

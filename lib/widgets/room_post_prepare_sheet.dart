@@ -356,56 +356,66 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
               ],
             ),
             const SizedBox(height: AppDimensions.spacingXs),
-            Semantics(
-              label: 'room_post_prepare_body_field',
-              textField: true,
-              child: TextField(
-                key: const Key('room_post_prepare_body_field'),
-                controller: _bodyController,
-                minLines: 4,
-                maxLines: null,
-                onChanged: (_) {
-                  _userEditedBody = true;
-                },
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textPrimary,
-                  height: 1.35,
-                ),
-                decoration: InputDecoration(
-                  hintText: '投稿文を入力またはAIで作成',
-                  hintStyle: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textTertiary,
-                    height: 1.35,
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFFFAFAFB),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFD4D4DA),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final maxFieldHeight =
+                    (MediaQuery.sizeOf(context).height * 0.28).clamp(140.0, 220.0);
+                return ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxFieldHeight),
+                  child: Semantics(
+                    label: 'room_post_prepare_body_field',
+                    textField: true,
+                    child: TextField(
+                      key: const Key('room_post_prepare_body_field'),
+                      controller: _bodyController,
+                      minLines: 5,
+                      maxLines: null,
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      onChanged: (_) {
+                        _userEditedBody = true;
+                      },
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textPrimary,
+                        height: 1.4,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: '投稿文を入力またはAIで作成',
+                        hintStyle: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textTertiary,
+                          height: 1.4,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFAFAFB),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFD4D4DA),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFD4D4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: AppColors.accentPrimary,
+                            width: 1.2,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFD4D4DA),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: AppColors.accentPrimary,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
-              ),
+                );
+              },
             ),
             if (_aiLoading) ...[
               const SizedBox(height: AppDimensions.spacingSm),
@@ -458,38 +468,35 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
               ),
             ],
             const SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
-            AppPrimaryButton(
+            _RoomPostPreparePrimaryButton(
               key: const Key('room_post_prepare_room_button'),
               label: _copyAndOpenRoomButtonLabel,
-              icon: const Icon(Icons.open_in_new_rounded),
+              icon: Icons.open_in_new_rounded,
               isLoading: _postingToRoom,
               onPressed: roomUrlReady && !_postingToRoom ? _postToRoom : null,
-              expand: true,
             ),
             const SizedBox(height: AppDimensions.spacingSm),
             Row(
               children: [
                 Expanded(
-                  child: AppSecondaryButton(
+                  child: _RoomPostPrepareOutlineButton(
                     key: const Key('room_post_prepare_rakuten_button'),
                     label: '楽天で見る',
-                    icon: const Icon(Icons.storefront_rounded, size: 16),
+                    icon: Icons.storefront_rounded,
                     onPressed: () {
                       AppActionService.openUrl(
                         context,
                         url: widget.item.browserLaunchUrl,
                       );
                     },
-                    expand: true,
                   ),
                 ),
                 const SizedBox(width: AppDimensions.spacingSm),
                 Expanded(
-                  child: AppSecondaryButton(
+                  child: _RoomPostPrepareWeakButton(
                     key: const Key('room_post_prepare_close_button'),
                     label: '閉じる',
                     onPressed: () => Navigator.of(context).pop(),
-                    expand: true,
                   ),
                 ),
               ],
@@ -498,6 +505,167 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
           ],
         );
       },
+    );
+  }
+}
+
+class _RoomPostPreparePrimaryButton extends StatelessWidget {
+  const _RoomPostPreparePrimaryButton({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.isLoading,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  static const double _height = 52;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: _height,
+      child: FilledButton.icon(
+        onPressed: isLoading ? null : onPressed,
+        style: FilledButton.styleFrom(
+          foregroundColor: AppColors.textOnAccent,
+          backgroundColor: AppColors.accentPrimary,
+          disabledForegroundColor: AppColors.textOnAccent.withValues(alpha: 0.72),
+          disabledBackgroundColor: AppColors.accentPrimary.withValues(alpha: 0.34),
+          minimumSize: const Size(double.infinity, _height),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: AppTextStyles.button.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.15,
+          ),
+        ),
+        icon: isLoading
+            ? SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.textOnAccent.withValues(alpha: 0.9),
+                ),
+              )
+            : Icon(icon, size: 18),
+        label: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label, maxLines: 1, softWrap: false),
+        ),
+      ),
+    );
+  }
+}
+
+/// おすすめコレ候補カードの Secondary CTA（白地＋ティール枠）に寄せたアウトラインボタン。
+class _RoomPostPrepareOutlineButton extends StatelessWidget {
+  const _RoomPostPrepareOutlineButton({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  static const double _minHeight = 40;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: _minHeight,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: HomeScreenColors.homeAccentTeal,
+          backgroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          minimumSize: const Size(double.infinity, _minHeight),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(
+              color: HomeScreenColors.homeAccentTealBorder,
+              width: 1.5,
+            ),
+          ),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 13,
+              ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 16),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 閉じるなど補助操作向けの弱いボタン。
+class _RoomPostPrepareWeakButton extends StatelessWidget {
+  const _RoomPostPrepareWeakButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  static const double _minHeight = 40;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: _minHeight,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.textSecondary,
+          backgroundColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          minimumSize: const Size(double.infinity, _minHeight),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: AppColors.divider.withValues(alpha: 0.82),
+            ),
+          ),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: 13,
+              ),
+        ),
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
     );
   }
 }

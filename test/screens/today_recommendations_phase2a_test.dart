@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -260,7 +261,110 @@ void main() {
 
       expect(find.text('投稿する'), findsOneWidget);
       expect(find.text('候補に追加'), findsNothing);
+      expect(find.text('ROOMを開く'), findsNothing);
       expect(find.byKey(const Key('today_recommendation_post_button')), findsOneWidget);
+    });
+
+    testWidgets('collected product shows ROOMを開く instead of 投稿する', (
+      tester,
+    ) async {
+      final managedRepo = RakutenManagedProductRepository(prefs);
+      await managedRepo.registerCandidateFromSearchItem(_entry().item);
+      await managedRepo.completeExtractionSuccess(
+        'shop:item001',
+        'https://room.rakuten.co.jp/r/post/collected',
+      );
+      await managedRepo.markCollectedDone('shop:item001');
+
+      final bundle = TodayRecommendationBundle(
+        localDateKey: '2024-06-01',
+        generatedAt: DateTime.parse('2024-06-01T08:00:00.000Z'),
+        entries: [
+          _entry(
+            decision: TodayRecommendationDecision.addedCandidate,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        await _wrapTodayScreen(prefs: prefs, bundle: bundle),
+      );
+      await _openTodayScreen(tester);
+
+      expect(find.text('ROOMを開く'), findsOneWidget);
+      expect(find.text('投稿する'), findsNothing);
+      expect(find.text('コレ済み'), findsOneWidget);
+      expect(
+        find.byKey(const Key('today_recommendation_open_room_button')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('today_recommendation_post_button')), findsNothing);
+    });
+
+    testWidgets('ROOMを開く launches extracted URL without post prepare sheet', (
+      tester,
+    ) async {
+      final managedRepo = RakutenManagedProductRepository(prefs);
+      await managedRepo.registerCandidateFromSearchItem(_entry().item);
+      const roomUrl = 'https://room.rakuten.co.jp/r/post/collected';
+      await managedRepo.completeExtractionSuccess('shop:item001', roomUrl);
+      await managedRepo.markCollectedDone('shop:item001');
+
+      final bundle = TodayRecommendationBundle(
+        localDateKey: '2024-06-01',
+        generatedAt: DateTime.parse('2024-06-01T08:00:00.000Z'),
+        entries: [
+          _entry(
+            decision: TodayRecommendationDecision.addedCandidate,
+          ),
+        ],
+      );
+
+      const launcherChannel = MethodChannel('plugins.flutter.io/url_launcher');
+      final launchedUrls = <String>[];
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(launcherChannel, (call) async {
+        if (call.method == 'launch') {
+          launchedUrls.add(call.arguments['url'] as String);
+        }
+        return true;
+      });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(launcherChannel, null);
+      });
+
+      await tester.pumpWidget(
+        await _wrapTodayScreen(prefs: prefs, bundle: bundle),
+      );
+      await _openTodayScreen(tester);
+
+      await tester.tap(
+        find.byKey(const Key('today_recommendation_open_room_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(launchedUrls, [roomUrl]);
+      expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
+      expect(find.text('すでにコレ済です'), findsNothing);
+    });
+
+    testWidgets('pending state shows 候補に追加', (tester) async {
+      final bundle = TodayRecommendationBundle(
+        localDateKey: '2024-06-01',
+        generatedAt: DateTime.parse('2024-06-01T08:00:00.000Z'),
+        entries: [_entry()],
+      );
+
+      await tester.pumpWidget(
+        await _wrapTodayScreen(prefs: prefs, bundle: bundle),
+      );
+      await _openTodayScreen(tester);
+
+      expect(find.text('候補に追加'), findsOneWidget);
+      expect(find.text('投稿する'), findsNothing);
+      expect(find.text('ROOMを開く'), findsNothing);
+      expect(find.text('未確認'), findsOneWidget);
     });
 
     testWidgets('投稿する opens post prepare sheet without navigating away', (

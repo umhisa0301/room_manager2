@@ -16,7 +16,7 @@ import 'package:room_manager2/state/bulk_operation_state_controller.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:room_manager2/state/rakuten_managed_product_provider.dart';
 import 'package:room_manager2/state/room_activity_event_provider.dart';
-import 'package:room_manager2/widgets/app_button.dart';
+import 'package:room_manager2/theme/home_screen_colors.dart';
 import 'package:room_manager2/widgets/room_post_prepare_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -425,11 +425,14 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      final roomButton = tester.widget<AppPrimaryButton>(
-        find.byKey(const Key('room_post_prepare_room_button')),
+      expect(find.text('コピーしてROOMを開く'), findsOneWidget);
+      final roomButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_room_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
       );
+      expect(roomButtonFinder, findsOneWidget);
+      final roomButton = tester.widget<ButtonStyleButton>(roomButtonFinder);
       expect(roomButton.onPressed, isNull);
-      expect(roomButton.label, 'コピーしてROOMを開く');
       expect(
         find.byKey(const Key('room_post_prepare_url_not_ready_hint')),
         findsOneWidget,
@@ -450,9 +453,11 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      final roomButton = tester.widget<AppPrimaryButton>(
-        find.byKey(const Key('room_post_prepare_room_button')),
+      final roomButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_room_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
       );
+      final roomButton = tester.widget<ButtonStyleButton>(roomButtonFinder);
       expect(roomButton.onPressed, isNotNull);
       expect(
         find.byKey(const Key('room_post_prepare_url_not_ready_hint')),
@@ -485,9 +490,11 @@ void main() {
             .setMockMethodCallHandler(launcherChannel, null);
       });
 
-      final roomButton = tester.widget<AppPrimaryButton>(
-        find.byKey(const Key('room_post_prepare_room_button')),
+      final roomButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_room_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
       );
+      final roomButton = tester.widget<ButtonStyleButton>(roomButtonFinder);
       expect(roomButton.onPressed, isNotNull);
 
       String? copiedText;
@@ -590,6 +597,71 @@ void main() {
       await tester.tap(find.byKey(const Key('room_post_prepare_close_button')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
+    });
+
+    testWidgets('body field displays long text with hashtags', (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _NeverCompletingPostCommentGenerationService(),
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pump();
+
+      const longBody =
+          'おすすめの一品です。レビューも高くて気になっていました。\n'
+          '#おすすめ #楽天ROOM #買ってよかった #日用品 #ルームコレ';
+      await tester.enterText(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        longBody,
+      );
+      await tester.pump();
+
+      final field = tester.widget<TextField>(
+        find.byKey(const Key('room_post_prepare_body_field')),
+      );
+      expect(field.minLines, 5);
+      expect(field.controller?.text, longBody);
+      expect(find.textContaining('#おすすめ'), findsOneWidget);
+    });
+
+    testWidgets('楽天で見る uses outline style and 閉じる is weaker', (
+      tester,
+    ) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      final rakutenButton = tester.widget<TextButton>(
+        find.descendant(
+          of: find.byKey(const Key('room_post_prepare_rakuten_button')),
+          matching: find.byType(TextButton),
+        ),
+      );
+      final closeButton = tester.widget<TextButton>(
+        find.descendant(
+          of: find.byKey(const Key('room_post_prepare_close_button')),
+          matching: find.byType(TextButton),
+        ),
+      );
+
+      expect(
+        rakutenButton.style?.backgroundColor?.resolve({}),
+        Colors.white,
+      );
+      expect(
+        rakutenButton.style?.foregroundColor?.resolve({}),
+        HomeScreenColors.homeAccentTeal,
+      );
+      expect(
+        closeButton.style?.backgroundColor?.resolve({}),
+        Colors.transparent,
+      );
+      expect(
+        closeButton.style?.foregroundColor?.resolve({}),
+        isNot(HomeScreenColors.homeAccentTeal),
+      );
     });
   });
 }
