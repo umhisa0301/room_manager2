@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/post_style_preview_sample_product.dart';
 import '../models/post_style_settings.dart';
 import '../services/post_comment_generation_service.dart';
 import '../services/post_comment_generation_service_factory.dart';
-import '../services/stub_post_comment_builder.dart';
 import '../state/post_style_settings_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
-
-/// プレビュー用の固定商品情報。
-const previewInput = PostCommentGenerationInput(
-  itemName: '収納バスケット',
-  recommendationReason: '部屋になじみやすく、口コミ評価も高いアイテムです。',
-  itemPrice: 1980,
-  reviewAverage: 4.5,
-  reviewCount: 48,
-);
 
 /// AI投稿文の文体・長さなどを編集する画面。
 class PostStyleSettingsScreen extends StatefulWidget {
@@ -75,9 +66,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
       return;
     }
 
-    _styleExampleController = TextEditingController(
-      text: StubPostCommentBuilder.build(input: previewInput, style: _draft),
-    );
+    _styleExampleController = TextEditingController();
     _lastRefreshedSettings = null;
     _previewNeedsRefresh = true;
   }
@@ -123,12 +112,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
 
     try {
       final result = await _generationService.generate(
-        PostCommentGenerationInput(
-          itemName: previewInput.itemName,
-          recommendationReason: previewInput.recommendationReason,
-          itemPrice: previewInput.itemPrice,
-          reviewAverage: previewInput.reviewAverage,
-          reviewCount: previewInput.reviewCount,
+        PostStylePreviewSampleProduct.toGenerationInput().copyWith(
           styleSettings: _draft,
         ),
       );
@@ -173,8 +157,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     if (!mounted) return;
     setState(() {
       _draft = defaults;
-      _styleExampleController.text =
-          StubPostCommentBuilder.build(input: previewInput, style: defaults);
+      _styleExampleController.clear();
       _lastRefreshedSettings = null;
       _previewNeedsRefresh = true;
       _previewError = null;
@@ -495,7 +478,7 @@ class _PreviewCard extends StatelessWidget {
               minLines: 5,
               maxLines: null,
               decoration: InputDecoration(
-                hintText: '設定を反映した投稿文の例がここに表示されます',
+                hintText: 'AIで生成するとここに文例が表示されます',
                 filled: true,
                 fillColor: MyPageScreenUi.chipUnsetFill,
                 border: OutlineInputBorder(
@@ -524,6 +507,19 @@ class _PreviewCard extends StatelessWidget {
               key: const Key('post_style_preview_error'),
               style: textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ],
+          if (previewNeedsRefresh && !refreshing) ...[
+            const SizedBox(height: 8),
+            Text(
+              controller.text.trim().isEmpty
+                  ? '更新ボタンでAI生成した文例がここに表示されます'
+                  : '設定が変更されています。更新すると新しい文例を確認できます。',
+              key: const Key('post_style_preview_refresh_hint'),
+              style: textTheme.bodySmall?.copyWith(
+                color: MyPageScreenUi.textSecondary,
+                height: 1.35,
               ),
             ),
           ],

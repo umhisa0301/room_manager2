@@ -14,6 +14,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/product_display_title.dart';
 import '../widgets/app_button.dart';
 import 'room_post_prepare_product_summary.dart';
 
@@ -215,11 +216,17 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       final styleSettings = context.read<PostStyleSettingsProvider>().settings;
       final result = await widget.generationService.generate(
         PostCommentGenerationInput(
-          itemName: widget.item.itemName,
+          itemName: deriveProductDisplayTitle(widget.item.itemName),
+          rawTitle: widget.item.itemName,
           recommendationReason: widget.recommendationReason,
           itemPrice: widget.item.itemPrice,
           reviewAverage: widget.item.reviewAverage,
           reviewCount: widget.item.reviewCount,
+          genreName: widget.item.genreName,
+          genreId: widget.item.genreId,
+          shopName: widget.item.shopName,
+          productUrl: widget.item.browserLaunchUrl,
+          imageUrl: widget.item.imageUrl,
           styleSettings: styleSettings,
         ),
       );

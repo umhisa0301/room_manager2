@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:room_manager2/config/post_style_preview_sample_product.dart';
 import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
@@ -95,6 +96,18 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('PostStyleSettingsScreen', () {
+    testWidgets('shows empty preview without stub when no saved style example',
+        (tester) async {
+      await _pumpScreen(tester);
+
+      final field = tester.widget<TextField>(
+        find.byKey(const Key('post_style_preview_text_field')),
+      );
+      expect(field.controller?.text, isEmpty);
+      expect(find.textContaining('【収納バスケット】'), findsNothing);
+      expect(find.byKey(const Key('post_style_preview_refresh_hint')), findsOneWidget);
+    });
+
     testWidgets('displays compact layout sections', (tester) async {
       await _pumpScreen(tester);
 
@@ -168,6 +181,23 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(fakeService.lastInput, isNotNull);
+      expect(fakeService.lastInput!.includeStyleExample, isFalse);
+      expect(
+        fakeService.lastInput!.itemName,
+        PostStylePreviewSampleProduct.displayTitle,
+      );
+      expect(
+        fakeService.lastInput!.genreName,
+        PostStylePreviewSampleProduct.genre,
+      );
+      expect(
+        fakeService.lastInput!.shopName,
+        PostStylePreviewSampleProduct.shopName,
+      );
+      expect(
+        fakeService.lastInput!.recommendationReason,
+        PostStylePreviewSampleProduct.recommendationReason,
+      );
       expect(fakeService.lastInput!.styleSettings?.tone, PostTone.casual);
       expect(
         find.text('AI生成サンプル本文です。\n\n#楽天ROOM'),

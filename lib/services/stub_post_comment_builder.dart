@@ -33,7 +33,12 @@ abstract final class StubPostCommentBuilder {
     body = _applyEmoji(body, style);
     body = _fitBodyLength(body, limits);
 
-    final hashtags = _buildHashtags(style, name);
+    final hashtags = _buildHashtags(
+      style,
+      name,
+      titleKeywords: input.titleKeywords,
+      genreName: input.genreName,
+    );
     if (hashtags.isEmpty) return body;
 
     final combined = '$body\n\n$hashtags';
@@ -122,29 +127,55 @@ abstract final class StubPostCommentBuilder {
     return buffer.toString();
   }
 
-  static String _buildHashtags(PostStyleSettings style, String name) {
+  static String _buildHashtags(
+    PostStyleSettings style,
+    String name, {
+    List<String> titleKeywords = const [],
+    String genreName = '',
+  }) {
     final count = style.hashtagCount;
     if (count <= 0) return '';
 
-    final tags = <String>[
-      '#楽天ROOM',
-      '#おすすめ',
-      '#購入品',
-      '#コスパ',
-      '#暮らし',
-      '#レビュー',
-      '#ギフト',
-      '#日用品',
-    ];
+    final tags = <String>[];
+
+    final genre = genreName.trim();
+    if (genre.isNotEmpty) {
+      tags.add('#${genre.replaceAll(RegExp(r'\s+'), '')}');
+    }
+
+    for (final keyword in titleKeywords) {
+      final normalized = keyword.trim().replaceAll(RegExp(r'\s+'), '');
+      if (normalized.isNotEmpty) {
+        tags.add('#$normalized');
+      }
+    }
 
     final normalizedName = name
         .replaceAll(RegExp(r'[【】\s]'), '')
         .replaceAll(RegExp(r'[^\p{L}\p{N}]', unicode: true), '');
     if (normalizedName.isNotEmpty) {
-      tags.insert(0, '#$normalizedName');
+      tags.add('#$normalizedName');
     }
 
-    return tags.take(count).join(' ');
+    const fallbackTags = [
+      '#整理整頓',
+      '#暮らし',
+      '#インテリア',
+      '#収納',
+      '#レビュー',
+      '#ギフト',
+      '#日用品',
+    ];
+    tags.addAll(fallbackTags);
+
+    final uniqueTags = <String>[];
+    for (final tag in tags) {
+      if (!uniqueTags.contains(tag)) {
+        uniqueTags.add(tag);
+      }
+    }
+
+    return uniqueTags.take(count).join(' ');
   }
 
   static String _fitBodyLength(String body, PostGenerationLimits limits) {

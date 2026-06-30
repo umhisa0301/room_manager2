@@ -19,7 +19,7 @@ void main() {
       expect(result.displayText, contains('テスト商品'));
       expect(result.displayText, contains('売れ筋'));
       expect(result.displayText, contains('￥1,500'));
-      expect(result.displayText, contains('#楽天ROOM'));
+      expect(result.displayText, isNot(contains('#楽天ROOM')));
     });
 
     test('uses fallback reason when empty', () async {
@@ -76,8 +76,8 @@ void main() {
         ),
       );
 
-      expect(result.displayText, contains('#楽天ROOM'));
-      expect(result.displayText, contains('#おすすめ'));
+      expect(result.displayText, contains('#整理整頓'));
+      expect(result.displayText, contains('#暮らし'));
       expect(result.displayText, isNot(contains('#コスパ')));
     });
 
@@ -133,7 +133,7 @@ void main() {
 
       final limits = style.generationLimits;
       expect(result.displayText.length, lessThanOrEqualTo(limits.maxTotalChars));
-      expect(result.displayText, contains('#楽天ROOM'));
+      expect(result.displayText, isNot(contains('#楽天ROOM')));
     });
 
     test('uses defaultStyleSettings when input omits style', () async {

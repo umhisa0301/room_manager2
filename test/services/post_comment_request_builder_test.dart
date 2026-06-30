@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:room_manager2/config/post_style_preview_sample_product.dart';
 import 'package:room_manager2/models/post_comment_profile_context.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
@@ -52,6 +53,7 @@ void main() {
 
       final product = payload['product'] as Map;
       expect(product['title'], '商品タイトル');
+      expect(product['display_title'], '商品タイトル');
       expect(product['price'], 1980);
       expect(product['review_average'], 4.5);
       expect(product['review_count'], 120);
@@ -59,6 +61,42 @@ void main() {
       expect(product['genre_id'], '558944');
       expect(product['shop_name'], 'ショップ名');
       expect(product['recommendation_reason'], 'レビュー評価が高く、価格も手頃');
+    });
+
+    test('maps extended product fields when provided', () {
+      final input = fullInput().copyWith(
+        rawTitle: '長い楽天商品タイトル キッチン用品 便利',
+        titleKeywords: const ['キッチン用品', '時短'],
+        productUrl: 'https://item.rakuten.co.jp/example/',
+        imageUrl: 'https://example.com/image.jpg',
+      );
+      final product =
+          (builder.build(input: input)['payload'] as Map)['product'] as Map;
+
+      expect(product['raw_title'], '長い楽天商品タイトル キッチン用品 便利');
+      expect(product['display_title'], '商品タイトル');
+      expect(product['title_keywords'], ['キッチン用品', '時短']);
+      expect(product['product_url'], 'https://item.rakuten.co.jp/example/');
+      expect(product['image_url'], 'https://example.com/image.jpg');
+    });
+
+    test('preview sample product maps display title genre and shop', () {
+      final input = PostStylePreviewSampleProduct.toGenerationInput();
+      final product =
+          (builder.build(input: input)['payload'] as Map)['product'] as Map;
+
+      expect(product['title'], PostStylePreviewSampleProduct.displayTitle);
+      expect(product['display_title'], PostStylePreviewSampleProduct.displayTitle);
+      expect(product['raw_title'], PostStylePreviewSampleProduct.rawTitle);
+      expect(product['title_keywords'], PostStylePreviewSampleProduct.titleKeywords);
+      expect(product['genre'], PostStylePreviewSampleProduct.genre);
+      expect(product['shop_name'], PostStylePreviewSampleProduct.shopName);
+      expect(
+        product['recommendation_reason'],
+        PostStylePreviewSampleProduct.recommendationReason,
+      );
+      expect(product['product_url'], PostStylePreviewSampleProduct.productUrl);
+      expect(product['image_url'], PostStylePreviewSampleProduct.imageUrl);
     });
 
     test('maps user_style to snake_case', () {
@@ -92,7 +130,20 @@ void main() {
       expect(options['max_total_chars'], 220);
     });
 
-    test('includes example_text when styleExample is set', () {
+    test('omits example_text when includeStyleExample is false', () {
+      final payload = builder.build(
+        input: fullInput(
+          styleSettings: PostStyleSettings.defaults().copyWith(
+            styleExample: 'ユーザー文例サンプル',
+          ),
+        ).copyWith(includeStyleExample: false),
+      )['payload'] as Map;
+
+      final userStyle = payload['user_style'] as Map;
+      expect(userStyle.containsKey('example_text'), isFalse);
+    });
+
+    test('includes example_text when includeStyleExample is true', () {
       final payload = builder.build(
         input: fullInput(
           styleSettings: PostStyleSettings.defaults().copyWith(

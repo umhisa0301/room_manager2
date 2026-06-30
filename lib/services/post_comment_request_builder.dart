@@ -16,7 +16,10 @@ class PostCommentRequestBuilder {
 
     final payload = <String, dynamic>{
       'product': _buildProduct(input),
-      'user_style': _buildUserStyle(style),
+      'user_style': _buildUserStyle(
+        style,
+        includeStyleExample: input.includeStyleExample,
+      ),
       'generation_options': _buildGenerationOptions(limits),
     };
 
@@ -41,6 +44,24 @@ class PostCommentRequestBuilder {
       'review_count': input.reviewCount,
     };
 
+    final rawTitle = input.rawTitle.trim();
+    if (rawTitle.isNotEmpty) {
+      product['raw_title'] = rawTitle;
+    }
+
+    final displayTitle = input.itemName.trim();
+    if (displayTitle.isNotEmpty) {
+      product['display_title'] = displayTitle;
+    }
+
+    final keywords = input.titleKeywords
+        .map((keyword) => keyword.trim())
+        .where((keyword) => keyword.isNotEmpty)
+        .toList();
+    if (keywords.isNotEmpty) {
+      product['title_keywords'] = keywords;
+    }
+
     final reason = input.recommendationReason.trim();
     if (reason.isNotEmpty) {
       product['recommendation_reason'] = reason;
@@ -61,10 +82,23 @@ class PostCommentRequestBuilder {
       product['shop_name'] = shopName;
     }
 
+    final productUrl = input.productUrl.trim();
+    if (productUrl.isNotEmpty) {
+      product['product_url'] = productUrl;
+    }
+
+    final imageUrl = input.imageUrl.trim();
+    if (imageUrl.isNotEmpty) {
+      product['image_url'] = imageUrl;
+    }
+
     return product;
   }
 
-  Map<String, dynamic> _buildUserStyle(PostStyleSettings style) {
+  Map<String, dynamic> _buildUserStyle(
+    PostStyleSettings style, {
+    required bool includeStyleExample,
+  }) {
     final userStyle = <String, dynamic>{
       'tone': style.tone.toJsonKey(),
       'length': style.length.toJsonKey(),
@@ -78,9 +112,11 @@ class PostCommentRequestBuilder {
       'avoid_overstatement': style.avoidOverstatement,
     };
 
-    final exampleText = style.styleExample?.trim();
-    if (exampleText != null && exampleText.isNotEmpty) {
-      userStyle['example_text'] = exampleText;
+    if (includeStyleExample) {
+      final exampleText = style.styleExample?.trim();
+      if (exampleText != null && exampleText.isNotEmpty) {
+        userStyle['example_text'] = exampleText;
+      }
     }
 
     return userStyle;
