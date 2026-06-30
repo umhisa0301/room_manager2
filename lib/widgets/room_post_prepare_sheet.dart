@@ -92,11 +92,20 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   late final TextEditingController _bodyController;
   bool _aiLoading = false;
   String? _aiError;
+  bool _autoGenerateStarted = false;
+  bool _userEditedBody = false;
+
+  static const _aiRegenerateButtonLabel = 'AIで作り直す';
+  static const _copyAndOpenRoomButtonLabel = 'コピーしてROOMを開く';
+  static const _aiLoadingMessage = '投稿文を作成中…';
 
   @override
   void initState() {
     super.initState();
     _bodyController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeAutoGenerateOnOpen();
+    });
   }
 
   @override
@@ -122,6 +131,48 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   static const _aiGenerationErrorMessage =
       '投稿文を作成できませんでした。時間をおいてもう一度お試しください。';
 
+  Future<void> _maybeAutoGenerateOnOpen() async {
+    if (!mounted || _autoGenerateStarted) return;
+    if (_bodyController.text.trim().isNotEmpty) return;
+    _autoGenerateStarted = true;
+    await _generateAiComment();
+  }
+
+  Future<void> _onRegenerateAiComment() async {
+    if (_aiLoading) return;
+    if (_bodyController.text.trim().isNotEmpty && _userEditedBody) {
+      final confirmed = await _showRegenerateConfirmDialog();
+      if (confirmed != true || !mounted) return;
+      _userEditedBody = false;
+    }
+    await _generateAiComment();
+  }
+
+  Future<bool?> _showRegenerateConfirmDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('投稿文を作り直しますか？'),
+        content: const Text('現在の投稿文は上書きされます。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('キャンセル'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('作り直す'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _applyGeneratedText(String text) {
+    _bodyController.text = text;
+    _userEditedBody = false;
+  }
+
   Future<void> _generateAiComment() async {
     if (_aiLoading) return;
     setState(() {
@@ -142,7 +193,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       );
       if (!mounted) return;
       setState(() {
-        _bodyController.text = result.displayText;
+        if (!_userEditedBody) {
+          _applyGeneratedText(result.displayText);
+        }
         _aiLoading = false;
       });
     } on PostCommentGenerationException catch (e) {
@@ -206,6 +259,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
                 controller: _bodyController,
                 minLines: 4,
                 maxLines: null,
+                onChanged: (_) {
+                  _userEditedBody = true;
+                },
                 keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
                 style: AppTextStyles.bodyMedium.copyWith(
@@ -248,13 +304,27 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
             ),
             if (_aiLoading) ...[
               const SizedBox(height: AppDimensions.spacingSm),
-              const Center(
+              Center(
                 child: KeyedSubtree(
-                  key: Key('room_post_prepare_ai_loading'),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2.4),
+                  key: const Key('room_post_prepare_ai_loading'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2.4),
+                      ),
+                      const SizedBox(height: AppDimensions.spacingXs),
+                      Text(
+                        _aiLoadingMessage,
+                        key: const Key('room_post_prepare_ai_loading_text'),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.35,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -285,15 +355,15 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
             const SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
             AppSecondaryButton(
               key: const Key('room_post_prepare_ai_button'),
-              label: 'AIで文章を作る',
+              label: _aiRegenerateButtonLabel,
               icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-              onPressed: _aiLoading ? null : _generateAiComment,
+              onPressed: _aiLoading ? null : _onRegenerateAiComment,
               expand: true,
             ),
             const SizedBox(height: AppDimensions.spacingSm),
             AppPrimaryButton(
               key: const Key('room_post_prepare_room_button'),
-              label: 'ROOMで投稿',
+              label: _copyAndOpenRoomButtonLabel,
               icon: const Icon(Icons.open_in_new_rounded),
               onPressed: roomUrlReady ? () => _postToRoom(context) : null,
               expand: true,

@@ -1,13 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/rakuten_managed_product.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
 import 'package:room_manager2/repository/pending_collect_notice_repository.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
-import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
@@ -47,6 +50,55 @@ class _InstantStubPostCommentGenerationService
       body: 'AI生成テスト文',
       fullText: 'AI生成テスト文',
     );
+  }
+}
+
+class _NeverCompletingPostCommentGenerationService
+    implements PostCommentGenerationService {
+  const _NeverCompletingPostCommentGenerationService();
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) {
+    return Completer<PostCommentGenerationResult>().future;
+  }
+}
+
+class _CountingPostCommentGenerationService
+    implements PostCommentGenerationService {
+  _CountingPostCommentGenerationService({this.delay = Duration.zero});
+
+  final Duration delay;
+  int callCount = 0;
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    callCount++;
+    await Future<void>.delayed(delay);
+    return const PostCommentGenerationResult(
+      body: 'AI生成テスト文',
+      fullText: 'AI生成テスト文',
+    );
+  }
+}
+
+class _SequentialPostCommentGenerationService
+    implements PostCommentGenerationService {
+  _SequentialPostCommentGenerationService(this.results);
+
+  final List<PostCommentGenerationResult> results;
+  int callCount = 0;
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    final index = callCount.clamp(0, results.length - 1);
+    callCount++;
+    return results[index];
   }
 }
 
@@ -131,7 +183,7 @@ Future<Widget> _wrapSheet({
 
 Future<void> _openSheet(WidgetTester tester) async {
   await tester.tap(find.text('open_sheet'));
-  await tester.pumpAndSettle();
+  await tester.pump();
 }
 
 void main() {
@@ -150,6 +202,7 @@ void main() {
         await _wrapSheet(prefs: prefs),
       );
       await _openSheet(tester);
+      await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('room_post_prepare_sheet')), findsOneWidget);
       expect(find.text('投稿の準備'), findsOneWidget);
@@ -159,11 +212,19 @@ void main() {
       expect(find.textContaining('レビュー 4.35'), findsOneWidget);
       expect(find.textContaining('42件'), findsOneWidget);
       expect(find.byKey(const Key('room_post_prepare_body_field')), findsOneWidget);
+      expect(find.text('AIで作り直す'), findsOneWidget);
+      expect(find.text('コピーしてROOMを開く'), findsOneWidget);
     });
 
     testWidgets('body field accepts input', (tester) async {
-      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _NeverCompletingPostCommentGenerationService(),
+        ),
+      );
       await _openSheet(tester);
+      await tester.pump();
 
       await tester.enterText(
         find.byKey(const Key('room_post_prepare_body_field')),
@@ -172,7 +233,23 @@ void main() {
       expect(find.text('手入力の投稿文'), findsOneWidget);
     });
 
-    testWidgets('AI button shows loading then fills body', (tester) async {
+    testWidgets('auto-generates comment when body is empty on open',
+        (tester) async {
+      final generationService = _CountingPostCommentGenerationService();
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: generationService,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+    });
+
+    testWidgets('auto-generate shows loading message', (tester) async {
       await tester.pumpWidget(
         await _wrapSheet(
           prefs: prefs,
@@ -182,23 +259,22 @@ void main() {
         ),
       );
       await _openSheet(tester);
-
-      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
       await tester.pump();
+
       expect(
         find.byKey(const Key('room_post_prepare_ai_loading')),
         findsOneWidget,
       );
+      expect(find.text('投稿文を作成中…'), findsOneWidget);
 
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       expect(
         find.byKey(const Key('room_post_prepare_ai_loading')),
         findsNothing,
       );
-      expect(find.textContaining('おすすめ商品テスト'), findsWidgets);
     });
 
-    testWidgets('AI failure shows error message', (tester) async {
+    testWidgets('auto-generate failure shows error message', (tester) async {
       await tester.pumpWidget(
         await _wrapSheet(
           prefs: prefs,
@@ -206,12 +282,113 @@ void main() {
         ),
       );
       await _openSheet(tester);
-
-      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
       await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('room_post_prepare_ai_error')), findsOneWidget);
       expect(find.textContaining('作成できませんでした'), findsOneWidget);
+    });
+
+    testWidgets('regenerate without edit skips confirm dialog', (tester) async {
+      final generationService = _SequentialPostCommentGenerationService(const [
+        PostCommentGenerationResult(
+          body: '初回生成文',
+          fullText: '初回生成文',
+        ),
+        PostCommentGenerationResult(
+          body: '再生成文',
+          fullText: '再生成文',
+        ),
+      ]);
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: generationService,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('初回生成文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('投稿文を作り直しますか？'), findsNothing);
+      expect(find.text('再生成文'), findsOneWidget);
+    });
+
+    testWidgets('regenerate with edited body shows confirm dialog',
+        (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(prefs: prefs),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        '編集済みの投稿文',
+      );
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('投稿文を作り直しますか？'), findsOneWidget);
+      expect(find.text('現在の投稿文は上書きされます。'), findsOneWidget);
+    });
+
+    testWidgets('regenerate confirm cancel keeps edited body', (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(prefs: prefs),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        '編集済みの投稿文',
+      );
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('キャンセル'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('編集済みの投稿文'), findsOneWidget);
+    });
+
+    testWidgets('regenerate confirm accept overwrites body', (tester) async {
+      final generationService = _SequentialPostCommentGenerationService(const [
+        PostCommentGenerationResult(
+          body: '初回生成文',
+          fullText: '初回生成文',
+        ),
+        PostCommentGenerationResult(
+          body: '作り直し後の文',
+          fullText: '作り直し後の文',
+        ),
+      ]);
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: generationService,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        '編集済みの投稿文',
+      );
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('作り直す'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('作り直し後の文'), findsOneWidget);
+      expect(find.text('編集済みの投稿文'), findsNothing);
     });
 
     testWidgets('ROOM button disabled when URL not ready', (tester) async {
@@ -222,11 +399,13 @@ void main() {
         ),
       );
       await _openSheet(tester);
+      await tester.pumpAndSettle();
 
       final roomButton = tester.widget<AppPrimaryButton>(
         find.byKey(const Key('room_post_prepare_room_button')),
       );
       expect(roomButton.onPressed, isNull);
+      expect(roomButton.label, 'コピーしてROOMを開く');
       expect(
         find.byKey(const Key('room_post_prepare_url_not_ready_hint')),
         findsOneWidget,
@@ -245,6 +424,7 @@ void main() {
         ),
       );
       await _openSheet(tester);
+      await tester.pumpAndSettle();
 
       final roomButton = tester.widget<AppPrimaryButton>(
         find.byKey(const Key('room_post_prepare_room_button')),
@@ -256,9 +436,61 @@ void main() {
       );
     });
 
+    testWidgets('copy and open room copies text and marks collected',
+        (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          extractionStatus: RakutenUrlExtractionStatus.success,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+
+      const launcherChannel = MethodChannel('plugins.flutter.io/url_launcher');
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(launcherChannel, (call) async => true);
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(launcherChannel, null);
+      });
+
+      final roomButton = tester.widget<AppPrimaryButton>(
+        find.byKey(const Key('room_post_prepare_room_button')),
+      );
+      expect(roomButton.onPressed, isNotNull);
+
+      String? copiedText;
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+        if (call.method == 'Clipboard.setData') {
+          copiedText = call.arguments['text'] as String?;
+        }
+        return null;
+      });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(SystemChannels.platform, null);
+      });
+
+      roomButton.onPressed!();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(seconds: 3));
+
+      expect(copiedText, 'AI生成テスト文');
+
+      final managedRepo = RakutenManagedProductRepository(prefs);
+      final product = managedRepo.getByProductId('shop:item001');
+      expect(product?.status, RakutenManagedProductStatus.done);
+    });
+
     testWidgets('楽天で見る button is visible', (tester) async {
       await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
+      await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('room_post_prepare_rakuten_button')), findsOneWidget);
       expect(find.text('楽天で見る'), findsOneWidget);
@@ -267,6 +499,7 @@ void main() {
     testWidgets('close button dismisses sheet', (tester) async {
       await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
+      await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('room_post_prepare_sheet')), findsOneWidget);
       await tester.tap(find.byKey(const Key('room_post_prepare_close_button')));
