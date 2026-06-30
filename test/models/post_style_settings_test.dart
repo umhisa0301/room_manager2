@@ -75,6 +75,40 @@ void main() {
   });
 
   group('PostStyleSettings JSON', () {
+    test('round-trips style_example with snake_case keys', () {
+      final original = PostStyleSettings(
+        tone: PostTone.friendlyPolite,
+        length: PostLength.standard,
+        emojiLevel: EmojiLevel.low,
+        kaomojiEnabled: false,
+        hashtagLevel: HashtagLevel.standard,
+        focusPoints: const [
+          PostFocusPoint.costPerformance,
+          PostFocusPoint.dailyUse,
+        ],
+        targetAudience: PostTargetAudience.general,
+        avoidOverstatement: true,
+        updatedAt: DateTime.utc(2026, 6, 29, 12),
+        styleExample: '保存済み文例テキスト',
+      );
+
+      final json = original.toJson();
+      expect(json['style_example'], '保存済み文例テキスト');
+
+      final restored = PostStyleSettings.fromJson(json);
+      expect(restored.styleExample, '保存済み文例テキスト');
+    });
+
+    test('hasSamePreviewConfig ignores styleExample', () {
+      final base = PostStyleSettings.defaults();
+      final withExample = base.copyWith(styleExample: '文例');
+      expect(base.hasSamePreviewConfig(withExample), isTrue);
+      expect(
+        base.hasSamePreviewConfig(base.copyWith(tone: PostTone.casual)),
+        isFalse,
+      );
+    });
+
     test('round-trips with snake_case keys', () {
       final original = PostStyleSettings(
         tone: PostTone.friendlyPolite,

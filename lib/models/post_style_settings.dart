@@ -226,6 +226,7 @@ class PostStyleSettings {
     required this.targetAudience,
     required this.avoidOverstatement,
     required this.updatedAt,
+    this.styleExample,
   });
 
   final PostTone tone;
@@ -237,6 +238,9 @@ class PostStyleSettings {
   final PostTargetAudience targetAudience;
   final bool avoidOverstatement;
   final DateTime updatedAt;
+
+  /// ユーザーが編集した投稿文の好みサンプル（AI生成の参考文例）。
+  final String? styleExample;
 
   static PostStyleSettings defaults() {
     return PostStyleSettings(
@@ -330,6 +334,8 @@ class PostStyleSettings {
     PostTargetAudience? targetAudience,
     bool? avoidOverstatement,
     DateTime? updatedAt,
+    String? styleExample,
+    bool clearStyleExample = false,
   }) {
     return PostStyleSettings(
       tone: tone ?? this.tone,
@@ -341,7 +347,28 @@ class PostStyleSettings {
       targetAudience: targetAudience ?? this.targetAudience,
       avoidOverstatement: avoidOverstatement ?? this.avoidOverstatement,
       updatedAt: updatedAt ?? this.updatedAt,
+      styleExample: clearStyleExample ? null : (styleExample ?? this.styleExample),
     );
+  }
+
+  /// 文例以外の設定が同一か（プレビュー更新判定用）。
+  bool hasSamePreviewConfig(PostStyleSettings other) {
+    return tone == other.tone &&
+        length == other.length &&
+        emojiLevel == other.emojiLevel &&
+        kaomojiEnabled == other.kaomojiEnabled &&
+        hashtagLevel == other.hashtagLevel &&
+        _listEquals(focusPoints, other.focusPoints) &&
+        targetAudience == other.targetAudience &&
+        avoidOverstatement == other.avoidOverstatement;
+  }
+
+  static bool _listEquals<T>(List<T> a, List<T> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
   }
 
   Map<String, dynamic> toJson() {
@@ -355,6 +382,8 @@ class PostStyleSettings {
       'target_audience': targetAudience.toJsonKey(),
       'avoid_overstatement': avoidOverstatement,
       'updated_at': updatedAt.toUtc().toIso8601String(),
+      if (styleExample != null && styleExample!.trim().isNotEmpty)
+        'style_example': styleExample!.trim(),
     };
   }
 
@@ -374,6 +403,7 @@ class PostStyleSettings {
       ),
       avoidOverstatement: _boolOr(json['avoid_overstatement'], true),
       updatedAt: _parseUpdatedAt(json['updated_at']),
+      styleExample: _stringOrNull(json['style_example']),
     );
   }
 

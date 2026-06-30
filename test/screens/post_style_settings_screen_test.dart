@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/screens/post_style_settings_screen.dart';
+import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,10 +25,36 @@ Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+class _FakeGenerationService implements PostCommentGenerationService {
+  _FakeGenerationService({
+    this.result = const PostCommentGenerationResult(
+      body: 'AI生成サンプル本文です。',
+      hashtags: ['#楽天ROOM'],
+      fullText: 'AI生成サンプル本文です。\n\n#楽天ROOM',
+    ),
+    this.shouldThrow = false,
+  });
+
+  final PostCommentGenerationResult result;
+  final bool shouldThrow;
+  PostCommentGenerationInput? lastInput;
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    lastInput = input;
+    if (shouldThrow) {
+      throw Exception('generation failed');
+    }
+    return result;
+  }
+}
+
 Widget _wrap({
   required SharedPreferences prefs,
-  required Widget child,
   PostStyleSettings? initialSettings,
+  PostCommentGenerationService? generationService,
 }) {
   return MultiProvider(
     providers: [
@@ -37,7 +65,10 @@ Widget _wrap({
       ),
     ],
     child: MaterialApp(
-      home: PostStyleSettingsScreen(initialSettings: initialSettings),
+      home: PostStyleSettingsScreen(
+        initialSettings: initialSettings,
+        generationService: generationService,
+      ),
     ),
   );
 }
@@ -45,6 +76,7 @@ Widget _wrap({
 Future<void> _pumpScreen(
   WidgetTester tester, {
   PostStyleSettings? initialSettings,
+  PostCommentGenerationService? generationService,
 }) async {
   _setTallViewport(tester);
   SharedPreferences.setMockInitialValues({});
@@ -53,7 +85,7 @@ Future<void> _pumpScreen(
     _wrap(
       prefs: prefs,
       initialSettings: initialSettings,
-      child: const SizedBox.shrink(),
+      generationService: generationService,
     ),
   );
   await tester.pumpAndSettle();
@@ -63,14 +95,14 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('PostStyleSettingsScreen', () {
-    testWidgets('displays screen and all setting sections', (tester) async {
+    testWidgets('displays compact layout sections', (tester) async {
       await _pumpScreen(tester);
 
       expect(find.text('投稿スタイル設定'), findsOneWidget);
-      expect(
-        find.text('AIで投稿文を作るときの文体や長さを調整できます。'),
-        findsOneWidget,
-      );
+      expect(find.text('生成イメージ'), findsOneWidget);
+      expect(find.text('基本'), findsOneWidget);
+      expect(find.text('装飾'), findsOneWidget);
+      expect(find.text('内容'), findsOneWidget);
       expect(find.text('文体'), findsOneWidget);
       expect(find.text('文章量'), findsOneWidget);
       expect(find.text('絵文字'), findsOneWidget);
@@ -79,9 +111,105 @@ void main() {
       expect(find.text('推し方'), findsOneWidget);
       expect(find.text('読者層'), findsOneWidget);
       expect(find.text('誇張表現を避ける'), findsOneWidget);
-      expect(find.text('生成イメージ'), findsOneWidget);
+      expect(find.text('この文例を参考に投稿文を作ります'), findsOneWidget);
+      expect(find.byKey(const Key('post_style_preview_text_field')), findsOneWidget);
+      expect(find.byKey(const Key('post_style_preview_refresh_button')), findsOneWidget);
       expect(find.byKey(const Key('post_style_save_button')), findsOneWidget);
       expect(find.byKey(const Key('post_style_reset_button')), findsOneWidget);
+    });
+
+    testWidgets('style example field is editable', (tester) async {
+      await _pumpScreen(tester);
+
+      await tester.enterText(
+        find.byKey(const Key('post_style_preview_text_field')),
+        '編集した文例テキスト',
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.widget<TextField>(find.byKey(const Key('post_style_preview_text_field')))
+            .controller
+            ?.text,
+        '編集した文例テキスト',
+      );
+    });
+
+    testWidgets('refresh button enables after settings change', (tester) async {
+      await _pumpScreen(
+        tester,
+        initialSettings: PostStyleSettings.defaults().copyWith(
+          styleExample: '保存済み文例',
+        ),
+      );
+
+      final refreshButton = tester.widget<IconButton>(
+        find.byKey(const Key('post_style_preview_refresh_button')),
+      );
+      expect(refreshButton.onPressed, isNull);
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      final enabledRefresh = tester.widget<IconButton>(
+        find.byKey(const Key('post_style_preview_refresh_button')),
+      );
+      expect(enabledRefresh.onPressed, isNotNull);
+    });
+
+    testWidgets('refresh button calls generation service and updates preview',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(tester, generationService: fakeService);
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.lastInput, isNotNull);
+      expect(fakeService.lastInput!.styleSettings?.tone, PostTone.casual);
+      expect(
+        find.text('AI生成サンプル本文です。\n\n#楽天ROOM'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('refresh shows inline error on failure', (tester) async {
+      final fakeService = _FakeGenerationService(shouldThrow: true);
+      await _pumpScreen(tester, generationService: fakeService);
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('post_style_preview_error')), findsOneWidget);
+      expect(find.text('生成イメージの更新に失敗しました。'), findsOneWidget);
+    });
+
+    testWidgets('preview does not auto-update when settings change', (tester) async {
+      await _pumpScreen(
+        tester,
+        initialSettings: PostStyleSettings.defaults().copyWith(
+          styleExample: '固定文例テキスト',
+        ),
+      );
+
+      final before = tester
+          .widget<TextField>(find.byKey(const Key('post_style_preview_text_field')))
+          .controller
+          ?.text;
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      final after = tester
+          .widget<TextField>(find.byKey(const Key('post_style_preview_text_field')))
+          .controller
+          ?.text;
+
+      expect(after, equals(before));
     });
 
     testWidgets('can change tone', (tester) async {
@@ -100,12 +228,13 @@ void main() {
       await tester.tap(find.text('短め'));
       await tester.pumpAndSettle();
 
-      expect(find.text('60〜90字'), findsOneWidget);
+      expect(find.widgetWithText(FilterChip, '短め'), findsOneWidget);
     });
 
     testWidgets('can change emoji level', (tester) async {
       await _pumpScreen(tester);
 
+      await _scrollTo(tester, find.text('使わない'));
       await tester.tap(find.text('使わない'));
       await tester.pumpAndSettle();
 
@@ -127,6 +256,7 @@ void main() {
     testWidgets('can change hashtag level', (tester) async {
       await _pumpScreen(tester);
 
+      await _scrollTo(tester, find.text('3個程度'));
       await tester.tap(find.text('3個程度'));
       await tester.pumpAndSettle();
 
@@ -171,14 +301,16 @@ void main() {
       expect(find.text('推し方は3つまで選べます'), findsOneWidget);
     });
 
-    testWidgets('can change target audience', (tester) async {
+    testWidgets('can change target audience via dropdown', (tester) async {
       await _pumpScreen(tester);
 
-      await _scrollTo(tester, find.text('女性向け'));
-      await tester.tap(find.text('女性向け'));
+      await _scrollTo(tester, find.text('読者層'));
+      await tester.tap(find.byType(DropdownButtonFormField<PostTargetAudience>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('女性向け').last);
       await tester.pumpAndSettle();
 
-      expect(find.widgetWithText(FilterChip, '女性向け'), findsOneWidget);
+      expect(find.text('女性向け'), findsWidgets);
     });
 
     testWidgets('can toggle avoid overstatement switch', (tester) async {
@@ -195,28 +327,7 @@ void main() {
       expect(tester.widget<SwitchListTile>(switchFinder).value, isFalse);
     });
 
-    testWidgets('preview updates when settings change', (tester) async {
-      await _pumpScreen(tester);
-
-      await _scrollTo(tester, find.byKey(const Key('post_style_preview_text')));
-      final before = tester
-          .widget<Text>(find.byKey(const Key('post_style_preview_text')))
-          .data;
-
-      await _scrollTo(tester, find.text('フランク'));
-      await tester.tap(find.text('フランク'));
-      await tester.pumpAndSettle();
-
-      await _scrollTo(tester, find.byKey(const Key('post_style_preview_text')));
-      final after = tester
-          .widget<Text>(find.byKey(const Key('post_style_preview_text')))
-          .data;
-
-      expect(before, isNot(equals(after)));
-      expect(after, contains('見つけたよ'));
-    });
-
-    testWidgets('save button persists settings to provider', (tester) async {
+    testWidgets('save button persists settings and style example', (tester) async {
       _setTallViewport(tester);
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
@@ -241,12 +352,17 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      await tester.enterText(
+        find.byKey(const Key('post_style_preview_text_field')),
+        '保存する文例',
+      );
       await tester.tap(find.text('フランク'));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('post_style_save_button')));
       await tester.pumpAndSettle();
 
       expect(provider.settings.tone, PostTone.casual);
+      expect(provider.settings.styleExample, '保存する文例');
       expect(find.text('投稿スタイルを保存しました'), findsOneWidget);
     });
 
@@ -273,6 +389,7 @@ void main() {
               initialSettings: PostStyleSettings.defaults().copyWith(
                 tone: PostTone.casual,
                 kaomojiEnabled: true,
+                styleExample: 'カスタム文例',
               ),
             ),
           ),
@@ -288,6 +405,7 @@ void main() {
 
       expect(provider.settings.tone, PostTone.friendlyPolite);
       expect(provider.settings.kaomojiEnabled, isFalse);
+      expect(provider.settings.styleExample, isNull);
       expect(find.text('初期設定に戻しました'), findsOneWidget);
     });
   });

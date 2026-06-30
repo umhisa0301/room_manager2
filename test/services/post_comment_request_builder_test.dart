@@ -92,6 +92,32 @@ void main() {
       expect(options['max_total_chars'], 220);
     });
 
+    test('includes example_text when styleExample is set', () {
+      final payload = builder.build(
+        input: fullInput(
+          styleSettings: PostStyleSettings.defaults().copyWith(
+            styleExample: 'ユーザー文例サンプル',
+          ),
+        ),
+      )['payload'] as Map;
+
+      final userStyle = payload['user_style'] as Map;
+      expect(userStyle['example_text'], 'ユーザー文例サンプル');
+    });
+
+    test('omits example_text when styleExample is empty', () {
+      final payload = builder.build(
+        input: fullInput(
+          styleSettings: PostStyleSettings.defaults().copyWith(
+            styleExample: '   ',
+          ),
+        ),
+      )['payload'] as Map;
+
+      final userStyle = payload['user_style'] as Map;
+      expect(userStyle.containsKey('example_text'), isFalse);
+    });
+
     test('omits profile_context when null', () {
       final payload = builder.build(input: fullInput())['payload'] as Map;
 

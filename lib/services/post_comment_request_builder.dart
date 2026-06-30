@@ -65,7 +65,7 @@ class PostCommentRequestBuilder {
   }
 
   Map<String, dynamic> _buildUserStyle(PostStyleSettings style) {
-    return {
+    final userStyle = <String, dynamic>{
       'tone': style.tone.toJsonKey(),
       'length': style.length.toJsonKey(),
       'target_length_chars': style.targetLengthChars,
@@ -77,6 +77,13 @@ class PostCommentRequestBuilder {
       'target_audience': style.targetAudience.toJsonKey(),
       'avoid_overstatement': style.avoidOverstatement,
     };
+
+    final exampleText = style.styleExample?.trim();
+    if (exampleText != null && exampleText.isNotEmpty) {
+      userStyle['example_text'] = exampleText;
+    }
+
+    return userStyle;
   }
 
   Map<String, dynamic> _buildGenerationOptions(PostGenerationLimits limits) {
