@@ -28,7 +28,10 @@ class PostStyleSettingsScreen extends StatefulWidget {
       _PostStyleSettingsScreenState();
 }
 
+enum _UnsavedChangesAction { discard, cancel, save }
+
 class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
+  late PostStyleSettings _initialSettings;
   late PostStyleSettings _draft;
   late TextEditingController _styleExampleController;
   late PostCommentGenerationService _generationService;
@@ -41,6 +44,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
 
   @override
   void dispose() {
+    _styleExampleController.removeListener(_onStyleExampleChanged);
     _styleExampleController.dispose();
     super.dispose();
   }
@@ -51,6 +55,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     if (_initialized) return;
     _draft = widget.initialSettings ??
         context.read<PostStyleSettingsProvider>().settings;
+    _initialSettings = _draft.normalized();
     _generationService =
         widget.generationService ?? PostCommentGenerationServiceFactory.create();
     _initializeStyleExample();
@@ -63,13 +68,28 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
       _styleExampleController = TextEditingController(text: savedExample);
       _lastRefreshedSettings = _draft;
       _previewNeedsRefresh = false;
-      return;
+    } else {
+      _styleExampleController = TextEditingController();
+      _lastRefreshedSettings = null;
+      _previewNeedsRefresh = true;
     }
-
-    _styleExampleController = TextEditingController();
-    _lastRefreshedSettings = null;
-    _previewNeedsRefresh = true;
+    _styleExampleController.addListener(_onStyleExampleChanged);
   }
+
+  void _onStyleExampleChanged() {
+    setState(() {});
+  }
+
+  PostStyleSettings _effectiveDraft() {
+    final exampleText = _styleExampleController.text.trim();
+    return _draft.copyWith(
+      styleExample: exampleText.isEmpty ? null : exampleText,
+      clearStyleExample: exampleText.isEmpty,
+    );
+  }
+
+  bool get _hasUnsavedChanges =>
+      !_effectiveDraft().hasSameSavedContent(_initialSettings);
 
   void _updateDraft(PostStyleSettings next) {
     setState(() {
@@ -85,22 +105,83 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   Future<void> _save() async {
     if (_saving) return;
     setState(() => _saving = true);
-    final exampleText = _styleExampleController.text.trim();
-    final toSave = _draft.copyWith(
-      styleExample: exampleText.isEmpty ? null : exampleText,
-      clearStyleExample: exampleText.isEmpty,
-    );
+    final toSave = _effectiveDraft();
     await context.read<PostStyleSettingsProvider>().saveSettings(toSave);
     if (!mounted) return;
-    setState(() {
-      _saving = false;
-      _draft = toSave;
-      _lastRefreshedSettings = toSave;
-      _previewNeedsRefresh = false;
-    });
+    _applySavedState(context.read<PostStyleSettingsProvider>().settings);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('投稿スタイルを保存しました')),
     );
+  }
+
+  void _applySavedState(PostStyleSettings saved) {
+    setState(() {
+      _saving = false;
+      _initialSettings = saved;
+      _draft = saved;
+      _lastRefreshedSettings = saved;
+      _previewNeedsRefresh = false;
+    });
+  }
+
+  Future<_UnsavedChangesAction?> _showUnsavedChangesDialog() {
+    return showDialog<_UnsavedChangesAction>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('変更を保存しますか？'),
+        content: const Text('投稿スタイル設定に未保存の変更があります。'),
+        actions: [
+          TextButton(
+            key: const Key('post_style_discard_changes_button'),
+            onPressed: () =>
+                Navigator.of(ctx).pop(_UnsavedChangesAction.discard),
+            child: const Text('保存しない'),
+          ),
+          TextButton(
+            key: const Key('post_style_cancel_back_button'),
+            onPressed: () =>
+                Navigator.of(ctx).pop(_UnsavedChangesAction.cancel),
+            child: const Text('キャンセル'),
+          ),
+          FilledButton(
+            key: const Key('post_style_save_and_back_button'),
+            onPressed: () =>
+                Navigator.of(ctx).pop(_UnsavedChangesAction.save),
+            child: const Text('保存'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleBackNavigation() async {
+    if (!_hasUnsavedChanges) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    final action = await _showUnsavedChangesDialog();
+    if (!mounted) return;
+
+    switch (action) {
+      case _UnsavedChangesAction.discard:
+        Navigator.of(context).pop();
+      case _UnsavedChangesAction.save:
+        await _saveAndPop();
+      case _UnsavedChangesAction.cancel:
+      case null:
+        break;
+    }
+  }
+
+  Future<void> _saveAndPop() async {
+    if (_saving) return;
+    setState(() => _saving = true);
+    final toSave = _effectiveDraft();
+    await context.read<PostStyleSettingsProvider>().saveSettings(toSave);
+    if (!mounted) return;
+    _applySavedState(context.read<PostStyleSettingsProvider>().settings);
+    Navigator.of(context).pop();
   }
 
   Future<void> _refreshPreview() async {
@@ -156,6 +237,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     await context.read<PostStyleSettingsProvider>().resetToDefaults();
     if (!mounted) return;
     setState(() {
+      _initialSettings = defaults;
       _draft = defaults;
       _styleExampleController.clear();
       _lastRefreshedSettings = null;
@@ -190,12 +272,22 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     return Semantics(
       container: true,
       label: 'post_style_settings_screen',
-      child: Scaffold(
+      child: PopScope(
+        canPop: !_hasUnsavedChanges,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          _handleBackNavigation();
+        },
+        child: Scaffold(
         backgroundColor: MyPageScreenUi.canvas,
         appBar: AppBar(
           title: const Text('投稿スタイル設定'),
           backgroundColor: MyPageScreenUi.canvas,
           surfaceTintColor: Colors.transparent,
+          leading: BackButton(
+            key: const Key('post_style_back_button'),
+            onPressed: _handleBackNavigation,
+          ),
           actions: [
             TextButton(
               key: const Key('post_style_save_button'),
@@ -410,6 +502,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

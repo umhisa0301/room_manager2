@@ -363,6 +363,20 @@ class PostStyleSettings {
         avoidOverstatement == other.avoidOverstatement;
   }
 
+  /// 保存対象の内容が同一か（[updatedAt] は比較しない）。
+  bool hasSameSavedContent(PostStyleSettings other) {
+    if (!hasSamePreviewConfig(other)) return false;
+    return normalizeStyleExample(styleExample) ==
+        normalizeStyleExample(other.styleExample);
+  }
+
+  /// 空文字は null として扱う。
+  static String? normalizeStyleExample(String? raw) {
+    final trimmed = raw?.trim();
+    if (trimmed == null || trimmed.isEmpty) return null;
+    return trimmed;
+  }
+
   static bool _listEquals<T>(List<T> a, List<T> b) {
     if (a.length != b.length) return false;
     for (var i = 0; i < a.length; i++) {

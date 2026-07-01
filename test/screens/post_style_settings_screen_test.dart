@@ -56,7 +56,26 @@ Widget _wrap({
   required SharedPreferences prefs,
   PostStyleSettings? initialSettings,
   PostCommentGenerationService? generationService,
+  bool withHostRoute = false,
 }) {
+  final screen = PostStyleSettingsScreen(
+    initialSettings: initialSettings,
+    generationService: generationService,
+  );
+
+  if (!withHostRoute) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => PostStyleSettingsProvider(
+            repository: PostStyleSettingsRepository(prefs),
+          ),
+        ),
+      ],
+      child: MaterialApp(home: screen),
+    );
+  }
+
   return MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -66,18 +85,38 @@ Widget _wrap({
       ),
     ],
     child: MaterialApp(
-      home: PostStyleSettingsScreen(
-        initialSettings: initialSettings,
-        generationService: generationService,
-      ),
+      home: _PostStyleSettingsHost(screen: screen),
     ),
   );
+}
+
+class _PostStyleSettingsHost extends StatelessWidget {
+  const _PostStyleSettingsHost({required this.screen});
+
+  final Widget screen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: const Key('post_style_settings_host'),
+      body: Center(
+        child: ElevatedButton(
+          key: const Key('open_post_style_settings'),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => screen),
+          ),
+          child: const Text('Open'),
+        ),
+      ),
+    );
+  }
 }
 
 Future<void> _pumpScreen(
   WidgetTester tester, {
   PostStyleSettings? initialSettings,
   PostCommentGenerationService? generationService,
+  bool withHostRoute = false,
 }) async {
   _setTallViewport(tester);
   SharedPreferences.setMockInitialValues({});
@@ -87,8 +126,19 @@ Future<void> _pumpScreen(
       prefs: prefs,
       initialSettings: initialSettings,
       generationService: generationService,
+      withHostRoute: withHostRoute,
     ),
   );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openScreenFromHost(WidgetTester tester) async {
+  await tester.tap(find.byKey(const Key('open_post_style_settings')));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _tapBack(WidgetTester tester) async {
+  await tester.tap(find.byKey(const Key('post_style_back_button')));
   await tester.pumpAndSettle();
 }
 
@@ -437,6 +487,179 @@ void main() {
       expect(provider.settings.kaomojiEnabled, isFalse);
       expect(provider.settings.styleExample, isNull);
       expect(find.text('初期設定に戻しました'), findsOneWidget);
+    });
+
+    group('unsaved changes on back navigation', () {
+      testWidgets('pops without confirmation when there are no changes',
+          (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        expect(find.text('投稿スタイル設定'), findsOneWidget);
+
+        await _tapBack(tester);
+
+        expect(find.text('投稿スタイル設定'), findsNothing);
+        expect(find.byKey(const Key('post_style_settings_host')), findsOneWidget);
+        expect(find.text('変更を保存しますか？'), findsNothing);
+      });
+
+      testWidgets('shows confirmation dialog after tone change', (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+
+        expect(find.text('変更を保存しますか？'), findsOneWidget);
+        expect(
+          find.text('投稿スタイル設定に未保存の変更があります。'),
+          findsOneWidget,
+        );
+        expect(find.text('投稿スタイル設定'), findsOneWidget);
+      });
+
+      testWidgets('shows confirmation dialog after preview text edit',
+          (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        await tester.enterText(
+          find.byKey(const Key('post_style_preview_text_field')),
+          '編集した文例テキスト',
+        );
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+
+        expect(find.text('変更を保存しますか？'), findsOneWidget);
+      });
+
+      testWidgets('cancel keeps user on settings screen', (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+        await tester.tap(find.byKey(const Key('post_style_cancel_back_button')));
+        await tester.pumpAndSettle();
+
+        expect(find.text('変更を保存しますか？'), findsNothing);
+        expect(find.text('投稿スタイル設定'), findsOneWidget);
+      });
+
+      testWidgets('discard closes screen without saving', (tester) async {
+        _setTallViewport(tester);
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final repository = PostStyleSettingsRepository(prefs);
+
+        await tester.pumpWidget(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => PostStyleSettingsProvider(
+                  repository: repository,
+                ),
+              ),
+            ],
+            child: MaterialApp(
+              home: const _PostStyleSettingsHost(
+                screen: PostStyleSettingsScreen(),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await _openScreenFromHost(tester);
+
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+        await tester.tap(find.byKey(const Key('post_style_discard_changes_button')));
+        await tester.pumpAndSettle();
+
+        expect(find.text('投稿スタイル設定'), findsNothing);
+        expect(repository.load().tone, PostTone.friendlyPolite);
+      });
+
+      testWidgets('save from dialog persists settings and closes screen',
+          (tester) async {
+        _setTallViewport(tester);
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        late PostStyleSettingsProvider provider;
+
+        await tester.pumpWidget(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) {
+                  provider = PostStyleSettingsProvider(
+                    repository: PostStyleSettingsRepository(prefs),
+                  );
+                  return provider;
+                },
+              ),
+            ],
+            child: MaterialApp(
+              home: _PostStyleSettingsHost(
+                screen: PostStyleSettingsScreen(
+                  initialSettings: PostStyleSettings.defaults(),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await _openScreenFromHost(tester);
+
+        await tester.enterText(
+          find.byKey(const Key('post_style_preview_text_field')),
+          'ダイアログ保存文例',
+        );
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+        await tester.tap(find.byKey(const Key('post_style_save_and_back_button')));
+        await tester.pumpAndSettle();
+
+        expect(find.text('投稿スタイル設定'), findsNothing);
+        expect(provider.settings.tone, PostTone.casual);
+        expect(provider.settings.styleExample, 'ダイアログ保存文例');
+      });
+
+      testWidgets('does not show confirmation after saving via app bar button',
+          (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('post_style_save_button')));
+        await tester.pumpAndSettle();
+        await _tapBack(tester);
+
+        expect(find.text('変更を保存しますか？'), findsNothing);
+        expect(find.text('投稿スタイル設定'), findsNothing);
+        expect(find.byKey(const Key('post_style_settings_host')), findsOneWidget);
+      });
+
+      testWidgets('system back shows confirmation when there are unsaved changes',
+          (tester) async {
+        await _pumpScreen(tester, withHostRoute: true);
+        await _openScreenFromHost(tester);
+
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+
+        await tester.pageBack();
+        await tester.pumpAndSettle();
+
+        expect(find.text('変更を保存しますか？'), findsOneWidget);
+        expect(find.text('投稿スタイル設定'), findsOneWidget);
+      });
     });
   });
 }

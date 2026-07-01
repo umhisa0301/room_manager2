@@ -109,6 +109,22 @@ void main() {
       );
     });
 
+    test('hasSameSavedContent compares styleExample', () {
+      final base = PostStyleSettings.defaults();
+      final withExample = base.copyWith(styleExample: '文例');
+      expect(base.hasSameSavedContent(withExample), isFalse);
+      expect(
+        withExample.hasSameSavedContent(
+          withExample.copyWith(styleExample: '  文例  '),
+        ),
+        isTrue,
+      );
+      expect(
+        base.hasSameSavedContent(base.copyWith(tone: PostTone.casual)),
+        isFalse,
+      );
+    });
+
     test('round-trips with snake_case keys', () {
       final original = PostStyleSettings(
         tone: PostTone.friendlyPolite,
