@@ -1,0 +1,1325 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-07-01 09:46:03
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: USE_REMOTE_POST_COMMENT_GENERATION=true; AI_GATEWAY_BASE_URL=http://127.0.0.1:3000; AI_GATEWAY_APP_KEY=room-local-test-key
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_094603.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260701_094603.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260701_094603.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260701_094603.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260701_094603.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_094603
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_094603\terminal_output_20260701_094603.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 19592).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=USE_REMOTE_POST_COMMENT_GENERATION=true --dart-define=AI_GATEWAY_BASE_URL=http://127.0.0.1:3000 --dart-define=AI_GATEWAY_APP_KEY=room-local-test-key
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             20.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.1s
+D/FlutterJNI( 6350): Beginning load of flutter...
+D/FlutterJNI( 6350): flutter (null) was loaded normally!
+I/flutter ( 6350): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 6350): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter ( 6350): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter ( 6350): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter ( 6350): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter ( 6350): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 6350): [ADMOB] initialization skipped ads=false
+I/flutter ( 6350): [BILLING_PURCHASE] initialized available=true active=false
+Syncing files to device SHG08...                                   116ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:51655/EAPmcmI_vrc=/
+I/flutter ( 6350): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter ( 6350): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 6350): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 6350): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006157 reviewAverage=4.76 reviewCount=665 displayText=評価 ★4.8（665件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [AUTO_REACTION_SYNC] scheduled
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:51655/EAPmcmI_vrc=/
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=4→4 done=73→73
+I/flutter ( 6350): [MANAGED_PRODUCT_LOAD] source=provider pending=4 done=73 filter= tab=
+I/flutter ( 6350): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=4→4 done=73→73
+I/flutter ( 6350): [MANAGED_PRODUCT_LOAD] source=screen pending=4 done=73 filter= tab=candidate
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=4→4 done=73→73
+I/flutter ( 6350): [MANAGED_PRODUCT_LOAD] source=provider pending=4 done=73 filter= tab=
+I/Choreographer( 6350): Skipped 196 frames!  The application may be doing too much work on its main thread.
+I/WebViewFactory( 6350): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders( 6350): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 6350): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 6350): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 6350): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 6350): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader( 6350): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+E/chromium( 6350): [0701/094641.844938:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_LibraryLoader( 6350): Successfully loaded native library
+I/cr_CachingUmaRecorder( 6350): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 6350): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 6350): #registerProvider() provider:WV.wk@6ea6bbd isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 6350): #setManagerAndSource() 0
+I/cr_policy( 6350): registerReceiver succeeded after 1ms
+I/cr_DisplayManager( 6350): Is Display Topology available: false
+I/cr_CombinedPProvider( 6350): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 6350): Compat change id reported: 183155436; UID 10529; state: ENABLED
+I/cr_AppResProvider( 6350): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6350): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6350): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6350): #flushPolicies()
+W/chromium( 6350): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 66362517
+D/CompatibilityChangeReporter( 6350): Compat change id reported: 214741472; UID 10529; state: ENABLED
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006157 reviewAverage=4.76 reviewCount=665 displayText=評価 ★4.8（665件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/cr_AppResProvider( 6350): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6350): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6350): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6350): #flushPolicies()
+I/CameraManagerGlobal( 6350): Connecting to camera service
+D/CompatibilityChangeReporter( 6350): Compat change id reported: 171228096; UID 10529; state: ENABLED
+D/CompatibilityChangeReporter( 6350): Compat change id reported: 193247900; UID 10529; state: ENABLED
+I/PlatformViewsController( 6350): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 6350): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 6350): Compat change id reported: 236825255; UID 10529; state: ENABLED
+W/o.room_manager2( 6350): type=1400 audit(0.0:128992): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/Choreographer( 6350): Skipped 67 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:128993): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 6350): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 6350): Build Date              : 08/23/22
+I/AdrenoVK-0( 6350): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 6350): Local Branch            : 
+I/AdrenoVK-0( 6350): Remote Branch           : 
+I/AdrenoVK-0( 6350): Remote Branch           : 
+I/AdrenoVK-0( 6350): Reconstruct Branch      : 
+I/AdrenoVK-0( 6350): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 6350): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 6350): Davey! duration=1185ms; Flags=1, FrameTimelineVsyncId=159292124, IntendedVsync=949627621172332, Vsync=949628737838954, InputEventId=0, HandleInputStart=949628738961753, AnimationStart=949628738963315, PerformTraversalsStart=949628738990138, DrawStart=949628751856492, FrameDeadline=949627637838998, FrameInterval=949628738561805, FrameStartTime=16666666, SyncQueued=949628788765919, SyncStart=949628788847430, IssueDrawCommandsStart=949628789810607, SwapBuffers=949628805331596, FrameCompleted=949628806530346, DequeueBufferDuration=2109375, QueueBufferDuration=798541, GpuCompleted=949628806465919, SwapBuffersCompleted=949628806530346, DisplayPresentTime=0, CommandSubmissionCompleted=949628805331596, 
+D/ProfileInstaller( 6350): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 6350): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [AUTO_REACTION_SYNC] skipped reason=noHistory
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter ( 6350): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=0 alreadyAdded=3 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=resultRender canPress=true cooldownCanRegenerate=true completed=true guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=- bundleGeneratedAt=2026-07-01T04:33:04.087194
+I/flutter ( 6350): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher( 6350): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6350): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 6350): [ROOM_POST_PREPARE] copyText done
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch start productId=shopmarna:10006157
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=addDone productId=shopmarna:10006157 pending=4→3 done=73→74
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006157 reviewAverage=4.76 reviewCount=665 displayText=評価 ★4.8（665件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch done
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenSync canPress=true cooldownCanRegenerate=true completed=true guardReason=none remainingMs=0 isLoading=false hasBundle=true candidates=3 completedCount=3 lastRegenerateAt=- bundleGeneratedAt=2026-07-01T04:33:04.087194
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=0 alreadyAdded=3 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+W/o.room_manager2( 6350): type=1400 audit(0.0:129840): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:129841): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:129842): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=0 alreadyAdded=3 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:130101): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:130102): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:130103): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=0 alreadyAdded=3 skipped=0
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter ( 6350): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=便利グッズ キッチン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6350): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6350): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BE%BF%E5%88%A9%E3%82%B0%E3%83%83%E3%82%BA+%E3%82%AD%E3%83%83%E3%83%81%E3%83%B3&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [Rakuten] response status=200 page=1 bytes=208313
+I/flutter ( 6350): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter ( 6350): [Rakuten] repository search total mapped=30
+I/flutter ( 6350): [Rakuten] search mapped item count=30
+I/flutter ( 6350): [Rakuten] search before filter count=30
+I/flutter ( 6350): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter ( 6350): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter ( 6350): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 skippedFavoriteGenrePlans=2 assistPlanExecuted=false apiCalls=1 earlyStopReason=targetReached
+I/flutter ( 6350): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=401421:1|301418:1|559203:1 shopDistribution=マーナ公式楽天市場店:1|Living雑貨 リスonlineshop:1|アイデアグッズのララフェスタ:1
+I/flutter ( 6350): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 apiCalls=1 pagesUsed=1 rawItems=21 excludedManaged=9 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=0 excludedZeroReview=0 finalItems=3 fallbackUsed=false assistPlanUsed=false
+I/flutter ( 6350): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=マーナ公式楽天市場店:1|Living雑貨 リスonlineshop:1|アイデアグッズのララフェスタ:1
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=3 alreadyAdded=0 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=299000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=298000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=3 alreadyAdded=0 skipped=0
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=risu-onlineshop:10002535 pending=3→4 done=74→74
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=risu-onlineshop:10002535 reviewAverage=4.66 reviewCount=1052 displayText=評価 ★4.7（1052件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=risu-onlineshop:10002535 reviewAverage=4.66 reviewCount=1052 displayText=評価 ★4.7（1052件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/risu-onlineshop/15930-8-2set/
+I/flutter ( 6350): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/risu-onlineshop/15930-8-2set/
+W/cr_media( 6350): BLUETOOTH_CONNECT permission is missing.
+W/cr_media( 6350): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media( 6350): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=risu-onlineshop:10002535 reviewAverage=4.66 reviewCount=1052 displayText=評価 ★4.7（1052件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=297000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=risu-onlineshop:10002535 reviewAverage=4.66 reviewCount=1052 displayText=評価 ★4.7（1052件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+W/VideoCapabilities( 6350): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities( 6350): Unsupported mime image/vnd.android.heic
+I/flutter ( 6350): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+W/chromium( 6350): [WARNING:android_webview/browser/gfx/display_webview.cc:33] WebView overlays are enabled!
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=296000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium( 6350): [INFO:CONSOLE:0] "Refused to apply style from 'https://www.rakuten.ne.jp/gold/risu-onlineshop/category/css/head.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.", source: https://www.rakuten.ne.jp/gold/risu-onlineshop/category/c-top_mein.html (0)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=295000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/chromium( 6350): [INFO:CONSOLE:1560] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/risu-onlineshop/15930-8-2set/ (1560)
+I/chromium( 6350): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=294000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:1562] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/risu-onlineshop/15930-8-2set/ (1562)
+I/chromium( 6350): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium( 6350): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=risu-onlineshop%3A10002535&scid=we_room_upc60
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=risu-onlineshop:10002535 reviewAverage=4.66 reviewCount=1052 displayText=評価 ★4.7（1052件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=293000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=292000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/Chrome_InProcGp( 6350): type=1400 audit(0.0:130174): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/cr_MediaCodecBridge( 6350): create MediaCodec video decoder, mime video/avc, decoder name c2.qti.avc.decoder, block_model=false
+D/CCodec  ( 6350): allocate(c2.qti.avc.decoder)
+I/Codec2Client( 6350): Available Codec2 services: "default" "software"
+I/CCodec  ( 6350): setting up 'default' as default (vendor) store
+I/CCodec  ( 6350): Created component [c2.qti.avc.decoder]
+D/CCodecConfig( 6350): read media type: video/avc
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_luma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_chroma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_luma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_chroma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_luma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_chroma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_luma
+D/ReflectedParamUpdater( 6350): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_chroma
+D/ReflectedParamUpdater( 6350): ignored struct field vendor.qti-ext-dec-panscan.window
+D/CCodecConfig( 6350): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6350): ignoring local param default.color (0x5200180b) as it is already supported
+D/CCodecConfig( 6350): ignoring local param raw.hdr-static-info (0xd200180a) as it is already supported
+I/CCodecConfig( 6350): query failed after returning 17 values (BAD_INDEX)
+D/CCodecConfig( 6350): c2 config diff is Dict {
+D/CCodecConfig( 6350):   c2::i32 algo.priority.value = 0
+D/CCodecConfig( 6350):   c2::float algo.rate.value = 30
+D/CCodecConfig( 6350):   c2::u32 algo.secure-mode.value = 0
+D/CCodecConfig( 6350):   c2::float coded.frame-rate.value = 30
+D/CCodecConfig( 6350):   c2::u32 coded.vui.color.matrix = 255
+D/CCodecConfig( 6350):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6350):   c2::u32 coded.vui.color.range = 0
+D/CCodecConfig( 6350):   c2::u32 coded.vui.color.transfer = 255
+D/CCodecConfig( 6350):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6350):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6350):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6350):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6350):   c2::u32 input.buffers.max-size.value = 3133440
+D/CCodecConfig( 6350):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6350):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6350):   c2::u32 output.delay.value = 1
+D/CCodecConfig( 6350):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6350):   c2::u32 raw.color.matrix = 255
+D/CCodecConfig( 6350):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6350):   c2::u32 raw.color.range = 0
+D/CCodecConfig( 6350):   c2::u32 raw.color.transfer = 255
+D/CCodecConfig( 6350):   c2::float raw.hdr-static-info.mastering.blue.y = 0
+D/CCodecConfig( 6350):   c2::float raw.hdr-static-info.mastering.gre
+W/ColorUtils( 6350): expected specified color aspects (0:0:255:255)
+D/CCodecConfig( 6350):   c2::float raw.hdr-static-info.mastering.blue.x = 0
+D/CCodecConfig( 6350):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6350):   c2::u32 coded.pl.profile = 20484
+I/MediaCodec( 6350): MediaCodec will operate in async mode
+W/ThreadPoolForeg( 6350): type=1400 audit(0.0:130175): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/MediaCodec( 6350): flushMediametrics
+D/SurfaceUtils( 6350): connecting to surface 0xb400007cdef731a0, reason connectToSurface
+I/MediaCodec( 6350): [c2.qti.avc.decoder] setting surface generation to 6502401
+D/SurfaceUtils( 6350): disconnecting from surface 0xb400007cdef731a0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6350): connecting to surface 0xb400007cdef731a0, reason connectToSurface(reconnect)
+D/CCodec  ( 6350): [c2.qti.avc.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6350): no c2 equivalents for color-standard
+D/CCodecConfig( 6350): no c2 equivalents for native-window
+D/CCodecConfig( 6350): no c2 equivalents for flags
+D/CCodecConfig( 6350): c2 config diff is   c2::u32 default.color.matrix = 1
+D/CCodecConfig( 6350):   c2::u32 default.color.primaries = 1
+D/CCodecConfig( 6350):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6350):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6350):   c2::u32 raw.max-size.height = 360
+D/CCodecConfig( 6350):   c2::u32 raw.max-size.width = 640
+D/CCodecConfig( 6350):   c2::u32 raw.size.height = 360
+W/Codec2Client( 6350): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6350): client requested max input size 176640, which is smaller than what component recommended (3133440); overriding with component recommendation.
+W/CCodec  ( 6350): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6350): encoding statistics level = 0
+D/CCodec  ( 6350): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6350):   int32_t feature-secure-playback = 0
+D/CCodec  ( 6350):   int32_t frame-rate = 30
+D/CCodec  ( 6350):   int32_t height = 360
+D/CCodec  ( 6350):   int32_t max-input-size = 3133440
+D/CCodec  ( 6350):   string mime = "video/avc"
+D/CCodec  ( 6350):   int32_t priority = 0
+D/CCodec  ( 6350):   int32_t profile = 8
+D/CCodec  ( 6350):   int32_t width = 640
+D/CCodec  ( 6350):   Rect crop(0, 0, 639, 359)
+D/CCodec  ( 6350): }
+D/CCodec  ( 6350): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6350):   int32_t android._color-format = 0
+D/CCodec  ( 6350):   int32_t android._video-scaling = 1
+D/CCodec  ( 6350):   int32_t android._dataspace = 281346048
+D/CCodec  ( 6350):   int32_t color-standard = 130820
+D/CCodec  ( 6350):   int32_t color-range = 2
+D/CCodec  ( 6350):   int32_t color-transfer = 65791
+D/CCodec  ( 6350):   int32_t sar-height = 1
+D/CCodec  ( 6350):   int32_t rotation-degrees = 0
+D/CCodec  ( 6350):   Buffer hdr-static-info = {
+D/CCodec  ( 6350):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodec  ( 6350):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodec  ( 6350):   }
+D/CCodec  ( 6350):   int32_t sar-width = 1
+D/CCodec  ( 6350):   Rect crop(0, 0, 639, 359)
+D/CCodec  ( 6350):   int32_t width = 640
+D/CCodec  ( 6350):   int32_t feature-secure-playback = 0
+D/CCodec  ( 6350):   int32_t frame-rate = 30
+D/CCodec  ( 6350):   int32_t height = 360
+D/CCodec  ( 6350):   int32_t max-height = 360
+D/CCodec  ( 6350):   int32_t max-width = 640
+D/CCodec  ( 6350):   string mime = "video/raw"
+D/CCodec  ( 6350):   int32_t priority = 0
+D/CCodec  ( 6350):   int32_t color-format = 2130708361
+D/CCodec  ( 6350): }
+I/CCodecConfig( 6350): query failed after returning 17 values (BAD_INDEX)
+D/MediaCodec( 6350): keep callback message for reclaim
+W/Codec2Client( 6350): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6350): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6350): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Query input allocators returned 0 params => BAD_INDEX (6)
+D/C2Store ( 6350): Using ION
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Created input block pool with allocatorID 16 => poolID 17 - OK (0)
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] start: max output delay 12
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Query output allocators returned 0 params => BAD_INDEX (6)
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Created output block pool with allocatorID 18 => poolID 130 - OK
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Configured output block pool ids 130 => OK
+D/Codec2-OutputBufferQueue( 6350): remote graphic buffer migration 0/0
+D/Codec2Client( 6350): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6350): setOutputSurface -- generation=6502401 consumer usage=0x900
+D/Codec2Client( 6350): Surface configure completed
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] start: updating output delay 1
+D/CCodecConfig( 6350): c2 config diff is   c2::u32 output.delay.value = 10
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] onWorkDone: updating output delay 10
+I/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] onWorkDone: updating max output delay 17
+D/Codec2-OutputBufferQueue( 6350): set max dequeue count 17 from update
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] Ignoring stale input buffer done callback: last flush index = 0, frameIndex = 0
+D/CCodecConfig( 6350): c2 config diff is   c2::u32 raw.color.matrix = 1
+D/CCodecConfig( 6350):   c2::u32 raw.color.primaries = 1
+D/CCodecConfig( 6350):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6350):   c2::u32 raw.color.transfer = 3
+D/CCodecConfig( 6350):   c2::u32 raw.crop.height = 360
+D/CCodecConfig( 6350):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6350):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6350):   c2::u32 raw.crop.width = 640
+D/CCodecBuffers( 6350): [c2.qti.avc.decoder#981:2D-Output] popFromStashAndRegister: at 0us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6350):   int32_t android._color-format = 0
+D/CCodecBuffers( 6350):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6350):   int32_t android._dataspace = 260
+D/CCodecBuffers( 6350):   int32_t color-standard = 1
+D/CCodecBuffers( 6350):   int32_t color-range = 2
+D/CCodecBuffers( 6350):   int32_t color-transfer = 3
+D/CCodecBuffers( 6350):   int32_t sar-height = 1
+D/CCodecBuffers( 6350):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6350):   Buffer hdr-static-info = {
+D/CCodecBuffers( 6350):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodecBuffers( 6350):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodecBuffers( 6350):   }
+D/CCodecBuffers( 6350):   int32_t sar-width = 1
+D/CCodecBuffers( 6350):   Rect crop(0, 0, 639, 359)
+D/CCodecBuffers( 6350):   int32_t width = 640
+D/CCodecBuffers( 6350):   int32_t feature-secure-playback = 0
+D/CCodecBuffers( 6350):   int32_t frame-rate = 30
+D/CCodecBuffers( 6350):   int32_t height = 360
+D/CCodecBuffers( 6350):   int32_t max-height = 360
+D/CCodecBuffers( 6350):   int32_t max-width = 640
+D/CCodecBuffers( 6350):   string mime = "video/raw"
+D/CCodecBuffers( 6350):   int32_t priority = 0
+D/CCodecBuffers( 6350):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6350): }
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=291000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/o.room_manager2( 6350): NativeAlloc concurrent copying GC freed 2112KB AllocSpace bytes, 1(364KB) LOS objects, 49% free, 5654KB/11MB, paused 1.767ms,56us total 134.094ms
+I/flutter ( 6350): [ROOM_POST_PREPARE] copyText done
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch start productId=risu-onlineshop:10002535
+I/chromium( 6350): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=addDone productId=risu-onlineshop:10002535 pending=4→3 done=74→75
+I/Choreographer( 6350): Skipped 44 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=290000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/Choreographer( 6350): Skipped 36 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch done
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=289000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=288000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+D/BufferPoolAccessor2.0( 6350): bufferpool2 0xb400007cff13fa18 : 5(15667200 size) total buffers - 4(12533760 size) used buffers - 9/14 (recycle/alloc) - 5/11 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6350): evictor expired: 1, evicted: 1
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=287000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+W/cr_MediaCodecBridge( 6350): Releasing: c2.qti.avc.decoder
+W/MediaCodec_loop( 6350): type=1400 audit(0.0:130400): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/SurfaceUtils( 6350): connecting to surface 0xb400007cdef88640, reason connectToSurface
+I/MediaCodec( 6350): [c2.qti.avc.decoder] setting surface generation to 6502402
+D/SurfaceUtils( 6350): disconnecting from surface 0xb400007cdef88640, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6350): connecting to surface 0xb400007cdef88640, reason connectToSurface(reconnect)
+D/Codec2-OutputBufferQueue( 6350): remote graphic buffer migration 0/0
+D/Codec2Client( 6350): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6350): setOutputSurface -- generation=6502402 consumer usage=0x900
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 0 is not owned by the producer (state = ACQUIRED)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [ImageReader-1x1f22u2304m3-6350-0](id:18ce0000000d,api:3,p:6350,c:6350) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/Codec2Client( 6350): Surface configure completed
+D/SurfaceUtils( 6350): disconnecting from surface 0xb400007cdef731a0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6350): [c2.qti.avc.decoder#981] MediaCodec discarded an unknown buffer
+W/cr_MediaCodecBridge( 6350): Codec released
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 0 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 13 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 14 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 15 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 16 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 17 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer( 6350): [MediaCodec.release](id:18ce0000000e,api:3,p:6350,c:6350) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+I/hw-BpHwBinder( 6350): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6350): disconnecting from surface 0xb400007cdef88640, reason disconnectFromSurface
+D/MediaCodec( 6350): flushMediametrics
+D/MediaCodec( 6350): flushMediametrics
+W/MediaCodec( 6350): no metrics handle found
+W/o.room_manager2( 6350): Cleared Reference was only reachable from finalizer (only reported once)
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=285000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=284000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=283000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=282000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=281000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+D/BufferPoolAccessor2.0( 6350): bufferpool2 0xb400007cff13fa18 : 0(0 size) total buffers - 0(0 size) used buffers - 9/14 (recycle/alloc) - 5/11 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6350): evictor expired: 1, evicted: 1
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=280000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=279000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=278000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=277000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=276000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=274000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+W/o.room_manager2( 6350): type=1400 audit(0.0:130616): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+W/o.room_manager2( 6350): type=1400 audit(0.0:130617): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:130618): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/chromium( 6350): [WARNING:android_webview/browser/gfx/display_webview.cc:33] WebView overlays are enabled!
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium( 6350): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium( 6350): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium( 6350): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA1OGYzZDE5MA.js (1)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium( 6350): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium( 6350): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA1OGYzZDE5OQ.js (1)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=273000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=272000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=le-cure:10002233 pending=3→4 done=75→75
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/le-cure/im-1007123/
+I/flutter ( 6350): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/le-cure/im-1007123/
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=271000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=270000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/chromium( 6350): [INFO:CONSOLE:1833] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/le-cure/im-1007123/ (1833)
+I/chromium( 6350): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=269000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:1835] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/le-cure/im-1007123/ (1835)
+I/chromium( 6350): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium( 6350): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:1] "Uncaught ReferenceError: jQuery is not defined", source: https://www.rakuten.ne.jp/gold/le-cure/smp-header.js (1)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:0] "Framing 'https://review.rakuten.co.jp/' violates the following Content Security Policy directive: "frame-ancestors 'self' rakuten.co.jp *.rakuten.co.jp". The request has been blocked.
+I/chromium( 6350): ", source:  (0)
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=268000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/chromium( 6350): [INFO:CONSOLE:1] "Refused to apply style from 'https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/custom_sp.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box_sp.html?asuraku=on&premium=on&multiply=1&entry=on&prerelease=on (1)
+I/flutter ( 6350): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=le-cure%3A10002233&scid=we_room_upc60
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/chromium( 6350): [INFO:CONSOLE:0] "Refused to apply style from 'https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/custom_sp.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box_sp.html?asuraku=on&premium=on&multiply=1&entry=on&prerelease=on (0)
+I/chromium( 6350): [INFO:CONSOLE:37] "48時間限定！エントリーで会員ランク別最大ポイント4倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【A1】楽天イーグルス 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【A2】楽天イーグルス 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【B】ヴィッセル神戸 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【C】楽天イーグルスとヴィッセル神戸　W勝利で3倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "6/11(木) 01:59まで！全ショップ対象エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260515_エントリー＆1注文10000円(税込)以上購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260515_5/16(土) 01:59まで！全ショップ対象エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【リピート購入の場合はこれを編集する】_お買い物マラソン 購入履歴の対象商品限定 エントリー＆リピート購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【事前告知】20260704_お買い物マラソン＆ジャンルSALE-ポイント最大49.5倍-", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260704_お買い物マラソン＆ジャンルSALE-ポイント最大49.5倍-", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260308_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260309_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260310_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260701_ワンダフルデー 全ショップ対象エントリーでポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260701_ワンダフルデー 全ショップ対象エントリー＆リピート購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月18日は楽天市場ご愛顧感謝デー ダイヤモンド会員様ポイント4倍・プラチナ会員様ポイント3倍・ゴールド会員様ポイント2倍(2026/07/18)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/6", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260620_39ショップ（送料無料ライン対応）限定　エントリー＆3，980円（税込）以上購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【事前告知】【学割】【お買い物マラソン】楽天学割本メンバー限定！エントリーで全ショップ対象ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】【お買い物マラソン】楽天学割本メンバー限定！エントリーで全ショップ対象ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "楽天モバイルご利用者特典 エントリーして対象サービス利用でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "楽天モバイルご利用者特典 エントリーして対象サービス利用でポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割6-7月】楽天市場でのお買い物が初めての方限定 楽天市場のお買い物が全ショップポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】U25限定！！お買い物を全力応援！エントリーで全ショップのお買い物がポイント3倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】メンバー限定！エントリーとラクマ初めて利用でポイント最大4倍(2026/3/18～2026/5/1)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 楽天市場のお買いものがいつでも毎日ポイント18倍に！【SPU】スーパーポイントアッププログラム", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 はこぽす（ロッカー受取）のご利用でポイントプレゼントプログラム", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 楽天ウェブ検索利用で全ショップ毎日ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年5-6月 楽天市場アプリ 新規ダウンロードキャンペーン 1000ポイントプレゼント", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2025年6月 スタートボーナスチャンス　初めてサービスを使うごとに1000ポイント", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 久しぶりのお買い物3000円（税込）以上に使える1000円OFFクーポン", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "All 47 events.", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js (37)
+I/Choreographer( 6350): Skipped 34 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=267000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/chromium( 6350): [INFO:CONSOLE:37] "48時間限定！エントリーで会員ランク別最大ポイント4倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【A1】楽天イーグルス 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【A2】楽天イーグルス 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【B】ヴィッセル神戸 勝利で2倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【C】楽天イーグルスとヴィッセル神戸　W勝利で3倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "6/11(木) 01:59まで！全ショップ対象エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260515_エントリー＆1注文10000円(税込)以上購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260515_5/16(土) 01:59まで！全ショップ対象エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【リピート購入の場合はこれを編集する】_お買い物マラソン 購入履歴の対象商品限定 エントリー＆リピート購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【事前告知】20260704_お買い物マラソン＆ジャンルSALE-ポイント最大49.5倍-", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260704_お買い物マラソン＆ジャンルSALE-ポイント最大49.5倍-", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260308_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260309_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260310_エントリーでポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260701_ワンダフルデー 全ショップ対象エントリーでポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260701_ワンダフルデー 全ショップ対象エントリー＆リピート購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月18日は楽天市場ご愛顧感謝デー ダイヤモンド会員様ポイント4倍・プラチナ会員様ポイント3倍・ゴールド会員様ポイント2倍(2026/07/18)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/6", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "毎月5と0のつく日は 楽天市場のお買い物に楽天カードのご利用で楽天カード特典＋3倍で4倍 2026/7", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "最強翌日配送キャンペーン！週末限定ポイント2倍(2026年6月)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "20260620_39ショップ（送料無料ライン対応）限定　エントリー＆3，980円（税込）以上購入でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【事前告知】【学割】【お買い物マラソン】楽天学割本メンバー限定！エントリーで全ショップ対象ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】【お買い物マラソン】楽天学割本メンバー限定！エントリーで全ショップ対象ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "楽天モバイルご利用者特典 エントリーして対象サービス利用でポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "楽天モバイルご利用者特典 エントリーして対象サービス利用でポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割6-7月】楽天市場でのお買い物が初めての方限定 楽天市場のお買い物が全ショップポイント3倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】U25限定！！お買い物を全力応援！エントリーで全ショップのお買い物がポイント3倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【学割】メンバー限定！エントリーとラクマ初めて利用でポイント最大4倍(2026/3/18～2026/5/1)", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "【7月】楽天学割 本メンバー限定！毎週水曜10:00～翌日木曜09:59はエントリーで全ショップのお買い物がポイント3倍！新規本メンバーの方は登録翌月末までポイント10倍！", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 楽天市場のお買いものがいつでも毎日ポイント18倍に！【SPU】スーパーポイントアッププログラム", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 はこぽす（ロッカー受取）のご利用でポイントプレゼントプログラム", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 楽天ウェブ検索利用で全ショップ毎日ポイント2倍", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年5-6月 楽天市場アプリ 新規ダウンロードキャンペーン 1000ポイントプレゼント", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2025年6月 スタートボーナスチャンス　初めてサービスを使うごとに1000ポイント", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "2026年6月 久しぶりのお買い物3000円（税込）以上に使える1000円OFFクーポン", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/chromium( 6350): [INFO:CONSOLE:37] "All 47 events.", source: https://www.rakuten.ne.jp/gold/le-cure/rpoint_box/rpoint_box.js?210317 (37)
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=266000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=265000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/chromium( 6350): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=264000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [ROOM_POST_PREPARE] copyText done
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch start productId=le-cure:10002233
+I/flutter ( 6350): [MANAGED_PRODUCT_SAVE] action=addDone productId=le-cure:10002233 pending=4→3 done=75→76
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=263000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=le-cure:10002233 reviewAverage=4.68 reviewCount=2751 displayText=評価 ★4.7（2751件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [ROOM_POST_PREPARE] collectRoomAndLaunch done
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=262000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=261000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=260000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=259000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=258000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=257000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=256000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=255000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/chromium( 6350): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium( 6350): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium( 6350): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA1OGYzZDE5MA.js (1)
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=254000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=253000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/chromium( 6350): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium( 6350): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium( 6350): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA1OGYzZDE5OQ.js (1)
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=252000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=251000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=250000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=249000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:131059): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:131060): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:131061): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/chromium( 6350): [WARNING:android_webview/browser/gfx/display_webview.cc:33] WebView overlays are enabled!
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=248000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=247000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=246000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 6350): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=245000 isLoading=false hasBundle=true candidates=3 completedCount=2 lastRegenerateAt=2026-07-01T09:48:19.934655 bundleGeneratedAt=2026-07-01T09:48:19.934655
+I/flutter ( 6350): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=1 alreadyAdded=2 skipped=0
+W/WindowOnBackDispatcher( 6350): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6350): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+W/WindowOnBackDispatcher( 6350): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6350): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:dcba10ec: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/AssistStructure( 6350): Flattened final assist data: 852 bytes, containing 1 windows, 3 views
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:9f3341f1: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 6350): The input method toggled cursor monitoring on
+D/InsetsController( 6350): show(ime(), fromIme=true)
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:9f3341f1: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:dcba10ec: onShown
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:d25cd833: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:d25cd833: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:26e68bfb: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:4c1bfbd6: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:9602177d: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:26e68bfb: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:3289502d: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:7c5b0c72: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:4c1bfbd6: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:da62df06: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:b6aceb21: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:9602177d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:8fb415a5: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:3289502d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:7c5b0c72: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:2153edcb: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:da62df06: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:ec796a77: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:b6aceb21: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:8fb415a5: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:2153edcb: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:ec796a77: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:6118d45c: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6350): showSoftInput() view=io.flutter.embedding.android.FlutterView{1c5df77 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6350): show(ime(), fromIme=true)
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:6118d45c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/TRuntime.CctTransportBackend( 6350): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+E/FeatureFlagsImplExport( 6350): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+I/TRuntime.CctTransportBackend( 6350): Status Code: 200
+D/InputConnectionAdaptor( 6350): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 6350): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@4464481 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@865d45b
+I/ImeTracker( 6350): jp.co.sharp.android.launcher3:4350a297: onCancelled at PHASE_CLIENT_ANIMATION_CANCEL
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:80a130bf: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:80a130bf: onFailed at PHASE_CLIENT_VIEW_SERVED
+W/o.room_manager2( 6350): type=1400 audit(0.0:131349): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer( 6350): Unable to match the desired swap behavior.
+W/o.room_manager2( 6350): type=1400 audit(0.0:131350): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 6350): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 6350): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 6350): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 6350): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 6350): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 6350): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 6350): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2( 6350): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+W/libc    ( 6350): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6350): type=1400 audit(0.0:131351): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/chromium( 6350): [WARNING:android_webview/browser/gfx/display_webview.cc:33] WebView overlays are enabled!
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6350): updateAcquireFence: Did not find frame.
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/ImeTracker( 6350): com.stepbytestudio.room_manager2:1a1d0b71: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter ( 6350): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_094603.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_094603.mp4 (75496049 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_094603
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_094603\terminal_output_20260701_094603.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_094603.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260701_094603.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260701_094603.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260701_094603.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260701_094603.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

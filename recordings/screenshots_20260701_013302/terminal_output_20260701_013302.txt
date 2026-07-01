@@ -1,0 +1,188 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-07-01 01:33:02
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_013302.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260701_013302.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260701_013302.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260701_013302.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260701_013302.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_013302
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_013302\terminal_output_20260701_013302.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 18716).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             12.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.1s
+D/FlutterJNI(12822): Beginning load of flutter...
+D/FlutterJNI(12822): flutter (null) was loaded normally!
+I/flutter (12822): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (12822): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (12822): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (12822): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (12822): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (12822): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (12822): [ADMOB] initialization skipped ads=false
+I/Choreographer(12822): Skipped 30 frames!  The application may be doing too much work on its main thread.
+I/flutter (12822): [BILLING_PURCHASE] initialized available=true active=false
+Syncing files to device SHG08...                                
+D/CompatibilityChangeReporter(12822): Compat change id reported: 194532703; UID 10529; state: ENABLED
+D/CompatibilityChangeReporter(12822): Compat change id reported: 253665015; UID 10529; state: ENABLED
+Syncing files to device SHG08...                                    90ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:65139/CrAIbkcLfrw=/
+I/flutter (12822): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter (12822): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (12822): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/Choreographer(12822): Skipped 115 frames!  The application may be doing too much work on its main thread.
+I/flutter (12822): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (12822): [AUTO_REACTION_SYNC] scheduled
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:65139/CrAIbkcLfrw=/
+I/flutter (12822): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=2→2 done=69→69
+I/flutter (12822): [MANAGED_PRODUCT_LOAD] source=provider pending=2 done=69 filter= tab=
+I/flutter (12822): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (12822): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=2→2 done=69→69
+I/flutter (12822): [MANAGED_PRODUCT_LOAD] source=screen pending=2 done=69 filter= tab=done
+I/flutter (12822): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=2→2 done=69→69
+I/flutter (12822): [MANAGED_PRODUCT_LOAD] source=provider pending=2 done=69 filter= tab=
+I/WebViewFactory(12822): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(12822): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(12822): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(12822): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(12822): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(12822): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(12822): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+I/chromium(12822): [0701/013332.905750:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(12822): Successfully loaded native library
+I/cr_CachingUmaRecorder(12822): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(12822): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(12822): #registerProvider() provider:WV.wk@96fa714 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(12822): #setManagerAndSource() 0
+I/cr_policy(12822): registerReceiver succeeded after 1ms
+I/cr_DisplayManager(12822): Is Display Topology available: false
+I/cr_CombinedPProvider(12822): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(12822): Compat change id reported: 183155436; UID 10529; state: ENABLED
+I/cr_AppResProvider(12822): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(12822): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(12822): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(12822): #flushPolicies()
+W/chromium(12822): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 67037101
+D/CompatibilityChangeReporter(12822): Compat change id reported: 214741472; UID 10529; state: ENABLED
+I/cr_AppResProvider(12822): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(12822): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(12822): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(12822): #flushPolicies()
+I/CameraManagerGlobal(12822): Connecting to camera service
+D/CompatibilityChangeReporter(12822): Compat change id reported: 171228096; UID 10529; state: ENABLED
+D/CompatibilityChangeReporter(12822): Compat change id reported: 193247900; UID 10529; state: ENABLED
+I/Choreographer(12822): Skipped 144 frames!  The application may be doing too much work on its main thread.
+I/PlatformViewsController(12822): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(12822): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(12822): Compat change id reported: 236825255; UID 10529; state: ENABLED
+I/OpenGLRenderer(12822): Davey! duration=2435ms; Flags=1, FrameTimelineVsyncId=158946990, IntendedVsync=920037135174306, Vsync=920039535174210, InputEventId=0, HandleInputStart=920039547746009, AnimationStart=920039547747676, PerformTraversalsStart=920039547748405, DrawStart=920039554402207, FrameDeadline=920037151840972, FrameInterval=920039547085801, FrameStartTime=16666666, SyncQueued=920039558467988, SyncStart=920039558581530, IssueDrawCommandsStart=920039559074655, SwapBuffers=920039569205019, FrameCompleted=920039570991946, DequeueBufferDuration=2222292, QueueBufferDuration=1392812, GpuCompleted=920039570285019, SwapBuffersCompleted=920039570991946, DisplayPresentTime=0, CommandSubmissionCompleted=920039569205019, 
+W/libc    (12822): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(12822): type=1400 audit(0.0:119623): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+W/libc    (12822): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(12822): type=1400 audit(0.0:119624): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(12822): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(12822): Build Date              : 08/23/22
+I/AdrenoVK-0(12822): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(12822): Local Branch            : 
+I/AdrenoVK-0(12822): Remote Branch           : 
+I/AdrenoVK-0(12822): Remote Branch           : 
+I/AdrenoVK-0(12822): Reconstruct Branch      : 
+I/AdrenoVK-0(12822): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(12822): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(12822): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+E/FrameEvents(12822): updateAcquireFence: Did not find frame.
+I/flutter (12822): [AUTO_REACTION_SYNC] skipped reason=noHistory
+W/o.room_manager2(12822): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(12822): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+W/WindowOnBackDispatcher(12822): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(12822): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/ImeTracker(12822): com.stepbytestudio.room_manager2:cdc7e16b: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(12822): showSoftInput() view=io.flutter.embedding.android.FlutterView{2b5c9c1 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/AssistStructure(12822): Flattened final assist data: 900 bytes, containing 1 windows, 3 views
+D/InputConnectionAdaptor(12822): The input method toggled cursor monitoring on
+D/InsetsController(12822): show(ime(), fromIme=true)
+I/ImeTracker(12822): com.stepbytestudio.room_manager2:cdc7e16b: onShown
+D/InputConnectionAdaptor(12822): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(12822): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@4464481 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@c98e6c0
+I/ImeTracker(12822): com.stepbytestudio.room_manager2:1fd9bf4f: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(12822): com.stepbytestudio.room_manager2:b51cf6a2: onHidden
+I/ImeTracker(12822): com.stepbytestudio.room_manager2:33a638e1: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+I/TRuntime.CctTransportBackend(12822): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+E/FeatureFlagsImplExport(12822): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+W/pool-2-thread-1(12822): type=1400 audit(0.0:119662): avc:  denied  { search } for  name="/" dev="sda10" ino=2 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0 app=com.stepbytestudio.room_manager2
+I/TRuntime.CctTransportBackend(12822): Status Code: 200
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
