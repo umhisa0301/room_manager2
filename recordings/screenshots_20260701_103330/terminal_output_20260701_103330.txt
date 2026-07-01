@@ -1,0 +1,227 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-07-01 10:33:30
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: USE_REMOTE_POST_COMMENT_GENERATION=true; AI_GATEWAY_BASE_URL=http://127.0.0.1:3000; AI_GATEWAY_APP_KEY=room-local-test-key
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_103330.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260701_103330.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260701_103330.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260701_103330.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260701_103330.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_103330
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_103330\terminal_output_20260701_103330.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 17884).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=USE_REMOTE_POST_COMMENT_GENERATION=true --dart-define=AI_GATEWAY_BASE_URL=http://127.0.0.1:3000 --dart-define=AI_GATEWAY_APP_KEY=room-local-test-key
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             13.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.3s
+D/FlutterJNI(10543): Beginning load of flutter...
+D/FlutterJNI(10543): flutter (null) was loaded normally!
+I/flutter (10543): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (10543): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (10543): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (10543): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (10543): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+Syncing files to device SHG08...                                
+I/flutter (10543): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (10543): [ADMOB] initialization skipped ads=false
+I/Choreographer(10543): Skipped 33 frames!  The application may be doing too much work on its main thread.
+I/flutter (10543): [BILLING_PURCHASE] initialized available=true active=false
+Syncing files to device SHG08...                                    79ms
+D/CompatibilityChangeReporter(10543): Compat change id reported: 194532703; UID 10529; state: ENABLED
+D/CompatibilityChangeReporter(10543): Compat change id reported: 253665015; UID 10529; state: ENABLED
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:61975/-m92z5gFW-k=/
+I/flutter (10543): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter (10543): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (10543): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (10543): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/flutter (10543): [AUTO_REACTION_SYNC] scheduled
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:61975/-m92z5gFW-k=/
+I/flutter (10543): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=3→3 done=76→76
+I/flutter (10543): [MANAGED_PRODUCT_LOAD] source=provider pending=3 done=76 filter= tab=
+I/flutter (10543): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (10543): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=3→3 done=76→76
+I/flutter (10543): [MANAGED_PRODUCT_LOAD] source=screen pending=3 done=76 filter= tab=candidate
+I/flutter (10543): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=3→3 done=76→76
+I/flutter (10543): [MANAGED_PRODUCT_LOAD] source=provider pending=3 done=76 filter= tab=
+I/Choreographer(10543): Skipped 178 frames!  The application may be doing too much work on its main thread.
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=roomy:10015695 reviewAverage=4.78 reviewCount=626 displayText=評価 ★4.8（626件）
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=rack-town:10000854 reviewAverage=4.56 reviewCount=841 displayText=評価 ★4.6（841件）
+I/flutter (10543): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=638 displayText=評価 ★4.5（638件）
+I/WebViewFactory(10543): Loading com.google.android.webview version 149.0.7827.91 (code 782709103)
+D/ApplicationLoaders(10543): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(10543): Loading /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(10543): Configuring clns-5 for other apk /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/lib/arm64:/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(10543): version=149.0.7827.91 (782709103) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(10543): Load /data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+D/nativeloader(10543): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~Y-WPsHCpNqFMGqadB3k8Bg==/com.google.android.webview-nkd1jSl9BTs7WKlJtFFECg==/base.apk): ok
+E/chromium(10543): [0701/103403.596361:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_LibraryLoader(10543): Successfully loaded native library
+I/cr_CachingUmaRecorder(10543): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(10543): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(10543): #registerProvider() provider:WV.wk@96fa714 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(10543): #setManagerAndSource() 0
+I/cr_policy(10543): registerReceiver succeeded after 2ms
+I/cr_DisplayManager(10543): Is Display Topology available: false
+I/cr_CombinedPProvider(10543): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(10543): Compat change id reported: 183155436; UID 10529; state: ENABLED
+I/cr_AppResProvider(10543): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(10543): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(10543): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(10543): #flushPolicies()
+W/chromium(10543): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 66362517
+D/CompatibilityChangeReporter(10543): Compat change id reported: 214741472; UID 10529; state: ENABLED
+I/cr_AppResProvider(10543): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(10543): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(10543): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(10543): #flushPolicies()
+I/CameraManagerGlobal(10543): Connecting to camera service
+D/CompatibilityChangeReporter(10543): Compat change id reported: 171228096; UID 10529; state: ENABLED
+D/CompatibilityChangeReporter(10543): Compat change id reported: 193247900; UID 10529; state: ENABLED
+I/PlatformViewsController(10543): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(10543): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(10543): Compat change id reported: 236825255; UID 10529; state: ENABLED
+W/libc    (10543): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(10543): type=1400 audit(0.0:131632): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+I/Choreographer(10543): Skipped 61 frames!  The application may be doing too much work on its main thread.
+W/libc    (10543): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(10543): type=1400 audit(0.0:131633): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(10543): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(10543): Build Date              : 08/23/22
+I/AdrenoVK-0(10543): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(10543): Remote Branch           : 
+I/AdrenoVK-0(10543): Local Branch            : 
+I/AdrenoVK-0(10543): Remote Branch           : 
+I/AdrenoVK-0(10543): Reconstruct Branch      : 
+I/AdrenoVK-0(10543): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(10543): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(10543): Davey! duration=1100ms; Flags=1, FrameTimelineVsyncId=159425527, IntendedVsync=952469149334666, Vsync=952470166001292, InputEventId=0, HandleInputStart=952470175350721, AnimationStart=952470175355513, PerformTraversalsStart=952470175414523, DrawStart=952470207385721, FrameDeadline=952469166001332, FrameInterval=952470174836502, FrameStartTime=16666666, SyncQueued=952470241730825, SyncStart=952470241804523, IssueDrawCommandsStart=952470242429419, SwapBuffers=952470248739835, FrameCompleted=952470249873481, DequeueBufferDuration=2487708, QueueBufferDuration=797344, GpuCompleted=952470249755981, SwapBuffersCompleted=952470249873481, DisplayPresentTime=0, CommandSubmissionCompleted=952470248739835, 
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(10543): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+E/FrameEvents(10543): updateAcquireFence: Did not find frame.
+I/flutter (10543): [AUTO_REACTION_SYNC] skipped reason=noHistory
+W/o.room_manager2(10543): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/base.apk' with 1 weak references
+W/o.room_manager2(10543): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~bISSq-J64Up4egruRG7DqQ==/com.google.android.marvin.talkback--HYDIzYCRvXHPcMSqLsVXw==/split_config.arm64_v8a.apk' with 1 weak references
+I/TRuntime.CctTransportBackend(10543): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+W/pool-2-thread-1(10543): type=1400 audit(0.0:131634): avc:  denied  { search } for  name="/" dev="sda10" ino=2 scontext=u:r:untrusted_app:s0:c17,c258,c512,c768 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0 app=com.stepbytestudio.room_manager2
+E/FeatureFlagsImplExport(10543): android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.libcore cannot be found on the device
+I/TRuntime.CctTransportBackend(10543): Status Code: 200
+W/WindowOnBackDispatcher(10543): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(10543): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher(10543): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(10543): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_103330.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_103330.mp4 (9272345 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_103330
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260701_103330\terminal_output_20260701_103330.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260701_103330.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260701_103330.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260701_103330.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260701_103330.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260701_103330.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
