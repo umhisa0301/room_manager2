@@ -18,7 +18,7 @@ void main() {
       expect(AiGatewayConfig.appKey, isEmpty);
     });
 
-    test('baseUrl defaults to Android emulator host when define omitted', () {
+    test('baseUrl defaults to production API when define omitted', () {
       const defineBaseUrl = String.fromEnvironment(
         'AI_GATEWAY_BASE_URL',
         defaultValue: '',
@@ -27,7 +27,10 @@ void main() {
         expect(AiGatewayConfig.baseUrl, defineBaseUrl);
         return;
       }
-      expect(AiGatewayConfig.baseUrl, 'http://10.0.2.2:3000');
+      expect(
+        AiGatewayConfig.baseUrl,
+        'https://api.stepbytestudio.com/api',
+      );
     });
 
     test('baseUrl matches AI_GATEWAY_BASE_URL when define is set', () {

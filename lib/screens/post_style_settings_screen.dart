@@ -3,8 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../config/post_style_preview_sample_product.dart';
 import '../models/post_style_settings.dart';
+import '../services/post_comment_generation_exception.dart';
+import '../services/post_comment_generation_limit.dart';
 import '../services/post_comment_generation_service.dart';
 import '../services/post_comment_generation_service_factory.dart';
+import '../services/post_comment_generation_user_message.dart';
 import '../state/post_style_settings_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
@@ -15,6 +18,7 @@ class PostStyleSettingsScreen extends StatefulWidget {
     super.key,
     this.initialSettings,
     this.generationService,
+    this.enforceDailyGenerationLimit,
   });
 
   /// テスト用。未指定時は Provider の現在値を利用。
@@ -22,6 +26,9 @@ class PostStyleSettingsScreen extends StatefulWidget {
 
   /// テスト用。未指定時は Factory 経由で生成。
   final PostCommentGenerationService? generationService;
+
+  /// テスト用。未指定時は Remote 利用時のみ日次制限を適用。
+  final bool? enforceDailyGenerationLimit;
 
   @override
   State<PostStyleSettingsScreen> createState() =>
@@ -41,6 +48,12 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   bool _previewNeedsRefresh = false;
   String? _previewError;
   PostStyleSettings? _lastRefreshedSettings;
+  bool? _enforceDailyGenerationLimit;
+
+  bool get _dailyLimitEnforced =>
+      _enforceDailyGenerationLimit ??
+      widget.enforceDailyGenerationLimit ??
+      isPostCommentGenerationLimitEnforced();
 
   @override
   void dispose() {
@@ -58,6 +71,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     _initialSettings = _draft.normalized();
     _generationService =
         widget.generationService ?? PostCommentGenerationServiceFactory.create();
+    _enforceDailyGenerationLimit = widget.enforceDailyGenerationLimit;
     _initializeStyleExample();
     _initialized = true;
   }
@@ -186,6 +200,21 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
 
   Future<void> _refreshPreview() async {
     if (_refreshing || !_previewNeedsRefresh) return;
+
+    if (_dailyLimitEnforced) {
+      final limitState =
+          await resolvePostCommentGenerationAvailabilityForToday(
+        enforcementEnabled: true,
+      );
+      if (!limitState.allowed) {
+        if (!mounted) return;
+        setState(() {
+          _previewError = buildPostCommentGenerationDailyLimitBlockedMessage();
+        });
+        return;
+      }
+    }
+
     setState(() {
       _refreshing = true;
       _previewError = null;
@@ -198,10 +227,19 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
         ),
       );
       if (!mounted) return;
+      if (_dailyLimitEnforced) {
+        await recordSuccessfulPostCommentGeneration();
+      }
       setState(() {
         _styleExampleController.text = result.displayText;
         _lastRefreshedSettings = _draft;
         _previewNeedsRefresh = false;
+        _refreshing = false;
+      });
+    } on PostCommentGenerationException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _previewError = postCommentPreviewUserMessage(e);
         _refreshing = false;
       });
     } catch (error) {

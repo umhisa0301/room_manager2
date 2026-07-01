@@ -7,8 +7,10 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
 import '../services/post_comment_generation_exception.dart';
+import '../services/post_comment_generation_limit.dart';
 import '../services/post_comment_generation_service.dart';
 import '../services/post_comment_generation_service_factory.dart';
+import '../services/post_comment_generation_user_message.dart';
 import '../state/post_style_settings_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
@@ -24,6 +26,7 @@ Future<void> showRoomPostPrepareBottomSheet({
   required RakutenSearchItem item,
   String recommendationReason = '',
   PostCommentGenerationService? generationService,
+  bool? enforceDailyGenerationLimit,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -62,6 +65,7 @@ Future<void> showRoomPostPrepareBottomSheet({
                 recommendationReason: recommendationReason,
                 generationService:
                     generationService ?? PostCommentGenerationServiceFactory.create(),
+                enforceDailyGenerationLimit: enforceDailyGenerationLimit,
               ),
             ),
           ),
@@ -78,11 +82,15 @@ class RoomPostPrepareSheetBody extends StatefulWidget {
     required this.item,
     required this.recommendationReason,
     required this.generationService,
+    this.enforceDailyGenerationLimit,
   });
 
   final RakutenSearchItem item;
   final String recommendationReason;
   final PostCommentGenerationService generationService;
+
+  /// テスト用。未指定時は Remote 利用時のみ日次制限を適用。
+  final bool? enforceDailyGenerationLimit;
 
   @override
   State<RoomPostPrepareSheetBody> createState() =>
@@ -131,7 +139,11 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   }
 
   static const _aiGenerationErrorMessage =
-      '投稿文を作成できませんでした。時間をおいてもう一度お試しください。';
+      kPostCommentGenerationGenericErrorMessage;
+
+  bool get _dailyLimitEnforced =>
+      widget.enforceDailyGenerationLimit ??
+      isPostCommentGenerationLimitEnforced();
 
   Future<void> _maybeAutoGenerateOnOpen() async {
     if (!mounted || _autoGenerateStarted) return;
@@ -208,6 +220,21 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
 
   Future<void> _generateAiComment() async {
     if (_aiLoading) return;
+
+    if (_dailyLimitEnforced) {
+      final limitState =
+          await resolvePostCommentGenerationAvailabilityForToday(
+        enforcementEnabled: true,
+      );
+      if (!limitState.allowed) {
+        if (!mounted) return;
+        setState(() {
+          _aiError = buildPostCommentGenerationDailyLimitBlockedMessage();
+        });
+        return;
+      }
+    }
+
     setState(() {
       _aiLoading = true;
       _aiError = null;
@@ -231,6 +258,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         ),
       );
       if (!mounted) return;
+      if (_dailyLimitEnforced) {
+        await recordSuccessfulPostCommentGeneration();
+      }
       setState(() {
         if (!_userEditedBody) {
           _applyGeneratedText(result.displayText);
@@ -246,7 +276,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       if (!mounted) return;
       setState(() {
         _aiLoading = false;
-        _aiError = _aiGenerationErrorMessage;
+        _aiError = postCommentGenerationUserMessage(e);
       });
     } catch (_) {
       if (!mounted) return;

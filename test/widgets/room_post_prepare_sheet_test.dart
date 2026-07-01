@@ -11,7 +11,10 @@ import 'package:room_manager2/repository/pending_collect_notice_repository.dart'
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
+import 'package:room_manager2/services/post_comment_generation_count_store.dart';
+import 'package:room_manager2/services/post_comment_generation_exception.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
+import 'package:room_manager2/services/post_comment_generation_user_message.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:room_manager2/state/rakuten_managed_product_provider.dart';
@@ -114,12 +117,27 @@ class _FailingPostCommentGenerationService
   }
 }
 
+class _CodeThrowingPostCommentGenerationService
+    implements PostCommentGenerationService {
+  const _CodeThrowingPostCommentGenerationService(this.exception);
+
+  final PostCommentGenerationException exception;
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    throw exception;
+  }
+}
+
 Future<Widget> _wrapSheet({
   required SharedPreferences prefs,
   RakutenUrlExtractionStatus extractionStatus =
       RakutenUrlExtractionStatus.extracting,
   String extractedUrl = '',
   PostCommentGenerationService? generationService,
+  bool? enforceDailyGenerationLimit,
 }) async {
   final managedRepo = RakutenManagedProductRepository(prefs);
   await managedRepo.registerCandidateFromSearchItem(_item());
@@ -170,6 +188,7 @@ Future<Widget> _wrapSheet({
                   recommendationReason: '人気の定番',
                   generationService: generationService ??
                       const _InstantStubPostCommentGenerationService(),
+                  enforceDailyGenerationLimit: enforceDailyGenerationLimit,
                 );
               },
               child: const Text('open_sheet'),
@@ -661,6 +680,153 @@ void main() {
       expect(
         closeButton.style?.foregroundColor?.resolve({}),
         isNot(HomeScreenColors.homeAccentTeal),
+      );
+    });
+
+    testWidgets('daily limit blocks API call when already used today',
+        (tester) async {
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKey: '2026-07-01',
+        PostCommentGenerationCountStore.countKey: 1,
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 0);
+      expect(
+        find.text(kPostCommentGenerationDailyLimitMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('increments count only on successful generation', (tester) async {
+      final now = DateTime(2026, 7, 1);
+      SharedPreferences.setMockInitialValues({});
+      final limitedPrefs = await SharedPreferences.getInstance();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: const _InstantStubPostCommentGenerationService(),
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(
+        await PostCommentGenerationCountStore.readTodayCount(now: now),
+        1,
+      );
+    });
+
+    testWidgets('failed generation does not increment daily count', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final limitedPrefs = await SharedPreferences.getInstance();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: const _FailingPostCommentGenerationService(),
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(await PostCommentGenerationCountStore.readTodayCount(), 0);
+    });
+
+    testWidgets('shows RATE_LIMIT_EXCEEDED user message', (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _CodeThrowingPostCommentGenerationService(
+            PostCommentGenerationException('RATE_LIMIT_EXCEEDED', 'limit'),
+          ),
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(kPostCommentGenerationDailyLimitMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('shows AI_GENERATION_DISABLED user message', (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _CodeThrowingPostCommentGenerationService(
+            PostCommentGenerationException(
+              'AI_GENERATION_DISABLED',
+              'disabled',
+            ),
+          ),
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(kPostCommentGenerationDisabledMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('shows network error user message for TIMEOUT', (tester) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _CodeThrowingPostCommentGenerationService(
+            PostCommentGenerationException('TIMEOUT', 'timeout'),
+          ),
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(kPostCommentGenerationNetworkMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('double execution prevention still works with daily limit',
+        (tester) async {
+      final generationService = const _NeverCompletingPostCommentGenerationService();
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: generationService,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsOneWidget,
       );
     });
   });

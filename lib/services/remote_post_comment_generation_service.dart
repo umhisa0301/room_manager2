@@ -17,7 +17,7 @@ class RemotePostCommentGenerationService implements PostCommentGenerationService
     http.Client? client,
     PostCommentRequestBuilder? requestBuilder,
     PostCommentApiResponseParser? responseParser,
-    Duration timeout = const Duration(seconds: 15),
+    Duration timeout = const Duration(seconds: 25),
   })  : _baseUri = baseUri,
         _apiKey = apiKey,
         _client = client ?? http.Client(),
@@ -59,11 +59,23 @@ class RemotePostCommentGenerationService implements PostCommentGenerationService
           throw PostCommentGenerationException(
             'HTTP_ERROR',
             'Server returned HTTP ${response.statusCode}.',
+            httpStatus: response.statusCode,
           );
         }
       }
 
-      return _responseParser.parse(json);
+      try {
+        return _responseParser.parse(json);
+      } on PostCommentGenerationException catch (e) {
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          throw PostCommentGenerationException(
+            e.code,
+            e.message,
+            httpStatus: response.statusCode,
+          );
+        }
+        rethrow;
+      }
     } on PostCommentGenerationException {
       rethrow;
     } on TimeoutException {

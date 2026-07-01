@@ -210,6 +210,64 @@ void main() {
       );
     });
 
+    test('throws with httpStatus on HTTP 503 AI_GENERATION_DISABLED', () async {
+      final client = MockClient((_) async {
+        return http.Response(
+          jsonEncode({
+            'success': false,
+            'error': {
+              'code': 'AI_GENERATION_DISABLED',
+              'message': 'AI generation is currently disabled.',
+            },
+          }),
+          503,
+        );
+      });
+      final service = RemotePostCommentGenerationService(
+        baseUri: Uri.parse('http://10.0.2.2:3000'),
+        apiKey: 'test-key',
+        client: client,
+      );
+
+      await expectLater(
+        service.generate(input),
+        throwsA(
+          isA<PostCommentGenerationException>()
+              .having((e) => e.code, 'code', 'AI_GENERATION_DISABLED')
+              .having((e) => e.httpStatus, 'httpStatus', 503),
+        ),
+      );
+    });
+
+    test('throws RATE_LIMIT_EXCEEDED on HTTP 429', () async {
+      final client = MockClient((_) async {
+        return http.Response(
+          jsonEncode({
+            'success': false,
+            'error': {
+              'code': 'RATE_LIMIT_EXCEEDED',
+              'message': 'Daily AI generation rate limit exceeded.',
+            },
+          }),
+          429,
+        );
+      });
+      final service = RemotePostCommentGenerationService(
+        baseUri: Uri.parse('http://10.0.2.2:3000'),
+        apiKey: 'test-key',
+        client: client,
+      );
+
+      await expectLater(
+        service.generate(input),
+        throwsA(
+          isA<PostCommentGenerationException>()
+              .having((e) => e.code, 'code', 'RATE_LIMIT_EXCEEDED')
+              .having((e) => e.httpStatus, 'httpStatus', 429),
+        ),
+      );
+    });
+
     test('throws PostCommentGenerationException on network error', () async {
       final client = MockClient((_) async {
         throw http.ClientException('Connection refused');

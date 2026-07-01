@@ -10,8 +10,9 @@
 ///   --dart-define=AI_GATEWAY_BASE_URL=http://10.0.2.2:3000
 /// ```
 ///
-/// - Android Emulator → ホスト PC: [baseUrl] は `http://10.0.2.2:3000`
+/// - Android Emulator → ホスト PC: `http://10.0.2.2:3000` を [AI_GATEWAY_BASE_URL] に指定
 /// - 実機 → ホスト PC: PC の LAN IP（例 `http://192.168.x.x:3000`）を [AI_GATEWAY_BASE_URL] に指定
+/// - 本番: `https://api.stepbytestudio.com/api`（[AI_GATEWAY_BASE_URL] のデフォルト）
 class AiGatewayConfig {
   AiGatewayConfig._();
 
@@ -20,10 +21,10 @@ class AiGatewayConfig {
     'USE_REMOTE_POST_COMMENT_GENERATION',
   );
 
-  /// stepbyte-api-server のベース URL（パスなし）。
+  /// stepbyte-api-server のベース URL（`/api` まで含む）。
   static const String baseUrl = String.fromEnvironment(
     'AI_GATEWAY_BASE_URL',
-    defaultValue: 'http://10.0.2.2:3000',
+    defaultValue: 'https://api.stepbytestudio.com/api',
   );
 
   /// `x-stepbyte-app-key` ヘッダー値。空のときは Stub にフォールバック。
