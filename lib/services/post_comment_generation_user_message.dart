@@ -28,6 +28,12 @@ String postCommentGenerationUserMessage(PostCommentGenerationException error) {
     case 'TIMEOUT':
     case 'NETWORK_ERROR':
       return kPostCommentGenerationNetworkMessage;
+    case 'LLM_REQUEST_FAILED':
+      final lower = error.message.toLowerCase();
+      if (lower.contains('timed out') || lower.contains('timeout')) {
+        return kPostCommentGenerationNetworkMessage;
+      }
+      return kPostCommentGenerationGenericErrorMessage;
     default:
       final status = error.httpStatus;
       if (status == 503 || status == 502 || status == 504) {

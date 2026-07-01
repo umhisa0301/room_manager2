@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 import '../config/post_style_preview_sample_product.dart';
 import '../models/post_style_settings.dart';
 import '../services/post_comment_generation_exception.dart';
-import '../services/post_comment_generation_limit.dart';
 import '../services/post_comment_generation_service.dart';
-import '../services/post_comment_generation_service_factory.dart';
 import '../services/post_comment_generation_user_message.dart';
 import '../state/post_style_settings_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
@@ -18,17 +16,13 @@ class PostStyleSettingsScreen extends StatefulWidget {
     super.key,
     this.initialSettings,
     this.generationService,
-    this.enforceDailyGenerationLimit,
   });
 
   /// テスト用。未指定時は Provider の現在値を利用。
   final PostStyleSettings? initialSettings;
 
-  /// テスト用。未指定時は Factory 経由で生成。
+  /// テスト用。未指定時は Stub プレビュー生成を利用。
   final PostCommentGenerationService? generationService;
-
-  /// テスト用。未指定時は Remote 利用時のみ日次制限を適用。
-  final bool? enforceDailyGenerationLimit;
 
   @override
   State<PostStyleSettingsScreen> createState() =>
@@ -48,12 +42,6 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   bool _previewNeedsRefresh = false;
   String? _previewError;
   PostStyleSettings? _lastRefreshedSettings;
-  bool? _enforceDailyGenerationLimit;
-
-  bool get _dailyLimitEnforced =>
-      _enforceDailyGenerationLimit ??
-      widget.enforceDailyGenerationLimit ??
-      isPostCommentGenerationLimitEnforced();
 
   @override
   void dispose() {
@@ -69,9 +57,8 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
     _draft = widget.initialSettings ??
         context.read<PostStyleSettingsProvider>().settings;
     _initialSettings = _draft.normalized();
-    _generationService =
-        widget.generationService ?? PostCommentGenerationServiceFactory.create();
-    _enforceDailyGenerationLimit = widget.enforceDailyGenerationLimit;
+    _generationService = widget.generationService ??
+        const StubPostCommentGenerationService(delay: Duration.zero);
     _initializeStyleExample();
     _initialized = true;
   }
@@ -201,20 +188,6 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   Future<void> _refreshPreview() async {
     if (_refreshing || !_previewNeedsRefresh) return;
 
-    if (_dailyLimitEnforced) {
-      final limitState =
-          await resolvePostCommentGenerationAvailabilityForToday(
-        enforcementEnabled: true,
-      );
-      if (!limitState.allowed) {
-        if (!mounted) return;
-        setState(() {
-          _previewError = buildPostCommentGenerationDailyLimitBlockedMessage();
-        });
-        return;
-      }
-    }
-
     setState(() {
       _refreshing = true;
       _previewError = null;
@@ -227,9 +200,6 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
         ),
       );
       if (!mounted) return;
-      if (_dailyLimitEnforced) {
-        await recordSuccessfulPostCommentGeneration();
-      }
       setState(() {
         _styleExampleController.text = result.displayText;
         _lastRefreshedSettings = _draft;
@@ -586,7 +556,7 @@ class _PreviewCard extends StatelessWidget {
                 enabled: previewNeedsRefresh && !refreshing,
                 child: IconButton(
                   key: const Key('post_style_preview_refresh_button'),
-                  tooltip: 'AIで更新',
+                  tooltip: 'サンプルを更新',
                   onPressed: previewNeedsRefresh && !refreshing
                       ? onRefresh
                       : null,
@@ -609,7 +579,7 @@ class _PreviewCard extends StatelessWidget {
               minLines: 5,
               maxLines: null,
               decoration: InputDecoration(
-                hintText: 'AIで生成するとここに文例が表示されます',
+                hintText: '更新ボタンで設定に合わせたサンプル文例が表示されます',
                 filled: true,
                 fillColor: MyPageScreenUi.chipUnsetFill,
                 border: OutlineInputBorder(
@@ -645,8 +615,8 @@ class _PreviewCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               controller.text.trim().isEmpty
-                  ? '更新ボタンでAI生成した文例がここに表示されます'
-                  : '設定が変更されています。更新すると新しい文例を確認できます。',
+                  ? '更新ボタンで設定に合わせたサンプル文例がここに表示されます'
+                  : '設定が変更されています。更新すると新しいサンプル文例を確認できます。',
               key: const Key('post_style_preview_refresh_hint'),
               style: textTheme.bodySmall?.copyWith(
                 color: MyPageScreenUi.textSecondary,
@@ -656,7 +626,7 @@ class _PreviewCard extends StatelessWidget {
           ],
           const SizedBox(height: 8),
           Text(
-            'この文例を参考に投稿文を作ります',
+            'この文例を参考に投稿文を作ります（本番のAI生成回数は消費しません）',
             style: textTheme.bodySmall?.copyWith(
               color: MyPageScreenUi.textSecondary,
               height: 1.35,

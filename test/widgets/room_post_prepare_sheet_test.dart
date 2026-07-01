@@ -685,8 +685,9 @@ void main() {
 
     testWidgets('daily limit blocks API call when already used today',
         (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
       SharedPreferences.setMockInitialValues({
-        PostCommentGenerationCountStore.dateKey: '2026-07-01',
+        PostCommentGenerationCountStore.dateKey: today,
         PostCommentGenerationCountStore.countKey: 1,
       });
       final limitedPrefs = await SharedPreferences.getInstance();
@@ -710,7 +711,6 @@ void main() {
     });
 
     testWidgets('increments count only on successful generation', (tester) async {
-      final now = DateTime(2026, 7, 1);
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
 
@@ -725,7 +725,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        await PostCommentGenerationCountStore.readTodayCount(now: now),
+        await PostCommentGenerationCountStore.readTodayCount(),
         1,
       );
     });

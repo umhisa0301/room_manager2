@@ -6,6 +6,7 @@ import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/screens/post_style_settings_screen.dart';
+import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -174,7 +175,7 @@ void main() {
       expect(find.text('推し方'), findsOneWidget);
       expect(find.text('読者層'), findsOneWidget);
       expect(find.text('誇張表現を避ける'), findsOneWidget);
-      expect(find.text('この文例を参考に投稿文を作ります'), findsOneWidget);
+      expect(find.text('この文例を参考に投稿文を作ります（本番のAI生成回数は消費しません）'), findsOneWidget);
       expect(find.byKey(const Key('post_style_preview_text_field')), findsOneWidget);
       expect(find.byKey(const Key('post_style_preview_refresh_button')), findsOneWidget);
       expect(find.byKey(const Key('post_style_save_button')), findsOneWidget);
@@ -218,6 +219,37 @@ void main() {
         find.byKey(const Key('post_style_preview_refresh_button')),
       );
       expect(enabledRefresh.onPressed, isNotNull);
+    });
+
+    testWidgets('refresh button uses stub preview by default', (tester) async {
+      await _pumpScreen(tester);
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.textContaining('【${PostStylePreviewSampleProduct.displayTitle}】'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('preview refresh does not increment PostCommentGenerationCountStore',
+        (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await tester.pumpWidget(
+        _wrap(prefs: prefs),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(await PostCommentGenerationCountStore.readTodayCount(), 0);
     });
 
     testWidgets('refresh button calls generation service and updates preview',

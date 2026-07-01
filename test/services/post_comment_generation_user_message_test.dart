@@ -74,6 +74,42 @@ void main() {
       );
     });
 
+    test('LLM_REQUEST_FAILED with timeout message', () {
+      expect(
+        postCommentGenerationUserMessage(
+          const PostCommentGenerationException(
+            'LLM_REQUEST_FAILED',
+            'Request timed out after 30000ms.',
+          ),
+        ),
+        kPostCommentGenerationNetworkMessage,
+      );
+    });
+
+    test('LLM_REQUEST_FAILED with Timeout message (case insensitive)', () {
+      expect(
+        postCommentGenerationUserMessage(
+          const PostCommentGenerationException(
+            'LLM_REQUEST_FAILED',
+            'OpenAI Timeout error.',
+          ),
+        ),
+        kPostCommentGenerationNetworkMessage,
+      );
+    });
+
+    test('LLM_REQUEST_FAILED without timeout uses generic message', () {
+      expect(
+        postCommentGenerationUserMessage(
+          const PostCommentGenerationException(
+            'LLM_REQUEST_FAILED',
+            'Invalid response from model.',
+          ),
+        ),
+        kPostCommentGenerationGenericErrorMessage,
+      );
+    });
+
     test('generic fallback', () {
       expect(
         postCommentGenerationUserMessage(
