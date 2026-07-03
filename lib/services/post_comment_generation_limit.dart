@@ -1,6 +1,7 @@
 import '../config/ai_gateway_config.dart';
 import '../models/rakuten_search_item.dart';
 import '../utils/catalog_product_keys.dart';
+import '../utils/today_recommendation_policy.dart';
 import 'post_comment_generation_count_store.dart';
 
 /// AI投稿文生成の利用制限 bucket。
@@ -30,8 +31,9 @@ class PostCommentGenerationLimitState {
   final String? productKey;
 }
 
-/// おすすめコレ bucket: 1日あたり最大3商品まで（各1回）。
-const int kPostCommentGenerationRecommendationDailyProductLimit = 3;
+/// おすすめコレ bucket: 1日あたり最大 [TodayRecommendationPolicy.visibleDisplayCap] 商品まで（各1回）。
+const int kPostCommentGenerationRecommendationDailyProductLimit =
+    TodayRecommendationPolicy.visibleDisplayCap;
 
 const String kPostCommentDailyLimitReasonCode = 'daily_limit_reached';
 const String kPostCommentProductAlreadyGeneratedReasonCode =

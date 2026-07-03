@@ -95,7 +95,10 @@ class RoomPostPrepareSheetBody extends StatefulWidget {
   final String recommendationReason;
   final PostCommentGenerationService generationService;
 
-  /// おすすめコレ等の生成制限 bucket。未指定時は bucket 制限なし。
+  /// おすすめコレ等の生成制限 bucket。
+  ///
+  /// Remote 利用時でも未指定なら bucket 制限は適用しない（探す・商品詳細など
+  /// 将来の入口では呼び出し側が bucket を明示する前提。指定漏れで無制限になる）。
   final PostCommentGenerationBucket? generationBucket;
 
   /// 制限判定用の安定商品キー。未指定時は [item] から解決する。

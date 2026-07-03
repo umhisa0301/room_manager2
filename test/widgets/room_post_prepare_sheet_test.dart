@@ -793,6 +793,34 @@ void main() {
       expect(keys, isEmpty);
     });
 
+    testWidgets('remote mode without bucket does not enforce limit', (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:itemA","shop:itemB","shop:itemC"]',
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+      );
+      expect(keys, {'shop:itemA', 'shop:itemB', 'shop:itemC'});
+    });
+
     testWidgets('stub mode without bucket does not enforce limit', (tester) async {
       final today = PostCommentGenerationCountStore.localDateKey();
       SharedPreferences.setMockInitialValues({

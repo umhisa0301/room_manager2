@@ -1,9 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/services/post_comment_generation_limit.dart';
+import 'package:room_manager2/utils/today_recommendation_policy.dart';
 
 void main() {
   group('PostCommentGenerationLimit', () {
     const bucket = PostCommentGenerationBucket.recommendation;
+
+    test('recommendation daily limit matches visible display cap', () {
+      expect(
+        kPostCommentGenerationRecommendationDailyProductLimit,
+        TodayRecommendationPolicy.visibleDisplayCap,
+      );
+    });
 
     test('allows generation when enforcement is off', () {
       final state = resolvePostCommentGenerationAvailability(

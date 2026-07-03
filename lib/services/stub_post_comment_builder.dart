@@ -103,9 +103,14 @@ abstract final class StubPostCommentBuilder {
   }
 
   static String _softenReason(String reason) {
-    return reason
-        .replaceFirst('。', 'なんです。')
-        .replaceFirst('！', 'なんです！');
+    final trimmed = reason.trim();
+    if (trimmed.endsWith('。')) {
+      return '${trimmed.substring(0, trimmed.length - 1)}なんです。';
+    }
+    if (trimmed.endsWith('！') || trimmed.endsWith('!')) {
+      return '${trimmed.substring(0, trimmed.length - 1)}なんです！';
+    }
+    return '$trimmedなんです。';
   }
 
   static String _casualizeReason(String reason) {
