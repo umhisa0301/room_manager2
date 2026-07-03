@@ -26,6 +26,8 @@ Future<void> showRoomPostPrepareBottomSheet({
   required RakutenSearchItem item,
   String recommendationReason = '',
   PostCommentGenerationService? generationService,
+  PostCommentGenerationBucket? generationBucket,
+  String? productKey,
   bool? enforceDailyGenerationLimit,
 }) {
   return showModalBottomSheet<void>(
@@ -65,6 +67,8 @@ Future<void> showRoomPostPrepareBottomSheet({
                 recommendationReason: recommendationReason,
                 generationService:
                     generationService ?? PostCommentGenerationServiceFactory.create(),
+                generationBucket: generationBucket,
+                productKey: productKey,
                 enforceDailyGenerationLimit: enforceDailyGenerationLimit,
               ),
             ),
@@ -82,6 +86,8 @@ class RoomPostPrepareSheetBody extends StatefulWidget {
     required this.item,
     required this.recommendationReason,
     required this.generationService,
+    this.generationBucket,
+    this.productKey,
     this.enforceDailyGenerationLimit,
   });
 
@@ -89,7 +95,13 @@ class RoomPostPrepareSheetBody extends StatefulWidget {
   final String recommendationReason;
   final PostCommentGenerationService generationService;
 
-  /// テスト用。未指定時は Remote 利用時のみ日次制限を適用。
+  /// おすすめコレ等の生成制限 bucket。未指定時は bucket 制限なし。
+  final PostCommentGenerationBucket? generationBucket;
+
+  /// 制限判定用の安定商品キー。未指定時は [item] から解決する。
+  final String? productKey;
+
+  /// テスト用。未指定時は Remote 利用時のみ bucket 制限を適用。
   final bool? enforceDailyGenerationLimit;
 
   @override
@@ -141,9 +153,25 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   static const _aiGenerationErrorMessage =
       kPostCommentGenerationGenericErrorMessage;
 
-  bool get _dailyLimitEnforced =>
-      widget.enforceDailyGenerationLimit ??
-      isPostCommentGenerationLimitEnforced();
+  bool get _generationLimitEnforced =>
+      widget.generationBucket != null &&
+      (widget.enforceDailyGenerationLimit ??
+          isPostCommentGenerationLimitEnforced());
+
+  String? get _effectiveProductKey =>
+      widget.productKey?.trim().isNotEmpty == true
+          ? widget.productKey!.trim()
+          : resolvePostCommentGenerationProductKey(widget.item);
+
+  String _limitBlockedMessage(PostCommentGenerationLimitState limitState) {
+    return switch (limitState.reasonCode) {
+      kPostCommentProductAlreadyGeneratedReasonCode =>
+        buildPostCommentGenerationProductAlreadyGeneratedBlockedMessage(),
+      kPostCommentDailyLimitReasonCode =>
+        buildPostCommentGenerationDailyLimitBlockedMessage(),
+      _ => buildPostCommentGenerationDailyLimitBlockedMessage(),
+    };
+  }
 
   Future<void> _maybeAutoGenerateOnOpen() async {
     if (!mounted || _autoGenerateStarted) return;
@@ -221,15 +249,19 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   Future<void> _generateAiComment() async {
     if (_aiLoading) return;
 
-    if (_dailyLimitEnforced) {
+    if (_generationLimitEnforced) {
+      final bucket = widget.generationBucket!;
+      final productKey = _effectiveProductKey;
       final limitState =
           await resolvePostCommentGenerationAvailabilityForToday(
+        bucket: bucket,
+        productKey: productKey ?? '',
         enforcementEnabled: true,
       );
       if (!limitState.allowed) {
         if (!mounted) return;
         setState(() {
-          _aiError = buildPostCommentGenerationDailyLimitBlockedMessage();
+          _aiError = _limitBlockedMessage(limitState);
         });
         return;
       }
@@ -258,8 +290,15 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         ),
       );
       if (!mounted) return;
-      if (_dailyLimitEnforced) {
-        await recordSuccessfulPostCommentGeneration();
+      if (_generationLimitEnforced) {
+        final bucket = widget.generationBucket!;
+        final productKey = _effectiveProductKey;
+        if (productKey != null && productKey.isNotEmpty) {
+          await recordSuccessfulPostCommentGeneration(
+            bucket: bucket,
+            productKey: productKey,
+          );
+        }
       }
       setState(() {
         if (!_userEditedBody) {

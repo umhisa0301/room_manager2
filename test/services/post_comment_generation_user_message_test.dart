@@ -28,6 +28,18 @@ void main() {
       );
     });
 
+    test('product_already_generated', () {
+      expect(
+        postCommentGenerationUserMessage(
+          const PostCommentGenerationException(
+            'product_already_generated',
+            'Already generated.',
+          ),
+        ),
+        kPostCommentGenerationProductAlreadyGeneratedMessage,
+      );
+    });
+
     test('AI_GENERATION_DISABLED', () {
       expect(
         postCommentGenerationUserMessage(

@@ -34,7 +34,7 @@ void main() {
         ),
       );
 
-      expect(result.displayText, contains('気になった一品です'));
+      expect(result.displayText, contains('気になったので、ROOMで共有したい一品です'));
       expect(result.displayText, contains('￥ー'));
     });
 
@@ -55,7 +55,7 @@ void main() {
         ),
       );
 
-      expect(result.displayText, contains('見つけたよ'));
+      expect(result.displayText, contains('気になってる'));
       expect(result.displayText, contains('見てみてね'));
       expect(result.displayText, isNot(contains('#楽天ROOM')));
     });
@@ -153,7 +153,7 @@ void main() {
       );
 
       final result = await service.generate(input);
-      expect(result.displayText, contains('ご紹介いたします'));
+      expect(result.displayText, contains('ご紹介します'));
     });
   });
 }

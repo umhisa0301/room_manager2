@@ -16,22 +16,24 @@ abstract final class StubPostCommentBuilder {
         : 'この商品';
     final reason = input.recommendationReason.trim().isNotEmpty
         ? input.recommendationReason.trim()
-        : '気になった一品です';
+        : '気になったので、ROOMで共有したい一品です';
     final price = ProductPriceDisplay.formatYen(input.itemPrice);
-    final rating = input.reviewAverage.toStringAsFixed(2);
+    final rating = input.reviewAverage.toStringAsFixed(1);
     final count = input.reviewCount;
 
-    final segments = <String>[
-      _opening(style, name),
-      reason,
-      ..._focusSegments(style, price: price, rating: rating, count: count),
-      _closing(style),
-    ];
+    final body = _composeBody(
+      style: style,
+      name: name,
+      reason: reason,
+      price: price,
+      rating: rating,
+      reviewCount: count,
+      genreName: input.genreName,
+    );
 
-    var body = segments.where((s) => s.trim().isNotEmpty).join('\n');
-    body = _applyToneMarkers(body, style.tone);
-    body = _applyEmoji(body, style);
-    body = _fitBodyLength(body, limits);
+    var adjusted = _applyToneMarkers(body, style.tone);
+    adjusted = _applyEmoji(adjusted, style);
+    adjusted = _fitBodyLength(adjusted, limits);
 
     final hashtags = _buildHashtags(
       style,
@@ -39,65 +41,151 @@ abstract final class StubPostCommentBuilder {
       titleKeywords: input.titleKeywords,
       genreName: input.genreName,
     );
-    if (hashtags.isEmpty) return body;
+    if (hashtags.isEmpty) return adjusted;
 
-    final combined = '$body\n\n$hashtags';
+    final combined = '$adjusted\n\n$hashtags';
     if (combined.length <= limits.maxTotalChars) return combined;
 
     final allowedBody = limits.maxTotalChars - hashtags.length - 2;
-    if (allowedBody < limits.minBodyChars) return body;
-    return '${_truncate(body, allowedBody)}\n\n$hashtags';
+    if (allowedBody < limits.minBodyChars) return adjusted;
+    return '${_truncate(adjusted, allowedBody)}\n\n$hashtags';
   }
 
-  static String _opening(PostStyleSettings style, String name) {
-    final audience = switch (style.targetAudience) {
-      PostTargetAudience.women => '女性の方にも使いやすそうな',
-      PostTargetAudience.men => '男性にも選びやすい',
-      PostTargetAudience.parents => '子育て中の方にも助かる',
-      PostTargetAudience.singleLife => '一人暮らしにもちょうどいい',
-      PostTargetAudience.roomBeginner => 'ROOM初心者の方にも紹介しやすい',
-      PostTargetAudience.general => '気になった',
-    };
+  static String _composeBody({
+    required PostStyleSettings style,
+    required String name,
+    required String reason,
+    required String price,
+    required String rating,
+    required int reviewCount,
+    required String genreName,
+  }) {
+    final intro = _introSentence(style, name);
+    final core = _reasonParagraph(style, reason);
+    final detail = _optionalDetail(
+      style,
+      price: price,
+      rating: rating,
+      reviewCount: reviewCount,
+      genreName: genreName,
+    );
+    final closing = _closing(style);
+
+    return [
+      intro,
+      core,
+      if (detail.isNotEmpty) detail,
+      closing,
+    ].join('\n');
+  }
+
+  static String _introSentence(PostStyleSettings style, String name) {
     return switch (style.tone) {
-      PostTone.polite => '【$name】をご紹介いたします。$audience一品です。',
-      PostTone.friendlyPolite => '【$name】、$audienceアイテムですね。',
-      PostTone.casual => '【$name】、$audienceやつ見つけたよ。',
+      PostTone.polite => '【$name】をご紹介します。',
+      PostTone.friendlyPolite => '【$name】、気になって見つけました。',
+      PostTone.casual => '【$name】、これ気になってる。',
     };
   }
 
-  static List<String> _focusSegments(
+  static String _reasonParagraph(PostStyleSettings style, String reason) {
+    final normalized = reason.endsWith('。') ||
+            reason.endsWith('！') ||
+            reason.endsWith('!')
+        ? reason
+        : '$reason。';
+
+    return switch (style.tone) {
+      PostTone.polite =>
+        normalized.endsWith('。') ? normalized : '$normalized。',
+      PostTone.friendlyPolite => _softenReason(normalized),
+      PostTone.casual => _casualizeReason(normalized),
+    };
+  }
+
+  static String _softenReason(String reason) {
+    return reason
+        .replaceFirst('。', 'なんです。')
+        .replaceFirst('！', 'なんです！');
+  }
+
+  static String _casualizeReason(String reason) {
+    return reason
+        .replaceAll('です。', 'なんだよね。')
+        .replaceAll('ます。', 'るよ。')
+        .replaceAll('。', '！');
+  }
+
+  static String _optionalDetail(
     PostStyleSettings style, {
     required String price,
     required String rating,
-    required int count,
+    required int reviewCount,
+    required String genreName,
   }) {
-    return style.focusPoints.map((point) {
-      return switch (point) {
-        PostFocusPoint.costPerformance => '価格は$priceで、コスパも気になります。',
-        PostFocusPoint.convenience => '使い勝手がよさそうで、日常に取り入れやすいです。',
-        PostFocusPoint.reviews =>
-          'レビュー平均 $rating（$count件）も参考になります。',
-        PostFocusPoint.design => '見た目のバランスもよく、写真映えしそうです。',
-        PostFocusPoint.cute => 'デザインがかわいく、手に取りたくなります。',
-        PostFocusPoint.gift => 'ギフトにも渡しやすい雰囲気があります。',
-        PostFocusPoint.parenting => '忙しい日にも助けてくれそうな実用性があります。',
-        PostFocusPoint.dailyUse => '毎日の暮らしに自然に馴染みそうです。',
-      };
-    }).toList();
+    if (style.focusPoints.isEmpty) return '';
+
+    final point = style.focusPoints.first;
+    return switch (point) {
+      PostFocusPoint.costPerformance =>
+        switch (style.tone) {
+          PostTone.polite => '価格は$priceで、コスパも気になるポイントです。',
+          PostTone.friendlyPolite => '価格$priceなので、コスパも見てみたくなります。',
+          PostTone.casual => '値段$priceで、コスパもいい感じ。',
+        },
+      PostFocusPoint.reviews when reviewCount > 0 =>
+        switch (style.tone) {
+          PostTone.polite => 'レビュー平均$rating（${reviewCount}件）も参考になりそうです。',
+          PostTone.friendlyPolite =>
+            'レビュー平均$rating（${reviewCount}件）もチェックしてみてください。',
+          PostTone.casual => 'レビュー$rating（${reviewCount}件）も結構いい感じ。',
+        },
+      PostFocusPoint.design =>
+        switch (style.tone) {
+          PostTone.polite => '写真の雰囲気も、暮らしに馴染みやすそうです。',
+          PostTone.friendlyPolite => '見た目も写真映えしそうで、好みに合いそうです。',
+          PostTone.casual => '見た目も写真映えしそう。',
+        },
+      PostFocusPoint.convenience ||
+      PostFocusPoint.dailyUse =>
+        switch (style.tone) {
+          PostTone.polite => '日常使いにも取り入れやすそうな印象です。',
+          PostTone.friendlyPolite => '毎日の暮らしにも使いやすそうです。',
+          PostTone.casual => '毎日使えそうなやつ。',
+        },
+      PostFocusPoint.cute =>
+        switch (style.tone) {
+          PostTone.polite => 'デザインもかわいらしく、手に取りたくなります。',
+          PostTone.friendlyPolite => 'かわいいデザインで、つい見ちゃいます。',
+          PostTone.casual => 'デザインかわいい。',
+        },
+      PostFocusPoint.gift =>
+        switch (style.tone) {
+          PostTone.polite => 'ギフトにも選びやすい雰囲気があります。',
+          PostTone.friendlyPolite => 'プレゼントにも渡しやすそうです。',
+          PostTone.casual => 'プレゼントにもよさそう。',
+        },
+      PostFocusPoint.parenting =>
+        switch (style.tone) {
+          PostTone.polite => '忙しい日にも助けてくれそうな実用性がありそうです。',
+          PostTone.friendlyPolite => '忙しい日にも助かりそうな実用性があります。',
+          PostTone.casual => '忙しい日にも助かりそう。',
+        },
+      _ => '',
+    };
   }
 
   static String _closing(PostStyleSettings style) {
     if (style.avoidOverstatement) {
       return switch (style.tone) {
-        PostTone.polite => '気になる方は、ご確認いただければ幸いです。',
+        PostTone.polite => '気になる方は、商品ページもご覧ください。',
         PostTone.friendlyPolite => '気になった方は、チェックしてみてください。',
         PostTone.casual => '気になったら見てみてね。',
       };
     }
     return switch (style.tone) {
-      PostTone.polite => 'ぜひ一度ご覧ください。きっと気に入っていただけると思います。',
-      PostTone.friendlyPolite => 'かなりおすすめなので、ぜひチェックしてみてください！',
-      PostTone.casual => 'マジでいい感じだから、見てみて！',
+      PostTone.polite => 'ぜひ一度ご覧ください。',
+      PostTone.friendlyPolite => '気になったら、ぜひ見てみてください。',
+      PostTone.casual => 'よかったら見てみて！',
     };
   }
 
@@ -112,8 +200,8 @@ abstract final class StubPostCommentBuilder {
   static String _applyEmoji(String body, PostStyleSettings style) {
     final emojis = switch (style.emojiLevel) {
       EmojiLevel.none => <String>[],
-      EmojiLevel.low => const ['✨', '🛒'],
-      EmojiLevel.medium => const ['✨', '🛒', '💡', '😊'],
+      EmojiLevel.low => const ['✨'],
+      EmojiLevel.medium => const ['✨', '🛒'],
     };
     if (emojis.isEmpty && !style.kaomojiEnabled) return body;
 

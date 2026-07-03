@@ -13,6 +13,7 @@ import 'package:room_manager2/repository/rakuten_managed_product_repository.dart
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_exception.dart';
+import 'package:room_manager2/services/post_comment_generation_limit.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/services/post_comment_generation_user_message.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
@@ -137,6 +138,8 @@ Future<Widget> _wrapSheet({
       RakutenUrlExtractionStatus.extracting,
   String extractedUrl = '',
   PostCommentGenerationService? generationService,
+  PostCommentGenerationBucket? generationBucket,
+  String? productKey,
   bool? enforceDailyGenerationLimit,
 }) async {
   final managedRepo = RakutenManagedProductRepository(prefs);
@@ -188,6 +191,8 @@ Future<Widget> _wrapSheet({
                   recommendationReason: '人気の定番',
                   generationService: generationService ??
                       const _InstantStubPostCommentGenerationService(),
+                  generationBucket: generationBucket,
+                  productKey: productKey,
                   enforceDailyGenerationLimit: enforceDailyGenerationLimit,
                 );
               },
@@ -683,12 +688,13 @@ void main() {
       );
     });
 
-    testWidgets('daily limit blocks API call when already used today',
+    testWidgets('daily limit blocks API call when three products already used',
         (tester) async {
       final today = PostCommentGenerationCountStore.localDateKey();
       SharedPreferences.setMockInitialValues({
-        PostCommentGenerationCountStore.dateKey: today,
-        PostCommentGenerationCountStore.countKey: 1,
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:itemA","shop:itemB","shop:itemC"]',
       });
       final limitedPrefs = await SharedPreferences.getInstance();
       final generationService = _CountingPostCommentGenerationService();
@@ -697,6 +703,8 @@ void main() {
         await _wrapSheet(
           prefs: limitedPrefs,
           generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:itemD',
           enforceDailyGenerationLimit: true,
         ),
       );
@@ -710,7 +718,36 @@ void main() {
       );
     });
 
-    testWidgets('increments count only on successful generation', (tester) async {
+    testWidgets('product already generated blocks API call', (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:item001"]',
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 0);
+      expect(
+        find.text(kPostCommentGenerationProductAlreadyGeneratedMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('records product key only on successful generation', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
 
@@ -718,19 +755,22 @@ void main() {
         await _wrapSheet(
           prefs: limitedPrefs,
           generationService: const _InstantStubPostCommentGenerationService(),
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
           enforceDailyGenerationLimit: true,
         ),
       );
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      expect(
-        await PostCommentGenerationCountStore.readTodayCount(),
-        1,
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
       );
+      expect(keys, {'shop:item001'});
     });
 
-    testWidgets('failed generation does not increment daily count', (tester) async {
+    testWidgets('failed generation does not record product key', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
 
@@ -738,13 +778,46 @@ void main() {
         await _wrapSheet(
           prefs: limitedPrefs,
           generationService: const _FailingPostCommentGenerationService(),
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
           enforceDailyGenerationLimit: true,
         ),
       );
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      expect(await PostCommentGenerationCountStore.readTodayCount(), 0);
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+      );
+      expect(keys, isEmpty);
+    });
+
+    testWidgets('stub mode without bucket does not enforce limit', (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:itemA","shop:itemB","shop:itemC"]',
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+      );
+      expect(keys, {'shop:itemA', 'shop:itemB', 'shop:itemC'});
     });
 
     testWidgets('shows RATE_LIMIT_EXCEEDED user message', (tester) async {

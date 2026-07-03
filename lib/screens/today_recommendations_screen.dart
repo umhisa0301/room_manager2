@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
+import '../services/post_comment_generation_limit.dart';
 import '../services/recommendation_generation_limit.dart';
 import '../navigation/app_shell_controller.dart';
 import '../services/batch_candidate_add_availability.dart';
@@ -743,6 +744,7 @@ class _CardActionAreaState extends State<_CardActionArea> {
       context: context,
       item: entry.item,
       recommendationReason: entry.reason,
+      generationBucket: PostCommentGenerationBucket.recommendation,
     );
   }
 

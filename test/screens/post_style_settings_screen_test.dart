@@ -7,6 +7,7 @@ import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/screens/post_style_settings_screen.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
+import 'package:room_manager2/services/post_comment_generation_limit.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,13 +30,13 @@ Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
 
 class _FakeGenerationService implements PostCommentGenerationService {
   _FakeGenerationService({
-    this.result = const PostCommentGenerationResult(
-      body: 'AI生成サンプル本文です。',
-      hashtags: ['#楽天ROOM'],
-      fullText: 'AI生成サンプル本文です。\n\n#楽天ROOM',
-    ),
+    PostCommentGenerationResult? result,
     this.shouldThrow = false,
-  });
+  }) : result = result ??
+            const PostCommentGenerationResult(
+              body: 'AI生成サンプル本文です。',
+              fullText: 'AI生成サンプル本文です。\n\n#楽天ROOM',
+            );
 
   final PostCommentGenerationResult result;
   final bool shouldThrow;
@@ -235,7 +236,8 @@ void main() {
       );
     });
 
-    testWidgets('preview refresh does not increment PostCommentGenerationCountStore',
+    testWidgets(
+        'preview refresh does not record PostCommentGenerationCountStore keys',
         (tester) async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
@@ -249,7 +251,11 @@ void main() {
       await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
       await tester.pumpAndSettle();
 
-      expect(await PostCommentGenerationCountStore.readTodayCount(), 0);
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+      );
+      expect(keys, isEmpty);
     });
 
     testWidgets('refresh button calls generation service and updates preview',

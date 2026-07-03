@@ -8,9 +8,13 @@ const String kPostCommentGenerationDisabledMessage =
 const String kPostCommentGenerationNetworkMessage =
     '通信が不安定です。接続を確認して、もう一度お試しください。';
 
-/// 1日1回の上限到達（クライアント・サーバー共通）。
+/// 1日上限到達（クライアント・サーバー共通）。
 const String kPostCommentGenerationDailyLimitMessage =
     '本日のAI生成回数の上限に達しました。明日またお試しください。';
+
+/// 同一商品の当日再生成ブロック。
+const String kPostCommentGenerationProductAlreadyGeneratedMessage =
+    'この商品のAI投稿文は本日すでに生成済みです。';
 
 /// その他の失敗。
 const String kPostCommentGenerationGenericErrorMessage =
@@ -22,6 +26,8 @@ String postCommentGenerationUserMessage(PostCommentGenerationException error) {
     case 'RATE_LIMIT_EXCEEDED':
     case 'daily_limit_reached':
       return kPostCommentGenerationDailyLimitMessage;
+    case 'product_already_generated':
+      return kPostCommentGenerationProductAlreadyGeneratedMessage;
     case 'AI_GENERATION_DISABLED':
     case 'SERVICE_UNAVAILABLE':
       return kPostCommentGenerationDisabledMessage;
