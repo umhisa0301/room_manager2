@@ -10,6 +10,7 @@ import '../services/post_comment_generation_exception.dart';
 import '../services/post_comment_generation_limit.dart';
 import '../services/post_comment_generation_service.dart';
 import '../services/post_comment_generation_service_factory.dart';
+import '../services/post_comment_generation_result_store.dart';
 import '../services/post_comment_generation_user_message.dart';
 import '../state/post_style_settings_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -180,7 +181,28 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     if (!mounted || _autoGenerateStarted) return;
     if (_bodyController.text.trim().isNotEmpty) return;
     _autoGenerateStarted = true;
+
+    if (await _tryRestoreSavedGeneration()) return;
     await _generateAiComment();
+  }
+
+  Future<bool> _tryRestoreSavedGeneration() async {
+    if (!_generationLimitEnforced) return false;
+
+    final productKey = _effectiveProductKey;
+    if (productKey == null || productKey.isEmpty) return false;
+
+    final saved = await PostCommentGenerationResultStore.readTodaySavedResult(
+      bucketName: widget.generationBucket!.name,
+      productKey: productKey,
+    );
+    if (saved == null || !mounted) return false;
+
+    setState(() {
+      _applyGeneratedText(saved.displayText);
+      _aiError = null;
+    });
+    return true;
   }
 
   Future<void> _onRegenerateAiComment() async {
@@ -300,6 +322,11 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
           await recordSuccessfulPostCommentGeneration(
             bucket: bucket,
             productKey: productKey,
+          );
+          await PostCommentGenerationResultStore.saveTodayResult(
+            bucketName: bucket.name,
+            productKey: productKey,
+            result: result,
           );
         }
       }

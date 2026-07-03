@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,11 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/rakuten_managed_product.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
+import 'package:room_manager2/models/saved_post_comment_generation_result.dart';
 import 'package:room_manager2/repository/pending_collect_notice_repository.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
+import 'package:room_manager2/services/post_comment_generation_result_store.dart';
 import 'package:room_manager2/services/post_comment_generation_exception.dart';
 import 'package:room_manager2/services/post_comment_generation_limit.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
@@ -768,6 +771,203 @@ void main() {
         bucketName: PostCommentGenerationBucket.recommendation.name,
       );
       expect(keys, {'shop:item001'});
+    });
+
+    testWidgets('restores saved body when reopening same recommendation product',
+        (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
+      final saved = SavedPostCommentGenerationResult.fromGenerationResult(
+        result: const PostCommentGenerationResult(
+          body: '保存済み本文',
+          fullText: '保存済み本文',
+        ),
+        productKey: 'shop:item001',
+        bucket: PostCommentGenerationBucket.recommendation.name,
+        dateKey: today,
+      );
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:item001"]',
+        PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
+            jsonEncode({'shop:item001': saved.toJson()}),
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 0);
+      expect(find.text('保存済み本文'), findsOneWidget);
+      expect(find.byKey(const Key('room_post_prepare_ai_error')), findsNothing);
+    });
+
+    testWidgets('persists result and restores after closing and reopening sheet',
+        (tester) async {
+      final generationService = _CountingPostCommentGenerationService();
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_close_button')));
+      await tester.pumpAndSettle();
+
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+      expect(find.byKey(const Key('room_post_prepare_ai_error')), findsNothing);
+    });
+
+    testWidgets('failed generation does not save result for restore', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: const _FailingPostCommentGenerationService(),
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      final saved = await PostCommentGenerationResultStore.readTodaySavedResult(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+        productKey: 'shop:item001',
+      );
+      expect(saved, isNull);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_close_button')));
+      await tester.pumpAndSettle();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+    });
+
+    testWidgets('regenerate is blocked with product_already_generated after restore',
+        (tester) async {
+      final today = PostCommentGenerationCountStore.localDateKey();
+      final saved = SavedPostCommentGenerationResult.fromGenerationResult(
+        result: const PostCommentGenerationResult(
+          body: '保存済み本文',
+          fullText: '保存済み本文',
+        ),
+        productKey: 'shop:item001',
+        bucket: PostCommentGenerationBucket.recommendation.name,
+        dateKey: today,
+      );
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+            '["shop:item001"]',
+        PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
+        PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
+            jsonEncode({'shop:item001': saved.toJson()}),
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 0);
+      expect(find.text('保存済み本文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 0);
+      expect(
+        find.text(kPostCommentGenerationProductAlreadyGeneratedMessage),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('saved result ignored when date changes', (tester) async {
+      final yesterday = PostCommentGenerationCountStore.localDateKey(
+        DateTime(2026, 7, 2),
+      );
+      final saved = SavedPostCommentGenerationResult.fromGenerationResult(
+        result: const PostCommentGenerationResult(
+          body: '昨日の本文',
+          fullText: '昨日の本文',
+        ),
+        productKey: 'shop:item001',
+        bucket: PostCommentGenerationBucket.recommendation.name,
+        dateKey: yesterday,
+        generatedAt: DateTime(2026, 7, 2),
+      );
+      SharedPreferences.setMockInitialValues({
+        PostCommentGenerationResultStore.dateKeyFor('recommendation'): yesterday,
+        PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
+            jsonEncode({'shop:item001': saved.toJson()}),
+      });
+      final limitedPrefs = await SharedPreferences.getInstance();
+      final generationService = _CountingPostCommentGenerationService();
+
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: limitedPrefs,
+          generationService: generationService,
+          generationBucket: PostCommentGenerationBucket.recommendation,
+          productKey: 'shop:item001',
+          enforceDailyGenerationLimit: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(generationService.callCount, 1);
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+      expect(find.text('昨日の本文'), findsNothing);
     });
 
     testWidgets('failed generation does not record product key', (tester) async {
