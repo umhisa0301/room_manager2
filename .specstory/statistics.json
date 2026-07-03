@@ -1414,13 +1414,13 @@
       "last_updated": "2026-06-29T05:14:40Z"
     },
     "badcaa17-99f5-4454-9567-97b6e947b26a": {
-      "user_message_count": 1,
-      "agent_message_count": 15,
+      "user_message_count": 2,
+      "agent_message_count": 72,
       "start_timestamp": "2026-07-03T23:51:10+09:00",
       "end_timestamp": "2026-07-03T23:51:10+09:00",
-      "markdown_size_bytes": 16846,
+      "markdown_size_bytes": 301112,
       "provider": "cursoride",
-      "last_updated": "2026-07-03T14:51:38Z"
+      "last_updated": "2026-07-03T15:04:39Z"
     },
     "bd9168ec-72ae-4f23-ba21-41c299d6733e": {
       "user_message_count": 10,
