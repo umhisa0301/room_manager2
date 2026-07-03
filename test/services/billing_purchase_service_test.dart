@@ -12,10 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class _FakePurchaseGateway implements InAppPurchasePurchaseGateway {
   _FakePurchaseGateway({
-    this.available = true,
     this.productDetails = const [],
-    this.buyNonConsumableResult = true,
-    this.throwOnRestore = false,
   });
 
   final bool available;
