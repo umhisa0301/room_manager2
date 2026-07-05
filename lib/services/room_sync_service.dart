@@ -1017,6 +1017,10 @@ class RoomSyncService {
           normalizedRoomUrlKey: normalizedKey,
           parsedItem: parsed,
           roomPageAffiliateUrl: rs.roomPageAffiliateUrl,
+          roomApiCompositeItemCode: rs.roomApiCompositeItemCode,
+          roomProductSlug: rs.roomProductSlug,
+          roomRedirectShopCode: rs.roomRedirectShopCode,
+          roomRedirectItemCode: rs.roomRedirectItemCode,
         );
         final firstImport = existingMatch == null;
         if (existingMatch != null && kDebugMode) {

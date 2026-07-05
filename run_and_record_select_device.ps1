@@ -383,6 +383,86 @@ function Get-DartDefineKeyFromEntry {
     return $s.Substring(0, $eqIdx)
 }
 
+function Test-SensitiveDartDefineKey {
+    param([string]$Key)
+
+    if ([string]::IsNullOrWhiteSpace($Key)) {
+        return $false
+    }
+
+    $k = $Key.Trim()
+    $exactSensitive = @(
+        'AI_GATEWAY_APP_KEY',
+        'RAKUTEN_APP_ID',
+        'RAKUTEN_AFFILIATE_ID'
+    )
+    foreach ($name in $exactSensitive) {
+        if ($k -eq $name) {
+            return $true
+        }
+    }
+
+    if ($k -match '(?i)(API[_-]?KEY|APP[_-]?KEY|SECRET|TOKEN|PASSWORD)$') {
+        return $true
+    }
+
+    return $false
+}
+
+function ConvertTo-RedactedDartDefineEntry {
+    param([string]$Entry)
+
+    $trimmed = $Entry.Trim()
+    if ([string]::IsNullOrWhiteSpace($trimmed)) {
+        return $trimmed
+    }
+
+    $key = Get-DartDefineKeyFromEntry -Entry $trimmed
+    if (-not $key) {
+        return $trimmed
+    }
+
+    if (Test-SensitiveDartDefineKey -Key $key) {
+        return "$key=[redacted]"
+    }
+
+    return $trimmed
+}
+
+function ConvertTo-RedactedDartDefineArg {
+    param([string]$Entry)
+
+    $arg = ConvertTo-DartDefineArg -Entry $Entry
+    if (-not $arg) {
+        return $null
+    }
+
+    $key = Get-DartDefineKeyFromEntry -Entry $arg
+    if (Test-SensitiveDartDefineKey -Key $key) {
+        return "--dart-define=$key=[redacted]"
+    }
+
+    return $arg
+}
+
+function Get-RedactedFlutterLaunchCommand {
+    param(
+        [string]$StartFile,
+        [string[]]$StartArgs
+    )
+
+    $redactedArgs = foreach ($arg in $StartArgs) {
+        if ($arg -match '^--dart-define=') {
+            ConvertTo-RedactedDartDefineArg -Entry $arg
+        }
+        else {
+            $arg
+        }
+    }
+
+    return "$StartFile $($redactedArgs -join ' ')"
+}
+
 function ConvertTo-DartDefineArg {
     param([string]$Entry)
 
@@ -568,7 +648,7 @@ try {
         "DemoMode: $demoNote",
         "RakutenAppId: $(if ($RakutenAppId) { '(set)' } else { '(empty)' })",
         "RakutenAffiliateId: $(if ($RakutenAffiliateId) { '(set)' } else { '(empty)' })",
-        "Extra dart-defines: $(if ($DartDefine -and $DartDefine.Count -gt 0) { ($DartDefine -join '; ') } else { '(none)' })",
+        "Extra dart-defines: $(if ($DartDefine -and $DartDefine.Count -gt 0) { (($DartDefine | ForEach-Object { ConvertTo-RedactedDartDefineEntry -Entry $_ }) -join '; ') } else { '(none)' })",
         "Selected device ID: $deviceId",
         "Device manufacturer: $($selectedDevice.Manufacturer)",
         "Device model: $($selectedDevice.Model)",
@@ -690,7 +770,7 @@ $flutterProc = New-Object System.Diagnostics.Process
 $flutterProc.StartInfo = $flutterStartInfo
 $null = $flutterProc.Start()
 
-Write-TerminalLog "[FLUTTER] Launch command: $flutterStartFile $($flutterStartArgs -join ' ')"
+Write-TerminalLog "[FLUTTER] Launch command: $(Get-RedactedFlutterLaunchCommand -StartFile $flutterStartFile -StartArgs $flutterStartArgs)"
 
 $stdoutWriter = [System.IO.StreamWriter]::new($flutterStdOutLogFile, $false, [System.Text.UTF8Encoding]::new($false))
 $stderrWriter = [System.IO.StreamWriter]::new($flutterStdErrLogFile, $false, [System.Text.UTF8Encoding]::new($false))

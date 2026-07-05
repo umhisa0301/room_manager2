@@ -15,6 +15,7 @@ import '../utils/managed_product_diag_log.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_status_display.dart';
 import '../utils/room_import_product_image.dart';
+import '../utils/room_import_product_identity.dart';
 import '../utils/room_import_safe_merge.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/room_sync_log.dart';
@@ -93,25 +94,20 @@ class RakutenManagedProductRepository {
 
   static const String _keyList = 'rakuten_room_managed_products_v1';
 
-  static bool _urlsEqualLoose(String? a, String? b) {
-    final x = a?.trim() ?? '';
-    final y = b?.trim() ?? '';
-    if (x.isEmpty || y.isEmpty) return false;
-    return x.toLowerCase() == y.toLowerCase();
-  }
-
-  /// ROOM 同期用の既存行検索（1) roomUrl 2) 正規化ROOMキー 3) shop+item 4) affiliate 5) itemUrl）。
+  /// ROOM 同期用の既存行検索（roomUrl → 正規化ROOMキー → 複数 identity key）。
   static RoomImportExistingRowMatch? findRoomImportExistingRowMatch({
     required List<RakutenManagedProduct> list,
     required String roomPageUrl,
     required String normalizedRoomUrlKey,
     required RakutenItemUrlParseResult parsedItem,
     String? roomPageAffiliateUrl,
+    String roomApiCompositeItemCode = '',
+    String roomProductSlug = '',
+    String roomRedirectShopCode = '',
+    String roomRedirectItemCode = '',
   }) {
     final key = normalizedRoomUrlKey.trim();
     final rawRoom = roomPageUrl.trim();
-    final roomAff = roomPageAffiliateUrl?.trim() ?? '';
-    final pc = parsedItem.rakutenUrl.trim();
 
     for (var i = 0; i < list.length; i++) {
       final e = list[i];
@@ -133,31 +129,33 @@ class RakutenManagedProductRepository {
         }
       }
     }
-    for (var i = 0; i < list.length; i++) {
-      final e = list[i];
-      if (_matchesPersistParsedItem(e, parsedItem)) {
-        return RoomImportExistingRowMatch(matchType: 'shopItem', row: e, listIndex: i);
-      }
-    }
-    if (roomAff.isNotEmpty) {
-      for (var i = 0; i < list.length; i++) {
-        final e = list[i];
-        if (_urlsEqualLoose(e.affiliateUrl, roomAff)) {
-          return RoomImportExistingRowMatch(
-            matchType: 'affiliateUrl',
-            row: e,
-            listIndex: i,
-          );
-        }
-      }
-    }
-    if (pc.isNotEmpty) {
-      for (var i = 0; i < list.length; i++) {
-        final e = list[i];
-        if (_urlsEqualLoose(e.itemUrl, pc) || _urlsEqualLoose(e.rakutenUrl, pc)) {
-          return RoomImportExistingRowMatch(matchType: 'itemUrl', row: e, listIndex: i);
-        }
-      }
+
+    final incomingKeys = RoomImportProductIdentity.keysForIncomingImport(
+      parsedItem: parsedItem,
+      normalizedRoomUrlKey: normalizedRoomUrlKey,
+      roomPageUrl: roomPageUrl,
+      roomPageAffiliateUrl: roomPageAffiliateUrl,
+      roomApiCompositeItemCode: roomApiCompositeItemCode,
+      roomProductSlug: roomProductSlug,
+      roomRedirectShopCode: roomRedirectShopCode,
+      roomRedirectItemCode: roomRedirectItemCode,
+    );
+    final incomingShop = RoomImportProductIdentity.shopCodeForIncomingImport(
+      parsedItem: parsedItem,
+      roomRedirectShopCode: roomRedirectShopCode,
+      roomApiCompositeItemCode: roomApiCompositeItemCode,
+    );
+    final identityHit = RoomImportProductIdentity.findExistingRow(
+      list: list,
+      incomingKeys: incomingKeys,
+      incomingShop: incomingShop,
+    );
+    if (identityHit != null) {
+      return RoomImportExistingRowMatch(
+        matchType: identityHit.match.matchType,
+        row: identityHit.row,
+        listIndex: identityHit.index,
+      );
     }
     return null;
   }
@@ -261,15 +259,36 @@ class RakutenManagedProductRepository {
 
   static bool _matchesPersistParsedItem(
     RakutenManagedProduct e,
-    RakutenItemUrlParseResult p,
-  ) {
-    if (e.productId.trim() == p.compositeProductId) return true;
-    final sc = p.shopCode.trim();
-    final seg = p.itemPathSegment.trim();
-    if (sc.isEmpty || seg.isEmpty) return false;
-    if (e.shopCode.trim() != sc) return false;
-    final pid = e.productId.trim();
-    return pid == seg;
+    RakutenItemUrlParseResult p, {
+    String roomApiCompositeItemCode = '',
+    String roomProductSlug = '',
+    String roomRedirectShopCode = '',
+    String roomRedirectItemCode = '',
+    String normalizedRoomUrlKey = '',
+    String roomPageUrl = '',
+    String? roomPageAffiliateUrl,
+  }) {
+    final incomingKeys = RoomImportProductIdentity.keysForIncomingImport(
+      parsedItem: p,
+      normalizedRoomUrlKey: normalizedRoomUrlKey,
+      roomPageUrl: roomPageUrl,
+      roomPageAffiliateUrl: roomPageAffiliateUrl,
+      roomApiCompositeItemCode: roomApiCompositeItemCode,
+      roomProductSlug: roomProductSlug,
+      roomRedirectShopCode: roomRedirectShopCode,
+      roomRedirectItemCode: roomRedirectItemCode,
+    );
+    return RoomImportProductIdentity.intersectMatch(
+          incomingKeys: incomingKeys,
+          existingKeys: RoomImportProductIdentity.keysForManagedProduct(e),
+          incomingShop: RoomImportProductIdentity.shopCodeForIncomingImport(
+            parsedItem: p,
+            roomRedirectShopCode: roomRedirectShopCode,
+            roomApiCompositeItemCode: roomApiCompositeItemCode,
+          ),
+          existingShop: RoomImportProductIdentity.shopCodeForManagedProduct(e),
+        ) !=
+        null;
   }
 
   /// ROOM同期バッチで、[shopCode + itemCode] が既にコレ済か検索する（APIスキップ判定用）。
@@ -971,7 +990,17 @@ class RakutenManagedProductRepository {
     RakutenManagedProduct? existing;
     var existingIndex = -1;
     for (var i = 0; i < list.length; i++) {
-      if (_matchesPersistParsedItem(list[i], parsedItem)) {
+      if (_matchesPersistParsedItem(
+        list[i],
+        parsedItem,
+        roomApiCompositeItemCode: roomApiCompositeItemCodeHint,
+        roomProductSlug: roomProductSlugHint,
+        roomRedirectShopCode: roomRedirectShopCodeHint,
+        roomRedirectItemCode: roomRedirectItemCodeHint,
+        normalizedRoomUrlKey: normalizedRoomUrlKey,
+        roomPageUrl: roomUrlStoredCanonical,
+        roomPageAffiliateUrl: roomPageAffiliateUrl,
+      )) {
         existing = list[i];
         existingIndex = i;
         break;
