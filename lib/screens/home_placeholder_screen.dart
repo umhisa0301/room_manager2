@@ -664,10 +664,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     _,
                   ) {
                     final items = roomProvider.items;
-                    final rawName = userProfileProvider.profile.displayName;
-                    final displayName = rawName.trim().isEmpty
-                        ? null
-                        : rawName.trim();
                     final nCandidate = RakutenRoomHomeStats.countCandidates(
                       items,
                     );
@@ -736,7 +732,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 ),
                               ),
                               _HomeMomentumHeader(
-                                displayName: displayName,
                                 milestonePostCount: milestonePostCount,
                                 recPendingCount: recProvider.pendingCount,
                                 recTotalCount: recProvider.totalCount,
@@ -3603,7 +3598,6 @@ class _HomeActionWrap extends StatelessWidget {
 
 class _HomeMomentumHeader extends StatelessWidget {
   const _HomeMomentumHeader({
-    required this.displayName,
     required this.milestonePostCount,
     required this.recPendingCount,
     required this.recTotalCount,
@@ -3612,7 +3606,6 @@ class _HomeMomentumHeader extends StatelessWidget {
     this.reactionHistoryRefreshNonce = 0,
   });
 
-  final String? displayName;
   final int milestonePostCount;
   final int recPendingCount;
   final int recTotalCount;
@@ -3623,38 +3616,22 @@ class _HomeMomentumHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final nameLine = displayName == null || displayName!.trim().isEmpty
-        ? 'こんにちは'
-        : 'こんにちは　${displayName!.trim()}さん';
-    const subLine = '今日もROOM運用を進めましょう';
+    const headerLine = '今日もROOM運用を進めましょう';
 
     return Padding(
       padding: EdgeInsets.zero,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  nameLine,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 28,
-                    color: HomeScreenColors.homeTextPrimary,
-                    height: 1.15,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subLine,
-                  style: _HomeUi.sectionBody(context).copyWith(
-                    fontSize: 14,
-                    color: HomeScreenColors.homeTextSecondary,
-                  ),
-                ),
-              ],
+            child: Text(
+              headerLine,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: 28,
+                color: HomeScreenColors.homeTextPrimary,
+                height: 1.15,
+              ),
             ),
           ),
           _HomeNotificationBell(
