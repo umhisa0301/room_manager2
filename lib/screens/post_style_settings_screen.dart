@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/monetization_config.dart';
+import '../config/monetization_plan_config.dart';
 import '../config/post_style_preview_sample_product.dart';
 import '../models/post_style_settings.dart';
 import '../services/post_comment_generation_exception.dart';
 import '../services/post_comment_generation_service.dart';
 import '../services/post_comment_generation_service_factory.dart';
 import '../services/post_comment_generation_user_message.dart';
+import '../services/post_style_preview_generation_limit.dart';
 import '../state/post_style_settings_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../widgets/mypage/mypage_widgets.dart';
@@ -18,6 +21,10 @@ class PostStyleSettingsScreen extends StatefulWidget {
     this.initialSettings,
     this.generationService,
     this.generationServiceFactory,
+    this.enforcePreviewGenerationLimit,
+    this.monetizationFlags,
+    this.purchasedPlanOverride,
+    this.previewLimitNow,
   });
 
   /// テスト用。未指定時は Provider の現在値を利用。
@@ -28,6 +35,18 @@ class PostStyleSettingsScreen extends StatefulWidget {
 
   /// テスト用。未指定時は [PostCommentGenerationServiceFactory] を利用。
   final PostCommentGenerationService Function()? generationServiceFactory;
+
+  /// テスト用。未指定時は Remote AI 有効時のみ日次制限を適用。
+  final bool? enforcePreviewGenerationLimit;
+
+  /// テスト用。未指定時はコンパイル時フラグ。
+  final MonetizationFlagSnapshot? monetizationFlags;
+
+  /// テスト用。未指定時は購入済みプラン解決を利用。
+  final MonetizationPlan? purchasedPlanOverride;
+
+  /// テスト用。日次制限の暦日判定に使う。
+  final DateTime? previewLimitNow;
 
   @override
   State<PostStyleSettingsScreen> createState() =>
@@ -47,6 +66,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   bool _previewNeedsRefresh = false;
   String? _previewError;
   PostStyleSettings? _lastRefreshedSettings;
+  PostStylePreviewGenerationLimitState? _previewLimitState;
 
   @override
   void dispose() {
@@ -67,6 +87,22 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
         PostCommentGenerationServiceFactory.create();
     _initializeStyleExample();
     _initialized = true;
+    _loadPreviewLimitState();
+  }
+
+  bool get _previewGenerationLimitEnforced =>
+      widget.enforcePreviewGenerationLimit ??
+      isPostStylePreviewGenerationLimitEnforced();
+
+  Future<void> _loadPreviewLimitState() async {
+    final state = await resolvePostStylePreviewGenerationAvailabilityForToday(
+      now: widget.previewLimitNow,
+      flags: widget.monetizationFlags,
+      purchasedPlanOverride: widget.purchasedPlanOverride,
+      enforcementEnabled: _previewGenerationLimitEnforced,
+    );
+    if (!mounted) return;
+    setState(() => _previewLimitState = state);
   }
 
   void _initializeStyleExample() {
@@ -194,6 +230,22 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
   Future<void> _refreshPreview() async {
     if (_refreshing || !_previewNeedsRefresh) return;
 
+    final limitState = _previewLimitState ??
+        await resolvePostStylePreviewGenerationAvailabilityForToday(
+          now: widget.previewLimitNow,
+          flags: widget.monetizationFlags,
+          purchasedPlanOverride: widget.purchasedPlanOverride,
+          enforcementEnabled: _previewGenerationLimitEnforced,
+        );
+
+    if (!limitState.allowed) {
+      setState(() {
+        _previewError = buildPostStylePreviewGenerationLimitBlockedMessage();
+        _previewLimitState = limitState;
+      });
+      return;
+    }
+
     setState(() {
       _refreshing = true;
       _previewError = null;
@@ -206,11 +258,30 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
         ),
       );
       if (!mounted) return;
+
+      if (shouldRecordPostStylePreviewGeneration(
+        state: limitState,
+        enforcementEnabled: _previewGenerationLimitEnforced,
+      )) {
+        await recordSuccessfulPostStylePreviewGeneration(
+          now: widget.previewLimitNow,
+        );
+      }
+
+      final nextLimitState =
+          await resolvePostStylePreviewGenerationAvailabilityForToday(
+        now: widget.previewLimitNow,
+        flags: widget.monetizationFlags,
+        purchasedPlanOverride: widget.purchasedPlanOverride,
+        enforcementEnabled: _previewGenerationLimitEnforced,
+      );
+      if (!mounted) return;
       setState(() {
         _styleExampleController.text = result.displayText;
         _lastRefreshedSettings = _draft;
         _previewNeedsRefresh = false;
         _refreshing = false;
+        _previewLimitState = nextLimitState;
       });
     } on PostCommentGenerationException catch (e) {
       if (!mounted) return;
@@ -339,6 +410,7 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
                 refreshing: _refreshing,
                 previewNeedsRefresh: _previewNeedsRefresh,
                 previewError: _previewError,
+                previewLimitState: _previewLimitState,
                 onRefresh: _refreshPreview,
               ),
               const SizedBox(height: MyPageScreenUi.gapSection),
@@ -528,6 +600,7 @@ class _PreviewCard extends StatelessWidget {
     required this.refreshing,
     required this.previewNeedsRefresh,
     required this.previewError,
+    required this.previewLimitState,
     required this.onRefresh,
   });
 
@@ -535,7 +608,11 @@ class _PreviewCard extends StatelessWidget {
   final bool refreshing;
   final bool previewNeedsRefresh;
   final String? previewError;
+  final PostStylePreviewGenerationLimitState? previewLimitState;
   final VoidCallback onRefresh;
+
+  bool get _refreshAllowed =>
+      previewLimitState == null || previewLimitState!.allowed;
 
   @override
   Widget build(BuildContext context) {
@@ -559,11 +636,11 @@ class _PreviewCard extends StatelessWidget {
               Semantics(
                 label: '投稿イメージを更新',
                 button: true,
-                enabled: previewNeedsRefresh && !refreshing,
+                enabled: previewNeedsRefresh && !refreshing && _refreshAllowed,
                 child: IconButton(
                   key: const Key('post_style_preview_refresh_button'),
                   tooltip: 'サンプルを更新',
-                  onPressed: previewNeedsRefresh && !refreshing
+                  onPressed: previewNeedsRefresh && !refreshing && _refreshAllowed
                       ? onRefresh
                       : null,
                   icon: refreshing
@@ -630,9 +707,24 @@ class _PreviewCard extends StatelessWidget {
               ),
             ),
           ],
+          if (previewLimitState != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              postStylePreviewGenerationUsageLabel(previewLimitState!),
+              key: const Key('post_style_preview_usage_label'),
+              style: textTheme.bodySmall?.copyWith(
+                color: previewLimitState!.allowed
+                    ? MyPageScreenUi.textSecondary
+                    : Theme.of(context).colorScheme.error,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
           const SizedBox(height: 8),
           Text(
-            'この文例を参考に投稿文を作ります（本番のAI生成回数は消費しません）',
+            '生成イメージを編集・保存すると、実際の投稿文生成にも文体の参考として反映されます。',
+            key: const Key('post_style_preview_description'),
             style: textTheme.bodySmall?.copyWith(
               color: MyPageScreenUi.textSecondary,
               height: 1.35,

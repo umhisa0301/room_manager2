@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:room_manager2/config/ai_gateway_config.dart';
+import 'package:room_manager2/config/monetization_config.dart';
+import 'package:room_manager2/config/monetization_plan_config.dart';
 import 'package:room_manager2/config/post_style_preview_sample_product.dart';
 import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/screens/post_style_settings_screen.dart';
+import 'package:room_manager2/services/post_comment_generation_exception.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_limit.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
 import 'package:room_manager2/services/post_comment_generation_service_factory.dart';
+import 'package:room_manager2/services/post_style_preview_generation_count_store.dart';
+import 'package:room_manager2/services/post_style_preview_generation_limit.dart';
 import 'package:room_manager2/services/remote_post_comment_generation_service.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +40,7 @@ class _FakeGenerationService implements PostCommentGenerationService {
   _FakeGenerationService({
     PostCommentGenerationResult? result,
     this.shouldThrow = false,
+    this.throwPostCommentException = false,
   }) : result = result ??
             const PostCommentGenerationResult(
               body: 'AI生成サンプル本文です。',
@@ -43,13 +49,22 @@ class _FakeGenerationService implements PostCommentGenerationService {
 
   final PostCommentGenerationResult result;
   final bool shouldThrow;
+  final bool throwPostCommentException;
   PostCommentGenerationInput? lastInput;
+  int generateCallCount = 0;
 
   @override
   Future<PostCommentGenerationResult> generate(
     PostCommentGenerationInput input,
   ) async {
     lastInput = input;
+    generateCallCount++;
+    if (throwPostCommentException) {
+      throw const PostCommentGenerationException(
+        'AI_DISABLED',
+        'AI disabled',
+      );
+    }
     if (shouldThrow) {
       throw Exception('generation failed');
     }
@@ -57,17 +72,39 @@ class _FakeGenerationService implements PostCommentGenerationService {
   }
 }
 
+MonetizationFlagSnapshot _limitsOnFlags() => resolveMonetizationFlags(
+      monetizationEnabled: true,
+      adsEnabled: false,
+      subscriptionEnabled: true,
+      freePlanLimitsEnabled: true,
+      proPlanEnabled: true,
+    );
+
+Map<String, Object> _previewCountPrefsSeed(int count, {DateTime? now}) => {
+      PostStylePreviewGenerationCountStore.dateKey:
+          PostStylePreviewGenerationCountStore.localDateKey(now),
+      PostStylePreviewGenerationCountStore.countKey: count,
+    };
+
 Widget _wrap({
   required SharedPreferences prefs,
   PostStyleSettings? initialSettings,
   PostCommentGenerationService? generationService,
   PostCommentGenerationService Function()? generationServiceFactory,
   bool withHostRoute = false,
+  bool? enforcePreviewGenerationLimit,
+  MonetizationFlagSnapshot? monetizationFlags,
+  MonetizationPlan? purchasedPlanOverride,
+  DateTime? previewLimitNow,
 }) {
   final screen = PostStyleSettingsScreen(
     initialSettings: initialSettings,
     generationService: generationService,
     generationServiceFactory: generationServiceFactory,
+    enforcePreviewGenerationLimit: enforcePreviewGenerationLimit,
+    monetizationFlags: monetizationFlags,
+    purchasedPlanOverride: purchasedPlanOverride,
+    previewLimitNow: previewLimitNow,
   );
 
   if (!withHostRoute) {
@@ -125,9 +162,14 @@ Future<void> _pumpScreen(
   PostCommentGenerationService? generationService,
   PostCommentGenerationService Function()? generationServiceFactory,
   bool withHostRoute = false,
+  bool? enforcePreviewGenerationLimit,
+  MonetizationFlagSnapshot? monetizationFlags,
+  MonetizationPlan? purchasedPlanOverride,
+  DateTime? previewLimitNow,
+  Map<String, Object>? sharedPreferencesSeed,
 }) async {
   _setTallViewport(tester);
-  SharedPreferences.setMockInitialValues({});
+  SharedPreferences.setMockInitialValues(sharedPreferencesSeed ?? {});
   final prefs = await SharedPreferences.getInstance();
   await tester.pumpWidget(
     _wrap(
@@ -136,6 +178,10 @@ Future<void> _pumpScreen(
       generationService: generationService,
       generationServiceFactory: generationServiceFactory,
       withHostRoute: withHostRoute,
+      enforcePreviewGenerationLimit: enforcePreviewGenerationLimit,
+      monetizationFlags: monetizationFlags,
+      purchasedPlanOverride: purchasedPlanOverride,
+      previewLimitNow: previewLimitNow,
     ),
   );
   await tester.pumpAndSettle();
@@ -183,7 +229,12 @@ void main() {
       expect(find.text('推し方'), findsOneWidget);
       expect(find.text('読者層'), findsOneWidget);
       expect(find.text('誇張表現を避ける'), findsOneWidget);
-      expect(find.text('この文例を参考に投稿文を作ります（本番のAI生成回数は消費しません）'), findsOneWidget);
+      expect(
+        find.text(
+          '生成イメージを編集・保存すると、実際の投稿文生成にも文体の参考として反映されます。',
+        ),
+        findsOneWidget,
+      );
       expect(find.byKey(const Key('post_style_preview_text_field')), findsOneWidget);
       expect(find.byKey(const Key('post_style_preview_refresh_button')), findsOneWidget);
       expect(find.byKey(const Key('post_style_save_button')), findsOneWidget);
@@ -310,6 +361,180 @@ void main() {
         bucketName: PostCommentGenerationBucket.recommendation.name,
       );
       expect(keys, isEmpty);
+    });
+
+    testWidgets('free user can refresh preview up to 3 times per day with remote',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(0, now: DateTime(2026, 7, 7)),
+      );
+
+      for (var i = 0; i < 3; i++) {
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('丁寧'));
+        await tester.pumpAndSettle();
+      }
+
+      expect(fakeService.generateCallCount, 3);
+      expect(
+        await PostStylePreviewGenerationCountStore.readTodayCount(
+          now: DateTime(2026, 7, 7),
+        ),
+        3,
+      );
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('fourth preview refresh is blocked without API call', (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(3, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      final refreshButton = tester.widget<IconButton>(
+        find.byKey(const Key('post_style_preview_refresh_button')),
+      );
+      expect(refreshButton.onPressed, isNull);
+      expect(fakeService.generateCallCount, 0);
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('failed preview refresh does not increment count', (tester) async {
+      final fakeService = _FakeGenerationService(shouldThrow: true);
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(0, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.generateCallCount, 1);
+      expect(
+        await PostStylePreviewGenerationCountStore.readTodayCount(
+          now: DateTime(2026, 7, 7),
+        ),
+        0,
+      );
+      expect(find.text('本日の生成イメージ: あと3回'), findsOneWidget);
+    });
+
+    testWidgets('paid user can refresh preview more than 3 times', (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.basic,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(3, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.generateCallCount, 1);
+      expect(find.text('生成イメージ: 無制限'), findsOneWidget);
+    });
+
+    testWidgets('stub mode does not increment preview generation count', (tester) async {
+      await _pumpScreen(
+        tester,
+        generationServiceFactory: () =>
+            const StubPostCommentGenerationService(delay: Duration.zero),
+        enforcePreviewGenerationLimit: false,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(0, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        await PostStylePreviewGenerationCountStore.readTodayCount(
+          now: DateTime(2026, 7, 7),
+        ),
+        0,
+      );
+      expect(find.text('生成イメージ: 無制限'), findsOneWidget);
+    });
+
+    testWidgets(
+        'preview generation count does not affect recommendation bucket store',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      SharedPreferences.setMockInitialValues(
+        _previewCountPrefsSeed(0, now: DateTime(2026, 7, 7)),
+      );
+      final prefs = await SharedPreferences.getInstance();
+      await tester.pumpWidget(
+        _wrap(
+          prefs: prefs,
+          generationService: fakeService,
+          enforcePreviewGenerationLimit: true,
+          monetizationFlags: _limitsOnFlags(),
+          purchasedPlanOverride: MonetizationPlan.free,
+          previewLimitNow: DateTime(2026, 7, 7),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      final keys =
+          await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
+        bucketName: PostCommentGenerationBucket.recommendation.name,
+        now: DateTime(2026, 7, 7),
+      );
+      expect(keys, isEmpty);
+      expect(
+        await PostStylePreviewGenerationCountStore.readTodayCount(
+          now: DateTime(2026, 7, 7),
+        ),
+        1,
+      );
     });
 
     testWidgets('refresh button calls generation service and updates preview',
