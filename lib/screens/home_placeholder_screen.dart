@@ -47,6 +47,7 @@ import '../services/room_reaction_sync_history_store.dart';
 import '../widgets/home_auto_reaction_sync_coordinator.dart';
 import '../services/home_in_app_notice_dismiss_store.dart';
 import '../utils/home_in_app_notice.dart';
+import '../utils/today_recommendation_work_progress.dart';
 import '../widgets/monetization/monetization_ad_slot.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
@@ -705,6 +706,23 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       actProvider.events,
                       todayLocalDay,
                     );
+                    final savedShopCount =
+                        context.watch<SavedShopProvider>().shops.length;
+                    final collectedProductIds =
+                        TodayRecommendationWorkProgress.collectedProductIdsFrom(
+                      items,
+                    );
+                    final recIsLoading = recProvider.isLoading ||
+                        recProvider.generationStatus ==
+                            TodayRecommendationGenerationStatus.loading;
+                    final isRecommendationReviewComplete =
+                        TodayRecommendationWorkProgress.isVisibleReviewComplete(
+                      bundle: recProvider.bundle,
+                      savedShopCount: savedShopCount,
+                      collectedProductIds: collectedProductIds,
+                      isLoading: recIsLoading,
+                      now: now,
+                    );
                     final todayRoomPostCount = milestonePostCount;
                     final unconfirmedReactionCount = _countUnconfirmedReactions(
                       items,
@@ -747,15 +765,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               ),
                               SizedBox(height: _HomeUi.gapSection),
                               _TodayRoomWorkCard(
-                                todayCandidateAddedCount:
-                                    todayCandidateAddedCount,
+                                isRecommendationReviewComplete:
+                                    isRecommendationReviewComplete,
                                 todayRoomPostCount: todayRoomPostCount,
                                 pendingCandidateCount: nCandidate,
-                                isRecommendationLoading:
-                                    recProvider.isLoading ||
-                                    recProvider.generationStatus ==
-                                        TodayRecommendationGenerationStatus
-                                            .loading,
+                                isRecommendationLoading: recIsLoading,
                                 roomTypeHint: recProfileProvider.isDiagnosed
                                     ? '${RoomTypeDefinitions.displayNameFor(recProfileProvider.profile!.primaryTypeId)}に合わせて提案'
                                     : null,
@@ -1385,7 +1399,7 @@ const _homeTodayWorkCtaTextStyle = TextStyle(
 
 class _TodayRoomWorkCard extends StatelessWidget {
   const _TodayRoomWorkCard({
-    required this.todayCandidateAddedCount,
+    required this.isRecommendationReviewComplete,
     required this.todayRoomPostCount,
     required this.pendingCandidateCount,
     required this.isRecommendationLoading,
@@ -1395,7 +1409,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
     required this.onOpenSearch,
   });
 
-  final int todayCandidateAddedCount;
+  final bool isRecommendationReviewComplete;
   final int todayRoomPostCount;
   final int pendingCandidateCount;
   final bool isRecommendationLoading;
@@ -1405,7 +1419,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
   final VoidCallback onOpenSearch;
 
   _HomeWorkStepVisualState _stateForStep(int step) {
-    final step1Complete = todayCandidateAddedCount > 0;
+    final step1Complete = isRecommendationReviewComplete;
     final step2Complete = pendingCandidateCount == 0;
 
     int? nextStep;
@@ -1440,7 +1454,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
   }
 
   _HomeWorkPrimaryAction _primaryAction() {
-    if (todayCandidateAddedCount == 0) {
+    if (!isRecommendationReviewComplete) {
       return _HomeWorkPrimaryAction.recommendations;
     }
     if (pendingCandidateCount > 0) {

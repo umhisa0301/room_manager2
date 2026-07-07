@@ -5,6 +5,7 @@ import '../config/post_style_preview_sample_product.dart';
 import '../models/post_style_settings.dart';
 import '../services/post_comment_generation_exception.dart';
 import '../services/post_comment_generation_service.dart';
+import '../services/post_comment_generation_service_factory.dart';
 import '../services/post_comment_generation_user_message.dart';
 import '../state/post_style_settings_provider.dart';
 import '../theme/mypage_screen_tokens.dart';
@@ -16,13 +17,17 @@ class PostStyleSettingsScreen extends StatefulWidget {
     super.key,
     this.initialSettings,
     this.generationService,
+    this.generationServiceFactory,
   });
 
   /// テスト用。未指定時は Provider の現在値を利用。
   final PostStyleSettings? initialSettings;
 
-  /// テスト用。未指定時は Stub プレビュー生成を利用。
+  /// テスト用。未指定時は [generationServiceFactory] / Factory を利用。
   final PostCommentGenerationService? generationService;
+
+  /// テスト用。未指定時は [PostCommentGenerationServiceFactory] を利用。
+  final PostCommentGenerationService Function()? generationServiceFactory;
 
   @override
   State<PostStyleSettingsScreen> createState() =>
@@ -58,7 +63,8 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
         context.read<PostStyleSettingsProvider>().settings;
     _initialSettings = _draft.normalized();
     _generationService = widget.generationService ??
-        const StubPostCommentGenerationService(delay: Duration.zero);
+        widget.generationServiceFactory?.call() ??
+        PostCommentGenerationServiceFactory.create();
     _initializeStyleExample();
     _initialized = true;
   }

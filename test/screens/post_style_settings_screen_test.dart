@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:room_manager2/config/ai_gateway_config.dart';
 import 'package:room_manager2/config/post_style_preview_sample_product.dart';
 import 'package:room_manager2/models/post_comment_generation_result.dart';
 import 'package:room_manager2/models/post_style_settings.dart';
@@ -9,6 +10,8 @@ import 'package:room_manager2/screens/post_style_settings_screen.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_limit.dart';
 import 'package:room_manager2/services/post_comment_generation_service.dart';
+import 'package:room_manager2/services/post_comment_generation_service_factory.dart';
+import 'package:room_manager2/services/remote_post_comment_generation_service.dart';
 import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,11 +61,13 @@ Widget _wrap({
   required SharedPreferences prefs,
   PostStyleSettings? initialSettings,
   PostCommentGenerationService? generationService,
+  PostCommentGenerationService Function()? generationServiceFactory,
   bool withHostRoute = false,
 }) {
   final screen = PostStyleSettingsScreen(
     initialSettings: initialSettings,
     generationService: generationService,
+    generationServiceFactory: generationServiceFactory,
   );
 
   if (!withHostRoute) {
@@ -118,6 +123,7 @@ Future<void> _pumpScreen(
   WidgetTester tester, {
   PostStyleSettings? initialSettings,
   PostCommentGenerationService? generationService,
+  PostCommentGenerationService Function()? generationServiceFactory,
   bool withHostRoute = false,
 }) async {
   _setTallViewport(tester);
@@ -128,6 +134,7 @@ Future<void> _pumpScreen(
       prefs: prefs,
       initialSettings: initialSettings,
       generationService: generationService,
+      generationServiceFactory: generationServiceFactory,
       withHostRoute: withHostRoute,
     ),
   );
@@ -222,8 +229,55 @@ void main() {
       expect(enabledRefresh.onPressed, isNotNull);
     });
 
-    testWidgets('refresh button uses stub preview by default', (tester) async {
-      await _pumpScreen(tester);
+    testWidgets('refresh button uses stub preview when factory returns stub',
+        (tester) async {
+      await _pumpScreen(
+        tester,
+        generationServiceFactory: () =>
+            const StubPostCommentGenerationService(delay: Duration.zero),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.textContaining('【${PostStylePreviewSampleProduct.displayTitle}】'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('preview refresh uses remote service when factory returns remote',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationServiceFactory: () => fakeService,
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.lastInput, isNotNull);
+      expect(fakeService.lastInput!.includeStyleExample, isFalse);
+    });
+
+    testWidgets('default preview generation uses PostCommentGenerationServiceFactory',
+        (tester) async {
+      if (AiGatewayConfig.useRemotePostCommentGeneration &&
+          AiGatewayConfig.appKey.trim().isNotEmpty) {
+        final service = PostCommentGenerationServiceFactory.create();
+        expect(service, isA<RemotePostCommentGenerationService>());
+        return;
+      }
+
+      await _pumpScreen(
+        tester,
+        generationServiceFactory: PostCommentGenerationServiceFactory.create,
+      );
 
       await tester.tap(find.text('フランク'));
       await tester.pumpAndSettle();
