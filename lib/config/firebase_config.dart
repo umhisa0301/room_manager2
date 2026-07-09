@@ -6,7 +6,7 @@ abstract final class FirebaseConfig {
   static bool get isTelemetryEnabled => kReleaseMode;
 
   /// Analytics イベント名（Firebase 予約語・既存アプリ内 analytics 命名と衝突しない接頭辞）。
-  static const String eventAppOpen = 'app_open';
+  static const String eventAppOpen = 'rm_app_open';
   static const String eventLegalConsentAccepted = 'legal_consent_accepted';
   static const String eventOnboardingRoute = 'onboarding_route';
 
