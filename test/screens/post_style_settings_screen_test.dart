@@ -498,6 +498,127 @@ void main() {
       expect(find.text('生成イメージ: 無制限'), findsOneWidget);
     });
 
+    testWidgets('billing preparing applies free daily limit with remote', (tester) async {
+      final fakeService = _FakeGenerationService();
+      final preparingFlags = resolveMonetizationFlags(
+        monetizationEnabled: true,
+        adsEnabled: false,
+        subscriptionEnabled: false,
+        freePlanLimitsEnabled: false,
+        proPlanEnabled: true,
+      );
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: preparingFlags,
+        purchasedPlanOverride: MonetizationPlan.basic,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(3, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      final refreshButton = tester.widget<IconButton>(
+        find.byKey(const Key('post_style_preview_refresh_button')),
+      );
+      expect(refreshButton.onPressed, isNull);
+      expect(fakeService.generateCallCount, 0);
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('entitlement unknown applies free daily limit with remote',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(3, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.generateCallCount, 0);
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('billing unavailable applies free daily limit with remote',
+        (tester) async {
+      final fakeService = _FakeGenerationService();
+      final disabledFlags = resolveMonetizationFlags(
+        monetizationEnabled: false,
+        adsEnabled: false,
+        subscriptionEnabled: false,
+        freePlanLimitsEnabled: false,
+        proPlanEnabled: false,
+      );
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: disabledFlags,
+        purchasedPlanOverride: MonetizationPlan.basic,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(3, now: DateTime(2026, 7, 7)),
+      );
+
+      await tester.tap(find.text('フランク'));
+      await tester.pumpAndSettle();
+
+      expect(fakeService.generateCallCount, 0);
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('remaining count label decreases 3 to 2 to 1 to 0', (tester) async {
+      final fakeService = _FakeGenerationService();
+      await _pumpScreen(
+        tester,
+        generationService: fakeService,
+        enforcePreviewGenerationLimit: true,
+        monetizationFlags: _limitsOnFlags(),
+        purchasedPlanOverride: MonetizationPlan.free,
+        previewLimitNow: DateTime(2026, 7, 7),
+        sharedPreferencesSeed: _previewCountPrefsSeed(0, now: DateTime(2026, 7, 7)),
+      );
+
+      const labels = [
+        '本日の生成イメージ: あと3回',
+        '本日の生成イメージ: あと2回',
+        '本日の生成イメージ: あと1回',
+      ];
+
+      for (final label in labels) {
+        expect(find.text(label), findsOneWidget);
+        await tester.tap(find.text('フランク'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('post_style_preview_refresh_button')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('丁寧'));
+        await tester.pumpAndSettle();
+      }
+
+      expect(
+        find.text(buildPostStylePreviewGenerationLimitBlockedMessage()),
+        findsOneWidget,
+      );
+      expect(fakeService.generateCallCount, 3);
+    });
+
     testWidgets(
         'preview generation count does not affect recommendation bucket store',
         (tester) async {

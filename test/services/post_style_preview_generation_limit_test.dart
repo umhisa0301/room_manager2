@@ -88,7 +88,7 @@ void main() {
       expect(state.reasonCode, kPostStylePreviewDailyLimitReasonCode);
     });
 
-    test('FREE_PLAN_LIMITS_ENABLED=false allows free user', () {
+    test('FREE_PLAN_LIMITS_ENABLED=false still limits free user on remote', () {
       final offFlags = resolveMonetizationFlags(
         monetizationEnabled: true,
         adsEnabled: false,
@@ -97,12 +97,79 @@ void main() {
         proPlanEnabled: true,
       );
       final state = resolvePostStylePreviewGenerationAvailability(
-        usedCount: 99,
+        usedCount: 3,
         planContext: _contextFor(MonetizationPlan.free, offFlags),
         enforcementEnabled: true,
       );
-      expect(state.allowed, isTrue);
-      expect(state.appliesDailyLimit, isFalse);
+      expect(state.allowed, isFalse);
+      expect(state.appliesDailyLimit, isTrue);
+      expect(state.reasonCode, kPostStylePreviewDailyLimitReasonCode);
+    });
+
+    test('billing preparing clamps stored basic to free limit', () {
+      final preparingFlags = resolveMonetizationFlags(
+        monetizationEnabled: true,
+        adsEnabled: false,
+        subscriptionEnabled: false,
+        freePlanLimitsEnabled: true,
+        proPlanEnabled: true,
+      );
+      final state = resolvePostStylePreviewGenerationAvailability(
+        usedCount: 3,
+        flags: preparingFlags,
+        purchasedPlanOverride: MonetizationPlan.basic,
+        enforcementEnabled: true,
+      );
+      expect(state.plan, MonetizationPlan.free);
+      expect(state.allowed, isFalse);
+      expect(state.appliesDailyLimit, isTrue);
+      expect(isUnlimitedPreviewGeneration(
+        resolvePlanLimits(MonetizationPlan.basic, preparingFlags),
+      ), isFalse);
+    });
+
+    test('entitlement unknown (none) is treated as free limit on remote', () {
+      final state = resolvePostStylePreviewGenerationAvailability(
+        usedCount: 3,
+        planContext: _contextFor(MonetizationPlan.free, flags),
+        enforcementEnabled: true,
+      );
+      expect(state.allowed, isFalse);
+      expect(state.appliesDailyLimit, isTrue);
+    });
+
+    test('monetization disabled treats user as free limit on remote', () {
+      final disabledFlags = resolveMonetizationFlags(
+        monetizationEnabled: false,
+        adsEnabled: false,
+        subscriptionEnabled: false,
+        freePlanLimitsEnabled: false,
+        proPlanEnabled: false,
+      );
+      final state = resolvePostStylePreviewGenerationAvailability(
+        usedCount: 3,
+        flags: disabledFlags,
+        purchasedPlanOverride: MonetizationPlan.basic,
+        enforcementEnabled: true,
+      );
+      expect(state.plan, MonetizationPlan.free);
+      expect(state.allowed, isFalse);
+      expect(state.appliesDailyLimit, isTrue);
+    });
+
+    test('isUnlimitedPreviewGeneration is true only for basic and pro', () {
+      expect(
+        isUnlimitedPreviewGeneration(_contextFor(MonetizationPlan.free, flags)),
+        isFalse,
+      );
+      expect(
+        isUnlimitedPreviewGeneration(_contextFor(MonetizationPlan.basic, flags)),
+        isTrue,
+      );
+      expect(
+        isUnlimitedPreviewGeneration(_contextFor(MonetizationPlan.pro, flags)),
+        isTrue,
+      );
     });
   });
 
