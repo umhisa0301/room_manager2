@@ -15,3 +15,9 @@
 -keep class kotlin.** { *; }
 -keep class kotlin.Metadata { *; }
 -dontwarn kotlin.**
+
+# Firebase / Crashlytics（R8 難読化時のクラッシュレポート送信）
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**

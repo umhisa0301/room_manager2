@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_shell.dart';
+import '../config/firebase_config.dart';
 import '../repository/easy_initial_setup_repository.dart';
 import '../repository/legal_consent_repository.dart';
 import '../screens/legal_consent_screen.dart';
+import '../services/analytics_service.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -20,6 +24,25 @@ class AppEntryHost extends StatefulWidget {
 
 class _AppEntryHostState extends State<AppEntryHost> {
   String? _lastOnboardingUiLogSignature;
+  bool _appOpenLogged = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeLogAppOpen());
+  }
+
+  void _maybeLogAppOpen() {
+    if (!mounted || _appOpenLogged) {
+      return;
+    }
+    final legal = context.read<LegalConsentRepository>();
+    if (!legal.isAccepted) {
+      return;
+    }
+    _appOpenLogged = true;
+    unawaited(context.read<AnalyticsService>().logAppOpen());
+  }
 
   void _logOnboarding({
     required bool termsAccepted,
@@ -46,6 +69,9 @@ class _AppEntryHostState extends State<AppEntryHost> {
     ].join('|');
     if (_lastOnboardingUiLogSignature == signature) return;
     _lastOnboardingUiLogSignature = signature;
+    unawaited(
+      context.read<AnalyticsService>().logOnboardingRoute(route: route),
+    );
     logOnboardingUi(
       route: route,
       termsAccepted: termsAccepted,
@@ -81,7 +107,7 @@ class _AppEntryHostState extends State<AppEntryHost> {
       _logOnboarding(
         termsAccepted: false,
         setup: setup,
-        route: 'legal',
+        route: FirebaseConfig.onboardingRouteLegal,
         missingRoomUrl: missingRoomUrl,
         missingGenre: missingGenre,
         missingSavedShop: missingSavedShop,
@@ -91,10 +117,11 @@ class _AppEntryHostState extends State<AppEntryHost> {
       );
       return const LegalConsentScreen();
     }
+    _maybeLogAppOpen();
     _logOnboarding(
       termsAccepted: true,
       setup: setup,
-      route: 'home',
+      route: FirebaseConfig.onboardingRouteHome,
       missingRoomUrl: missingRoomUrl,
       missingGenre: missingGenre,
       missingSavedShop: missingSavedShop,

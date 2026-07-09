@@ -35,6 +35,7 @@ import 'package:room_manager2/state/saved_shop_provider.dart';
 import 'package:room_manager2/state/today_recommendation_provider.dart';
 import 'package:room_manager2/state/user_profile_provider.dart';
 import 'package:room_manager2/repository/room_recommendation_profile_repository.dart';
+import 'package:room_manager2/services/analytics_service.dart';
 import 'package:room_manager2/state/room_recommendation_profile_provider.dart';
 import 'package:room_manager2/widgets/app_entry_host.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,6 +68,7 @@ Widget _wrapAppEntryHost({
 
   return MultiProvider(
     providers: [
+      Provider<AnalyticsService>.value(value: const NoOpAnalyticsService()),
       ChangeNotifierProvider(
         create: (_) => LegalConsentRepository(prefs),
       ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +55,9 @@ import 'config/monetization_config.dart';
 import 'config/monetization_plan_config.dart';
 import 'config/room_import_enrichment_verify_config.dart';
 import 'services/admob_initializer.dart';
+import 'services/analytics_service.dart';
 import 'services/billing_purchase_service.dart';
+import 'services/firebase_initializer.dart';
 import 'services/subscription_entitlement_store.dart';
 import 'utils/room_sync_log.dart';
 
@@ -69,7 +73,16 @@ Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
   }
 }
 
-void main() async {
+void main() {
+  runZonedGuarded(
+    () async {
+      await _bootstrapApp();
+    },
+    FirebaseInitializer.recordZoneError,
+  );
+}
+
+Future<void> _bootstrapApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kDebugMode) {
     debugPrint(
@@ -85,7 +98,12 @@ void main() async {
     );
   }
   roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);
+  final firebaseResult = await FirebaseInitializer.initialize();
+  final analyticsService = firebaseResult.analyticsService;
   final prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool(LegalConsentRepository.acceptedKey) ?? false) {
+    await analyticsService.setConsentGranted(true);
+  }
   final productRepository = ProductRepository(prefs);
   final commentRepository = CommentTemplateRepository(prefs);
   final activityRepository = ActivityLogRepository(prefs);
@@ -145,6 +163,7 @@ void main() async {
       genreMasterRepository: genreMasterRepository,
       prefs: prefs,
       billingPurchaseService: billingPurchaseService,
+      analyticsService: analyticsService,
     ),
   );
 }
@@ -171,6 +190,7 @@ class MyApp extends StatelessWidget {
     required this.genreMasterRepository,
     required this.prefs,
     required this.billingPurchaseService,
+    required this.analyticsService,
   });
 
   final ProductRepository productRepository;
@@ -192,11 +212,13 @@ class MyApp extends StatelessWidget {
   final GenreMasterRepository genreMasterRepository;
   final SharedPreferences prefs;
   final BillingPurchaseService billingPurchaseService;
+  final AnalyticsService analyticsService;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<AnalyticsService>.value(value: analyticsService),
         ChangeNotifierProvider<BillingPurchaseService>.value(
           value: billingPurchaseService,
         ),
@@ -204,7 +226,10 @@ class MyApp extends StatelessWidget {
           create: (_) => SharedPreferencesRoomSyncCursorRepository(prefs),
         ),
         ChangeNotifierProvider(
-          create: (_) => LegalConsentRepository(prefs),
+          create: (_) => LegalConsentRepository(
+            prefs,
+            analytics: analyticsService,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => EasyInitialSetupRepository(prefs),
