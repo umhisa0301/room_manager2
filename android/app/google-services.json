@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "556014838107",
+    "project_id": "roommanager-production",
+    "storage_bucket": "roommanager-production.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556014838107:android:8259c16016fead19e83a7e",
+        "android_client_info": {
+          "package_name": "com.stepbytestudio.room_manager2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz1U4C9AxZowRoQJ4PfTLkJzEAopXvBdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,80 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-07-09 15:31:35
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: release
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: USE_REMOTE_POST_COMMENT_GENERATION=true; AI_GATEWAY_BASE_URL=https://api.stepbytestudio.com/api; AI_GATEWAY_APP_KEY=[redacted]
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260709_153135.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260709_153135.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260709_153135.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260709_153135.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260709_153135.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260709_153135
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260709_153135\terminal_output_20260709_153135.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 8456).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID=[redacted] --dart-define=RAKUTEN_AFFILIATE_ID=[redacted] --release --dart-define=USE_REMOTE_POST_COMMENT_GENERATION=true --dart-define=AI_GATEWAY_BASE_URL=https://api.stepbytestudio.com/api --dart-define=AI_GATEWAY_APP_KEY=[redacted]
+
+Flutter started (release). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in release mode...
+Running Gradle task 'assembleRelease'...                        
+I/flutter (16985): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (16985): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (16985): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=false missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (16985): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (16985): [AUTO_REACTION_SYNC] scheduled
+I/flutter (16985): [AUTO_REACTION_SYNC] skipped reason=notOnHome
+Running Gradle task 'assembleRelease'...                          285.5s
+√ Built build\app\outputs\flutter-apk\app-release.apk (24.3MB)
+Installing build\app\outputs\flutter-apk\app-release.apk...         8.2s
+
+Flutter run key commands.
+h List all available interactive commands.
+c Clear the screen
+q Quit (terminate the application on the device).
+
+I/flutter (17954): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (17954): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (17954): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=false missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17954): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17954): [AUTO_REACTION_SYNC] scheduled
+I/flutter (17954): [AUTO_REACTION_SYNC] skipped reason=notOnHome
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
