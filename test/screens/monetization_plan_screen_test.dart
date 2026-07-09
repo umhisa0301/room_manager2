@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:room_manager2/config/billing_product_config.dart';
 import 'package:room_manager2/config/monetization_config.dart';
 import 'package:room_manager2/config/monetization_plan_config.dart';
 import 'package:room_manager2/screens/monetization_plan_screen.dart';
+import 'package:room_manager2/services/analytics_service.dart';
 import 'package:room_manager2/services/billing_product_service.dart';
 import 'package:room_manager2/services/billing_purchase_service.dart';
 import 'package:room_manager2/services/subscription_entitlement_store.dart';
@@ -48,13 +50,16 @@ void main() {
       bool skipBillingQuery = true,
     }) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: MonetizationPlanScreen(
-            flags: flags,
-            billingQueryResultOverride: billingQueryResultOverride ??
-                createPlannedFallbackBillingQueryResult(),
-            billingPurchaseService: billingPurchaseService,
-            skipBillingQuery: skipBillingQuery,
+        Provider<AnalyticsService>.value(
+          value: const NoOpAnalyticsService(),
+          child: MaterialApp(
+            home: MonetizationPlanScreen(
+              flags: flags,
+              billingQueryResultOverride: billingQueryResultOverride ??
+                  createPlannedFallbackBillingQueryResult(),
+              billingPurchaseService: billingPurchaseService,
+              skipBillingQuery: skipBillingQuery,
+            ),
           ),
         ),
       );
@@ -374,12 +379,15 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: MonetizationPlanScreen(
-            flags: _allOnFlags(),
-            skipBillingQuery: false,
-            billingProductService: BillingProductService(
-              gateway: _NeverCompletingGateway(),
+        Provider<AnalyticsService>.value(
+          value: const NoOpAnalyticsService(),
+          child: MaterialApp(
+            home: MonetizationPlanScreen(
+              flags: _allOnFlags(),
+              skipBillingQuery: false,
+              billingProductService: BillingProductService(
+                gateway: _NeverCompletingGateway(),
+              ),
             ),
           ),
         ),

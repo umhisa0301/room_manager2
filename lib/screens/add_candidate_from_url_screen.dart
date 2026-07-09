@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../app_messenger.dart';
 import '../models/rakuten_managed_product.dart';
+import '../models/analytics_params.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
@@ -273,7 +274,10 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
       return outcome.userMessage ??
           '商品情報を取得できませんでした。itemCode を確認するか、しばらくしてからお試しください。';
     }
-    return managed.registerCandidate(outcome.item!);
+    return managed.registerCandidate(
+      outcome.item!,
+      analyticsSource: AnalyticsCandidateSource.manual,
+    );
   }
 
   void _closeSheetAndPopScreenAndOpenRoomCollect({

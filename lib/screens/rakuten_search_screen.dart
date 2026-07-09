@@ -9,6 +9,7 @@ import '../config/monetization_config.dart';
 import '../widgets/monetization/monetization_ad_slot.dart';
 import '../config/shop_discovery_pool_fallback_config.dart';
 import '../models/rakuten_managed_product.dart';
+import '../models/analytics_params.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
@@ -1721,7 +1722,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               },
               onRegisterCandidate: () async {
                 final before = managed.statusForProduct(item.productId);
-                final err = await managed.registerCandidate(item);
+                final err = await managed.registerCandidate(
+                  item,
+                  analyticsSource: AnalyticsCandidateSource.search,
+                );
                 if (!context.mounted) return;
                 if (err != null) {
                   ScaffoldMessenger.of(
@@ -5139,7 +5143,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
           continue;
         }
-        final err = await managed.registerCandidate(item);
+        final err = await managed.registerCandidate(
+          item,
+          analyticsSource: AnalyticsCandidateSource.search,
+        );
         if (err == null) {
           final after = managed.statusForProduct(item.productId);
           if (after == RakutenManagedProductStatus.candidate) {

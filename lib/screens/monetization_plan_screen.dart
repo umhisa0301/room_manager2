@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/monetization_config.dart';
 import '../config/monetization_plan_config.dart';
+import '../models/analytics_params.dart';
+import '../services/analytics_service.dart';
 import '../services/billing_product_service.dart';
 import '../services/billing_purchase_service.dart';
 import '../theme/app_theme.dart';
@@ -20,6 +24,7 @@ class MonetizationPlanScreen extends StatefulWidget {
     this.billingPurchaseService,
     this.billingQueryResultOverride,
     this.skipBillingQuery = false,
+    this.entrySource = AnalyticsMonetizationPlanSource.unknown,
   });
 
   /// テスト用。未指定時はコンパイル時フラグ。
@@ -37,6 +42,9 @@ class MonetizationPlanScreen extends StatefulWidget {
 
   /// テスト用。true のとき商品照会をスキップする。
   final bool skipBillingQuery;
+
+  /// Analytics 用の遷移元。
+  final AnalyticsMonetizationPlanSource entrySource;
 
   @override
   State<MonetizationPlanScreen> createState() => _MonetizationPlanScreenState();
@@ -57,11 +65,28 @@ class _MonetizationPlanScreenState extends State<MonetizationPlanScreen> {
   BillingProductQueryResult? _billingQueryResult;
   BillingPurchaseService? _purchaseService;
   String? _lastShownPurchaseMessage;
+  bool _planOpenedLogged = false;
 
   @override
   void initState() {
     super.initState();
     _initializeBillingQuery();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _logPlanOpenedOnce());
+  }
+
+  void _logPlanOpenedOnce() {
+    if (_planOpenedLogged || !mounted) return;
+    _planOpenedLogged = true;
+    final currentPlan = resolveCurrentMonetizationPlan(
+      flags: widget.flags,
+      purchasedPlanOverride: widget.purchasedPlanOverride,
+    );
+    unawaited(
+      context.read<AnalyticsService>().logMonetizationPlanOpened(
+        source: widget.entrySource,
+        currentPlan: currentPlan.name,
+      ),
+    );
   }
 
   @override

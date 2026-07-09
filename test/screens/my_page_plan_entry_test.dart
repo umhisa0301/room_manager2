@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:room_manager2/screens/monetization_plan_screen.dart';
 import 'package:room_manager2/screens/mypage_placeholder_screen.dart';
+import 'package:room_manager2/services/analytics_service.dart';
 
 Widget _settingsSection({
   required VoidCallback onOpenPlan,
@@ -40,7 +42,10 @@ void main() {
               onOpenPlan: () {
                 Navigator.of(tester.element(find.byType(Scaffold))).push<void>(
                   MaterialPageRoute<void>(
-                    builder: (_) => const MonetizationPlanScreen(),
+                    builder: (_) => Provider<AnalyticsService>.value(
+                      value: const NoOpAnalyticsService(),
+                      child: const MonetizationPlanScreen(),
+                    ),
                   ),
                 );
               },

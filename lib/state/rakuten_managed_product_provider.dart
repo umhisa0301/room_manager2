@@ -12,6 +12,7 @@ import '../repository/rakuten_search_repository.dart';
 import 'room_activity_event_provider.dart';
 import 'bulk_operation_state_controller.dart';
 import '../services/app_action_service.dart';
+import '../services/analytics_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
@@ -20,6 +21,7 @@ import '../utils/app_debug_log.dart';
 import '../utils/managed_product_diag_log.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/collect_post_success_overlay.dart';
+import '../models/analytics_params.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
 enum RakutenManagedProductListUiStatus { idle, loading, ready, error }
@@ -32,10 +34,12 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     required RoomActivityEventProvider activityEventProvider,
     RakutenSearchRepository? rakutenSearchRepository,
     BulkOperationStateController? bulkOperationState,
+    AnalyticsService? analytics,
   }) : _repository = repository,
        _pendingCollectNoticeRepository = pendingCollectNoticeRepository,
        _activityEventProvider = activityEventProvider,
        _bulkOperationState = bulkOperationState,
+       _analytics = analytics ?? AnalyticsServiceRegistry.instance,
        _roomCollectedRegisterService = RoomCollectedRegisterService(
          repository: repository,
          searchRepository: rakutenSearchRepository,
@@ -49,6 +53,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   final PendingCollectNoticeRepository _pendingCollectNoticeRepository;
   final RoomActivityEventProvider _activityEventProvider;
   final BulkOperationStateController? _bulkOperationState;
+  final AnalyticsService _analytics;
   final RoomCollectedRegisterService _roomCollectedRegisterService;
 
   static String _newEventId(String productId, RoomActivityEventType type) =>
@@ -239,7 +244,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
 
   /// コレ候補として登録。成功時は null、失敗時はエラーメッセージ。
   /// 既に候補・コレ済の場合は重複せず成功扱い（null）。URL抽出は新規登録時のみ非同期で開始。
-  Future<String?> registerCandidate(RakutenSearchItem item) async {
+  Future<String?> registerCandidate(
+    RakutenSearchItem item, {
+    AnalyticsCandidateSource analyticsSource = AnalyticsCandidateSource.unknown,
+  }) async {
     final id = item.productId.trim();
     if (id.isEmpty) {
       return '商品IDが空のため登録できません';
@@ -291,6 +299,16 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         final extractionPageUrl = item.browserLaunchUrl;
         unawaited(_runPostRegisterExtraction(id, extractionPageUrl));
       }
+      final candidateCount = sortedItemsForStatus(
+        RakutenManagedProductStatus.candidate,
+      ).length;
+      unawaited(
+        _analytics.logCandidateAdded(
+          source: analyticsSource,
+          alreadySaved: !added,
+          candidateCountAfter: candidateCount,
+        ),
+      );
       return null;
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -433,6 +451,8 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     BuildContext context,
     String productId, {
     void Function(String message)? notifyInsteadOfDialogs,
+    AnalyticsRoomLaunchSource analyticsSource =
+        AnalyticsRoomLaunchSource.unknown,
   }) async {
     void notifyOrDialog(String message) {
       if (notifyInsteadOfDialogs != null) {
@@ -551,6 +571,13 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       return false;
     }
     if (!context.mounted) return false;
+
+    unawaited(
+      _analytics.logRoomLaunchTapped(
+        source: analyticsSource,
+        launchType: AnalyticsRoomLaunchType.room,
+      ),
+    );
 
     final snap = RoomCollectPostLimitSnapshot.compute(
       items: _items,

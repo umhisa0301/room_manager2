@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/debug_log_flags.dart';
+import '../models/analytics_params.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../utils/room_reaction_status_display.dart';
@@ -700,6 +701,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                         await provider.collectRoomAndLaunch(
                           context,
                           product.productId,
+                          analyticsSource: AnalyticsRoomLaunchSource.candidate,
                         );
                       },
                 style: _cardPrimaryButtonStyle(enabled: !postActionsDisabled),

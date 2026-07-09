@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../models/analytics_params.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
+import '../services/analytics_service.dart';
 import '../services/app_action_service.dart';
 import '../services/post_comment_generation_exception.dart';
 import '../services/post_comment_generation_limit.dart';
@@ -30,7 +34,17 @@ Future<void> showRoomPostPrepareBottomSheet({
   PostCommentGenerationBucket? generationBucket,
   String? productKey,
   bool? enforceDailyGenerationLimit,
+  AnalyticsPostPrepareSource analyticsSource =
+      AnalyticsPostPrepareSource.unknown,
 }) {
+  final analytics = context.read<AnalyticsService>();
+  final styleSettings = context.read<PostStyleSettingsProvider>().settings;
+  unawaited(
+    analytics.logPostPrepareOpened(
+      source: analyticsSource,
+      hasSavedStyle: isPostStyleConfigured(styleSettings),
+    ),
+  );
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
@@ -271,14 +285,16 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     _userEditedBody = false;
   }
 
+  AnalyticsService get _analytics => context.read<AnalyticsService>();
+
   Future<void> _generateAiComment() async {
     if (_aiLoading) return;
 
+    PostCommentGenerationLimitState? limitState;
     if (_generationLimitEnforced) {
       final bucket = widget.generationBucket!;
       final productKey = _effectiveProductKey;
-      final limitState =
-          await resolvePostCommentGenerationAvailabilityForToday(
+      limitState = await resolvePostCommentGenerationAvailabilityForToday(
         bucket: bucket,
         productKey: productKey ?? '',
         enforcementEnabled: true,
@@ -286,18 +302,36 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       if (!limitState.allowed) {
         if (!mounted) return;
         setState(() {
-          _aiError = _limitBlockedMessage(limitState);
+          _aiError = _limitBlockedMessage(limitState!);
         });
+        unawaited(
+          _analytics.logAiCommentGenerateError(
+            source: AnalyticsAiCommentSource.postPrepare,
+            errorType: AnalyticsAiCommentErrorType.limit,
+          ),
+        );
         return;
       }
     }
+
+    final styleSettings = context.read<PostStyleSettingsProvider>().settings;
+    final styleConfigured = isPostStyleConfigured(styleSettings);
+    final remainingBefore = limitState == null
+        ? null
+        : (limitState.limit - limitState.usedCount).clamp(0, 1000);
+    unawaited(
+      _analytics.logAiCommentGenerateStart(
+        source: AnalyticsAiCommentSource.postPrepare,
+        remainingCountBefore: remainingBefore,
+        styleConfigured: styleConfigured,
+      ),
+    );
 
     setState(() {
       _aiLoading = true;
       _aiError = null;
     });
     try {
-      final styleSettings = context.read<PostStyleSettingsProvider>().settings;
       final result = await widget.generationService.generate(
         PostCommentGenerationInput(
           itemName: deriveProductDisplayTitle(widget.item.itemName),
@@ -336,6 +370,27 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         }
         _aiLoading = false;
       });
+      int? remainingAfter;
+      if (_generationLimitEnforced) {
+        final bucket = widget.generationBucket!;
+        final productKey = _effectiveProductKey ?? '';
+        final limitState =
+            await resolvePostCommentGenerationAvailabilityForToday(
+          bucket: bucket,
+          productKey: productKey,
+          enforcementEnabled: true,
+        );
+        remainingAfter = (limitState.limit - limitState.usedCount).clamp(0, 1000);
+      }
+      unawaited(
+        _analytics.logAiCommentGenerateSuccess(
+          source: AnalyticsAiCommentSource.postPrepare,
+          generatedLengthBucket: bucketGeneratedTextLength(
+            result.displayText.length,
+          ),
+          remainingCountAfter: remainingAfter,
+        ),
+      );
     } on PostCommentGenerationException catch (e) {
       if (kDebugMode) {
         debugPrint(
@@ -347,12 +402,24 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         _aiLoading = false;
         _aiError = postCommentGenerationUserMessage(e);
       });
+      unawaited(
+        _analytics.logAiCommentGenerateError(
+          source: AnalyticsAiCommentSource.postPrepare,
+          errorType: classifyAnalyticsAiCommentError(e),
+        ),
+      );
     } catch (_) {
       if (!mounted) return;
       setState(() {
         _aiLoading = false;
         _aiError = _aiGenerationErrorMessage;
       });
+      unawaited(
+        _analytics.logAiCommentGenerateError(
+          source: AnalyticsAiCommentSource.postPrepare,
+          errorType: AnalyticsAiCommentErrorType.network,
+        ),
+      );
     }
   }
 
@@ -369,6 +436,15 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       final text = _bodyController.text.trim();
       if (text.isNotEmpty) {
         await Clipboard.setData(ClipboardData(text: text));
+        unawaited(
+          _analytics.logAiCommentCopied(
+            source: AnalyticsAiCommentSource.postPrepare,
+            textType: resolveAiCommentTextType(
+              bodyText: text,
+              userEditedBody: _userEditedBody,
+            ),
+          ),
+        );
         if (kDebugMode) {
           debugPrint('[ROOM_POST_PREPARE] copyText done');
         }
@@ -385,7 +461,11 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       navigator.pop();
 
       if (!launchContext.mounted) return;
-      final ok = await provider.collectRoomAndLaunch(launchContext, productId);
+      final ok = await provider.collectRoomAndLaunch(
+        launchContext,
+        productId,
+        analyticsSource: AnalyticsRoomLaunchSource.postPrepare,
+      );
 
       if (kDebugMode) {
         debugPrint(

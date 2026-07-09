@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../models/analytics_params.dart';
 import '../models/today_recommendation.dart';
+import '../services/analytics_service.dart';
 import '../services/app_action_service.dart';
 import '../services/post_comment_generation_limit.dart';
 import '../services/recommendation_generation_limit.dart';
@@ -21,6 +23,7 @@ import '../theme/app_theme.dart';
 import '../theme/today_recommendations_screen_tokens.dart';
 import '../utils/recommend_cooldown_policy.dart';
 import '../utils/today_recommendation_ui_tags.dart';
+import '../utils/today_recommendation_work_progress.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
@@ -45,6 +48,33 @@ class TodayRecommendationsScreen extends StatefulWidget {
 class _TodayRecommendationsScreenState
     extends State<TodayRecommendationsScreen> with WidgetsBindingObserver {
   Timer? _regenerateUiRefreshTimer;
+  bool _recommendationsOpenedLogged = false;
+
+  void _maybeLogRecommendationsOpened(TodayRecommendationBundle bundle) {
+    if (_recommendationsOpenedLogged || bundle.entries.isEmpty) return;
+    _recommendationsOpenedLogged = true;
+    final analytics = context.read<AnalyticsService>();
+    final generatedToday =
+        bundle.localDateKey == TodayRecommendationWorkProgress.localDateKey();
+    unawaited(
+      analytics.logRecommendationsOpened(
+        itemCount: bundle.entries.length,
+        generatedToday: generatedToday,
+      ),
+    );
+  }
+
+  void _logRecommendationItemTapped({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  }) {
+    unawaited(
+      context.read<AnalyticsService>().logRecommendationItemTapped(
+        position: position,
+        action: action,
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -263,6 +293,7 @@ class _TodayRecommendationsScreenState
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
               _syncRegenerateUiRefresh();
+              _maybeLogRecommendationsOpened(bundle);
             });
             return KeyedSubtree(
               key: const Key('today_recommendation_result_area'),
@@ -305,7 +336,15 @@ class _TodayRecommendationsScreenState
                       }
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: _RecommendationCard(entry: row.entry!),
+                        child: _RecommendationCard(
+                          entry: row.entry!,
+                          position: rows
+                                  .take(index + 1)
+                                  .where((r) => r.entry != null)
+                                  .length -
+                              1,
+                          onItemTapped: _logRecommendationItemTapped,
+                        ),
                       );
                     },
                   ),
@@ -445,9 +484,18 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _RecommendationCard extends StatelessWidget {
-  const _RecommendationCard({required this.entry});
+  const _RecommendationCard({
+    required this.entry,
+    required this.position,
+    required this.onItemTapped,
+  });
 
   final TodayRecommendationEntry entry;
+  final int position;
+  final void Function({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  }) onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -459,21 +507,31 @@ class _RecommendationCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ProductImageWithStatus(entry: entry),
+          _ProductImageWithStatus(
+            entry: entry,
+            position: position,
+            onItemTapped: onItemTapped,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () => ProductCardRakutenOpen.open(
-                    context: context,
-                    affiliateUrl: item.affiliateUrl,
-                    itemUrl: item.itemUrl,
-                    screen: 'todayRecommendations',
-                    productId: item.productId,
-                    source: 'title',
-                  ),
+                  onTap: () {
+                    onItemTapped(
+                      position: position,
+                      action: AnalyticsRecommendationAction.openDetail,
+                    );
+                    ProductCardRakutenOpen.open(
+                      context: context,
+                      affiliateUrl: item.affiliateUrl,
+                      itemUrl: item.itemUrl,
+                      screen: 'todayRecommendations',
+                      productId: item.productId,
+                      source: 'title',
+                    );
+                  },
                   borderRadius: BorderRadius.circular(6),
                   child: Text(
                     item.itemName,
@@ -514,7 +572,11 @@ class _RecommendationCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 _RecommendationTagWrap(entry: entry),
                 const SizedBox(height: 10),
-                _CardActionArea(entry: entry),
+                _CardActionArea(
+                  entry: entry,
+                  position: position,
+                  onItemTapped: onItemTapped,
+                ),
               ],
             ),
           ),
@@ -712,9 +774,18 @@ _RecommendationCardCtaState _recommendationCardCtaState({
 }
 
 class _CardActionArea extends StatefulWidget {
-  const _CardActionArea({required this.entry});
+  const _CardActionArea({
+    required this.entry,
+    required this.position,
+    required this.onItemTapped,
+  });
 
   final TodayRecommendationEntry entry;
+  final int position;
+  final void Function({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  }) onItemTapped;
 
   @override
   State<_CardActionArea> createState() => _CardActionAreaState();
@@ -740,11 +811,16 @@ class _CardActionAreaState extends State<_CardActionArea> {
   }
 
   void _openPostPrepareSheet(BuildContext context) {
+    widget.onItemTapped(
+      position: widget.position,
+      action: AnalyticsRecommendationAction.postPrepare,
+    );
     showRoomPostPrepareBottomSheet(
       context: context,
       item: entry.item,
       recommendationReason: entry.reason,
       generationBucket: PostCommentGenerationBucket.recommendation,
+      analyticsSource: AnalyticsPostPrepareSource.recommendation,
     );
   }
 
@@ -763,6 +839,12 @@ class _CardActionAreaState extends State<_CardActionArea> {
       );
       return;
     }
+    unawaited(
+      context.read<AnalyticsService>().logRoomLaunchTapped(
+        source: AnalyticsRoomLaunchSource.recommendation,
+        launchType: AnalyticsRoomLaunchType.room,
+      ),
+    );
     await AppActionService.openUrl(context, url: postUrl);
   }
 
@@ -789,6 +871,10 @@ class _CardActionAreaState extends State<_CardActionArea> {
       return;
     }
     setState(() => _isAddingCandidate = true);
+    widget.onItemTapped(
+      position: widget.position,
+      action: AnalyticsRecommendationAction.addCandidate,
+    );
     final rec = context.read<TodayRecommendationProvider>();
     final managed = context.read<RakutenManagedProductProvider>();
     final err = await rec.markAddedCandidate(
@@ -918,9 +1004,18 @@ class _CardActionAreaState extends State<_CardActionArea> {
 }
 
 class _ProductImageWithStatus extends StatelessWidget {
-  const _ProductImageWithStatus({required this.entry});
+  const _ProductImageWithStatus({
+    required this.entry,
+    required this.position,
+    required this.onItemTapped,
+  });
 
   final TodayRecommendationEntry entry;
+  final int position;
+  final void Function({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  }) onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -931,7 +1026,12 @@ class _ProductImageWithStatus extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            _Thumb(imageUrl: entry.item.imageUrl, entry: entry),
+            _Thumb(
+              imageUrl: entry.item.imageUrl,
+              entry: entry,
+              position: position,
+              onItemTapped: onItemTapped,
+            ),
             Positioned(
               top: 4,
               right: 4,
@@ -1001,10 +1101,20 @@ class _DecisionBadge extends StatelessWidget {
 }
 
 class _Thumb extends StatelessWidget {
-  const _Thumb({required this.imageUrl, required this.entry});
+  const _Thumb({
+    required this.imageUrl,
+    required this.entry,
+    required this.position,
+    required this.onItemTapped,
+  });
 
   final String imageUrl;
   final TodayRecommendationEntry entry;
+  final int position;
+  final void Function({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  }) onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -1013,14 +1123,20 @@ class _Thumb extends StatelessWidget {
       child: Material(
         color: AppColors.surfaceVariant,
         child: InkWell(
-          onTap: () => ProductCardRakutenOpen.open(
-            context: context,
-            affiliateUrl: entry.item.affiliateUrl,
-            itemUrl: entry.item.itemUrl,
-            screen: 'todayRecommendations',
-            productId: entry.item.productId,
-            source: 'image',
-          ),
+          onTap: () {
+            onItemTapped(
+              position: position,
+              action: AnalyticsRecommendationAction.openDetail,
+            );
+            ProductCardRakutenOpen.open(
+              context: context,
+              affiliateUrl: entry.item.affiliateUrl,
+              itemUrl: entry.item.itemUrl,
+              screen: 'todayRecommendations',
+              productId: entry.item.productId,
+              source: 'image',
+            );
+          },
           child: SizedBox(
             width: 92,
             height: 108,

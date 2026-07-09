@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/catalog_product.dart';
+import '../models/analytics_params.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/rakuten_product_search_condition.dart';
@@ -517,7 +518,10 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                             : null,
                         compactListLayout: _shouldLoadItemsFromShopCode,
                         onRegisterCandidate: () async {
-                          final err = await managed.registerCandidate(item);
+                          final err = await managed.registerCandidate(
+                            item,
+                            analyticsSource: AnalyticsCandidateSource.search,
+                          );
                           if (!context.mounted) return;
                           if (err != null) {
                             ScaffoldMessenger.of(

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../config/product_catalog_config.dart';
 import '../models/rakuten_managed_product.dart';
+import '../models/analytics_params.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
@@ -490,7 +491,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required RakutenManagedProductProvider managedProvider,
     required RakutenSearchItem item,
   }) async {
-    final err = await managedProvider.registerCandidate(item);
+    final err = await managedProvider.registerCandidate(
+      item,
+      analyticsSource: AnalyticsCandidateSource.recommendation,
+    );
     if (err != null) return err;
     final b = _bundle;
     if (b == null) return null;

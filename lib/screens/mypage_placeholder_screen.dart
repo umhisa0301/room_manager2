@@ -7,6 +7,7 @@ import '../config/demo_mode.dart';
 import '../config/dev_automation_config.dart';
 import '../services/dev_automation_visible_run.dart';
 import '../models/user_profile.dart';
+import '../models/analytics_params.dart';
 import '../models/operation_tutorial_id.dart';
 import '../repository/easy_initial_setup_repository.dart';
 import '../repository/operation_tutorial_repository.dart';
@@ -197,7 +198,11 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
 
   void _openMonetizationPlan(BuildContext context) {
     Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(builder: (_) => const MonetizationPlanScreen()),
+      MaterialPageRoute<void>(
+        builder: (_) => const MonetizationPlanScreen(
+          entrySource: AnalyticsMonetizationPlanSource.mypage,
+        ),
+      ),
     );
   }
 

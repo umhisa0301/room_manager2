@@ -13,6 +13,7 @@ import 'package:room_manager2/repository/pending_collect_notice_repository.dart'
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
+import 'package:room_manager2/services/analytics_service.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_result_store.dart';
 import 'package:room_manager2/services/post_comment_generation_exception.dart';
@@ -160,6 +161,7 @@ Future<Widget> _wrapSheet({
 
   return MultiProvider(
     providers: [
+      Provider<AnalyticsService>.value(value: const NoOpAnalyticsService()),
       ChangeNotifierProvider(
         create: (_) => PostStyleSettingsProvider(
           repository: PostStyleSettingsRepository(prefs),

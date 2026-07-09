@@ -11,6 +11,7 @@ import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../services/analytics_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/catalog_product_mapper.dart';
@@ -39,13 +40,16 @@ class RakutenSearchProvider extends ChangeNotifier {
     required RakutenSearchRepository repository,
     GenreMasterRepository? genreMasterRepository,
     ProductCatalogRepository? productCatalogRepository,
+    AnalyticsService? analytics,
   }) : _repository = repository,
        _genreMasterRepository = genreMasterRepository,
-       _productCatalogRepository = productCatalogRepository;
+       _productCatalogRepository = productCatalogRepository,
+       _analytics = analytics ?? AnalyticsServiceRegistry.instance;
 
   final RakutenSearchRepository _repository;
   final GenreMasterRepository? _genreMasterRepository;
   final ProductCatalogRepository? _productCatalogRepository;
+  final AnalyticsService _analytics;
 
   /// 検索結果に対応するジャンル表示名（API解決後）。キーは `genreId` 文字列。
   Map<String, String> _resolvedGenreLabels = const {};
@@ -239,6 +243,17 @@ class RakutenSearchProvider extends ChangeNotifier {
       return;
     }
     clearErrorForNewSearch(modeTag: modeTag, requestId: sid);
+    final analyticsSource = resolveAnalyticsSearchSource(normalized);
+    final analyticsHasKeyword = normalized.keyword.isNotEmpty;
+    final analyticsHasGenre =
+        normalized.genreId != null && normalized.genreId!.trim().isNotEmpty;
+    unawaited(
+      _analytics.logSearchExecuted(
+        source: analyticsSource,
+        hasKeyword: analyticsHasKeyword,
+        hasGenre: analyticsHasGenre,
+      ),
+    );
     if (kDebugMode && modeTag == 'savedShop') {
       debugPrint(
         '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=start '
@@ -351,6 +366,12 @@ class RakutenSearchProvider extends ChangeNotifier {
       )) {
         return;
       }
+      unawaited(
+        _analytics.logSearchResultLoaded(
+          source: analyticsSource,
+          resultCount: fetched.length,
+        ),
+      );
       if (kDebugMode && modeTag == 'savedShop') {
         debugPrint(
           '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=success '
@@ -451,6 +472,15 @@ class RakutenSearchProvider extends ChangeNotifier {
         }
         return;
       }
+      unawaited(
+        _analytics.logSearchFailed(
+          source: analyticsSource,
+          errorType: classifyAnalyticsSearchError(
+            error: e,
+            httpStatus: responseStatus,
+          ),
+        ),
+      );
       if (kDebugMode && modeTag == 'savedShop') {
         debugPrint(
           '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=error '

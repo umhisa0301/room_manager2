@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
 import 'package:room_manager2/models/today_recommendation.dart';
 import 'package:room_manager2/navigation/app_shell_controller.dart';
+import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/pending_collect_notice_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/rakuten_search_repository.dart';
@@ -14,8 +15,10 @@ import 'package:room_manager2/repository/saved_shop_repository.dart';
 import 'package:room_manager2/repository/today_recommendation_repository.dart';
 import 'package:room_manager2/repository/user_profile_repository.dart';
 import 'package:room_manager2/screens/today_recommendations_screen.dart';
+import 'package:room_manager2/services/analytics_service.dart';
 import 'package:room_manager2/services/rakuten_api_service.dart';
 import 'package:room_manager2/state/bulk_operation_state_controller.dart';
+import 'package:room_manager2/state/post_style_settings_provider.dart';
 import 'package:room_manager2/state/rakuten_managed_product_provider.dart';
 import 'package:room_manager2/state/room_activity_event_provider.dart';
 import 'package:room_manager2/state/room_recommendation_profile_provider.dart';
@@ -60,9 +63,15 @@ Future<Widget> _wrapTodayScreen({
 
   return MultiProvider(
     providers: [
+      Provider<AnalyticsService>.value(value: const NoOpAnalyticsService()),
       ChangeNotifierProvider(create: (_) => AppShellController()),
       ChangeNotifierProvider(
         create: (_) => BulkOperationStateController(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => PostStyleSettingsProvider(
+          repository: PostStyleSettingsRepository(prefs),
+        ),
       ),
       ChangeNotifierProvider(
         create: (_) => RoomActivityEventProvider(

@@ -277,10 +277,11 @@ class MyApp extends StatelessWidget {
           create: (_) => ActivityLogProvider(repository: activityRepository),
         ),
         ChangeNotifierProvider(
-          create: (_) => RakutenSearchProvider(
+          create: (ctx) => RakutenSearchProvider(
             repository: rakutenSearchRepository,
             genreMasterRepository: genreMasterRepository,
             productCatalogRepository: productCatalogRepository,
+            analytics: ctx.read<AnalyticsService>(),
           ),
         ),
         ChangeNotifierProvider(
@@ -295,6 +296,7 @@ class MyApp extends StatelessWidget {
             activityEventProvider: ctx.read<RoomActivityEventProvider>(),
             rakutenSearchRepository: rakutenSearchRepository,
             bulkOperationState: ctx.read<BulkOperationStateController>(),
+            analytics: ctx.read<AnalyticsService>(),
           ),
         ),
         ChangeNotifierProvider(
