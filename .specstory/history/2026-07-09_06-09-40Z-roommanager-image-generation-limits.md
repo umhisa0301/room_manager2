@@ -152,11 +152,19 @@ Additional data:
 
 ```json
 {
-  "status": "loading",
-  "subagentComposerId": "81082c50-cb23-4f1f-8968-d3ab64388047"
+  "status": "success",
+  "subagentComposerId": "81082c50-cb23-4f1f-8968-d3ab64388047",
+  "terminationReason": "completed"
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "agentId": "81082c50-cb23-4f1f-8968-d3ab64388047"
+}
+```
+Status: **completed**
 
 
 </details>
@@ -366,3 +374,1017 @@ Status: **completed**
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+原因が判明した。`FREE_PLAN_LIMITS_ENABLED` のデフォルト値が `false` であるため、`limitsEnforcementEnabled` が無効になり、全ユーザーが無制限に動作している。
+
+修正方針を整理した。有料プラン以外は無料扱いとする。Store と UI は同じ Limit 関数を使う。4 回目以降は Remote API を呼ばない。monetization_config.dart や post_style_preview_generation_limit.dart などの関連ファイルを確認して修正する。
+
+修正方針を具体化した。プレビュージェネレーションの制限を `FREE_LIMITS_ENABLED` フラグから切り離し、Remote 有効＋無料プラン時に制限を適用するようロジックを変更する。関連ファイルを詳細に確認する。</details></think>
+
+_**Agent (default)**_
+
+根本原因は `FREE_PLAN_LIMITS_ENABLED` のデフォルトが false の可能性が高いです。関連実装を読み、修正方針を確定します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\monetization_config.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\monetization_plan_config.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\post_style_settings_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+根本原因を特定しました。
+
+`post_style_preview_generation_limit.dart` で `FREE_PLAN_LIMITS_ENABLED` が `false` にデフォルト設定されているため、課金フラグがオフの状態でも無料ユーザーの制限が適用されません。有料プラン有効時のみ無制限とし、エンタイトルメント不明・未決済・課金準備中は無料扱いとする必要があります。
+
+修正方針を確定しました。プレビュージェネレーションの `appliesDailyLimit` 判定を `FREE_PLAN_LIMITS_ENABLED` に依存させず、Remote AI 有効な無料プランには日次制限を適用します。有料プラン（basic/pro）有効時は無制限とし、Stub モードではカウント対象外とします。`clampMonetizationPlan` で有料プランを判定できるため、課金フラグの有無に関わらず無料・有料を正しく分類できます。
+
+課金準備中や過去のテスト購入による有効なエンタイトルメントがあっても、`clampMonetizationPlan` で無料プランに正しくクラムプされるため、課金フラグの有無に関わらず無料ユーザーの制限が適用されます。無制限にする条件は、明示的に有料プラン（basic/pro）が有効でサブスクリプションと課金が有効な場合のみとします。
+
+具体的なコード案を検討しています。課金・サブスクリプション有効時に有料プラン（basic/pro）が明示的にアクティブなら無制限とし、それ以外は無料制限とします。`isExplicitlyPaidActive` ヘルパー関数を新設する案も考えています。
+
+コード案を確定しました。`resolveCurrentMonetizationPlan` でサブスクリプション無効時に無料プランにクラムプされるため、プレビュージェネレーションの `appliesDailyLimit` 判定を `remoteEnabled && context.plan == MonetizationPlan.free` に簡略化します。これにより `FREE_PLAN_LIMITS_ENABLED` への依存を完全に排除し、Remote AI 有効な無料プランには日次制限が適用されます。
+
+`clampMonetizationPlan` がサブスクリプション無効時に無料プランにクラムプされることを確認しました。課金準備中やテスト購入による有効なエンタイトルメントがあっても無料制限が適用されます。Play ストアのテストユーザーが有料プランとして誤認識されないかも確認が必要です。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\subscription_status.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\billing_purchase_service.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "registerPurchasedMonetizationPlanProvider|SubscriptionEntitlementStore"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "registerPurchasedMonetizationPlanProvider|SubscriptionEntitlementStore",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "test/screens/monetization_plan_screen_test.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/services/billing_purchase_service.dart"
+    },
+    {
+      "matchCount": 17,
+      "uri": "test/services/subscription_entitlement_store_test.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "test/services/billing_purchase_service_test.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test/config/monetization_plan_config_test.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/services/subscription_entitlement_store.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/config/monetization_plan_config.dart"
+    }
+  ],
+  "totalFiles": 8,
+  "totalMatches": 39
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+main.dart の登録処理と課金購入処理を確認する。Playテストユーザーの扱いを調べる。既存のテストコードも読み込む。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\main.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\services\post_style_preview_generation_limit_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\post_style_settings_screen_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\billing_purchase_service.dart",
+  "pattern": "basicActive|testUser|license|entitlement"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\billing_purchase_service.dart",
+  "pattern": "basicActive|testUser|license|entitlement",
+  "topFiles": [
+    {
+      "matchCount": 29,
+      "uri": "lib\\services\\billing_purchase_service.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 29
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+原因が判明した。詳細を整理している。
+
+根本原因が判明した。無料プランの日次制限適用条件に `context.limitsEnforcementEnabled` が含まれており、これがデフォルトで無効になっているため、課金フラグがオフでも無制限に動作していた。
+
+修正方針は、プレビュージェネレーションの制限をリモート有効かつ無制限プレビュー生成ではない場合に適用するよう変更すること。有料プランの明示的判定は、plan が basic または pro にクラムプされた後で行う。
+
+プレビュージェネレーションの日次制限は `remoteEnabled && context.plan == MonetizationPlan.free` で十分であり、`limitsEnforcementEnabled` は不要である。
+
+ユーザーが要求したヘルパー関数とデバッグログ（previewLimitEnforced、useRemotePostCommentGeneration、currentPlan、entitlementState など）を追加する必要がある。
+
+ entitlementState を取得する方法を確認中である。
+
+デバッグログに含める項目を確定した。previewLimitEnforced や entitlementState などの値を取得する方法を調べている。subscription_entitlement_store から readStoredPurchaseEntitlement() で entitlementState を読み取る方法を検討している。app_debug_log や ai_gateway_config、subscription_entitlement_store のコードを確認する必要がある。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\subscription_entitlement_store.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\app_debug_log.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\config\ai_gateway_config.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\screens\post_style_settings_screen_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査を完了し、修正を実装する。
+
+`post_style_preview_generation_limit.dart` を修正する。有料プラン（basic/pro）のみ無制限化するロジックを追加し、`appliesDailyLimit` を `remoteEnabled && !isUnlimitedPreviewGeneration(context)` に変更する。`limitsEnforcementEnabled` への依存を削除し、デバッグ用ログ関数を追加する。テストも更新する。無料ユーザーは99回でブロックされるよう期待値を変更し、新しいケースを追加する。
+
+テストケースを追加する。entitlement unknown・billing unavailable・billing preparing・remote有効でローカル制限なしの4パターンを網羅する。画面テストでは残り回数の表示変化とデフォルトフラグの挙動を検証する。
+
+有料プラン判定に subscription 状態も含める必要がある。subscription がオフでも basic 購入があれば無料プランとみなされ制限が適用される。有料プランのみ無制限にするため、plan だけでなく entitlement 自体の有効性も確認する。
+
+subscription 有効時に basic 購入があれば無制限となる。subscription 有効だが entitlement がない場合は無料プランとなり制限が適用される。subscription が無効でも古い basic エントリーティルが残っていれば clamp により無料プランとみなされ制限が適用される。Play テストユーザーの購入状況も clamp で適切に処理される。
+
+subscription_entitlement_store の import を追加する。デバッグログに usedCount・remainingCount・allowed を出力する。remainingCount は state.limit - state.usedCount で算出する。有料プラン判定用の exported 関数 `isUnlimitedPreviewGeneration` を追加する。
+
+`isUnlimitedPreviewGeneration` の実装を確定した。clamp 後の planContext.plan が free 以外なら無制限と判定するシンプルなロジックで十分である。
+
+テスト方針を調整する。以前の `FREE_PLAN_LIMITS_ENABLED=false` で無制限と期待していたテストは、無料ユーザーは99回でブロックされるよう逆転させる。
+
+新規テストケースを追加する。subscription がオフの billing preparing 時に保存された basic エントリーティルを無料プランとして扱うことを検証する。コンパイル時フラグがすべてオフでも remote 有効時は無料ユーザーに制限を適用するケースも追加する。entitlement が none の場合の remote 制限も網羅する。
+
+PostStylePreviewGenerationLimitState に remainingCount を計算するゲッターを追加する。デバッグログでは state.limit - state.usedCount を clamped して算出する。shouldRecordPostStylePreviewGeneration は state.appliesDailyLimit に依存しているため、修正後も正しく動作する。</details></think>
+
+_**Agent (default)**_
+
+原因は `FREE_PLAN_LIMITS_ENABLED` が false のとき制限が無効になることです。Remote 有効時は無料プランに日次制限を適用するよう修正します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テストを更新する必要がある。
+
+FREE_PLAN_LIMITS_ENABLED=false のテストを修正し、制限が適用されることを検証する。課金準備中やエンティティメント不明などの新規ケースと画面テストを追加する。resolvePlanLimits は limitsEnforcementEnabled を無視するため、resolvePostStylePreviewGenerationAvailability を直接使用する。課金準備中のテストでは purchasedPlanOverride: MonetizationPlan.basic と subscription off のフラグを使う。
+
+resolvePlanLimits に purchasedPlanOverride: MonetizationPlan.basic を渡すと subscription off のフラグで clamp され無料プランとなることを確認した。planContext を渡さずに flags と purchasedPlanOverride を使う場合も resolvePlanLimitsForCurrentUser で処理される。テストを包括的に更新する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\services\post_style_preview_generation_limit_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\screens\post_style_settings_screen_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テストを実行し、lintエラーも確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test test/services/post_style_preview_generation_limit_test.dart test/screens/post_style_settings_screen_test.dart</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test test/services/post_style_preview_generation_limit_test.dart test/screens/post_style_settings_screen_test.dart
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart
+lib/services/post_style_preview_generation_limit.dart:86:3: Error: Type 'MonetizationFlagSnapshot' not found.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/services/post_style_preview_generation_limit.dart:162:3: Error: Type 'MonetizationFlagSnapshot' not found.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/services/post_style_preview_generation_limit.dart:86:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/services/post_style_preview_generation_limit.dart:162:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+00:00 +0 -1: loading C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart [E]
+  Failed to load "C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart":
+  Compilation failed for testPath=C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: lib/services/post_style_preview_generation_limit.dart:86:3: Error: Type 'MonetizationFlagSnapshot' not found.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  lib/services/post_style_preview_generation_limit.dart:162:3: Error: Type 'MonetizationFlagSnapshot' not found.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  lib/services/post_style_preview_generation_limit.dart:86:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  lib/services/post_style_preview_generation_limit.dart:162:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  .
+  Error: The Dart compiler exited unexpectedly.
+  package:flutter_tools/src/base/common.dart 34:3  throwToolExit
+  package:flutter_tools/src/compile.dart 910:11    DefaultResidentCompiler._compile.&lt;fn&gt;
+  dart:async/zone.dart 1538:47                     _rootRunUnary
+  dart:async/zone.dart 1429:19                     _CustomZone.runUnary
+  dart:async/future_impl.dart 948:45               Future._propagateToListeners.handleValueCallback
+  dart:async/future_impl.dart 977:13               Future._propagateToListeners
+  dart:async/future_impl.dart 862:9                Future._propagateToListeners
+  dart:async/future_impl.dart 720:5                Future._completeWithValue
+  dart:async/future_impl.dart 804:7                Future._asyncCompleteWithValue.&lt;fn&gt;
+  dart:async/zone.dart 1525:13                     _rootRun
+  dart:async/zone.dart 1422:19                     _CustomZone.run
+  dart:async/zone.dart 1321:7                      _CustomZone.runGuarded
+  dart:async/zone.dart 1362:23                     _CustomZone.bindCallbackGuarded.&lt;fn&gt;
+  dart:async/schedule_microtask.dart 40:35         _microtaskLoop
+  dart:async/schedule_microtask.dart 49:5          _startMicrotaskLoop
+  dart:isolate-patch/isolate_patch.dart 127:13     _runPendingImmediateCallback
+  dart:isolate-patch/isolate_patch.dart 194:5      _RawReceivePort._handleMessage
+  
+lib/services/post_style_preview_generation_limit.dart:86:3: Error: Type 'MonetizationFlagSnapshot' not found.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/services/post_style_preview_generation_limit.dart:162:3: Error: Type 'MonetizationFlagSnapshot' not found.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+test/screens/post_style_settings_screen_test.dart:475:67: Error: The argument type 'Future&lt;Null&gt; Function(dynamic)' can't be assigned to the parameter type 'dynamic Function()'.
+ - 'Future' is from 'dart:async'.
+    test('stub mode does not increment preview generation count', (tester) async {
+                                                                  ^
+lib/services/post_style_preview_generation_limit.dart:86:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/services/post_style_preview_generation_limit.dart:162:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+  MonetizationFlagSnapshot? flags,
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+00:00 +0 -2: loading C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart [E]
+  Failed to load "C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart":
+  Compilation failed for testPath=C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: lib/services/post_style_preview_generation_limit.dart:86:3: Error: Type 'MonetizationFlagSnapshot' not found.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  lib/services/post_style_preview_generation_limit.dart:162:3: Error: Type 'MonetizationFlagSnapshot' not found.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  test/screens/post_style_settings_screen_test.dart:475:67: Error: The argument type 'Future&lt;Null&gt; Function(dynamic)' can't be assigned to the parameter type 'dynamic Function()'.
+   - 'Future' is from 'dart:async'.
+      test('stub mode does not increment preview generation count', (tester) async {
+                                                                    ^
+  lib/services/post_style_preview_generation_limit.dart:86:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  lib/services/post_style_preview_generation_limit.dart:162:3: Error: 'MonetizationFlagSnapshot' isn't a type.
+    MonetizationFlagSnapshot? flags,
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  .
+00:00 +0 -2: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    "c:\\dev\\app_project\\room_manager2\\lib\\services\\post_style_preview_generation_limit.dart"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "errors": [
+        {
+          "message": "Undefined class 'MonetizationFlagSnapshot'.\nTry changing the name to the name of an existing class, or creating a class with the name 'MonetizationFlagSnapshot'.",
+          "range": {
+            "endPosition": {
+              "column": 27,
+              "line": 86
+            },
+            "startPosition": {
+              "column": 3,
+              "line": 86
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_ERROR",
+          "source": "dart"
+        },
+        {
+          "message": "Undefined class 'MonetizationFlagSnapshot'.\nTry changing the name to the name of an existing class, or creating a class with the name 'MonetizationFlagSnapshot'.",
+          "range": {
+            "endPosition": {
+              "column": 27,
+              "line": 162
+            },
+            "startPosition": {
+              "column": 3,
+              "line": 162
+            }
+          },
+          "severity": "DIAGNOSTIC_SEVERITY_ERROR",
+          "source": "dart"
+        }
+      ],
+      "relativeWorkspacePath": "c:\\dev\\app_project\\room_manager2\\lib\\services\\post_style_preview_generation_limit.dart"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+課金判定用の import を復元する必要がある。
+
+テストコードを修正している。`testWidgets` の m stub モードテストが誤って削除されていたため、これを復元する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\test\screens\post_style_settings_screen_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テストを再実行する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test test/services/post_style_preview_generation_limit_test.dart test/screens/post_style_settings_screen_test.dart</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test test/services/post_style_preview_generation_limit_test.dart test/screens/post_style_settings_screen_test.dart
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability stub mode (enforcement off) allows regardless of count
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=99 remainingCount=3 allowed=true
+00:00 +1: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability paid basic user is unlimited on remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=basic entitlementState=none isUnlimitedPreviewGeneration=true usedCount=99 remainingCount=3 allowed=true
+00:00 +2: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability paid pro user is unlimited on remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=pro entitlementState=none isUnlimitedPreviewGeneration=true usedCount=99 remainingCount=3 allowed=true
+00:00 +3: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability free 0/3 is allowed
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:00 +4: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability free 2/3 is allowed
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=2 remainingCount=1 allowed=true
+00:00 +5: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability free 3/3 is blocked
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +6: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability FREE_PLAN_LIMITS_ENABLED=false still limits free user on remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +7: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability billing preparing clamps stored basic to free limit
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +8: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability entitlement unknown (none) is treated as free limit on remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +9: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability monetization disabled treats user as free limit on remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +10: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: resolvePostStylePreviewGenerationAvailability isUnlimitedPreviewGeneration is true only for basic and pro
+00:00 +11: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: postStylePreviewGenerationUsageLabel free remaining label
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=1 remainingCount=2 allowed=true
+00:00 +12: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: postStylePreviewGenerationUsageLabel paid unlimited label
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=basic entitlementState=none isUnlimitedPreviewGeneration=true usedCount=5 remainingCount=3 allowed=true
+00:00 +13: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: postStylePreviewGenerationUsageLabel blocked label
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:00 +14: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: shouldRecordPostStylePreviewGeneration records only for free remote with daily limit
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=0 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=basic entitlementState=none isUnlimitedPreviewGeneration=true usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:00 +15: C:/dev/app_project/room_manager2/test/services/post_style_preview_generation_limit_test.dart: PostStylePreviewGenerationCountStore increments and resets on new day
+00:00 +16: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen shows empty preview without stub when no saved style example
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:02 +17: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen displays compact layout sections
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:02 +18: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen style example field is editable
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:02 +19: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen refresh button enables after settings change
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:03 +20: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen refresh button uses stub preview when factory returns stub
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:03 +21: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen preview refresh uses remote service when factory returns remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:04 +22: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen default preview generation uses PostCommentGenerationServiceFactory
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:04 +23: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen preview refresh does not record PostCommentGenerationCountStore keys
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:04 +24: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen free user can refresh preview up to 3 times per day with remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=0 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=1 remainingCount=2 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=1 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=2 remainingCount=1 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=2 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:05 +25: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen fourth preview refresh is blocked without API call
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:06 +26: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen failed preview refresh does not increment count
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:06 +27: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen paid user can refresh preview more than 3 times
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=basic entitlementState=none isUnlimitedPreviewGeneration=true usedCount=3 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=basic entitlementState=none isUnlimitedPreviewGeneration=true usedCount=3 remainingCount=3 allowed=true
+00:06 +28: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen stub mode does not increment preview generation count
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:06 +29: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen billing preparing applies free daily limit with remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:07 +30: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen entitlement unknown applies free daily limit with remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:07 +31: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen billing unavailable applies free daily limit with remote
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:07 +32: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen remaining count label decreases 3 to 2 to 1 to 0
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=0 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=1 remainingCount=2 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=1 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=2 remainingCount=1 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=2 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=3 remainingCount=0 allowed=false
+00:08 +33: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen preview generation count does not affect recommendation bucket store
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] record used=0 limit=3
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=true useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=1 remainingCount=2 allowed=true
+00:08 +34: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen refresh button calls generation service and updates preview
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:08 +35: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen refresh shows inline error on failure
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:09 +36: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen preview does not auto-update when settings change
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:09 +37: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can change tone
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:09 +38: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can change length
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:09 +39: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can change emoji level
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:10 +40: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can toggle kaomoji switch
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:10 +41: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can change hashtag level
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:10 +42: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can select up to 3 focus points
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:10 +43: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen shows snackbar when selecting 4th focus point
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:11 +44: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can change target audience via dropdown
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:11 +45: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen can toggle avoid overstatement switch
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:11 +46: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen save button persists settings and style example
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:12 +47: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen reset restores defaults
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:12 +48: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation pops without confirmation when there are no changes
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:12 +49: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation shows confirmation dialog after tone change
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:12 +50: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation shows confirmation dialog after preview text edit
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:13 +51: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation cancel keeps user on settings screen
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:13 +52: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation discard closes screen without saving
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:13 +53: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation save from dialog persists settings and closes screen
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:14 +54: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation does not show confirmation after saving via app bar button
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:14 +55: C:/dev/app_project/room_manager2/test/screens/post_style_settings_screen_test.dart: PostStyleSettingsScreen unsaved changes on back navigation system back shows confirmation when there are unsaved changes
+[POST_STYLE_PREVIEW_LIMIT] previewLimitEnforced=false useRemotePostCommentGeneration=false currentPlan=free entitlementState=none isUnlimitedPreviewGeneration=false usedCount=0 remainingCount=3 allowed=true
+00:14 +56: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+56件のテストがすべて通過した。最終版のlimitファイルとcount storeを確認し、包括的な報告を作成する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_count_store.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査に必要な情報が揃った。日本語の完了報告を作成する。
+
+調査結果を整理した。制限判定は `post_style_preview_generation_limit.dart` で行われている。`limitsEnforcementEnabled`（FREE_PLAN_LIMITS_ENABLED）がデフォルトで false なので、有料会員判定は `resolvePlanLimitsForCurrentUser` → `clampMonetizationPlan` を経由する。課金準備中や不明な状態は無制限扱いになっている。Playテストユーザーの特別パスも存在しない。Remote有効時にリモートサービスは呼ばれても、`appliesDailyLimit` が false で常に通過していた。
+
+修正方針を確定した。プレビュー生成の制限判定は `limitsEnforcementEnabled` に依存せず、有効プランのみに基づいて `isUnlimitedPreviewGeneration` を判定する。該当ファイルは `lib/services/post_style_preview_generation_limit.dart` とそのテスト、および画面テストである。コミットはユーザー指示待ちとする。</details></think>
+
+_**Agent (default)**_
+
+## 調査結果と修正完了
+
+### 原因
+
+生成イメージの日次制限が **`FREE_PLAN_LIMITS_ENABLED`（`limitsEnforcementEnabled`）に依存**していたことが根本原因です。
+
+```74:75:c:\dev\app_project\room_manager2\lib\services\post_style_preview_generation_limit.dart
+// 修正前
+final appliesDailyLimit = context.limitsEnforcementEnabled &&
+    context.plan == MonetizationPlan.free;
+```
+
+`FREE_PLAN_LIMITS_ENABLED` はデフォルト **false**（`monetization_config.dart`）のため、Google Play 実機ビルドでは次の状態になっていました。
+
+- Remote AI 有効（`USE_REMOTE_POST_COMMENT_GENERATION` + `AI_GATEWAY_APP_KEY`）
+- 課金準備中（`MONETIZATION_ENABLED` / `SUBSCRIPTION_ENABLED` 未指定）
+- 実効プランは `free`
+
+にもかかわらず `appliesDailyLimit = false` → **無制限** になっていました。
+
+制限チェック自体は `_refreshPreview()` で呼ばれており、カウント保存・UI 表示の設計も正しかったですが、**判定条件が誤っていた**ため機能していませんでした。
+
+---
+
+### 調査項目への回答
+
+| # | 項目 | 結果 |
+|---|------|------|
+| 1 | 制限判定の場所 | `PostStylePreviewGenerationCountStore`（カウント）→ `post_style_preview_generation_limit.dart`（判定）→ `PostStyleSettingsScreen._refreshPreview()`（呼び出し）。Provider は設定保存のみ |
+| 2 | 有料会員判定 | `SubscriptionEntitlementStore` → `readStoredPurchaseEntitlement()` → `resolvePurchasedMonetizationPlan()` → `clampMonetizationPlan()` → `resolvePlanLimitsForCurrentUser()` |
+| 3 | 課金準備中で unlimited か | **修正前は yes**（`limitsEnforcementEnabled=false`）。**修正後は no**（free 制限適用） |
+| 4 | Play テストユーザー特例 | **なし**。`entitlementFromBasicPurchase` は購入成功時のみ `basicActive` を保存 |
+| 5 | Remote 時に制限チェック呼び出し | **呼ばれている**（`limitState.allowed` でブロック）が、条件不備で常に許可 |
+| 6 | 成功時カウント | `shouldRecordPostStylePreviewGeneration` → `incrementTodayCount`。**成功時のみ**（失敗時は増えない） |
+| 7 | 保存キー | `post_style_preview_generation_date` / `post_style_preview_generation_count`（日付変更で 0 リセット） |
+| 8 | UI 残り回数 | `postStylePreviewGenerationUsageLabel(state)` で Limit と同一ソース |
+
+---
+
+### 修正内容
+
+**`isUnlimitedPreviewGeneration()` を新設**し、無制限は「実効プランが basic / pro のときのみ」に限定しました。
+
+```dart
+// Remote 有効 + 実効プラン free → 1日3回制限
+// Remote 無効（Stub）→ 制限なし・カウントなし
+appliesDailyLimit = remoteEnabled && !isUnlimitedPreviewGeneration(context);
+```
+
+`clampMonetizationPlan()` により、課金準備中・Billing 未接続・エンタイトルメント不明はすべて **free に落ちる** → 無料制限が適用されます。
+
+debug ビルドでは以下を `importantDebugLog` で出力します（API キー・個人情報なし）:
+`previewLimitEnforced`, `useRemotePostCommentGeneration`, `currentPlan`, `entitlementState`, `isUnlimitedPreviewGeneration`, `usedCount`, `remainingCount`, `allowed`
+
+---
+
+### 修正ファイル一覧
+
+| ファイル | 変更内容 |
+|---------|---------|
+| `lib/services/post_style_preview_generation_limit.dart` | 判定ロジック修正、`isUnlimitedPreviewGeneration`、`remainingCount`、debug ログ |
+| `test/services/post_style_preview_generation_limit_test.dart` | 課金準備中・entitlement 不明・`FREE_PLAN_LIMITS_ENABLED=false` 等のテスト追加 |
+| `test/screens/post_style_settings_screen_test.dart` | 課金準備中・billing unavailable・残り回数 3→2→1→0 のテスト追加 |
+
+---
+
+### 有料判定の最終仕様（生成イメージ）
+
+| 状態 | 挙動 |
+|------|------|
+| **無料ユーザー**（Remote 有効） | 1日3回、成功時のみカウント、4回目は API 呼ばずブロック |
+| **有料ユーザー**（basic/pro かつ `MONETIZATION_ENABLED` + `SUBSCRIPTION_ENABLED` 有効） | 無制限 |
+| **課金状態不明**（`PurchaseEntitlement.none`） | 無料扱い |
+| **Billing 接続失敗 / 課金準備中** | `clampMonetizationPlan` で free → 無料制限 |
+| **Stub モード**（Remote 無効 or appKey 空） | 無制限表示・カウントなし |
+
+**無制限になる唯一の条件:** Remote 有効 **かつ** 実効プランが basic / pro（サブスク機能が ON で有効な購入エンタイトルメントがある場合のみ）
+
+---
+
+### テスト結果
+
+```
+flutter test test/services/post_style_preview_generation_limit_test.dart test/screens/post_style_settings_screen_test.dart
+→ 56 tests passed
+```
+
+追加・更新したテストケース:
+- 無料ユーザー 3回成功・4回目ブロック（API 未呼び出し）
+- 有料ユーザーのみ 4回目以降許可
+- entitlement unknown / billing unavailable / 課金準備中 → 無料制限
+- 生成失敗時はカウントしない
+- Stub モードはカウントしない
+- UI 残り回数 3 → 2 → 1 → 0
+
+---
+
+コミットは指示があるまで作成していません。次に Play 向けビルドを再デプロイすれば、Remote AI 有効の無料ユーザーに 1日3回制限が適用されます。
