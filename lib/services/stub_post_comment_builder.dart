@@ -71,12 +71,7 @@ abstract final class StubPostCommentBuilder {
     );
     final closing = _closing(style);
 
-    return [
-      intro,
-      core,
-      if (detail.isNotEmpty) detail,
-      closing,
-    ].join('\n');
+    return [intro, core, if (detail.isNotEmpty) detail, closing].join('\n');
   }
 
   static String _introSentence(PostStyleSettings style, String name) {
@@ -88,15 +83,13 @@ abstract final class StubPostCommentBuilder {
   }
 
   static String _reasonParagraph(PostStyleSettings style, String reason) {
-    final normalized = reason.endsWith('。') ||
-            reason.endsWith('！') ||
-            reason.endsWith('!')
+    final normalized =
+        reason.endsWith('。') || reason.endsWith('！') || reason.endsWith('!')
         ? reason
         : '$reason。';
 
     return switch (style.tone) {
-      PostTone.polite =>
-        normalized.endsWith('。') ? normalized : '$normalized。',
+      PostTone.polite => normalized.endsWith('。') ? normalized : '$normalized。',
       PostTone.friendlyPolite => _softenReason(normalized),
       PostTone.casual => _casualizeReason(normalized),
     };
@@ -131,50 +124,42 @@ abstract final class StubPostCommentBuilder {
 
     final point = style.focusPoints.first;
     return switch (point) {
-      PostFocusPoint.costPerformance =>
-        switch (style.tone) {
-          PostTone.polite => '価格は$priceで、コスパも気になるポイントです。',
-          PostTone.friendlyPolite => '価格$priceなので、コスパも見てみたくなります。',
-          PostTone.casual => '値段$priceで、コスパもいい感じ。',
-        },
-      PostFocusPoint.reviews when reviewCount > 0 =>
-        switch (style.tone) {
-          PostTone.polite => 'レビュー平均$rating（${reviewCount}件）も参考になりそうです。',
-          PostTone.friendlyPolite =>
-            'レビュー平均$rating（${reviewCount}件）もチェックしてみてください。',
-          PostTone.casual => 'レビュー$rating（${reviewCount}件）も結構いい感じ。',
-        },
-      PostFocusPoint.design =>
-        switch (style.tone) {
-          PostTone.polite => '写真の雰囲気も、暮らしに馴染みやすそうです。',
-          PostTone.friendlyPolite => '見た目も写真映えしそうで、好みに合いそうです。',
-          PostTone.casual => '見た目も写真映えしそう。',
-        },
+      PostFocusPoint.costPerformance => switch (style.tone) {
+        PostTone.polite => '価格は$priceで、コスパも気になるポイントです。',
+        PostTone.friendlyPolite => '価格$priceなので、コスパも見てみたくなります。',
+        PostTone.casual => '値段$priceで、コスパもいい感じ。',
+      },
+      PostFocusPoint.reviews when reviewCount > 0 => switch (style.tone) {
+        PostTone.polite => 'レビュー平均$rating（$reviewCount件）も参考になりそうです。',
+        PostTone.friendlyPolite => 'レビュー平均$rating（$reviewCount件）もチェックしてみてください。',
+        PostTone.casual => 'レビュー$rating（$reviewCount件）も結構いい感じ。',
+      },
+      PostFocusPoint.design => switch (style.tone) {
+        PostTone.polite => '写真の雰囲気も、暮らしに馴染みやすそうです。',
+        PostTone.friendlyPolite => '見た目も写真映えしそうで、好みに合いそうです。',
+        PostTone.casual => '見た目も写真映えしそう。',
+      },
       PostFocusPoint.convenience ||
-      PostFocusPoint.dailyUse =>
-        switch (style.tone) {
-          PostTone.polite => '日常使いにも取り入れやすそうな印象です。',
-          PostTone.friendlyPolite => '毎日の暮らしにも使いやすそうです。',
-          PostTone.casual => '毎日使えそうなやつ。',
-        },
-      PostFocusPoint.cute =>
-        switch (style.tone) {
-          PostTone.polite => 'デザインもかわいらしく、手に取りたくなります。',
-          PostTone.friendlyPolite => 'かわいいデザインで、つい見ちゃいます。',
-          PostTone.casual => 'デザインかわいい。',
-        },
-      PostFocusPoint.gift =>
-        switch (style.tone) {
-          PostTone.polite => 'ギフトにも選びやすい雰囲気があります。',
-          PostTone.friendlyPolite => 'プレゼントにも渡しやすそうです。',
-          PostTone.casual => 'プレゼントにもよさそう。',
-        },
-      PostFocusPoint.parenting =>
-        switch (style.tone) {
-          PostTone.polite => '忙しい日にも助けてくれそうな実用性がありそうです。',
-          PostTone.friendlyPolite => '忙しい日にも助かりそうな実用性があります。',
-          PostTone.casual => '忙しい日にも助かりそう。',
-        },
+      PostFocusPoint.dailyUse => switch (style.tone) {
+        PostTone.polite => '日常使いにも取り入れやすそうな印象です。',
+        PostTone.friendlyPolite => '毎日の暮らしにも使いやすそうです。',
+        PostTone.casual => '毎日使えそうなやつ。',
+      },
+      PostFocusPoint.cute => switch (style.tone) {
+        PostTone.polite => 'デザインもかわいらしく、手に取りたくなります。',
+        PostTone.friendlyPolite => 'かわいいデザインで、つい見ちゃいます。',
+        PostTone.casual => 'デザインかわいい。',
+      },
+      PostFocusPoint.gift => switch (style.tone) {
+        PostTone.polite => 'ギフトにも選びやすい雰囲気があります。',
+        PostTone.friendlyPolite => 'プレゼントにも渡しやすそうです。',
+        PostTone.casual => 'プレゼントにもよさそう。',
+      },
+      PostFocusPoint.parenting => switch (style.tone) {
+        PostTone.polite => '忙しい日にも助けてくれそうな実用性がありそうです。',
+        PostTone.friendlyPolite => '忙しい日にも助かりそうな実用性があります。',
+        PostTone.casual => '忙しい日にも助かりそう。',
+      },
       _ => '',
     };
   }
@@ -198,7 +183,8 @@ abstract final class StubPostCommentBuilder {
     return switch (tone) {
       PostTone.polite => body,
       PostTone.friendlyPolite => body,
-      PostTone.casual => body.replaceAll('です。', 'だよ。').replaceAll('ですね。', 'だね。'),
+      PostTone.casual =>
+        body.replaceAll('です。', 'だよ。').replaceAll('ですね。', 'だね。'),
     };
   }
 

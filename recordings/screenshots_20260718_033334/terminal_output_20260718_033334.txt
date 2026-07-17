@@ -1,0 +1,667 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-07-18 03:33:34
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: (none)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260718_033334.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260718_033334.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260718_033334.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260718_033334.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260718_033334.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260718_033334
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260718_033334\terminal_output_20260718_033334.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 14604).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID=[redacted] --dart-define=RAKUTEN_AFFILIATE_ID=[redacted]
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                          
+I/flutter (25673): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (25673): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (25673): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (25673): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (25673): [AUTO_REACTION_SYNC] scheduled
+I/flutter (25673): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+I/flutter (25673): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/apm24/mjst40206n-22/
+I/flutter (25673): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/apm24/mjst40206n-22/
+I/flutter (25673): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (25673): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (25673): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=apm24%3A10002122&scid=we_room_upc60
+I/flutter (25673): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+Running Gradle task 'assembleDebug'...                            148.7s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.9s
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.stepbytestudio.room_manager2 signatures do not match newer version; ignoring!]
+Uninstalling old version...
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.5s
+D/FlutterJNI(26809): Beginning load of flutter...
+D/FlutterJNI(26809): flutter (null) was loaded normally!
+I/flutter (26809): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (26809): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (26809): [MONETIZATION_FLAGS] monetization=false ads=false subscription=false freeLimits=false pro=false
+I/flutter (26809): [MONETIZATION_PLAN] plan=free limitsEnabled=false
+I/flutter (26809): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (26809): [FIREBASE] initialization completed telemetryEnabled=false
+Syncing files to device SHG08...                                
+I/flutter (26809): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (26809): [ADMOB] initialization skipped ads=false
+Syncing files to device SHG08...                                   103ms
+I/flutter (26809): [BILLING_PURCHASE] initialized available=true active=false
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:60562/ELWKCLfhfR0=/
+I/o.room_manager2(26809): Compiler allocated 4485KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter (26809): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer(26809): Skipped 66 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:60562/ELWKCLfhfR0=/
+I/WebViewFactory(26809): Loading com.google.android.webview version 149.0.7827.160 (code 782716003)
+D/ApplicationLoaders(26809): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(26809): Loading /data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(26809): Configuring clns-6 for other apk /data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/lib/arm64:/data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(26809): version=149.0.7827.160 (782716003) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(26809): Load /data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-6 (caller=/data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/base.apk): ok
+D/nativeloader(26809): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-6 (caller=/data/app/~~G1wmWpimlltZpW1c_Uvyqw==/com.google.android.webview-yg0nF2HtmGRmjrTRgvqXTA==/base.apk): ok
+I/chromium(26809): [0718/033626.450050:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/chromium(26809): [0718/033626.455326:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(26809): Successfully loaded native library
+I/cr_CachingUmaRecorder(26809): Flushed 41 samples from 21 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(26809): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(26809): #registerProvider() provider:WV.wk@5bf263e isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(26809): #setManagerAndSource() 0
+I/cr_DisplayManager(26809): Is Display Topology available: false
+I/cr_policy(26809): registerReceiver succeeded after 5ms
+I/cr_CombinedPProvider(26809): #linkNativeInternal() 1
+I/cr_AppResProvider(26809): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(26809): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(26809): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(26809): #flushPolicies()
+W/chromium(26809): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+D/CompatibilityChangeReporter(26809): Compat change id reported: 214741472; UID 10553; state: ENABLED
+I/cr_AppResProvider(26809): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(26809): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(26809): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(26809): #flushPolicies()
+I/CameraManagerGlobal(26809): Connecting to camera service
+D/CompatibilityChangeReporter(26809): Compat change id reported: 171228096; UID 10553; state: ENABLED
+D/CompatibilityChangeReporter(26809): Compat change id reported: 193247900; UID 10553; state: ENABLED
+I/Choreographer(26809): Skipped 55 frames!  The application may be doing too much work on its main thread.
+I/PlatformViewsController(26809): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(26809): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(26809): Compat change id reported: 236825255; UID 10553; state: ENABLED
+W/o.room_manager2(26809): type=1400 audit(0.0:289249): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c41,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (26809): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(26809): Davey! duration=992ms; Flags=1, FrameTimelineVsyncId=418417833, IntendedVsync=2143100483429387, Vsync=2143101400096017, InputEventId=0, HandleInputStart=2143101411227676, AnimationStart=2143101411230019, PerformTraversalsStart=2143101411230697, DrawStart=2143101434600176, FrameDeadline=2143100500096053, FrameInterval=2143101407490540, FrameStartTime=16666666, SyncQueued=2143101440525644, SyncStart=2143101440637780, IssueDrawCommandsStart=2143101441814811, SwapBuffers=2143101473777051, FrameCompleted=2143101475546061, DequeueBufferDuration=2440208, QueueBufferDuration=1284583, GpuCompleted=2143101475015436, SwapBuffersCompleted=2143101475546061, DisplayPresentTime=159081190644529892, CommandSubmissionCompleted=2143101473777051, 
+W/libc    (26809): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(26809): type=1400 audit(0.0:289250): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c41,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(26809): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(26809): Build Date              : 08/23/22
+I/AdrenoVK-0(26809): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(26809): Local Branch            : 
+I/AdrenoVK-0(26809): Remote Branch           : 
+I/AdrenoVK-0(26809): Remote Branch           : 
+I/AdrenoVK-0(26809): Reconstruct Branch      : 
+I/AdrenoVK-0(26809): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(26809): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(26809): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (26809): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (26809): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (26809): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (26809): [AUTO_REACTION_SYNC] scheduled
+I/flutter (26809): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (26809): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (26809): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (26809): [TODAY_RECOMMEND_VISIBLE_CAP] visible=0 cap=3 fallbackReason=insufficientVisibleCandidates
+I/flutter (26809): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=人気 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (26809): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (26809): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BA%BA%E6%B0%97&minReviewCount=5&minReviewAverage=3.4&sort=-reviewCount
+I/flutter (26809): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (26809): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (26809): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (26809): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (26809): [Rakuten] response status=200 page=1 bytes=261963
+I/flutter (26809): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (26809): [Rakuten] repository search total mapped=30
+I/flutter (26809): [Rakuten] search mapped item count=30
+I/flutter (26809): [Rakuten] search before filter count=30
+I/flutter (26809): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (26809): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (26809): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 skippedFavoriteGenrePlans=0 assistPlanExecuted=false apiCalls=1 earlyStopReason=-
+I/flutter (26809): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=201117:1|503020:1|566732:1 shopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:1
+I/flutter (26809): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=0 executedFavoriteGenrePlans=0 apiCalls=1 pagesUsed=1 rawItems=27 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=3 excludedZeroReview=0 finalItems=3 fallbackUsed=true assistPlanUsed=false
+I/flutter (26809): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=マダムシンコ:1|APM24:1|ソムリエ@ギフト:1
+W/WindowOnBackDispatcher(26809): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(26809): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (26809): [AUTO_REACTION_SYNC] skipped reason=noRoomUrl
+I/flutter (26809): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (26809): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (26809): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=便利グッズ キッチン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (26809): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (26809): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BE%BF%E5%88%A9%E3%82%B0%E3%83%83%E3%82%BA+%E3%82%AD%E3%83%83%E3%83%81%E3%83%B3&minReviewCount=10&minReviewAverage=3.6&sort=-reviewCount
+I/flutter (26809): [Rakuten] response status=200 page=1 bytes=211132
+I/flutter (26809): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (26809): [Rakuten] repository search total mapped=30
+I/flutter (26809): [Rakuten] search mapped item count=30
+I/flutter (26809): [Rakuten] search before filter count=30
+I/flutter (26809): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (26809): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (26809): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 skippedFavoriteGenrePlans=2 assistPlanExecuted=false apiCalls=1 earlyStopReason=targetReached
+I/flutter (26809): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=3 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=564982:1|301418:1|210168:1 shopDistribution=マーナ公式楽天市場店:1|Living雑貨 リスonlineshop:1|ラックタウン-収納用品の店-:1
+I/flutter (26809): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=1 apiCalls=1 pagesUsed=1 rawItems=30 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=0 excludedZeroReview=0 finalItems=3 fallbackUsed=false assistPlanUsed=false
+I/flutter (26809): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution= finalShopDistribution=マーナ公式楽天市場店:1|Living雑貨 リスonlineshop:1|ラックタウン-収納用品の店-:1
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=3 alreadyAdded=0 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=299000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [RECOMMEND_GUARD] skipReason=recentEnsure
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=298000 isLoading=false hasBundle=true candidates=3 completedCount=0 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=3 alreadyAdded=0 skipped=0
+I/flutter (26809): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=shopmarna:10006515 pending=0→1 done=0→0
+I/flutter (26809): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (26809): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=645 displayText=評価 ★4.5（645件）
+I/flutter (26809): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/shopmarna/x110/
+I/flutter (26809): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/shopmarna/x110/
+W/cr_media(26809): BLUETOOTH_CONNECT permission is missing.
+W/cr_media(26809): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media(26809): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=297000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=645 displayText=評価 ★4.5（645件）
+I/Choreographer(26809): Skipped 31 frames!  The application may be doing too much work on its main thread.
+W/VideoCapabilities(26809): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities(26809): Unsupported mime image/vnd.android.heic
+I/flutter (26809): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=296000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:2005] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/shopmarna/x110/ (2005)
+I/chromium(26809): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=295000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+I/flutter (26809): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=shopmarna%3A10006515&scid=we_room_upc60
+I/flutter (26809): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=645 displayText=評価 ★4.5（645件）
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=294000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=293000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+E/FrameEvents(26809): updateAcquireFence: Did not find frame.
+W/libc    (26809): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/Chrome_InProcGp(26809): type=1400 audit(0.0:289251): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c41,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/cr_MediaCodecBridge(26809): create MediaCodec video decoder, mime video/avc, decoder name c2.qti.avc.decoder, block_model=false
+D/CCodec  (26809): allocate(c2.qti.avc.decoder)
+I/Codec2Client(26809): Available Codec2 services: "default" "software"
+I/CCodec  (26809): setting up 'default' as default (vendor) store
+I/CCodec  (26809): Created component [c2.qti.avc.decoder]
+D/CCodecConfig(26809): read media type: video/avc
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_luma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_dpb_chroma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_luma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_top_field.misr_opb_chroma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_luma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_dpb_chroma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_luma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: vendor.qti-ext-dec-info-misr.misr_info_bottom_field.misr_opb_chroma
+D/ReflectedParamUpdater(26809): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater(26809): ignored struct field vendor.qti-ext-dec-panscan.window
+D/CCodecConfig(26809): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig(26809): ignoring local param default.color (0x5200180b) as it is already supported
+D/CCodecConfig(26809): ignoring local param raw.hdr-static-info (0xd200180a) as it is already supported
+I/CCodecConfig(26809): query failed after returning 17 values (BAD_INDEX)
+D/CCodecConfig(26809): c2 config diff is Dict {
+D/CCodecConfig(26809):   c2::i32 algo.priority.value = 0
+D/CCodecConfig(26809):   c2::float algo.rate.value = 30
+D/CCodecConfig(26809):   c2::u32 algo.secure-mode.value = 0
+D/CCodecConfig(26809):   c2::float coded.frame-rate.value = 30
+D/CCodecConfig(26809):   c2::u32 coded.pl.level = 0
+D/CCodecConfig(26809):   c2::u32 coded.pl.profile = 20484
+D/CCodecConfig(26809):   c2::u32 coded.vui.color.matrix = 255
+D/CCodecConfig(26809):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig(26809):   c2::u32 coded.vui.color.range = 0
+D/CCodecConfig(26809):   c2::u32 coded.vui.color.transfer = 255
+D/CCodecConfig(26809):   c2::u32 default.color.matrix = 0
+D/CCodecConfig(26809):   c2::u32 default.color.primaries = 0
+D/CCodecConfig(26809):   c2::u32 default.color.range = 0
+D/CCodecConfig(26809):   c2::u32 default.color.transfer = 0
+D/CCodecConfig(26809):   c2::u32 input.buffers.max-size.value = 3133440
+D/CCodecConfig(26809):   c2::u32 input.delay.value = 0
+D/CCodecConfig(26809):   string input.media-type.value = "video/avc"
+D/CCodecConfig(26809):   c2::u32 output.delay.value = 1
+D/CCodecConfig(26809):   string output.media-type.value = "video/raw"
+D/CCodecConfig(26809):   c2::u32 raw.color.matrix = 255
+D/CCodecConfig(26809):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig(26809):   c2::u32 raw.color.range = 0
+D/CCodecConfig(26809):   c2::u32 raw.color.transfer = 255
+D/CCodecConfig(26809):   c2::float raw.hdr-static-info.mastering.blue.x = 0
+D/CCodecConfig(26809):   c2::float raw.hdr-static-info.mastering.blue.y = 0
+D/CCodecConfig(26809):   c2::float raw.hdr-static-info.mastering.gre
+W/ColorUtils(26809): expected specified color aspects (0:0:255:255)
+I/MediaCodec(26809): MediaCodec will operate in async mode
+W/libc    (26809): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/MediaCodec(26809): flushMediametrics
+W/ThreadPoolForeg(26809): type=1400 audit(0.0:289252): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c41,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/SurfaceUtils(26809): connecting to surface 0xb400007cdefdb6b0, reason connectToSurface
+I/MediaCodec(26809): [c2.qti.avc.decoder] setting surface generation to 27452417
+D/SurfaceUtils(26809): disconnecting from surface 0xb400007cdefdb6b0, reason connectToSurface(reconnect)
+D/SurfaceUtils(26809): connecting to surface 0xb400007cdefdb6b0, reason connectToSurface(reconnect)
+D/CCodec  (26809): [c2.qti.avc.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig(26809): no c2 equivalents for color-standard
+D/CCodecConfig(26809): no c2 equivalents for native-window
+D/CCodecConfig(26809): no c2 equivalents for flags
+D/CCodecConfig(26809): c2 config diff is   c2::u32 default.color.matrix = 1
+D/CCodecConfig(26809):   c2::u32 default.color.primaries = 1
+D/CCodecConfig(26809):   c2::u32 default.color.range = 2
+D/CCodecConfig(26809):   c2::u32 default.color.transfer = 3
+D/CCodecConfig(26809):   c2::u32 raw.max-size.height = 360
+D/CCodecConfig(26809):   c2::u32 raw.max-size.width = 640
+D/CCodecConfig(26809):   c2::u32 raw.size.height = 360
+W/Codec2Client(26809): query -- param skipped: index = 1107298332.
+D/CCodec  (26809): client requested max input size 176640, which is smaller than what component recommended (3133440); overriding with component recommendation.
+W/CCodec  (26809): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  (26809): encoding statistics level = 0
+D/CCodec  (26809): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  (26809):   int32_t feature-secure-playback = 0
+D/CCodec  (26809):   int32_t frame-rate = 30
+D/CCodec  (26809):   int32_t height = 360
+D/CCodec  (26809):   int32_t max-input-size = 3133440
+D/CCodec  (26809):   string mime = "video/avc"
+D/CCodec  (26809):   int32_t priority = 0
+D/CCodec  (26809):   int32_t profile = 8
+D/CCodec  (26809):   int32_t width = 640
+D/CCodec  (26809):   Rect crop(0, 0, 639, 359)
+D/CCodec  (26809): }
+D/CCodec  (26809): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  (26809):   int32_t android._color-format = 0
+D/CCodec  (26809):   int32_t android._video-scaling = 1
+D/CCodec  (26809):   int32_t android._dataspace = 281346048
+D/CCodec  (26809):   int32_t color-standard = 130820
+D/CCodec  (26809):   int32_t color-range = 2
+D/CCodec  (26809):   int32_t color-transfer = 65791
+D/CCodec  (26809):   int32_t sar-height = 1
+D/CCodec  (26809):   int32_t rotation-degrees = 0
+D/CCodec  (26809):   Buffer hdr-static-info = {
+D/CCodec  (26809):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodec  (26809):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodec  (26809):   }
+D/CCodec  (26809):   int32_t sar-width = 1
+D/CCodec  (26809):   Rect crop(0, 0, 639, 359)
+D/CCodec  (26809):   int32_t width = 640
+D/CCodec  (26809):   int32_t feature-secure-playback = 0
+D/CCodec  (26809):   int32_t frame-rate = 30
+D/CCodec  (26809):   int32_t height = 360
+D/CCodec  (26809):   int32_t max-height = 360
+D/CCodec  (26809):   int32_t max-width = 640
+D/CCodec  (26809):   string mime = "video/raw"
+D/CCodec  (26809):   int32_t priority = 0
+D/CCodec  (26809):   int32_t color-format = 2130708361
+D/CCodec  (26809): }
+I/CCodecConfig(26809): query failed after returning 17 values (BAD_INDEX)
+D/MediaCodec(26809): keep callback message for reclaim
+W/Codec2Client(26809): query -- param skipped: index = 1342179345.
+W/Codec2Client(26809): query -- param skipped: index = 2415921170.
+W/Codec2Client(26809): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Query input allocators returned 0 params => BAD_INDEX (6)
+D/C2Store (26809): Using ION
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Created input block pool with allocatorID 16 => poolID 17 - OK (0)
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] start: max output delay 12
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Query output allocators returned 0 params => BAD_INDEX (6)
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Created output block pool with allocatorID 18 => poolID 185 - OK
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Configured output block pool ids 185 => OK
+D/Codec2-OutputBufferQueue(26809): remote graphic buffer migration 0/0
+D/Codec2Client(26809): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client(26809): setOutputSurface -- generation=27452417 consumer usage=0x900
+D/Codec2Client(26809): Surface configure completed
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] start: updating output delay 1
+D/CCodecConfig(26809): c2 config diff is   c2::u32 output.delay.value = 10
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] onWorkDone: updating output delay 10
+I/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] onWorkDone: updating max output delay 17
+D/Codec2-OutputBufferQueue(26809): set max dequeue count 17 from update
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] Ignoring stale input buffer done callback: last flush index = 0, frameIndex = 0
+D/CCodecConfig(26809): c2 config diff is   c2::u32 raw.color.matrix = 1
+D/CCodecConfig(26809):   c2::u32 raw.color.primaries = 1
+D/CCodecConfig(26809):   c2::u32 raw.color.range = 2
+D/CCodecConfig(26809):   c2::u32 raw.color.transfer = 3
+D/CCodecConfig(26809):   c2::u32 raw.crop.height = 360
+D/CCodecConfig(26809):   c2::u32 raw.crop.left = 0
+D/CCodecConfig(26809):   c2::u32 raw.crop.top = 0
+D/CCodecConfig(26809):   c2::u32 raw.crop.width = 640
+D/CCodecBuffers(26809): [c2.qti.avc.decoder#872:2D-Output] popFromStashAndRegister: at 0us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers(26809):   int32_t android._color-format = 0
+D/CCodecBuffers(26809):   int32_t android._video-scaling = 1
+D/CCodecBuffers(26809):   int32_t android._dataspace = 260
+D/CCodecBuffers(26809):   int32_t color-standard = 1
+D/CCodecBuffers(26809):   int32_t color-range = 2
+D/CCodecBuffers(26809):   int32_t color-transfer = 3
+D/CCodecBuffers(26809):   int32_t sar-height = 1
+D/CCodecBuffers(26809):   int32_t rotation-degrees = 0
+D/CCodecBuffers(26809):   Buffer hdr-static-info = {
+D/CCodecBuffers(26809):     00000000:  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ................
+D/CCodecBuffers(26809):     00000010:  00 00 00 00 00 00 00 00  00                       .........
+D/CCodecBuffers(26809):   }
+D/CCodecBuffers(26809):   int32_t sar-width = 1
+D/CCodecBuffers(26809):   Rect crop(0, 0, 639, 359)
+D/CCodecBuffers(26809):   int32_t width = 640
+D/CCodecBuffers(26809):   int32_t feature-secure-playback = 0
+D/CCodecBuffers(26809):   int32_t frame-rate = 30
+D/CCodecBuffers(26809):   int32_t height = 360
+D/CCodecBuffers(26809):   int32_t max-height = 360
+D/CCodecBuffers(26809):   int32_t max-width = 640
+D/CCodecBuffers(26809):   string mime = "video/raw"
+D/CCodecBuffers(26809):   int32_t priority = 0
+D/CCodecBuffers(26809):   int32_t color-format = 2130708361
+D/CCodecBuffers(26809): }
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=292000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/flutter (26809): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=291000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=290000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=289000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:41] "Identity value for 'other' is falsy (). This value will be removed from the request.", source: https://apps.rokt-api.com/js/v2/au1-ga8fcabbce345d4c90253363ae60c822/app.js?env=0& (41)
+D/BufferPoolAccessor2.0(26809): bufferpool2 0xb400007cff19ee08 : 5(15667200 size) total buffers - 4(12533760 size) used buffers - 12/17 (recycle/alloc) - 5/14 (fetch/transfer)
+D/BufferPoolAccessor2.0(26809): evictor expired: 1, evicted: 1
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=288000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium(26809): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium(26809): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA2MWE1OWMwMA.js (1)
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=287000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium(26809): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium(26809): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTA2MWE1OWMwOQ.js (1)
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=286000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=285000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=284000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/chromium(26809): [INFO:CONSOLE:0] "The resource https://apps.rokt.com/icons/rokt-icons.woff was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.", source: https://apps.rokt-api.com/wsdk/plugins/dcui/index.html (0)
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=283000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=282000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=281000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=280000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=279000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenSync canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=278000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=277000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+W/cr_MediaCodecBridge(26809): Releasing: c2.qti.avc.decoder
+W/MediaCodec_loop(26809): type=1400 audit(0.0:289253): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2920 scontext=u:r:untrusted_app:s0:c41,c258,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (26809): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+D/SurfaceUtils(26809): connecting to surface 0xb400007cdefbfbe0, reason connectToSurface
+I/MediaCodec(26809): [c2.qti.avc.decoder] setting surface generation to 27452418
+D/SurfaceUtils(26809): disconnecting from surface 0xb400007cdefbfbe0, reason connectToSurface(reconnect)
+D/SurfaceUtils(26809): connecting to surface 0xb400007cdefbfbe0, reason connectToSurface(reconnect)
+D/Codec2-OutputBufferQueue(26809): remote graphic buffer migration 0/0
+D/Codec2Client(26809): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client(26809): setOutputSurface -- generation=27452418 consumer usage=0x900
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 0 is not owned by the producer (state = ACQUIRED)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [ImageReader-1x1f22u256m2-26809-0](id:68b900000004,api:3,p:26809,c:26809) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/Codec2Client(26809): Surface configure completed
+D/SurfaceUtils(26809): disconnecting from surface 0xb400007cdefdb6b0, reason disconnectFromSurface
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel(26809): [c2.qti.avc.decoder#872] MediaCodec discarded an unknown buffer
+W/cr_MediaCodecBridge(26809): Codec released
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 0 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 1 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 2 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 3 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 4 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 5 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 6 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 7 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 8 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 9 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 10 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 11 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 12 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 13 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 14 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 15 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 16 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 17 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 18 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 19 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 20 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 21 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 22 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 23 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 24 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 25 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 26 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 27 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 28 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 29 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 30 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 31 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 32 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 33 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 34 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 35 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 36 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 37 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 38 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 39 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 40 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 41 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 42 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 43 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 44 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 45 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 46 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 47 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 48 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 49 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 50 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 51 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 52 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 53 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 54 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 55 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 56 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 57 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 58 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 59 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 60 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 61 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 62 is not owned by the producer (state = FREE)
+W/BufferQueueProducer(26809): [MediaCodec.release](id:68b900000005,api:3,p:26809,c:26809) detachBuffer: slot 63 is not owned by the producer (state = FREE)
+D/BufferPoolAccessor2.0(26809): bufferpool2 0xb400007cff19ee08 : 0(0 size) total buffers - 0(0 size) used buffers - 12/17 (recycle/alloc) - 5/14 (fetch/transfer)
+D/SurfaceUtils(26809): disconnecting from surface 0xb400007cdefbfbe0, reason disconnectFromSurface
+I/hw-BpHwBinder(26809): onLastStrongRef automatically unlinking death recipients
+D/MediaCodec(26809): flushMediametrics
+D/MediaCodec(26809): flushMediametrics
+W/MediaCodec(26809): no metrics handle found
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=276000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=275000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=274000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=273000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=272000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+D/BufferPoolAccessor2.0(26809): bufferpool2 0xb400007cff19ee08 : 0(0 size) total buffers - 0(0 size) used buffers - 12/17 (recycle/alloc) - 5/14 (fetch/transfer)
+D/BufferPoolAccessor2.0(26809): evictor expired: 1, evicted: 1
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=271000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=270000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=resultRender canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=269000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=shopmarna:10006515 reviewAverage=4.52 reviewCount=645 displayText=評価 ★4.5（645件）
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=268000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=267000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=266000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=265000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=264000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=263000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=262000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=261000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/TRuntime.CctTransportBackend(26809): Making request to: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+I/TRuntime.CctTransportBackend(26809): Status Code: 200
+I/TRuntime.CctTransportBackend(26809): Making request to: https://firebaselogging-pa.googleapis.com/v1/firelog/legacy/batchlog
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=260000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=259000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/TRuntime.CctTransportBackend(26809): Status Code: 200
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=258000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=257000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=256000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=255000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=254000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=253000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
+I/flutter (26809): [REGENERATE_BUTTON] trigger=screenTicker canPress=false cooldownCanRegenerate=false completed=false guardReason=manualCooldown remainingMs=252000 isLoading=false hasBundle=true candidates=3 completedCount=1 lastRegenerateAt=2026-07-18T03:36:50.707345 bundleGeneratedAt=2026-07-18T03:36:50.707345
+I/flutter (26809): [TODAY_RECOMMEND_SELECTION_RENDER] total=3 pending=2 alreadyAdded=1 skipped=0
