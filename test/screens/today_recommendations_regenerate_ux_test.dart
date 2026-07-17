@@ -107,6 +107,21 @@ class _FailingSearchRepository extends RakutenSearchRepository {
   }
 }
 
+class _EmptySearchRepository extends RakutenSearchRepository {
+  _EmptySearchRepository() : super(apiService: RakutenApiService());
+
+  @override
+  Future<List<RakutenSearchItem>> search({
+    required RakutenProductSearchCondition condition,
+    int maxPages = 4,
+    int startPage = 1,
+    RakutenSearchPurpose searchPurpose = RakutenSearchPurpose.normal,
+    String fetchScreen = 'productSearch',
+  }) async {
+    return const [];
+  }
+}
+
 class _StubSearchRepository extends RakutenSearchRepository {
   _StubSearchRepository() : super(apiService: RakutenApiService());
 
@@ -401,6 +416,58 @@ void main() {
       // 失敗直後はクールダウン中で disabled になり得るが、loading は解除済み。
       expect(button.isLoading, isFalse);
     });
+
+    testWidgets(
+      'empty regenerate result keeps previous bundle without success snackbar',
+      (tester) async {
+        final before = _bundle();
+        final (widget, rec) = await _wrapTodayScreen(
+          prefs: prefs,
+          bundle: before,
+          searchRepository: _EmptySearchRepository(),
+        );
+        await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+
+        final beforeIds = before.entries.map((e) => e.item.productId).toList();
+        final beforeGeneratedAt = before.generatedAt;
+
+        await tester.tap(
+          find.byKey(const Key('today_recommendation_regenerate_button')),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 2));
+
+        expect(rec.isLoading, isFalse);
+        expect(rec.errorMessage, isNull);
+        expect(rec.bundle!.generatedAt, beforeGeneratedAt);
+        expect(
+          rec.bundle!.entries.map((e) => e.item.productId).toList(),
+          beforeIds,
+        );
+        expect(
+          rec.generationStatus,
+          TodayRecommendationGenerationStatus.partialSuccess,
+        );
+        expect(find.text('旧おすすめA'), findsOneWidget);
+        expect(
+          find.byKey(const Key('today_recommendation_updated_snackbar')),
+          findsNothing,
+        );
+        expect(find.text('おすすめを更新しました'), findsNothing);
+        expect(
+          find.byKey(const Key('today_recommendation_error_message')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('today_recommendation_empty_message')),
+          findsNothing,
+        );
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        rec.dispose();
+      },
+    );
 
     testWidgets('reduce motion still renders recommendation list', (
       tester,
