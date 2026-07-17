@@ -145,6 +145,7 @@ class AppSecondaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.isLoading = false,
     this.height = 40,
     this.expand = false,
   });
@@ -152,18 +153,35 @@ class AppSecondaryButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final Widget? icon;
+  final bool isLoading;
   final double height;
   final bool expand;
 
   @override
   Widget build(BuildContext context) {
-    final child = icon == null
+    final Widget leading;
+    if (isLoading) {
+      leading = SizedBox(
+        width: 16,
+        height: 16,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: AppColors.textTertiary.withValues(alpha: 0.9),
+        ),
+      );
+    } else if (icon != null) {
+      leading = IconTheme(data: const IconThemeData(size: 16), child: icon!);
+    } else {
+      leading = const SizedBox.shrink();
+    }
+
+    final child = (!isLoading && icon == null)
         ? Text(label, maxLines: 1, overflow: TextOverflow.ellipsis)
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconTheme(data: const IconThemeData(size: 16), child: icon!),
-              const SizedBox(width: 6),
+              leading,
+              if (isLoading || icon != null) const SizedBox(width: 6),
               Flexible(
                 child: Text(
                   label,
@@ -178,7 +196,7 @@ class AppSecondaryButton extends StatelessWidget {
       width: expand ? double.infinity : null,
       height: height,
       child: OutlinedButton(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.textSecondary,
           backgroundColor: Colors.transparent,

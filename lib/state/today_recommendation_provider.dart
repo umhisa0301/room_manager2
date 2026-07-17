@@ -100,6 +100,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
   DateTime? get lastRegenerateAt => _lastRegenerateAt;
   String? get lastGuardReason => _lastGuardReason;
 
+  /// テスト用: UI の loading 分岐検証のために [isLoading] を上書きする。
+  @visibleForTesting
+  void debugSetLoading(bool value) {
+    _isLoading = value;
+    if (value) {
+      _errorMessage = null;
+      _generationStatus = TodayRecommendationGenerationStatus.loading;
+    }
+    notifyListeners();
+  }
+
+  /// テスト用: bundle を差し替えて UI 更新を検証する。
+  @visibleForTesting
+  void debugSetBundle(TodayRecommendationBundle? bundle) {
+    _bundle = bundle;
+    notifyListeners();
+  }
+
   /// 手動再生成のクールダウン残り（null なら再生成可能）。
   RecommendRegenerateCooldownStatus manualRegenerateCooldownStatus({
     DateTime? now,
@@ -163,8 +181,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final elapsed = DateTime.now().difference(generatedAt);
     if (elapsed >= _manualRegenerateCooldown && !_lastRateLimitFailure) return;
 
-    if (_lastRegenerateAt == null ||
-        generatedAt.isAfter(_lastRegenerateAt!)) {
+    if (_lastRegenerateAt == null || generatedAt.isAfter(_lastRegenerateAt!)) {
       _lastRegenerateAt = generatedAt;
     }
     _syncRegenerateCooldownTimer();
@@ -183,7 +200,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     });
   }
 
-  Duration _regenerateCooldownTimerDelay(RecommendRegenerateCooldownStatus status) {
+  Duration _regenerateCooldownTimerDelay(
+    RecommendRegenerateCooldownStatus status,
+  ) {
     final nextAt = status.nextAvailableAt;
     if (nextAt != null) {
       final remaining = nextAt.difference(DateTime.now());
@@ -398,23 +417,39 @@ class TodayRecommendationProvider extends ChangeNotifier {
       );
       _cooldownUntil = null;
       _lastRateLimitFailure = false;
-      _bundle = generated;
-      final canSaveEmpty =
-          generated.entries.isEmpty &&
-          generated.localDateKey == _localDateKey(DateTime.now());
-      if (generated.entries.isNotEmpty || canSaveEmpty) {
-        await _repository.save(generated);
-        _saveLog(saved: true, count: generated.entries.length);
+
+      // 再生成結果が空でも、既存おすすめがある場合は消さない。
+      if (generated.entries.isEmpty &&
+          previousBundle != null &&
+          previousBundle.entries.isNotEmpty) {
+        _generationStatus = previousBundle.entries.length < 10
+            ? TodayRecommendationGenerationStatus.partialSuccess
+            : TodayRecommendationGenerationStatus.ready;
+        _saveLog(keepPreviousBundle: true, reason: 'emptyResultKeepPrevious');
+        _resultLog(
+          status: 'partialSuccess',
+          count: previousBundle.entries.length,
+          reason: 'keepPreviousBundle',
+        );
       } else {
-        _saveLog(saved: false, reason: 'noEntriesNotSaved');
-      }
-      _generationStatus = generated.entries.isEmpty
-          ? TodayRecommendationGenerationStatus.empty
-          : (generated.entries.length < 10
-                ? TodayRecommendationGenerationStatus.partialSuccess
-                : TodayRecommendationGenerationStatus.ready);
-      if (countsAsPrimaryGeneration) {
-        await recordSuccessfulRecommendationGeneration(now: now);
+        _bundle = generated;
+        final canSaveEmpty =
+            generated.entries.isEmpty &&
+            generated.localDateKey == _localDateKey(DateTime.now());
+        if (generated.entries.isNotEmpty || canSaveEmpty) {
+          await _repository.save(generated);
+          _saveLog(saved: true, count: generated.entries.length);
+        } else {
+          _saveLog(saved: false, reason: 'noEntriesNotSaved');
+        }
+        _generationStatus = generated.entries.isEmpty
+            ? TodayRecommendationGenerationStatus.empty
+            : (generated.entries.length < 10
+                  ? TodayRecommendationGenerationStatus.partialSuccess
+                  : TodayRecommendationGenerationStatus.ready);
+        if (countsAsPrimaryGeneration) {
+          await recordSuccessfulRecommendationGeneration(now: now);
+        }
       }
     } catch (e, st) {
       if (kDebugMode) {
@@ -441,15 +476,21 @@ class TodayRecommendationProvider extends ChangeNotifier {
         final msg = e.toString().toLowerCase();
         if (msg.contains('(429)') ||
             msg.contains('allowed requests has been exceeded')) {
-          _generationStatus = TodayRecommendationGenerationStatus.failedRateLimit;
+          _generationStatus =
+              TodayRecommendationGenerationStatus.failedRateLimit;
           _cooldownUntil = DateTime.now().add(_rateLimitCooldown);
           _lastRateLimitFailure = true;
         } else {
-          _generationStatus = TodayRecommendationGenerationStatus.failedApiError;
+          _generationStatus =
+              TodayRecommendationGenerationStatus.failedApiError;
           _lastRateLimitFailure = false;
         }
         _errorMessage = 'おすすめを準備できませんでした。少し時間をおいて再試行してください';
-        _resultLog(status: 'failed', reason: _failureTypeFromError(e), count: 0);
+        _resultLog(
+          status: 'failed',
+          reason: _failureTypeFromError(e),
+          count: 0,
+        );
         _saveLog(saved: false, reason: _failureTypeFromError(e));
       }
     } finally {
@@ -639,13 +680,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final profileDiagnosed = recommendationProfile?.isDiagnosed ?? false;
     final mandatoryGenrePlans = profileDiagnosed
         ? ProfileRecommendationIntegration.buildSearchPlans(
-                recommendationProfile!,
-              )
-              .map(_RecommendSearchPlan.fromSpec)
-              .toList(growable: false)
+            recommendationProfile!,
+          ).map(_RecommendSearchPlan.fromSpec).toList(growable: false)
         : planSet.favoriteGenrePlans
-            .map(_RecommendSearchPlan.fromSpec)
-            .toList(growable: false);
+              .map(_RecommendSearchPlan.fromSpec)
+              .toList(growable: false);
     final assistPlan = profileDiagnosed
         ? null
         : planSet.assistPlan != null
@@ -654,19 +693,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final fallbackPlan = profileDiagnosed
         ? null
         : planSet.fallbackPlan != null
-            ? _RecommendSearchPlan.fromSpec(planSet.fallbackPlan!)
-            : null;
+        ? _RecommendSearchPlan.fromSpec(planSet.fallbackPlan!)
+        : null;
     final plans = <_RecommendSearchPlan>[
       ...mandatoryGenrePlans,
       if (assistPlan != null) assistPlan,
       if (fallbackPlan != null) fallbackPlan,
     ];
     _planLogCount(plans.length);
-    _generateLog(
-      stage: 'start',
-      requestCount: 0,
-      planCount: plans.length,
-    );
+    _generateLog(stage: 'start', requestCount: 0, planCount: plans.length);
 
     final pool = <String, RakutenSearchItem>{};
     final metaById = <String, _ItemPoolMeta>{};
@@ -743,7 +778,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
         relaxLevel: p.relaxLevel,
         sortOverride: p.sortOverride,
       );
-      final sortKey = condition.sort ?? TodayRecommendationPolicy.defaultApiSort;
+      final sortKey =
+          condition.sort ?? TodayRecommendationPolicy.defaultApiSort;
       var startPage = 1;
       String? genrePageKey;
       if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
@@ -986,10 +1022,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
       savedShopCount: savedShops.length,
     );
 
-    final previewVisibleCount = TodayRecommendationVisibleSelection.visibleCount(
-      previewAfterGenres.entries,
-      savedShops.length,
-    );
+    final previewVisibleCount =
+        TodayRecommendationVisibleSelection.visibleCount(
+          previewAfterGenres.entries,
+          savedShops.length,
+        );
 
     if (!apiSkippedByCatalog &&
         assistPlan != null &&
@@ -1052,7 +1089,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final entries = finalized.entries;
 
     if (kDebugMode) {
-      recommendAuditLog('[RECOMMEND] apiCalls=$apiCalls poolSize=${pool.length}');
+      recommendAuditLog(
+        '[RECOMMEND] apiCalls=$apiCalls poolSize=${pool.length}',
+      );
       recommendAuditLog('[RECOMMEND] final count: ${entries.length}');
       recommendAuditLog(
         '[RECOMMEND_BUCKET] personal=${finalized.personalCount} '
@@ -1081,12 +1120,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (rateLimited && entries.isEmpty) {
       throw Exception('Rakuten API rate limit (429)');
     }
-    final durationMs = DateTime.now().difference(generateStartedAt).inMilliseconds;
-    _generateLog(
-      stage: 'end',
-      requestCount: apiCalls,
-      planCount: plans.length,
-    );
+    final durationMs = DateTime.now()
+        .difference(generateStartedAt)
+        .inMilliseconds;
+    _generateLog(stage: 'end', requestCount: apiCalls, planCount: plans.length);
     _summaryLog(
       totalApiRequests: apiCalls,
       totalPlans: plans.length,
@@ -1144,7 +1181,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
       fallbackUsed: fallbackUsed,
     );
     _todayRecommendCatalogSummaryLog(
-      enabled: ProductCatalogConfig.kProductCatalogEnabled &&
+      enabled:
+          ProductCatalogConfig.kProductCatalogEnabled &&
           _productCatalogRepository != null,
       catalog: catalogCollect,
       apiSkippedByCatalog: apiSkippedByCatalog,
@@ -1235,8 +1273,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         staleCandidatesForBridge: staleCandidatesForBridge,
         reactionProfile: reactionProfile,
       );
-      if (scoredItem != null &&
-          (recommendationProfile?.isDiagnosed ?? false)) {
+      if (scoredItem != null && (recommendationProfile?.isDiagnosed ?? false)) {
         final blended = ProfileRecommendationIntegration.blendScore(
           item: item,
           profile: recommendationProfile!,
@@ -1267,13 +1304,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     if (recommendationProfile?.isDiagnosed ?? false) {
-      final profileCandidates = <({
-        RakutenSearchItem item,
-        double score,
-        double priceScore,
-        TodayRecommendationSection section,
-        RecommendationScoreResult profileScore,
-      })>[];
+      final profileCandidates =
+          <
+            ({
+              RakutenSearchItem item,
+              double score,
+              double priceScore,
+              TodayRecommendationSection section,
+              RecommendationScoreResult profileScore,
+            })
+          >[];
       for (final e in scored) {
         final profileScore = RecommendationScoringService.score(
           item: e.item,
@@ -1291,11 +1331,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
           profileScore: profileScore,
         ));
       }
-      final profileEntries = ProfileRecommendationIntegration.pickTopThreeWithRoles(
-        candidates: profileCandidates,
-        profile: recommendationProfile!,
-        savedShopCount: savedShopCount,
-      );
+      final profileEntries =
+          ProfileRecommendationIntegration.pickTopThreeWithRoles(
+            candidates: profileCandidates,
+            profile: recommendationProfile!,
+            savedShopCount: savedShopCount,
+          );
       final shopDistribution = <String, int>{};
       for (final e in profileEntries) {
         final shop = e.item.shopName.trim().isEmpty
@@ -1346,7 +1387,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (entryList.length >= 10) break;
         final id = e.item.productId.trim();
         if (id.isEmpty || selectedIds.contains(id)) continue;
-        if (!_passesBackfillQualityGate(e.item, postStyles: postStyles)) continue;
+        if (!_passesBackfillQualityGate(e.item, postStyles: postStyles))
+          continue;
         entryList.add(
           TodayRecommendationEntry(
             item: e.item,
@@ -1360,9 +1402,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
         added += 1;
       }
       if (kDebugMode && added > 0) {
-        recommendAuditLog('[RECOMMEND_BACKFILL] fromExistingPool=true added=$added');
+        recommendAuditLog(
+          '[RECOMMEND_BACKFILL] fromExistingPool=true added=$added',
+        );
         recommendAuditLog('[RECOMMEND_BACKFILL] reason=diversityRelaxed');
-        recommendAuditLog('[RECOMMEND_BACKFILL] added=$added total=${entryList.length}');
+        recommendAuditLog(
+          '[RECOMMEND_BACKFILL] added=$added total=${entryList.length}',
+        );
       }
     }
     final entries = entryList
@@ -1397,15 +1443,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
     for (final e in visibleEntries) {
       final id = e.item.productId.trim();
       if (id.isEmpty) continue;
-      sourceGenreByProductId[id] =
-          metaById[id]?.sourceGenreId.trim() ?? '';
+      sourceGenreByProductId[id] = metaById[id]?.sourceGenreId.trim() ?? '';
     }
     final sourceGenreDistribution =
         TodayRecommendationGenreDistribution.distributionBySourceGenre(
-      pickedProductIds: visibleEntries.map((e) => e.item.productId.trim()).toList(),
-      sourceGenreByProductId: sourceGenreByProductId,
-      favoriteGenreIds: favoriteGenreIdList,
-    );
+          pickedProductIds: visibleEntries
+              .map((e) => e.item.productId.trim())
+              .toList(),
+          sourceGenreByProductId: sourceGenreByProductId,
+          favoriteGenreIds: favoriteGenreIdList,
+        );
     final shopDistribution = <String, int>{};
     for (final e in visibleEntries) {
       final shop = e.item.shopName.trim().isEmpty
@@ -1472,13 +1519,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (kDebugMode) {
       final dist =
           TodayRecommendationGenreDistribution.distributionBySourceGenre(
-        pickedProductIds: pickedIds,
-        sourceGenreByProductId: {
-          for (final id in pickedIds)
-            id: metaById[id]?.sourceGenreId.trim() ?? '',
-        },
-        favoriteGenreIds: favoriteGenreIdList,
-      );
+            pickedProductIds: pickedIds,
+            sourceGenreByProductId: {
+              for (final id in pickedIds)
+                id: metaById[id]?.sourceGenreId.trim() ?? '',
+            },
+            favoriteGenreIds: favoriteGenreIdList,
+          );
       recommendAuditLog(
         '[TODAY_RECOMMEND_FINAL_DISTRIBUTION] '
         'finalItems=${selected.length} sourceGenreDistribution='
@@ -1583,8 +1630,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Map<String, RakutenSearchItem> dedup,
     bool checkDedup = true,
     RakutenProductSearchCondition? condition,
-    Map<String, TodayRecommendExposureRecord> exposureRecords =
-        const {},
+    Map<String, TodayRecommendExposureRecord> exposureRecords = const {},
   }) {
     final id = item.productId.trim();
     if (id.isEmpty) return 'missingItemCode';
@@ -1689,7 +1735,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Object status,
     required int rawCount,
   }) {
-    recommendAuditLog('$_logTagApi phase=$phase status=$status rawCount=$rawCount');
+    recommendAuditLog(
+      '$_logTagApi phase=$phase status=$status rawCount=$rawCount',
+    );
   }
 
   void _apiLogDetailed({
@@ -1745,7 +1793,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return;
     }
     if (saved == true) {
-      recommendAuditLog('[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}');
+      recommendAuditLog(
+        '[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}',
+      );
       return;
     }
     importantDebugLog(
@@ -1848,7 +1898,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
       if (!SearchResultQualityFilter.hasDisplayableImage(item)) {
         missingImage += 1;
       }
-      if (!SearchResultQualityFilter.hasDisplayablePrice(item)) missingPrice += 1;
+      if (!SearchResultQualityFilter.hasDisplayablePrice(item))
+        missingPrice += 1;
       final g = item.genreName.trim().isNotEmpty
           ? item.genreName.trim()
           : (item.genreId.trim().isEmpty ? '-' : item.genreId.trim());

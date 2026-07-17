@@ -7,6 +7,7 @@ import 'app_dimensions.dart';
 export 'app_colors.dart';
 export 'app_text_styles.dart';
 export 'app_dimensions.dart';
+export 'app_motion.dart';
 
 /// 楽天ROOM風のアプリテーマ。
 /// ThemeData を一元管理し、色・テキスト・角丸を統一する。

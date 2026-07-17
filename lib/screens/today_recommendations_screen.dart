@@ -45,10 +45,14 @@ class TodayRecommendationsScreen extends StatefulWidget {
       _TodayRecommendationsScreenState();
 }
 
-class _TodayRecommendationsScreenState
-    extends State<TodayRecommendationsScreen> with WidgetsBindingObserver {
+class _TodayRecommendationsScreenState extends State<TodayRecommendationsScreen>
+    with WidgetsBindingObserver {
   Timer? _regenerateUiRefreshTimer;
   bool _recommendationsOpenedLogged = false;
+
+  /// 初回生成完了・手動再生成完了時のみ一覧入場モーションを有効化する。
+  bool _listEntranceMotionArmed = false;
+  String? _lastRevealedBundleKey;
 
   void _maybeLogRecommendationsOpened(TodayRecommendationBundle bundle) {
     if (_recommendationsOpenedLogged || bundle.entries.isEmpty) return;
@@ -138,8 +142,9 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
-      recommendationProfile:
-          context.read<RoomRecommendationProfileProvider>().profile,
+      recommendationProfile: context
+          .read<RoomRecommendationProfileProvider>()
+          .profile,
       trigger: 'screenOpen',
     );
   }
@@ -150,12 +155,16 @@ class _TodayRecommendationsScreenState
     final profile = context.read<UserProfileProvider>().profile;
     final managed = context.read<RakutenManagedProductProvider>().items;
     final saved = context.read<SavedShopProvider>().shops;
+    final beforeGeneratedAt = recommender.bundle?.generatedAt;
+    final beforeHadEntries =
+        recommender.bundle != null && recommender.bundle!.entries.isNotEmpty;
     await recommender.regenerateToday(
       profile: profile,
       managedItems: managed,
       savedShops: saved,
-      recommendationProfile:
-          context.read<RoomRecommendationProfileProvider>().profile,
+      recommendationProfile: context
+          .read<RoomRecommendationProfileProvider>()
+          .profile,
       trigger: 'manual',
       manual: true,
     );
@@ -175,7 +184,29 @@ class _TodayRecommendationsScreenState
           ? 'あと約5分後に再生成できます'
           : status.userFacingWaitLabel;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+      return;
     }
+    if (guard.isNotEmpty) return;
+
+    final afterGeneratedAt = recommender.bundle?.generatedAt;
+    final updatedSuccessfully =
+        beforeHadEntries &&
+        afterGeneratedAt != null &&
+        afterGeneratedAt != beforeGeneratedAt &&
+        (recommender.bundle?.entries.isNotEmpty ?? false);
+    if (updatedSuccessfully) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          key: Key('today_recommendation_updated_snackbar'),
+          content: Text('おすすめを更新しました'),
+        ),
+      );
+    }
+  }
+
+  static String _bundleIdentity(TodayRecommendationBundle bundle) {
+    final productIds = bundle.entries.map((e) => e.item.productId).join(',');
+    return '${bundle.generatedAt.toIso8601String()}|$productIds';
   }
 
   void _showGenerationLimitMessage(
@@ -198,164 +229,178 @@ class _TodayRecommendationsScreenState
     return Theme(
       data: TodayRecommendationsScreenUi.overlayTheme(theme),
       child: Scaffold(
-      backgroundColor: TodayRecommendationsScreenUi.canvas,
-      appBar: AppBar(
-        title: const Text('今日のおすすめコレ候補'),
         backgroundColor: TodayRecommendationsScreenUi.canvas,
-        surfaceTintColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: Consumer<TodayRecommendationProvider>(
-          builder: (context, rec, _) {
-            if (rec.isLoading) {
-              return const KeyedSubtree(
-                key: Key('today_recommendation_status_area'),
-                child: AppScreenLoadingCenter(
-                  title: 'おすすめコレを準備しています',
-                  subtitle:
-                      'あなたに合う商品を集めています。',
-                ),
-              );
-            }
-            if (rec.errorMessage != null &&
-                (rec.bundle == null || rec.bundle!.entries.isEmpty)) {
-              return KeyedSubtree(
-                key: const Key('today_recommendation_error_message'),
-                child: AppScreenErrorCenter(
-                  title: 'おすすめを表示できませんでした',
-                  message: rec.errorMessage!,
-                  onRetry: _regenerate,
-                  retryLabel: '候補を作り直す',
-                ),
-              );
-            }
+        appBar: AppBar(
+          title: const Text('今日のおすすめコレ候補'),
+          backgroundColor: TodayRecommendationsScreenUi.canvas,
+          surfaceTintColor: Colors.transparent,
+        ),
+        body: SafeArea(
+          child: Consumer<TodayRecommendationProvider>(
+            builder: (context, rec, _) {
+              final hasEntries =
+                  rec.bundle != null && rec.bundle!.entries.isNotEmpty;
+              final isInitialLoading = rec.isLoading && !hasEntries;
+              final isRefreshing = rec.isLoading && hasEntries;
 
-            final bundle = rec.bundle;
-            if (bundle == null || bundle.entries.isEmpty) {
-              final favoriteGenres = context
-                  .read<UserProfileProvider>()
-                  .profile
-                  .favoriteGenreIdList;
+              if (isInitialLoading) {
+                _listEntranceMotionArmed = true;
+                return const KeyedSubtree(
+                  key: Key('today_recommendation_status_area'),
+                  child: AppScreenLoadingCenter(
+                    title: 'おすすめコレを準備しています',
+                    subtitle: 'あなたに合う商品を集めています。',
+                  ),
+                );
+              }
+              if (rec.errorMessage != null &&
+                  (rec.bundle == null || rec.bundle!.entries.isEmpty)) {
+                return KeyedSubtree(
+                  key: const Key('today_recommendation_error_message'),
+                  child: AppScreenErrorCenter(
+                    title: 'おすすめを表示できませんでした',
+                    message: rec.errorMessage!,
+                    onRetry: _regenerate,
+                    retryLabel: '候補を作り直す',
+                  ),
+                );
+              }
+
+              final bundle = rec.bundle;
+              if (bundle == null || bundle.entries.isEmpty) {
+                final favoriteGenres = context
+                    .read<UserProfileProvider>()
+                    .profile
+                    .favoriteGenreIdList;
+                return KeyedSubtree(
+                  key: const Key('today_recommendation_empty_message'),
+                  child: AppScreenEmptyCenter(
+                    icon: Icons.auto_awesome_outlined,
+                    title: 'まだ今日のおすすめがありません',
+                    body: favoriteGenres.isEmpty
+                        ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
+                        : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
+                    actions: [
+                      const _GenerationLimitUsageLine(),
+                      MyPagePrimaryButton(
+                        key: const Key('today_recommendation_generate_button'),
+                        label: '今日のおすすめを作る',
+                        onPressed: _regenerate,
+                        icon: const Icon(Icons.auto_awesome_rounded),
+                        height: 48,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              if (isRefreshing) {
+                _listEntranceMotionArmed = true;
+              }
+
+              final bundleKey = _bundleIdentity(bundle);
+              final shouldAnimateEntrance =
+                  !isRefreshing &&
+                  _listEntranceMotionArmed &&
+                  _lastRevealedBundleKey != bundleKey;
+              if (!isRefreshing) {
+                _lastRevealedBundleKey = bundleKey;
+                if (shouldAnimateEntrance) {
+                  _listEntranceMotionArmed = false;
+                }
+              }
+
+              final savedShopCount = context
+                  .read<SavedShopProvider>()
+                  .shops
+                  .length;
+              final rows = _RecommendationListRow.fromEntries(
+                bundle.entries,
+                savedShopCount: savedShopCount,
+              );
+              final visibleEntries =
+                  TodayRecommendationSectionVisibility.visibleEntries(
+                    entries: bundle.entries,
+                    savedShopCount: savedShopCount,
+                  );
+              final pendingCount = visibleEntries
+                  .where(
+                    (e) => e.decision == TodayRecommendationDecision.pending,
+                  )
+                  .length;
+              final alreadyAdded = bundle.entries
+                  .where(
+                    (e) =>
+                        e.decision ==
+                        TodayRecommendationDecision.addedCandidate,
+                  )
+                  .length;
+              final skipped = bundle.entries
+                  .where(
+                    (e) => e.decision == TodayRecommendationDecision.skipped,
+                  )
+                  .length;
+              if (kDebugMode) {
+                debugPrint(
+                  '[TODAY_RECOMMEND_SELECTION_RENDER] total=${bundle.entries.length} '
+                  'pending=$pendingCount alreadyAdded=$alreadyAdded skipped=$skipped',
+                );
+              }
+              final regenerateUi = rec.regenerateButtonUiState();
+              final batchAddState = resolveBatchCandidateAddAvailability();
+              rec.logRegenerateButtonState(trigger: 'resultRender');
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!mounted) return;
+                _syncRegenerateUiRefresh();
+                _maybeLogRecommendationsOpened(bundle);
+              });
               return KeyedSubtree(
-                key: const Key('today_recommendation_empty_message'),
-                child: AppScreenEmptyCenter(
-                  icon: Icons.auto_awesome_outlined,
-                  title: 'まだ今日のおすすめがありません',
-                  body: favoriteGenres.isEmpty
-                      ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
-                      : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
-                  actions: [
-                    const _GenerationLimitUsageLine(),
-                    MyPagePrimaryButton(
-                      key: const Key('today_recommendation_generate_button'),
-                      label: '今日のおすすめを作る',
-                      onPressed: _regenerate,
-                      icon: const Icon(Icons.auto_awesome_rounded),
-                      height: 48,
+                key: const Key('today_recommendation_result_area'),
+                child: Column(
+                  children: [
+                    _SummaryCard(
+                      total: visibleEntries.length,
+                      uiState: regenerateUi,
+                      isRegenerating: isRefreshing,
+                      onRegenerate: _regenerate,
+                    ),
+                    if (isRefreshing) const _RegeneratingInlineStatus(),
+                    const MonetizationAdSlot(
+                      placement: MonetizationAdPlacement
+                          .todayRecommendationSummaryBanner,
+                    ),
+                    if (pendingCount > 0 &&
+                        batchAddState.limitsEnforcementEnabled &&
+                        !batchAddState.allowed)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
+                        child: Text(
+                          batchCandidateAddLockedMessage(),
+                          key: const Key(
+                            'today_recommendation_bulk_add_locked_hint',
+                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.35,
+                              ),
+                        ),
+                      ),
+                    Expanded(
+                      child: _RecommendationListView(
+                        key: ValueKey(bundleKey),
+                        rows: rows,
+                        animateEntrance: shouldAnimateEntrance,
+                        onItemTapped: _logRecommendationItemTapped,
+                      ),
                     ),
                   ],
                 ),
               );
-            }
-
-            final savedShopCount = context.read<SavedShopProvider>().shops.length;
-            final rows = _RecommendationListRow.fromEntries(
-              bundle.entries,
-              savedShopCount: savedShopCount,
-            );
-            final visibleEntries = TodayRecommendationSectionVisibility.visibleEntries(
-              entries: bundle.entries,
-              savedShopCount: savedShopCount,
-            );
-            final pendingCount = visibleEntries
-                .where(
-                  (e) => e.decision == TodayRecommendationDecision.pending,
-                )
-                .length;
-            final alreadyAdded = bundle.entries
-                .where(
-                  (e) =>
-                      e.decision == TodayRecommendationDecision.addedCandidate,
-                )
-                .length;
-            final skipped = bundle.entries
-                .where((e) => e.decision == TodayRecommendationDecision.skipped)
-                .length;
-            if (kDebugMode) {
-              debugPrint(
-                '[TODAY_RECOMMEND_SELECTION_RENDER] total=${bundle.entries.length} '
-                'pending=$pendingCount alreadyAdded=$alreadyAdded skipped=$skipped',
-              );
-            }
-            final regenerateUi = rec.regenerateButtonUiState();
-            final batchAddState = resolveBatchCandidateAddAvailability();
-            rec.logRegenerateButtonState(trigger: 'resultRender');
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (!mounted) return;
-              _syncRegenerateUiRefresh();
-              _maybeLogRecommendationsOpened(bundle);
-            });
-            return KeyedSubtree(
-              key: const Key('today_recommendation_result_area'),
-              child: Column(
-              children: [
-                _SummaryCard(
-                  total: visibleEntries.length,
-                  uiState: regenerateUi,
-                  onRegenerate: _regenerate,
-                ),
-                const MonetizationAdSlot(
-                  placement: MonetizationAdPlacement
-                      .todayRecommendationSummaryBanner,
-                ),
-                if (pendingCount > 0 &&
-                    batchAddState.limitsEnforcementEnabled &&
-                    !batchAddState.allowed)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
-                    child: Text(
-                      batchCandidateAddLockedMessage(),
-                      key: const Key('today_recommendation_bulk_add_locked_hint'),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.35,
-                          ),
-                    ),
-                  ),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                    itemCount: rows.length,
-                    itemBuilder: (context, index) {
-                      final row = rows[index];
-                      if (row.section != null) {
-                        return _RecommendationSectionHeader(
-                          section: row.section!,
-                          topPadding: index == 0 ? 2 : 8,
-                        );
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: _RecommendationCard(
-                          entry: row.entry!,
-                          position: rows
-                                  .take(index + 1)
-                                  .where((r) => r.entry != null)
-                                  .length -
-                              1,
-                          onItemTapped: _logRecommendationItemTapped,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            );
-          },
+            },
+          ),
         ),
       ),
-    ),
     );
   }
 }
@@ -402,10 +447,10 @@ class _RecommendationSectionHeader extends StatelessWidget {
       child: Text(
         _sectionTitle(section),
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
-            ),
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w800,
+          fontSize: 14,
+        ),
       ),
     );
   }
@@ -427,17 +472,20 @@ class _SummaryCard extends StatelessWidget {
     required this.total,
     required this.uiState,
     required this.onRegenerate,
+    this.isRegenerating = false,
   });
 
   final int total;
   final RegenerateButtonUiState uiState;
   final VoidCallback onRegenerate;
+  final bool isRegenerating;
 
   @override
   Widget build(BuildContext context) {
-    final cooldownHint = uiState.showCooldownMessage && uiState.waitLabel.isNotEmpty
+    final cooldownHint =
+        uiState.showCooldownMessage && uiState.waitLabel.isNotEmpty
         ? uiState.waitLabel
-        : (uiState.canPress ? '' : 'あと約5分で再生成できます');
+        : (uiState.canPress || isRegenerating ? '' : 'あと約5分で再生成できます');
     return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 8, 20, 4),
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -452,9 +500,9 @@ class _SummaryCard extends StatelessWidget {
                 Text(
                   '$total件の候補',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 if (cooldownHint.isNotEmpty) ...[
                   const SizedBox(height: 2),
@@ -462,10 +510,10 @@ class _SummaryCard extends StatelessWidget {
                     cooldownHint,
                     key: const Key('today_recommendation_skip_message'),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontSize: 12,
-                          height: 1.3,
-                        ),
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                      height: 1.3,
+                    ),
                   ),
                 ],
               ],
@@ -473,8 +521,12 @@ class _SummaryCard extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           AppSecondaryButton(
+            key: const Key('today_recommendation_regenerate_button'),
             label: '再生成',
-            onPressed: uiState.canPress ? onRegenerate : null,
+            onPressed: uiState.canPress && !isRegenerating
+                ? onRegenerate
+                : null,
+            isLoading: isRegenerating,
             icon: const Icon(Icons.refresh_rounded, size: 18),
           ),
         ],
@@ -483,8 +535,139 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
+class _RegeneratingInlineStatus extends StatelessWidget {
+  const _RegeneratingInlineStatus();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 2, 20, 6),
+      child: Row(
+        key: const Key('today_recommendation_regenerating_status'),
+        children: [
+          SizedBox(
+            width: 14,
+            height: 14,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: TodayRecommendationsScreenUi.primary.withValues(
+                alpha: 0.85,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'おすすめを選び直しています',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecommendationListView extends StatelessWidget {
+  const _RecommendationListView({
+    super.key,
+    required this.rows,
+    required this.animateEntrance,
+    required this.onItemTapped,
+  });
+
+  final List<_RecommendationListRow> rows;
+  final bool animateEntrance;
+  final void Function({
+    required int position,
+    required AnalyticsRecommendationAction action,
+  })
+  onItemTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+      itemCount: rows.length,
+      itemBuilder: (context, index) {
+        final row = rows[index];
+        if (row.section != null) {
+          return _RecommendationSectionHeader(
+            section: row.section!,
+            topPadding: index == 0 ? 2 : 8,
+          );
+        }
+        final position =
+            rows.take(index + 1).where((r) => r.entry != null).length - 1;
+        final staggerIndex = position.clamp(0, 2);
+        final productId = row.entry!.item.productId;
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: _RecommendationEntrance(
+            animate: animateEntrance,
+            staggerIndex: staggerIndex,
+            child: _RecommendationCard(
+              key: ValueKey(productId),
+              entry: row.entry!,
+              position: position,
+              onItemTapped: onItemTapped,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// 初回生成完了 / 再生成完了時のみ Fade + 軽い縦 Slide（最大 8px）。
+class _RecommendationEntrance extends StatelessWidget {
+  const _RecommendationEntrance({
+    required this.animate,
+    required this.staggerIndex,
+    required this.child,
+  });
+
+  final bool animate;
+  final int staggerIndex;
+  final Widget child;
+
+  static const double _slidePx = 8;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!animate || AppMotion.reduceMotionOf(context)) {
+      return child;
+    }
+    final base = AppMotion.durationOf(context, AppMotion.normal);
+    if (base == Duration.zero) return child;
+
+    final delayMs = staggerIndex * 50;
+    final totalMs = base.inMilliseconds + delayMs;
+    final begin = delayMs / totalMs;
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: totalMs),
+      curve: Interval(begin, 1, curve: AppMotion.standard),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value.clamp(0.0, 1.0),
+          child: Transform.translate(
+            offset: Offset(0, _slidePx * (1 - value)),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
 class _RecommendationCard extends StatelessWidget {
   const _RecommendationCard({
+    super.key,
     required this.entry,
     required this.position,
     required this.onItemTapped,
@@ -495,7 +678,8 @@ class _RecommendationCard extends StatelessWidget {
   final void Function({
     required int position,
     required AnalyticsRecommendationAction action,
-  }) onItemTapped;
+  })
+  onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -637,10 +821,7 @@ class _CompactActionButton extends StatelessWidget {
             : AppColors.textSecondary,
         backgroundColor: background,
         disabledBackgroundColor: AppColors.surfaceVariant,
-        padding: EdgeInsets.symmetric(
-          horizontal: expand ? 12 : 8,
-          vertical: 8,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: expand ? 12 : 8, vertical: 8),
         minimumSize: Size(expand ? double.infinity : 0, _minHeight),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         shape: RoundedRectangleBorder(
@@ -656,10 +837,7 @@ class _CompactActionButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          if (icon != null) ...[
-            Icon(icon, size: 16),
-            const SizedBox(width: 4),
-          ],
+          if (icon != null) ...[Icon(icon, size: 16), const SizedBox(width: 4)],
           Text(label, maxLines: 1, softWrap: false),
         ],
       ),
@@ -670,11 +848,7 @@ class _CompactActionButton extends StatelessWidget {
       child: button,
     );
     if (semanticLabel == null) return sized;
-    return Semantics(
-      button: true,
-      label: semanticLabel,
-      child: sized,
-    );
+    return Semantics(button: true, label: semanticLabel, child: sized);
   }
 }
 
@@ -712,7 +886,9 @@ class _ProductTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
           color: accent
-              ? TodayRecommendationsScreenUi.primaryBorder.withValues(alpha: 0.55)
+              ? TodayRecommendationsScreenUi.primaryBorder.withValues(
+                  alpha: 0.55,
+                )
               : AppColors.divider.withValues(alpha: 0.55),
         ),
       ),
@@ -731,11 +907,7 @@ class _ProductTag extends StatelessWidget {
   }
 }
 
-enum _RecommendationCardCtaState {
-  pending,
-  addedNotCollected,
-  collected,
-}
+enum _RecommendationCardCtaState { pending, addedNotCollected, collected }
 
 RakutenManagedProduct? _managedProductForEntry(
   RakutenManagedProductProvider provider,
@@ -785,7 +957,8 @@ class _CardActionArea extends StatefulWidget {
   final void Function({
     required int position,
     required AnalyticsRecommendationAction action,
-  }) onItemTapped;
+  })
+  onItemTapped;
 
   @override
   State<_CardActionArea> createState() => _CardActionAreaState();
@@ -834,9 +1007,9 @@ class _CardActionAreaState extends State<_CardActionArea> {
         postUrl.isNotEmpty;
     if (!canOpen) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ROOM用URLがまだ取得できていません')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('ROOM用URLがまだ取得できていません')));
       return;
     }
     unawaited(
@@ -899,14 +1072,17 @@ class _CardActionAreaState extends State<_CardActionArea> {
       );
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('候補に追加しました')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<BulkOperationStateController, RakutenManagedProductProvider>(
+    return Consumer2<
+      BulkOperationStateController,
+      RakutenManagedProductProvider
+    >(
       builder: (context, bulk, managedProvider, _) {
         final syncLocked = bulk.isRoomTourSearchBlocking;
         final ctaState = _recommendationCardCtaState(
@@ -915,11 +1091,12 @@ class _CardActionAreaState extends State<_CardActionArea> {
         );
         final showAddCandidate =
             entry.decision == TodayRecommendationDecision.pending &&
-            (ctaState == _RecommendationCardCtaState.pending || _isAddingCandidate);
-        final showPost = ctaState == _RecommendationCardCtaState.addedNotCollected;
+            (ctaState == _RecommendationCardCtaState.pending ||
+                _isAddingCandidate);
+        final showPost =
+            ctaState == _RecommendationCardCtaState.addedNotCollected;
         final showOpenRoom = ctaState == _RecommendationCardCtaState.collected;
-        final showPrimaryCta =
-            showAddCandidate || showPost || showOpenRoom;
+        final showPrimaryCta = showAddCandidate || showPost || showOpenRoom;
         return Column(
           key: const Key('today_recommendation_card_cta'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -933,15 +1110,15 @@ class _CardActionAreaState extends State<_CardActionArea> {
                 expand: true,
                 onPressed: _isAddingCandidate || syncLocked
                     ? syncLocked && !_isAddingCandidate
-                        ? () {
-                            roomSyncUiGuardLog(
-                              'blockedAction=recommendCandidateAdd '
-                              'currentJob=${bulk.roomTourBlockingJobLabel} '
-                              'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
-                            );
-                            bulk.guardBlockingOperations(context);
-                          }
-                        : null
+                          ? () {
+                              roomSyncUiGuardLog(
+                                'blockedAction=recommendCandidateAdd '
+                                'currentJob=${bulk.roomTourBlockingJobLabel} '
+                                'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
+                              );
+                              bulk.guardBlockingOperations(context);
+                            }
+                          : null
                     : () => _addCandidate(context),
               )
             else if (showPost)
@@ -987,8 +1164,8 @@ class _CardActionAreaState extends State<_CardActionArea> {
                     style: _CompactActionStyle.weak,
                     onPressed: _canSkip
                         ? () async {
-                            final rec =
-                                context.read<TodayRecommendationProvider>();
+                            final rec = context
+                                .read<TodayRecommendationProvider>();
                             await rec.markSkipped(entry.item.productId);
                           }
                         : null,
@@ -1015,7 +1192,8 @@ class _ProductImageWithStatus extends StatelessWidget {
   final void Function({
     required int position,
     required AnalyticsRecommendationAction action,
-  }) onItemTapped;
+  })
+  onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -1048,10 +1226,7 @@ class _ProductImageWithStatus extends StatelessWidget {
 }
 
 class _DecisionBadge extends StatelessWidget {
-  const _DecisionBadge({
-    required this.decision,
-    required this.collected,
-  });
+  const _DecisionBadge({required this.decision, required this.collected});
 
   final TodayRecommendationDecision decision;
   final bool collected;
@@ -1114,7 +1289,8 @@ class _Thumb extends StatelessWidget {
   final void Function({
     required int position,
     required AnalyticsRecommendationAction action,
-  }) onItemTapped;
+  })
+  onItemTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -1141,7 +1317,10 @@ class _Thumb extends StatelessWidget {
             width: 92,
             height: 108,
             child: imageUrl.trim().isEmpty
-                ? const Icon(Icons.image_outlined, color: AppColors.textTertiary)
+                ? const Icon(
+                    Icons.image_outlined,
+                    color: AppColors.textTertiary,
+                  )
                 : Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
@@ -1174,9 +1353,9 @@ class _GenerationLimitUsageLine extends StatelessWidget {
           child: Text(
             recommendationGenerationUsageLabel(state),
             key: const Key('today_recommendation_generation_usage'),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         );
