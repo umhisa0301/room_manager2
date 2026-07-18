@@ -24,14 +24,14 @@ class HomeGoalMilestoneProgress extends StatefulWidget {
     );
   }
 
-  /// Semantics 用ラベル（次マイルストーン目標 N 件中 M 件）。
+  /// Semantics 用ラベル（視覚バーと同じく最大マイルストーン 20 件基準）。
   static String semanticsLabelFor(int postCount) {
-    final snap = HomePostMilestoneSnapshot.fromPostCount(
-      postCount < 0 ? 0 : postCount,
-      useCalendarDayLabel: true,
-    );
-    final target = snap.nextMilestone ?? _milestones.last;
-    return '今日の投稿目標 $target件中${snap.postCount}件';
+    final c = postCount < 0 ? 0 : postCount;
+    final max = _milestones.last;
+    if (c >= max) {
+      return '今日の投稿数 $c件。今日の投稿目標を達成しました';
+    }
+    return '今日の投稿目標 $max件中$c件';
   }
 
   @override

@@ -163,17 +163,74 @@ void main() {
       );
     });
 
-    testWidgets('Semantics に目標ラベルがある', (tester) async {
+    testWidgets('Semantics は全体20件基準で視覚バーと一致する', (tester) async {
       final handle = tester.ensureSemantics();
       try {
         await pumpProgress(tester, 3);
-        expect(HomeGoalMilestoneProgress.semanticsLabelFor(3), '今日の投稿目標 5件中3件');
+        expect(
+          HomeGoalMilestoneProgress.semanticsLabelFor(3),
+          '今日の投稿目標 20件中3件',
+        );
         expect(
           tester.getSemantics(find.byType(HomeGoalMilestoneProgress)),
-          matchesSemantics(label: '今日の投稿目標 5件中3件', value: '3'),
+          matchesSemantics(label: '今日の投稿目標 20件中3件', value: '3'),
         );
       } finally {
         handle.dispose();
+      }
+    });
+
+    testWidgets('Semantics は20件達成時に達成文言になる', (tester) async {
+      final handle = tester.ensureSemantics();
+      try {
+        await pumpProgress(tester, 20);
+        expect(
+          HomeGoalMilestoneProgress.semanticsLabelFor(20),
+          '今日の投稿数 20件。今日の投稿目標を達成しました',
+        );
+        expect(
+          tester.getSemantics(find.byType(HomeGoalMilestoneProgress)),
+          matchesSemantics(label: '今日の投稿数 20件。今日の投稿目標を達成しました', value: '20'),
+        );
+      } finally {
+        handle.dispose();
+      }
+    });
+
+    testWidgets('Semantics は20件超でも件数を正確に伝える', (tester) async {
+      expect(
+        HomeGoalMilestoneProgress.semanticsLabelFor(25),
+        '今日の投稿数 25件。今日の投稿目標を達成しました',
+      );
+      expect(HomeGoalMilestoneProgress.semanticsLabelFor(-3), '今日の投稿目標 20件中0件');
+    });
+  });
+
+  group('overallProgress 境界値', () {
+    test('0〜20および不正値で 0〜1 に clamp される', () {
+      expect(HomePostMilestoneSnapshot.overallProgress(0), 0.0);
+      expect(HomePostMilestoneSnapshot.overallProgress(1), closeTo(0.05, 1e-9));
+      expect(HomePostMilestoneSnapshot.overallProgress(4), closeTo(0.2, 1e-9));
+      expect(HomePostMilestoneSnapshot.overallProgress(5), closeTo(0.25, 1e-9));
+      expect(HomePostMilestoneSnapshot.overallProgress(9), closeTo(0.45, 1e-9));
+      expect(HomePostMilestoneSnapshot.overallProgress(10), closeTo(0.5, 1e-9));
+      expect(
+        HomePostMilestoneSnapshot.overallProgress(19),
+        closeTo(0.95, 1e-9),
+      );
+      expect(HomePostMilestoneSnapshot.overallProgress(20), 1.0);
+      expect(HomePostMilestoneSnapshot.overallProgress(21), 1.0);
+      expect(HomePostMilestoneSnapshot.overallProgress(100), 1.0);
+      expect(HomePostMilestoneSnapshot.overallProgress(-1), 0.0);
+      expect(HomePostMilestoneSnapshot.overallProgress(-100), 0.0);
+    });
+
+    test('NaN / infinity にならない', () {
+      for (final count in [0, 1, 4, 5, 9, 10, 19, 20, 25, -3]) {
+        final p = HomePostMilestoneSnapshot.overallProgress(count);
+        expect(p.isNaN, isFalse, reason: 'count=$count');
+        expect(p.isInfinite, isFalse, reason: 'count=$count');
+        expect(p, inInclusiveRange(0.0, 1.0));
       }
     });
   });
