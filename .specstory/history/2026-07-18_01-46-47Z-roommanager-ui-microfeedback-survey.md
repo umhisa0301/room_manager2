@@ -478,6 +478,17 @@ UI調査に必要な範囲のみで構いません。
 
 _**Agent (default)**_
 
+<think><details><summary>Thought Process</summary>
+Phase 3の調査を開始します。保存・追加・解除・コピーなどの操作に対するマイクロフィードバックの現状を把握し、実装範囲を決定するため、プロジェクト全体の操作フローを調査します。
+
+room_manager2 プロジェクト全体を並列検索します。ファイルパスや Widget 名、メソッド名を正確に特定し、操作フローの現状を把握します。</details></think>
+
+_**Agent (default)**_
+
+Phase 3の事前調査として、コード変更はせず、Clipboard・SnackBar・保存/解除フローなどを横断検索します。
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="unknown" data-tool-name="todo_write">
 <details>
 <summary>Tool use: **todo_write**</summary>
@@ -490,7 +501,41 @@ Parameters:
   "merge": true
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "Clipboard / AppActionService 利用箇所調査",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "SnackBar / messenger 利用箇所調査",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "保存・追加・解除フローと二重押下調査",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Widget状態変化・Undo・Haptic・共通部品調査",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Analytics・操作分類・優先順位・必須回答まとめ",
+      "id": "5",
+      "status": "pending"
+    }
+  ],
+  "success": true
+}
+```
+Status: **completed**
 
 
 </details>
@@ -507,7 +552,64 @@ _**Agent (default)**_
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
-Status: **loading**
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.{dart,ts,tsx,js}",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "Clipboard\\.setData|ClipboardData|AppActionService\\.copyText|copyThenOpenUrl"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "Clipboard\\.setData|ClipboardData|AppActionService\\.copyText|copyThenOpenUrl",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_sync_log.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/widgets/room_post_prepare_sheet_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/services/app_action_service.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test\\widgets\\room_post_prepare_sheet_test.dart"
+    }
+  ],
+  "totalFiles": 8,
+  "totalMatches": 12
+}
+```
+Status: **completed**
 
 
 </details>
@@ -524,7 +626,112 @@ _**Agent (default)**_
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
-Status: **loading**
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showSnackBar|ScaffoldMessenger|appRootScaffoldMessengerKey|hideCurrentSnackBar|removeCurrentSnackBar|clearSnackBars"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showSnackBar|ScaffoldMessenger|appRootScaffoldMessengerKey|hideCurrentSnackBar|removeCurrentSnackBar|clearSnackBars",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/state/room_import_controller.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/services/dev_automation_visible_run.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/utils/analytics_shop_search_launcher.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/product_open_action_buttons.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/mypage/mypage_widgets.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comment_template_edit_screen.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib/widgets/rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/post_style_settings_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_add_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_edit_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 18,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 10,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/state/bulk_operation_state_controller.dart"
+    }
+  ],
+  "totalFiles": 35,
+  "totalMatches": 138
+}
+```
+Status: **completed**
 
 
 </details>
@@ -534,3 +741,2680 @@ Status: **loading**
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "HapticFeedback|selectionClick|lightImpact|mediumImpact|\\.vibrate\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "HapticFeedback|selectionClick|lightImpact|mediumImpact|\\.vibrate\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/collect_post_success_overlay.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (1 file)
+
+| File |
+|------|
+| `../lib/services/app_action_service.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **6** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (6 files)
+
+| File |
+|------|
+| `../lib/widgets/app_button.dart` |
+| `../lib/utils/room_sync_button_visibility.dart` |
+| `../lib/widgets/product_open_action_buttons.dart` |
+| `../lib/widgets/home_primary_action_button.dart` |
+| `../lib/widgets/room_sync_reaction_button.dart` |
+| `../test/widgets/room_sync_reaction_button_test.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査を進めています。AppActionServiceやカードWidget、楽観的更新、Analyticsなどの詳細を収集しています。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\app_action_service.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "copyText|copyThenOpenUrl|\\.copy\\(|copied|コピー"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "copyText|copyThenOpenUrl|\\.copy\\(|copied|コピー",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_sync_log.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/config/firebase_config.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/repository/comment_template_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/post_style_settings.dart"
+    },
+    {
+      "matchCount": 13,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/services/app_action_service.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/catalog_product.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/state/activity_log_provider.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/state/comment_template_provider.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    }
+  ],
+  "totalFiles": 13,
+  "totalMatches": 43
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "isLoading|isSaving|isProcessing|pending|debounce|throttle|二重|processingIds|busyIds|_busy|_saving|_loading"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "isLoading|isSaving|isProcessing|pending|debounce|throttle|二重|processingIds|busyIds|_busy|_saving|_loading",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/repository/pending_collect_notice_repository.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 15,
+      "uri": "lib/state/today_recommendation_provider.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/theme/rakuten_search_screen_tokens.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/utils/monetization_plan_display.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/utils/today_recommendation_work_progress.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/room_sync_log.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/room_import_limit.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 33,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/monetization_plan_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/room_sync_service.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/utils/managed_product_diag_log.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/utils/room_import_pending_user_copy.dart"
+    }
+  ],
+  "totalFiles": 18,
+  "totalMatches": 325
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "optimistic|rollback|Undo|取り消"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "optimistic|rollback|Undo|取り消",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppPrimaryButton|AppSecondaryButton|AppOutlineButton|class AppButton"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppPrimaryButton|AppSecondaryButton|AppOutlineButton|class AppButton",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_search_feedback.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/favorite_genre_picker_sheet.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/closed_test_demo_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/home_primary_action_button.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_search_condition_fields.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/widgets/product_open_action_buttons.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/app_screen_status.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_edit_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/widgets/app_button.dart"
+    },
+    {
+      "matchCount": 12,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/rakuten_search_screen_tokens.dart"
+    }
+  ],
+  "totalFiles": 21,
+  "totalMatches": 65
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "reco_add_candidate|room_launch_tapped|search_shop_tap|url_add_success|Analytics|logEvent|trackEvent"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "reco_add_candidate|room_launch_tapped|search_shop_tap|url_add_success|Analytics|logEvent|trackEvent",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/config/debug_log_flags.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/screens/activity_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 94,
+      "uri": "lib/services/analytics_service.dart"
+    }
+  ],
+  "totalFiles": 3,
+  "totalMatches": 353
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+管理商品カードや推奨カード、ショップ保存などの主要フローを深く調査する。並列タスク起動または主要ファイルの読み込みを進める。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "商品・候補フロー調査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Investigate room_manager2 Flutter app at c:\\dev\\app_project\\room_manager2 for Phase 3 micro-feedback research. NO code changes.\n\nFocus on product/candidate operations. Find and document for each:\n\n1. コレ候補への追加\n2. コレ候補から外す\n3. コレ済みへの変更\n4. コレ済みから戻す\n5. 商品削除\n6. 商品編集\n7. 商品URL取り込み\n8. 商品検索結果からの追加\n9. おすすめコレからの候補追加\n10. おすすめコレからの投稿開始\n\nFor each, report in Japanese:\n- UI Widget name and file path\n- onPressed/onTap handler method names\n- Provider/Service involved\n- async flow summary\n- optimistic update? (yes/no/partial)\n- loading UI\n- success feedback (SnackBar message text exact)\n- failure feedback\n- double-tap prevention (global vs per-product-id)\n- HapticFeedback\n- Analytics event names if any\n- Whether the card/icon changes immediately\n\nKey files to inspect:\n- lib/widgets/rakuten_managed_product_card.dart\n- lib/screens/rakuten_search_screen.dart (add from search)\n- lib/screens/today_recommendations_screen.dart (_RecommendationCard)\n- lib/state/rakuten_managed_product_provider.dart\n- lib/screens/product_detail_screen.dart\n- lib/screens/product_edit_screen.dart\n- lib/screens/product_add_screen.dart\n- lib/screens/add_candidate_from_url_screen.dart\n- lib/widgets/room_post_prepare_sheet.dart (copy feedback)\n\nAlso check:\n- isSaving/isProcessing flags per product id\n- AnimatedSwitcher usage on these cards\n- duration on SnackBars\n- action buttons on SnackBars\n\nReturn a structured report with exact file paths, method names, and Japanese SnackBar message strings.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "511dca90-0a97-4963-a549-ef7030967d22",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "511dca90-0a97-4963-a549-ef7030967d22"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "ショップ・設定・コピー調査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Investigate room_manager2 Flutter app at c:\\dev\\app_project\\room_manager2 for Phase 3 micro-feedback research. NO code changes.\n\nFocus areas:\n\n## A. Shop operations\n- ショップ保存\n- 保存ショップ解除\n- 保存ショップ削除\n- ショップ発掘結果からの保存\n\nKey files:\n- lib/screens/rakuten_search_screen.dart (around save shop snackbars: '保存解除しました' / '保存しました')\n- lib/screens/shop_discovery_detail_screen.dart\n- lib/screens/saved_shops_screen.dart\n- any ShopDiscoveryCard widget\n\n## B. Settings save\n- 投稿スタイル保存 (post_style_settings_screen.dart)\n- プロフィール保存 (mypage_placeholder_screen.dart)\n- 目標保存\n- 通知設定\n- easy_initial_setup_screen.dart saves\n- comment_template_edit_screen.dart\n\n## C. Clipboard\nDocument ALL clipboard usages with table columns:\n操作 | ファイル | 呼び出し方法 | コピー対象 | 現在のフィードバック | Sheet/画面が閉じるか\n\nInclude:\n- AppActionService.copyText call sites with successMessage overrides\n- AppActionService.copyThenOpenUrl\n- Direct Clipboard.setData\n- room_post_prepare_sheet copy flow (does it show snackbar?)\n- comments_placeholder_screen\n- product_detail_screen\n- room_sync_log\n- room_post_import_flow debug log copy\n\n## D. Common buttons\nRead lib/widgets/app_button.dart fully and report loading/icon/disabled/AnimatedSwitcher/Semantics support and usage impact.\n\n## E. Undo\nFor: 候補から外す, 保存解除, 商品削除, コメントテンプレート削除, ショップ削除, コレ済みから戻す\n- Is there restore API?\n- Is data kept after delete?\n- Current undo?\n- Difficulty: 低い/中程度/高い\n\nReturn structured Japanese report with exact paths, widget names, SnackBar texts.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "cb75ca33-597b-4870-8371-9cdf85a976c5",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "cb75ca33-597b-4870-8371-9cdf85a976c5"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SnackBar\\(|content: Text\\(|content: const Text\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SnackBar\\(|content: Text\\(|content: const Text\\(",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 10,
+      "uri": "lib\\screens\\today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\activity\\activity_analytics_tab.dart"
+    },
+    {
+      "matchCount": 25,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\utils\\product_card_rakuten_open.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib\\widgets\\rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "lib\\screens\\mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib\\screens\\monetization_plan_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib\\state\\rakuten_managed_product_provider.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\post_style_settings_screen.dart"
+    },
+    {
+      "matchCount": 14,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib\\widgets\\mypage\\mypage_widgets.dart"
+    },
+    {
+      "matchCount": 28,
+      "uri": "lib\\widgets\\room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\product_open_action_buttons.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib\\widgets\\add_candidate_entry_sheet.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\activity\\room_next_actions_card.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\operation_confirm_dialog.dart"
+    }
+  ],
+  "totalFiles": 30,
+  "totalMatches": 217
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "duration:|SnackBarAction|action:"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "duration:|SnackBarAction|action:",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/search_mode_segment_bar.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/shop_discovery_pool_supplement_ui_bridge.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/room_type_diagnosis_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/room_colle_advanced_query.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/tutorial/tutorial_target_locator.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/repository/rakuten_managed_product_repository.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/monetization_plan_screen.dart"
+    },
+    {
+      "matchCount": 20,
+      "uri": "lib/screens/closed_test_demo_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/app_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/collect_post_success_overlay.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/activity_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/home_in_app_notice.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_reaction_analytics.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 11,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 27,
+  "totalMatches": 91
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "appRootScaffoldMessengerKey|ScaffoldMessenger\\.of|ScaffoldMessenger\\.maybeOf"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "appRootScaffoldMessengerKey|ScaffoldMessenger\\.of|ScaffoldMessenger\\.maybeOf",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/app_messenger.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/dev_automation_visible_run.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/monetization_plan_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/main.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comment_template_edit_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/favorite_genre_picker_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/product_card_rakuten_open.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/state/bulk_operation_state_controller.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/activity/activity_analytics_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/activity/activity_navigation_helpers.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/post_style_settings_screen.dart"
+    }
+  ],
+  "totalFiles": 35,
+  "totalMatches": 89
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\app_button.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査データの正確性を確認している。Clipboard.setDataの直接使用箇所とAppActionService.copyTextの呼び出し元を数えている。
+
+商品名・URLのコピー有無、SnackBarActionの使用状況、カードUIの状態変化、Firebaseイベント名、エラーと成功時のSnackBarスタイル差異を確認している。</details></think>
+
+_**Agent (default)**_
+
+残りの細部（商品名/URLコピー、SnackBarAction、カードUI変化、成功文言の種類）を確認します。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "Clipboard\\.setData|AppActionService\\.copyText|AppActionService\\.copyThenOpenUrl|copyToClipboard"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "Clipboard\\.setData|AppActionService\\.copyText|AppActionService\\.copyThenOpenUrl|copyToClipboard",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/app_action_service.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/room_sync_log.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 12
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SnackBarAction"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SnackBarAction",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "商品名.*コピー|URL.*コピー|copyProduct|productName|affiliateUrl|itemUrl"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "商品名.*コピー|URL.*コピー|copyProduct|productName|affiliateUrl|itemUrl",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/display_text_utils.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/models/shop_discovery_summary.dart"
+    },
+    {
+      "matchCount": 10,
+      "uri": "lib/utils/today_recommendation_exposure_policy.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/services/comment_prompt_builder.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 11,
+      "uri": "lib/utils/catalog_product_mapper.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/shop_discovery_aggregator.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/state/today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 9,
+  "totalMatches": 319
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\shop_discovery_card.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\rakuten_search_result_card.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_search_result_card.dart",
+  "pattern": "isRegistering|登録済|未登録|候補に追加|保存済み"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_search_result_card.dart",
+  "pattern": "isRegistering|登録済|未登録|候補に追加|保存済み",
+  "topFiles": [
+    {
+      "matchCount": 9,
+      "uri": "lib\\widgets\\rakuten_search_result_card.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 9
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\config\\firebase_config.dart",
+  "pattern": "event[A-Z]|static const String event"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\config\\firebase_config.dart",
+  "pattern": "event[A-Z]|static const String event",
+  "topFiles": [
+    {
+      "matchCount": 17,
+      "uri": "lib\\config\\firebase_config.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 17
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\theme",
+  "pattern": "snackBarTheme|SnackBarTheme|behavior:"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\theme",
+  "pattern": "snackBarTheme|SnackBarTheme|behavior:",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/app_theme.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+SnackBarテーマカラー、room_post_prepare_sheetのコピー処理、managed product cardのUI状態、clearSnackBarsの使用状況、成功SnackBarのメッセージバリエーション数を確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\theme\app_theme.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\room_post_prepare_sheet.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\product_detail_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\comments_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_managed_product_provider.dart",
+  "pattern": "_registeringProductIds|isRegistering|removeCandidate|markCollectedDone"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_managed_product_provider.dart",
+  "pattern": "_registeringProductIds|isRegistering|removeCandidate|markCollectedDone",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib\\state\\rakuten_managed_product_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\saved_shop_provider.dart",
+  "pattern": "upsertShop|removeShop|isSaved"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\saved_shop_provider.dart",
+  "pattern": "upsertShop|removeShop|isSaved",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib\\state\\saved_shop_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\shop_discovery_card.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "候補追加済|追加中|投稿する|保存済|_CardActionArea|badge"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "候補追加済|追加中|投稿する|保存済|_CardActionArea|badge",
+  "topFiles": [
+    {
+      "matchCount": 8,
+      "uri": "lib\\screens\\today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 8
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "clearSnackBars|hideCurrentSnackBar|removeCurrentSnackBar"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "clearSnackBars|hideCurrentSnackBar|removeCurrentSnackBar",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/services/dev_automation_visible_run.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+コメントテンプレートカードの「justCopied」UI変更と、商品名・URLのコピー機能の有無を確認している。
+
+home_placeholder における目標保存・診断保存・お気に入り・フォロー操作の有無も確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\comments_placeholder_screen.dart",
+  "pattern": "justCopied|チェック|Icons\\.check|Icons\\.copy"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\comments_placeholder_screen.dart",
+  "pattern": "justCopied|チェック|Icons\\.check|Icons\\.copy",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "lib\\screens\\comments_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "フォロー|お気に入り|favorite|follow|診断|diagnosis|目標を保存|goal"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "フォロー|お気に入り|favorite|follow|診断|diagnosis|目標を保存|goal",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/state/room_recommendation_profile_provider.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/room_diagnosis_service.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/app_entry_host.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/shop_pool_fallback_audit.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/state/comment_template_provider.dart"
+    },
+    {
+      "matchCount": 18,
+      "uri": "lib/utils/today_recommendation_policy.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/room_type_diagnosis_result_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/managed_product_diag_log.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/home_goal_milestone_progress.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/state/rakuten_managed_product_provider.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/catalog_product_mapper.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/repository/rakuten_managed_product_repository.dart"
+    }
+  ],
+  "totalFiles": 13,
+  "totalMatches": 292
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\pending_collect_resume_notice_host.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\saved_shop_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "backgroundColor:.*primary|SnackBar\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "backgroundColor:.*primary|SnackBar\\(",
+  "topFiles": [
+    {
+      "matchCount": 8,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 10,
+      "uri": "lib/state/room_import_controller.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/services/dev_automation_visible_run.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/state/rakuten_managed_product_provider.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/theme/activity_screen_tokens.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comment_template_edit_screen.dart"
+    }
+  ],
+  "totalFiles": 6,
+  "totalMatches": 178
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_managed_product_card.dart",
+  "pattern": "削除|投稿する|候補から|_candidateRemove|_candidateActions"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_managed_product_card.dart",
+  "pattern": "削除|投稿する|候補から|_candidateRemove|_candidateActions",
+  "topFiles": [
+    {
+      "matchCount": 10,
+      "uri": "lib\\widgets\\rakuten_managed_product_card.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 10
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+コメントテンプレートの「justCopied UI」とルーム診断保存フィードバックを確認している。成功SnackBarメッセージのユニーク件数を慎重にカウントしている。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\comments_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\room_type_diagnosis_screen.dart",
+  "pattern": "保存|SnackBar|showSnackBar|applyDiagnosis|saveProfile"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\room_type_diagnosis_screen.dart",
+  "pattern": "保存|SnackBar|showSnackBar|applyDiagnosis|saveProfile",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\room_type_diagnosis_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "showSnackBar\\(const SnackBar|showSnackBar\\(\\s*const SnackBar|content: Text\\('|content: const Text\\('"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "showSnackBar\\(const SnackBar|showSnackBar\\(\\s*const SnackBar|content: Text\\('|content: const Text\\('",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/services/app_action_service.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/screens/post_style_settings_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/utils/analytics_shop_search_launcher.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_add_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/favorite_genre_picker_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/product_card_rakuten_open.dart"
+    }
+  ],
+  "totalFiles": 26,
+  "totalMatches": 53
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\rakuten_managed_product_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppMotion|app_motion"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppMotion|app_motion",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib\\widgets\\room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/app_motion.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/theme/app_theme.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 4,
+  "totalMatches": 10
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+診断保存フローとURL候補追加時のSnackBar状況を確認している。SavedShopProviderが楽観的更新かどうかを検証している。
+
+SavedShopProviderは非楽観的更新だった。UI更新はsaveAll完了後に通知されるためである。registerCandidateとshop toggleも同様のawait後にreloadするパターンだった。Clipboard.setDataの直接呼び出し箇所を数え始めた。room_post_prepare_sheet.dartとroom_sync_log.dartが該当する。
+
+AppActionService.copyTextの呼び出し元を特定した。comments_placeholder_screen.dartとproduct_detail_screen.dart（クイックコメント・テンプレートピッカー）が該当する。room_post_prepare_sheet.dartとroom_sync_log.dartはAppActionServiceを介さず直接Clipboard.setDataしている。AppActionService内部でも2箇所でClipboard.setDataを使用している。lib/全体でClipboard.setDataは4箇所存在する。
+
+成功メッセージの種類を数え始めた。コピー系と保存・追加・解除・削除系など、操作ごとに異なる文言が散在している。重複を含めると約20～25パターンと推定している。次に各操作の状態変化や二重押下防止の有無を確認する。
+
+Messengerの使い分けを確認した。add_candidate_from_url_screenとpending_collect_resume_notice_hostでappRootScaffoldMessengerKeyが使われている。他の画面はScaffoldMessenger.of(context)を使う。
+
+二重押下防止の有無を調べた。registerCandidateは_productIdsで制御している。removeCandidateやcollectにはない。
+
+コピー後のフィードバック状況を確認した。room_post_prepare_sheetはSnackBarのみだ。room_sync_log自体はSnackBarを出すが、呼び出し元がそのことを示している。
+
+設定保存はSnackBarのみでアイコン変化がない。商品編集の「保存しました」も同様に、状態変化なしのSnackBarが使われている。
+
+コメントテンプレート保存はSnackBarと同時に画面を閉じる。URLインポート成功時はSnackBarを出さずに遷移するケースもある。
+
+低コストのUndo操作を特定した。ショップ保存解除、候補削除、コメントテンプレート削除が該当する。
+
+実装優先順位を整理した。準備シートのコピーフィードバック、ショップ保存メッセージの統一、候補追加メッセージの統一、テンプレートコピーボタンの状態変化、ショップ保存解除のUndo候補化を最初に進める。
+
+AppButtonの拡張は部分的で、ローディング状態は既に存在する。SnackBar用のヘルパー作成を推奨し、Button拡張は見送る。
+
+共通SnackBarヘルパーの価値は高い。メッセージの不整合を解消できるためである。
+
+共通Feedback Widgetは中程度の価値だ。チェックマークのトランジションなど、ボタン側の改善に留まる可能性がある。
+
+HapticFeedbackは現状の成功マイルストーンに限定すべきだ。広げすぎない。
+
+影響範囲が大きいファイル群を特定した。rakuten_search_screen、rakuten_managed_product_card、today_recommendations_screen、room_post_prepare_sheet、app_action_service、shop cardsなどが該当する。
+
+診断保存とURL候補追加時のSnackBar状況を最終確認している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\room_type_diagnosis_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\add_candidate_from_url_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 25,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_saveDiscoveredShop|isSaved \\?"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_saveDiscoveredShop|isSaved \\?",
+  "topFiles": [
+    {
+      "matchCount": 71,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "Clipboard / AppActionService 利用箇所調査",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "SnackBar / messenger 利用箇所調査",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "保存・追加・解除フローと二重押下調査",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Widget状態変化・Undo・Haptic・共通部品調査",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Analytics・操作分類・優先順位・必須回答まとめ",
+      "id": "5",
+      "status": "completed"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "Clipboard / AppActionService 利用箇所調査",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "SnackBar / messenger 利用箇所調査",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "保存・追加・解除フローと二重押下調査",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Widget状態変化・Undo・Haptic・共通部品調査",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Analytics・操作分類・優先順位・必須回答まとめ",
+      "id": "5",
+      "status": "pending"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+調査データを整理し、包括的な日本語報告を作成する準備が整った。ショップ保存にローディングやバシー制御がないため、複数回のスナックバー表示が発生する。一括登録時は他の登録処理を一時停止する。
+
+成功スナックバーの固定メッセージを24件に特定した。コピー、保存、解除、追加、削除、一括登録、ROOM登録など、操作ごとに異なる文言が散在している。
+
+クリップボード操作は4件がlib内に存在する。AppActionService内に2件あり、他に2件が直接呼び出しになっている。コメントや投稿本文のコピーのみが専用操作として見つかっている。
+
+商品名やURLのコピーは存在しない。コメント・投稿本文のコピーのみが該当する。
+
+フォロー機能は存在しない。コメントテンプレートはフォロー感謝メッセージ用であり、ソーシャルフォローではない。お気に入りジャンルは設定画面のみで保存UIはない。
+
+目標表示は表示専用で保存UIがない。通知は「coming soon」スナックバーが表示される。診断結果は保存時にスナックバーを出さず、結果画面へ遷移する。</details></think>
+
+_**Agent (default)**_
+
+## A. 調査概要
+
+`room_manager2` を横断調査した結果、マイクロフィードバックは **導線ごとに個別実装**されており、共通方針は未整備です。
+
+- **コピー**: 大半は `AppActionService`、投稿準備シートだけ直接 `Clipboard` で **SnackBarなし**
+- **成功SnackBar**: 文言・duration・色がばらつき、`SnackBarAction`（Undo）は **0件**
+- **状態更新**: 主要操作はほぼ **await後更新**（optimisticではない）
+- **二重押下**: 候補登録のみ **productId単位**。解除・ショップ保存・コレ完了は弱い
+- **Haptic**: コレ完了オーバーレイの `lightImpact` のみ
+
+コード変更は行っていません。
+
+---
+
+## B. Clipboard利用一覧
+
+| 操作 | ファイル | 呼び出し方法 | コピー対象 | 現在のフィードバック | Sheet/画面が閉じるか |
+| ---- | ---- | ------ | ----- | ---------- | ------------- |
+| コメントテンプレコピー | `lib/screens/comments_placeholder_screen.dart` | `AppActionService.copyText` | テンプレ本文 | SnackBar「コピーしました」＋カードに「直近にコピー」 | しない |
+| 商品詳細・クイックコメントコピー | `lib/screens/product_detail_screen.dart` | `AppActionService.copyText` | `quickComment` | SnackBar「コピーしました」 | しない |
+| テンプレ選択からコピー | 同上 `_showTemplatePicker` | `AppActionService.copyText` | テンプレ本文 | SnackBar「コピーしました」 | **Sheetは閉じる**→コピー |
+| コメントコピーしてURLを開く | 同上 | `AppActionService.copyThenOpenUrl` | `quickComment` | 「コピーしました。ブラウザで開きました」等 | しない |
+| ROOM投稿準備「コピーしてROOMを開く」 | `lib/widgets/room_post_prepare_sheet.dart` `_postToRoom` | **直接** `Clipboard.setData` | 投稿文 | **なし**（debugPrintのみ） | **Sheetを閉じる**→ROOM起動 |
+| ROOM取込デバッグログ | `lib/widgets/room_post_import_flow.dart` | `RoomImportDebugLogBuffer.copyToClipboard()` | ログ全文 | SnackBar「ROOM取り込みログをコピーしました」 | ダイアログは閉じない |
+| ログバッファ本体 | `lib/utils/room_sync_log.dart` | **直接** `Clipboard.setData` | `dump()` | 自身はなし（呼び出し側） | N/A |
+| サービス内部 | `lib/services/app_action_service.dart` | `Clipboard.setData` ×2 | 引数のtext | 上記に従う | 呼び出し側次第 |
+
+**確認結果**
+- **AppActionService利用**: `copyText` 3箇所、`copyThenOpenUrl` 1箇所
+- **Clipboard直接（サービス外）**: 2箇所（投稿準備・ログ）
+- **コピー後SnackBarなし**: 投稿準備シート（最重要）
+- **コピー後すぐ別アプリ**: 投稿準備、`copyThenOpenUrl`
+- **商品名コピー / 商品URLコピー専用UI**: **未検出**
+- **文言差**: 通常は「コピーしました」、ログのみ専用文言、投稿準備は無反応
+
+---
+
+## C. SnackBar利用一覧（主要操作）
+
+テーマは共通で floating・濃色背景（`app_theme.dart`）。成功/失敗の色分けはほぼなく、探す画面の候補追加だけ primary 背景。
+
+| 操作 | ファイル | メッセージ | 成功/失敗/情報 | duration | action | 表示先 |
+| ---- | ----- | -------- | -------- | -------- | ------ | --- |
+| 検索→候補追加 | `rakuten_search_screen.dart` `_showCandidateRegisteredSnackBar` | コレ候補に追加しました。下部の「投稿」→… | 成功 | **3s** / primary色 | なし | ローカル messenger |
+| 一括候補追加 | 同上 | 候補に追加：成功 N件… | 成功 | **4s** | なし | ローカル |
+| おすすめ→候補追加 | `today_recommendations_screen.dart` | 候補に追加しました | 成功 | 既定(~4s) | なし | ローカル |
+| 候補から外す | `rakuten_managed_product_provider.dart` | 候補から外しました | 成功 | 既定 | なし | ローカル |
+| ショップ保存（発掘カード） | `rakuten_search_screen.dart` `_saveDiscoveredShop` | 保存しました / 保存解除しました | 成功 | 既定 | なし | ローカル |
+| ショップ保存（詳細） | `shop_discovery_detail_screen.dart` | ショップを保存しました | 成功 | 既定 | なし | ローカル |
+| 保存解除（一覧） | `saved_shops_screen.dart` | 「名前」を保存解除しました | 成功 | 既定 | なし | ローカル |
+| 初期設定ショップ | `easy_initial_setup_screen.dart` | 保存しました | 成功 | 既定 | なし | ローカル |
+| 投稿スタイル | `post_style_settings_screen.dart` | 投稿スタイルを保存しました | 成功 | 既定 | なし | ローカル |
+| プロフィール | `mypage_placeholder_screen.dart` | プロフィールを保存しました | 成功 | 既定 | なし | Sheet pop後・ローカル |
+| 探し方/ジャンル | 同上 | 探し方を保存しました / 好きなジャンルを保存しました | 成功 | 既定 | なし | ローカル |
+| テンプレ保存 | `comment_template_edit_screen.dart` | 保存しました / テンプレートを追加しました | 成功 | 既定 | なし | pop後・ローカル |
+| テンプレ削除 | `comments_placeholder_screen.dart` | 削除しました | 成功 | 既定 | なし | ローカル |
+| レガシー商品編集/削除 | `product_edit_screen.dart` / `product_detail_screen.dart` | 保存しました / 削除しました | 成功 | 既定 | なし | ローカル |
+| URL ROOM取込 | `add_candidate_from_url_screen.dart` | `result.message`（動的） | 成功/情報 | 既定 | なし | **root messenger** |
+| コレ済復帰通知 | `pending_collect_resume_notice_host.dart` | 「…」をコレ済へ移動しました… | 情報 | **5s** | なし | **root messenger** |
+| コピー系 | `app_action_service.dart` | コピーしました 等 | 成功 | 既定 | なし | ローカル / maybeOf |
+| 通知設定等 | `mypage_widgets.dart` | ○○は準備中です | 情報 | 既定 | なし | ローカル |
+
+**確認結果**
+- 成功文言が多数分岐（「保存しました」がショップ/設定/編集で共用）
+- 同じ候補追加でも「コレ候補に追加しました…」と「候補に追加しました」が併存
+- `clearSnackBars` / `hideCurrentSnackBar` は開発自動化のみ → **連続操作で積み上がり得る**
+- root / ローカル **混在**（上記2箇所が root）
+- BottomSheet後表示: URL取込は root で対応済み。投稿準備コピーは無表示
+- **SnackBarAction: 0件**
+- SnackBarが薄い操作: カード状態だけで十分なショップ保存トグル、テンプレコピー（バッジあり）など
+
+---
+
+## D. 保存・追加・解除フロー
+
+| 操作 | UI | 処理方式 | optimistic | loading | 成功表示 | 失敗表示 | 二重押下防止 |
+| ---- | -- | ---- | ---------- | ------- | ---- | ---- | ------ |
+| 検索→候補追加 | `RakutenSearchResultCard` | `RakutenManagedProductProvider.registerCandidate` | 否 | `isRegistering(id)` | SnackBar（長文） | SnackBar(err) | **productId** |
+| おすすめ→候補追加 | `_CardActionArea` | `TodayRecommendationProvider.markAddedCandidate` | 否 | 「追加中…」 | SnackBar短文 | **Dialog** | カード+productId |
+| URL→候補追加 | `AddCandidateFromUrlScreen` | `registerCandidate` | 否 | `_actionBusy` | **SnackBarなし**（遷移） | インライン/Dialog | 画面busy |
+| 候補から外す | `RakutenManagedProductCard` | `removeCandidate` | 否 | なし | SnackBar | SnackBar | **なし** |
+| コレ済みへ | カード「投稿する」/準備シート | `collectRoomAndLaunch` | 否 | シートのみ `_postingToRoom` | オーバーレイ「コレ完了！」 | Dialog/SnackBar | シートのみ |
+| コレ済みから戻す（ROOM） | — | **未実装** | — | — | — | — | — |
+| 商品削除/編集 | レガシー詳細/編集 | `ProductListProvider` | 部分（先pop） | なし | SnackBar | ほぼなし | なし |
+| ショップ保存/解除 | `ShopDiscoveryCard` 等 | `SavedShopProvider.upsert/remove` | 否（await後notify） | なし | SnackBar | 詳細のみ | **なし** |
+| 設定保存各所 | 各設定画面 | Provider/Repository | 否 | 一部ボタンloading | SnackBar | バリデーションSnackBar | 画面依存 |
+
+---
+
+## E. 操作対象自身の状態変化
+
+| Widget | 操作 | 操作前UI | 操作中UI | 操作後UI | 現在のアニメーション |
+| ------ | -- | ----- | ----- | ----- | ---------- |
+| `RakutenSearchResultCard` | 候補追加 | 「未登録」+「候補に追加」 | ボタンloading/disabled | 「登録済」 | なし |
+| `_RecommendationCard` / `_CardActionArea` | 候補追加 | 「候補に追加」 | 「追加中…」 | バッジ「候補追加済」→「投稿する」 | カード入場のみ（AppMotion） |
+| `RakutenManagedProductCard` | 候補外し | 「削除」リンク | 変化なし | 一覧から消失 | なし |
+| 同上 | 投稿する | FilledButton | loadingなし | 候補→コレ済へ移動 | なし（完了は別オーバーレイ） |
+| `ShopDiscoveryCard` | 保存トグル | bookmark+「ショップを保存」 | なし | 「保存済み」バッジ+アイコン切替 | なし |
+| ショップ詳細ヘッダ | 保存 | 「このショップを保存」 | なし | 「保存済み」**disabled**（解除不可） | なし |
+| `_CommentTemplateCard` | コピー | コピーボタン | なし | 「直近にコピー」バッジ | なし（アイコンはcopyのまま） |
+| 設定保存ボタン | 保存 | 通常 | 一部loading | 見た目ほぼ同じ | なし |
+
+`AnimatedSwitcher` 等は投稿準備のAI文面切替以外、カード操作にはほぼ未使用。追加余地はある。
+
+---
+
+## F. 二重押下防止
+
+| 箇所 | 実態 |
+| ---- | ---- |
+| 候補登録 | `_registeringProductIds`（**商品ID単位**）。他商品は操作可。一括時は他登録を一時停止するUI文言あり |
+| おすすめ追加 | `_isAddingCandidate`（カード単位）+ 上記ID |
+| 候補外し / コレ完了（カード直） | busyフラグなし → 連打可能 |
+| ショップ保存 | busyなし → SnackBar連発し得る |
+| debounce/throttle | 対象操作では未使用 |
+| optimistic失敗ロールバック | 主要フローは非optimisticのため「戻す」必要が薄い。失敗時は状態未変更が多い |
+
+---
+
+## G. Undo可能性
+
+| 操作 | 即時反映 | 復元API | 元データ保持 | 現在Undo | 追加難易度 |
+| ---- | ----- | ------ | ------ | ------ | ----- |
+| 候補から外す | はい | なし（再登録） | ハード削除 | 確認Dialogのみ | **低い** |
+| 保存解除 | はい | `upsertShop`で再保存可 | 保持しない | なし | **低い** |
+| 商品削除（レガシー） | はい | なし | 保持しない | 確認のみ | **低い〜中** |
+| コメントテンプレ削除 | はい | `addTemplate`相当で可 | 保持しない | 確認のみ | **低い** |
+| ショップ削除（＝解除） | はい | 同上 | 保持しない | なし | **低い** |
+| コレ済みから戻す | 機能なし | UI/専用APIなし | done状態は残る | なし | **中〜高い** |
+
+---
+
+## H. HapticFeedback
+
+| 箇所 | API | 目的 |
+| ---- | --- | ---- |
+| `lib/widgets/collect_post_success_overlay.dart` | `HapticFeedback.lightImpact()` | コレ完了の達成感 |
+
+`selectionClick` / `mediumImpact` / `vibrate` は未使用。
+
+**Phase 3判断材料**: 一覧の保存連打に広げるとAndroidで過剰になりやすい。現状方針としては **重要達成（コレ完了）のみ** が妥当で、コピー/保存トグルへの広範追加は慎重がよい。
+
+---
+
+## I. 共通Button・Feedback部品
+
+| Widget | loading | icon | disabled | label切替 | AnimatedSwitcher | Semantics | 主な利用 | Phase3影響 |
+| ------ | ------- | ---- | -------- | --------- | ---------------- | --------- | -------- | ---------- |
+| `AppPrimaryButton` | ○ | ○ | ○ | 呼び出し側 | なし | button+label | 多数CTA | 大 |
+| `AppSecondaryButton` | ○ | ○ | ○ | 呼び出し側 | なし | 同上 | 補助操作 | 中 |
+| `AppOutlineButton` | **×** | ○ | ○ | 呼び出し側 | なし | 同上 | 外部リンク系 | 中 |
+| `MyPagePrimaryButton` / `RakutenSearch*Button` | 画面系で別実装 | — | — | — | — | — | マイページ/探す | 中 |
+| 共通コピーWidget | **なし** | — | — | — | — | — | — | — |
+| 共通保存Widget | **なし** | — | — | — | — | — | — | — |
+| 共通SnackBar helper | **なし** | — | — | — | — | — | — | — |
+
+`AppActionService` がコピー+SnackBarの事実上の共通入口。成功表示の統一はここに寄せるか、新helperが候補。
+
+---
+
+## J. エラー表示
+
+| パターン | 例 |
+| ---- | -- |
+| SnackBar(err) | 検索候補追加失敗、カード操作失敗、例外文字列そのまま含む箇所あり |
+| Dialog | おすすめ候補追加失敗、URL取込失敗、投稿不可 |
+| インライン | URL画面 `_actionError` |
+| 無表示 | レガシー削除失敗、一部設定 |
+| 成功と同スタイル | テーマ共通（失敗専用色はほぼなし）。探す候補成功のみ primary背景で例外 |
+
+ロールバックは非optimisticのため限定的。失敗時は「更新されずSnackBar/Dialog」が基本。
+
+---
+
+## K. Analyticsとの関係
+
+| 操作 | イベント | 送信タイミング |
+| ---- | ---- | ---- |
+| 候補追加 | `candidate_added` | **成功後**（`registerCandidate`内） |
+| おすすめCTA | `recommendation_item_tapped`（`add_candidate` / `post_prepare`） | **タップ時**（処理前） |
+| 投稿準備 | `post_prepare_opened` | シート表示 |
+| AIコピー | `ai_comment_copied` | 投稿準備のClipboard成功時（SnackBarなしでも送信） |
+| ROOM起動 | `room_launch_tapped` | `collectRoomAndLaunch` |
+| ショップ保存 | Analyticsイベントなし（監査ログのみ） | — |
+
+UIラッパー追加時は、おすすめの **タップ時イベント** と onTap二重配線に注意。候補追加の成功イベントはProvider側なのでボタン装飾だけでは二重化しにくい。
+
+---
+
+## L. 操作分類
+
+| 操作 | 現状 | 推奨分類 | 理由 | Phase 3候補 |
+| ---- | ---- | -- | ---- | --------- |
+| 検索→候補追加 | カード変化+長文SnackBar | **B** | 別タブへの誘導が有用 | 文言統一 |
+| おすすめ→候補追加 | カード変化+短SnackBar | **B** | 失敗はDialog維持可 | 文言統一 |
+| URL→候補追加 | 遷移のみ | **A or C** | 画面遷移が主 | 要否検討 |
+| 候補から外す | Dialog+SnackBar | **D** | 破壊的・Undo向き | Undo候補 |
+| コレ済みへ | Overlay(+復帰SnackBar) | **E** | 達成演出済み | 触らない |
+| ショップ保存トグル | アイコン変化+SnackBar | **A（+短いB）** | 自己変化で十分、文言乱立 | 文言整理 |
+| 保存解除（一覧） | SnackBarのみ | **D** | 確認なし・誤タップ | Undo候補 |
+| テンプレコピー | バッジ+SnackBar | **A or B** | バッジあり、SnackBarは冗長気味 | コピー後チェック演出 |
+| 投稿準備コピー | **無反応** | **A**（ボタン一時チェック）または短いC | すぐROOMへ行くためSnackBarは薄い | **最優先** |
+| 設定保存各種 | SnackBarのみ | **C** | 画面上の変化が弱い | 文言テンプレ統一 |
+| コレ済みから戻す | 未実装 | **E/機能** | フィードバック以前 | Phase3外 |
+| 通知/目標保存 | 準備中 or なし | **F** | 対象外 | 外 |
+
+---
+
+## M. 優先順位
+
+### 高
+1. 投稿準備シートのコピー無反応解消（ボタン一時状態 or 短いfeedback）
+2. 候補追加成功文言の統一（検索 vs おすすめ）
+3. ショップ保存/解除文言の統一（`保存しました` の曖昧さ解消）
+4. `AppActionService` 経由コピーの見た目統一（テンプレのチェック演出など）
+
+### 中
+5. 保存解除・候補外しへの Undo（SnackBarAction）設計
+6. ショップ保存の二重押下/連打SnackBar抑制
+7. root/local messenger方針の明文化と helper 化
+8. 候補外し・コレ完了の busy ガード
+
+### 低
+9. コレ済みから戻す機能そのもの
+10. Hapticの一覧操作への拡大
+11. レガシー商品編集/削除の全面刷新
+12. AppButtonへのフィードバック責務の過度な寄せ集め
+
+---
+
+## N. 必須回答15項目
+
+1. **Clipboard直接利用（AppActionService外）**: **2箇所**（`room_post_prepare_sheet.dart`, `room_sync_log.dart`）。サービス内含むと計4。
+2. **`AppActionService.copyText`**: **3箇所**（コメント画面1、商品詳細2）。
+3. **成功SnackBar文言**: 固定文言だけで **約20種類前後**（コピー系・保存系・候補系・設定系の分岐）。動的文を含めるとさらに増。
+4. **root / ローカル messenger**: **混在**（rootはURL取込成功とコレ済復帰通知）。
+5. **保存・解除のoptimistic**: 主要フローは **ほぼ否**（await→永続化→notify）。
+6. **商品ID単位の二重押下防止**: **候補登録のみ存在**（`_registeringProductIds`）。外し/コレ/ショップはなし。
+7. **コピー後無反応**: **`RoomPostPrepareSheetBody._postToRoom`**（直接Clipboard）。
+8. **自己変化なしでSnackBarのみ**: 投稿スタイル/プロフィール/探し方/ジャンル保存、レガシー「保存しました」、テンプレ保存（pop後）、一部「削除しました」。
+9. **低コストUndo候補**: **ショップ保存解除**、**候補から外す**、**コメントテンプレ削除**。
+10. **最初に実装すべき3〜5操作**:  
+    (1) 投稿準備コピーfeedback  
+    (2) 候補追加成功文言統一  
+    (3) ショップ保存/解除文言統一  
+    (4) テンプレ/コメントコピーのボタン自己変化  
+    (5) 保存解除のUndo（任意で次点）
+11. **AppButton拡張**: 現時点では **必須ではない**。loadingは既存。SnackBar/コピー成功演出は Button 外の方が影響が小さい。
+12. **共通SnackBar helper**: **価値あり**（文言・duration・messenger選択・連打抑制の中心化）。
+13. **新共通Feedback Widget**: **コピー/トグル系に限定すれば価値あり**。全部乗せの巨大Widgetは不要。
+14. **Haptic拡大**: **広げるべきではない**（現状のコレ完了のみ維持が妥当）。
+15. **影響大ファイル**:  
+    `lib/screens/rakuten_search_screen.dart`  
+    `lib/widgets/room_post_prepare_sheet.dart`  
+    `lib/widgets/rakuten_managed_product_card.dart`  
+    `lib/screens/today_recommendations_screen.dart`  
+    `lib/services/app_action_service.dart`  
+    `lib/state/rakuten_managed_product_provider.dart`  
+    `lib/widgets/shop_discovery_card.dart` / `saved_shops_screen.dart`
+
+---
+
+設計の最終確定は行っていません。Phase 3の実装方針を決める段階に進む場合は、上記「高」優先のどれから着手するか指定ください。
