@@ -81,7 +81,8 @@ Future<void> showRoomPostPrepareBottomSheet({
                 item: item,
                 recommendationReason: recommendationReason,
                 generationService:
-                    generationService ?? PostCommentGenerationServiceFactory.create(),
+                    generationService ??
+                    PostCommentGenerationServiceFactory.create(),
                 generationBucket: generationBucket,
                 productKey: productKey,
                 enforceDailyGenerationLimit: enforceDailyGenerationLimit,
@@ -135,9 +136,14 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   bool _userEditedBody = false;
   bool _postingToRoom = false;
 
+  /// 再生成中に編集領域を隠す間、失敗時復元用に保持する投稿文。
+  String? _bodyTextBeforeGenerate;
+
   static const _aiRegenerateButtonLabel = 'AIで作り直す';
   static const _copyAndOpenRoomButtonLabel = 'コピーしてROOMを開く';
-  static const _aiLoadingMessage = '投稿文を作成中…';
+  static const _aiLoadingMessage = '投稿文を作成しています';
+  static const _aiLoadingHint = '商品の特徴に合わせて文章を整えています';
+  static const double _bodyAreaSlidePx = 5;
 
   @override
   void initState() {
@@ -154,7 +160,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     super.dispose();
   }
 
-  RakutenManagedProduct? _managedProduct(RakutenManagedProductProvider provider) {
+  RakutenManagedProduct? _managedProduct(
+    RakutenManagedProductProvider provider,
+  ) {
     final id = widget.item.productId.trim();
     for (final p in provider.items) {
       if (p.productId == id) return p;
@@ -178,8 +186,8 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
 
   String? get _effectiveProductKey =>
       widget.productKey?.trim().isNotEmpty == true
-          ? widget.productKey!.trim()
-          : resolvePostCommentGenerationProductKey(widget.item);
+      ? widget.productKey!.trim()
+      : resolvePostCommentGenerationProductKey(widget.item);
 
   String _limitBlockedMessage(PostCommentGenerationLimitState limitState) {
     return switch (limitState.reasonCode) {
@@ -328,6 +336,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     );
 
     setState(() {
+      _bodyTextBeforeGenerate = _bodyController.text;
       _aiLoading = true;
       _aiError = null;
     });
@@ -364,11 +373,13 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
           );
         }
       }
+      if (!mounted) return;
       setState(() {
         if (!_userEditedBody) {
           _applyGeneratedText(result.displayText);
         }
         _aiLoading = false;
+        _bodyTextBeforeGenerate = null;
       });
       int? remainingAfter;
       if (_generationLimitEnforced) {
@@ -376,11 +387,14 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         final productKey = _effectiveProductKey ?? '';
         final limitState =
             await resolvePostCommentGenerationAvailabilityForToday(
-          bucket: bucket,
-          productKey: productKey,
-          enforcementEnabled: true,
+              bucket: bucket,
+              productKey: productKey,
+              enforcementEnabled: true,
+            );
+        remainingAfter = (limitState.limit - limitState.usedCount).clamp(
+          0,
+          1000,
         );
-        remainingAfter = (limitState.limit - limitState.usedCount).clamp(0, 1000);
       }
       unawaited(
         _analytics.logAiCommentGenerateSuccess(
@@ -399,6 +413,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       }
       if (!mounted) return;
       setState(() {
+        _restoreBodyTextBeforeGenerate();
         _aiLoading = false;
         _aiError = postCommentGenerationUserMessage(e);
       });
@@ -411,6 +426,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
+        _restoreBodyTextBeforeGenerate();
         _aiLoading = false;
         _aiError = _aiGenerationErrorMessage;
       });
@@ -421,6 +437,16 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
         ),
       );
     }
+  }
+
+  void _restoreBodyTextBeforeGenerate() {
+    final snapshot = _bodyTextBeforeGenerate;
+    _bodyTextBeforeGenerate = null;
+    if (snapshot == null) return;
+    _bodyController.value = TextEditingValue(
+      text: snapshot,
+      selection: TextSelection.collapsed(offset: snapshot.length),
+    );
   }
 
   Future<void> _postToRoom() async {
@@ -545,91 +571,111 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
             LayoutBuilder(
               builder: (context, constraints) {
                 final maxFieldHeight =
-                    (MediaQuery.sizeOf(context).height * 0.28).clamp(140.0, 220.0);
+                    (MediaQuery.sizeOf(context).height * 0.28).clamp(
+                      140.0,
+                      220.0,
+                    );
+                final switchDuration = AppMotion.durationOf(
+                  context,
+                  AppMotion.normal,
+                );
                 return ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: maxFieldHeight),
-                  child: Semantics(
-                    label: 'room_post_prepare_body_field',
-                    textField: true,
-                    child: TextField(
-                      key: const Key('room_post_prepare_body_field'),
-                      controller: _bodyController,
-                      minLines: 5,
-                      maxLines: null,
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      onChanged: (_) {
-                        _userEditedBody = true;
-                      },
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.newline,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textPrimary,
-                        height: 1.4,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: '投稿文を入力またはAIで作成',
-                        hintStyle: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textTertiary,
-                          height: 1.4,
+                  child: AnimatedSwitcher(
+                    duration: switchDuration,
+                    switchInCurve: AppMotion.standard,
+                    switchOutCurve: AppMotion.standard,
+                    // 退場中の旧子をツリーに残すと編集欄がヒット可能・検出可能のままになるため、
+                    // 入場側の Fade/Slide のみ行い現行子だけを配置する。
+                    layoutBuilder: (currentChild, previousChildren) {
+                      return currentChild ?? const SizedBox.shrink();
+                    },
+                    transitionBuilder: (child, animation) {
+                      if (switchDuration == Duration.zero) {
+                        return child;
+                      }
+                      return FadeTransition(
+                        opacity: animation,
+                        child: AnimatedBuilder(
+                          animation: animation,
+                          builder: (context, child) {
+                            return Transform.translate(
+                              offset: Offset(
+                                0,
+                                _bodyAreaSlidePx * (1 - animation.value),
+                              ),
+                              child: child,
+                            );
+                          },
+                          child: child,
                         ),
-                        filled: true,
-                        fillColor: const Color(0xFFFAFAFB),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFD4D4DA),
+                      );
+                    },
+                    child: _aiLoading
+                        ? _RoomPostPrepareAiGeneratingPanel(
+                            key: const Key('room_post_prepare_ai_loading'),
+                            title: _aiLoadingMessage,
+                            hint: _aiLoadingHint,
+                          )
+                        : Semantics(
+                            key: const ValueKey(
+                              'room_post_prepare_body_editor',
+                            ),
+                            label: 'room_post_prepare_body_field',
+                            textField: true,
+                            child: TextField(
+                              key: const Key('room_post_prepare_body_field'),
+                              controller: _bodyController,
+                              minLines: 5,
+                              maxLines: null,
+                              scrollPhysics: const BouncingScrollPhysics(),
+                              onChanged: (_) {
+                                _userEditedBody = true;
+                              },
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textPrimary,
+                                height: 1.4,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: '投稿文を入力またはAIで作成',
+                                hintStyle: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.textTertiary,
+                                  height: 1.4,
+                                ),
+                                filled: true,
+                                fillColor: const Color(0xFFFAFAFB),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 14,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFFD4D4DA),
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFFD4D4DA),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: AppColors.accentPrimary,
+                                    width: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFD4D4DA),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: AppColors.accentPrimary,
-                            width: 1.2,
-                          ),
-                        ),
-                      ),
-                    ),
                   ),
                 );
               },
             ),
-            if (_aiLoading) ...[
-              const SizedBox(height: AppDimensions.spacingSm),
-              Center(
-                child: KeyedSubtree(
-                  key: const Key('room_post_prepare_ai_loading'),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2.4),
-                      ),
-                      const SizedBox(height: AppDimensions.spacingXs),
-                      Text(
-                        _aiLoadingMessage,
-                        key: const Key('room_post_prepare_ai_loading_text'),
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
             if (_aiError != null) ...[
               const SizedBox(height: AppDimensions.spacingSm),
               Text(
@@ -659,7 +705,9 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
               label: _copyAndOpenRoomButtonLabel,
               icon: Icons.open_in_new_rounded,
               isLoading: _postingToRoom,
-              onPressed: roomUrlReady && !_postingToRoom ? _postToRoom : null,
+              onPressed: roomUrlReady && !_postingToRoom && !_aiLoading
+                  ? _postToRoom
+                  : null,
             ),
             const SizedBox(height: AppDimensions.spacingSm),
             Row(
@@ -695,6 +743,97 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
   }
 }
 
+/// AI投稿文生成中のプレースホルダー表示（静的ライン + 進捗）。
+class _RoomPostPrepareAiGeneratingPanel extends StatelessWidget {
+  const _RoomPostPrepareAiGeneratingPanel({
+    super.key,
+    required this.title,
+    required this.hint,
+  });
+
+  final String title;
+  final String hint;
+
+  static const List<double> _lineWidthFactors = [1.0, 0.92, 0.78, 0.58];
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final lineColor = colorScheme.onSurface.withValues(alpha: 0.08);
+    final borderColor = const Color(0xFFD4D4DA);
+
+    return Semantics(
+      liveRegion: true,
+      label: '$title。$hint',
+      child: Container(
+        key: const Key('room_post_prepare_ai_generating_panel'),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAFAFB),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: borderColor),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.2,
+                    color: colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    title,
+                    key: const Key('room_post_prepare_ai_loading_text'),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              hint,
+              key: const Key('room_post_prepare_ai_loading_hint'),
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: AppDimensions.spacingSm),
+            for (var i = 0; i < _lineWidthFactors.length; i++) ...[
+              if (i > 0) const SizedBox(height: 10),
+              FractionallySizedBox(
+                widthFactor: _lineWidthFactors[i],
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  key: Key('room_post_prepare_ai_placeholder_line_$i'),
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: lineColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _RoomPostPreparePrimaryButton extends StatelessWidget {
   const _RoomPostPreparePrimaryButton({
     super.key,
@@ -721,8 +860,12 @@ class _RoomPostPreparePrimaryButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           foregroundColor: AppColors.textOnAccent,
           backgroundColor: AppColors.accentPrimary,
-          disabledForegroundColor: AppColors.textOnAccent.withValues(alpha: 0.72),
-          disabledBackgroundColor: AppColors.accentPrimary.withValues(alpha: 0.34),
+          disabledForegroundColor: AppColors.textOnAccent.withValues(
+            alpha: 0.72,
+          ),
+          disabledBackgroundColor: AppColors.accentPrimary.withValues(
+            alpha: 0.34,
+          ),
           minimumSize: const Size(double.infinity, _height),
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           shape: RoundedRectangleBorder(
@@ -787,9 +930,9 @@ class _RoomPostPrepareOutlineButton extends StatelessWidget {
             ),
           ),
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                fontSize: 13,
-              ),
+            fontWeight: FontWeight.w800,
+            fontSize: 13,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -797,11 +940,7 @@ class _RoomPostPrepareOutlineButton extends StatelessWidget {
             Icon(icon, size: 16),
             const SizedBox(width: 4),
             Flexible(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
           ],
         ),
@@ -837,20 +976,14 @@ class _RoomPostPrepareWeakButton extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: BorderSide(
-              color: AppColors.divider.withValues(alpha: 0.82),
-            ),
+            side: BorderSide(color: AppColors.divider.withValues(alpha: 0.82)),
           ),
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                fontSize: 13,
-              ),
+            fontWeight: FontWeight.w700,
+            fontSize: 13,
+          ),
         ),
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
     );
   }

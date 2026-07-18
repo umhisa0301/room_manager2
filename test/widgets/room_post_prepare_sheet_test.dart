@@ -136,6 +136,42 @@ class _CodeThrowingPostCommentGenerationService
   }
 }
 
+/// 1回目は即成功、2回目以降は保持 / 例外 / 結果のいずれか。
+class _FirstSuccessThenOutcomeService implements PostCommentGenerationService {
+  _FirstSuccessThenOutcomeService({this.secondError, this.holdSecond = false});
+
+  final Object? secondError;
+  final bool holdSecond;
+  int callCount = 0;
+  Completer<PostCommentGenerationResult>? pendingSecond;
+
+  @override
+  Future<PostCommentGenerationResult> generate(
+    PostCommentGenerationInput input,
+  ) async {
+    callCount++;
+    if (callCount == 1) {
+      return const PostCommentGenerationResult(
+        body: '初回生成文',
+        fullText: '初回生成文',
+      );
+    }
+    if (holdSecond) {
+      pendingSecond = Completer<PostCommentGenerationResult>();
+      return pendingSecond!.future;
+    }
+    if (secondError != null) {
+      // ignore: only_throw_errors
+      throw secondError!;
+    }
+    return const PostCommentGenerationResult(body: '再生成文', fullText: '再生成文');
+  }
+
+  void completeSecond(PostCommentGenerationResult result) {
+    pendingSecond?.complete(result);
+  }
+}
+
 Future<Widget> _wrapSheet({
   required SharedPreferences prefs,
   RakutenUrlExtractionStatus extractionStatus =
@@ -145,6 +181,7 @@ Future<Widget> _wrapSheet({
   PostCommentGenerationBucket? generationBucket,
   String? productKey,
   bool? enforceDailyGenerationLimit,
+  bool disableAnimations = false,
 }) async {
   final managedRepo = RakutenManagedProductRepository(prefs);
   await managedRepo.registerCandidateFromSearchItem(_item());
@@ -172,9 +209,7 @@ Future<Widget> _wrapSheet({
           repository: RoomActivityEventRepository(prefs),
         ),
       ),
-      ChangeNotifierProvider(
-        create: (_) => BulkOperationStateController(),
-      ),
+      ChangeNotifierProvider(create: (_) => BulkOperationStateController()),
       ChangeNotifierProvider(
         create: (ctx) => RakutenManagedProductProvider(
           repository: managedRepo,
@@ -185,6 +220,14 @@ Future<Widget> _wrapSheet({
       ),
     ],
     child: MaterialApp(
+      builder: disableAnimations
+          ? (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(disableAnimations: true),
+                child: child!,
+              );
+            }
+          : null,
       home: Scaffold(
         body: Builder(
           builder: (context) {
@@ -194,7 +237,8 @@ Future<Widget> _wrapSheet({
                   context: context,
                   item: _item(),
                   recommendationReason: '人気の定番',
-                  generationService: generationService ??
+                  generationService:
+                      generationService ??
                       const _InstantStubPostCommentGenerationService(),
                   generationBucket: generationBucket,
                   productKey: productKey,
@@ -227,9 +271,7 @@ void main() {
 
   group('RoomPostPrepareSheet', () {
     testWidgets('shows product summary and body field', (tester) async {
-      await tester.pumpWidget(
-        await _wrapSheet(prefs: prefs),
-      );
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
@@ -241,7 +283,10 @@ void main() {
       expect(find.textContaining('レビュー 4.35'), findsOneWidget);
       expect(find.textContaining('42件'), findsOneWidget);
       expect(find.text('投稿文'), findsOneWidget);
-      expect(find.byKey(const Key('room_post_prepare_body_field')), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        findsOneWidget,
+      );
       expect(find.text('AIで作り直す'), findsOneWidget);
       expect(find.text('コピーしてROOMを開く'), findsOneWidget);
       expect(
@@ -250,7 +295,9 @@ void main() {
       );
     });
 
-    testWidgets('AI regenerate button is on the body label row', (tester) async {
+    testWidgets('AI regenerate button is on the body label row', (
+      tester,
+    ) async {
       await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -259,25 +306,14 @@ void main() {
       final aiButton = find.byKey(const Key('room_post_prepare_ai_button'));
       expect(label, findsOneWidget);
       expect(aiButton, findsOneWidget);
-      final labelRow = find.ancestor(
-        of: label,
-        matching: find.byType(Row),
-      );
-      expect(
-        find.descendant(of: labelRow, matching: aiButton),
-        findsOneWidget,
-      );
+      final labelRow = find.ancestor(of: label, matching: find.byType(Row));
+      expect(find.descendant(of: labelRow, matching: aiButton), findsOneWidget);
     });
 
     testWidgets('body field accepts input', (tester) async {
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: const _NeverCompletingPostCommentGenerationService(),
-        ),
-      );
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       await tester.enterText(
         find.byKey(const Key('room_post_prepare_body_field')),
@@ -286,14 +322,12 @@ void main() {
       expect(find.text('手入力の投稿文'), findsOneWidget);
     });
 
-    testWidgets('auto-generates comment when body is empty on open',
-        (tester) async {
+    testWidgets('auto-generates comment when body is empty on open', (
+      tester,
+    ) async {
       final generationService = _CountingPostCommentGenerationService();
       await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: generationService,
-        ),
+        await _wrapSheet(prefs: prefs, generationService: generationService),
       );
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -306,25 +340,46 @@ void main() {
       await tester.pumpWidget(
         await _wrapSheet(
           prefs: prefs,
-          generationService: const StubPostCommentGenerationService(
-            delay: Duration(milliseconds: 200),
-          ),
+          generationService:
+              const _NeverCompletingPostCommentGenerationService(),
         ),
       );
       await _openSheet(tester);
+      await tester.pump();
+      // AnimatedSwitcher の退場完了 + 前フレーム除去まで進める。
+      await tester.pump(const Duration(milliseconds: 240));
       await tester.pump();
 
       expect(
         find.byKey(const Key('room_post_prepare_ai_loading')),
         findsOneWidget,
       );
-      expect(find.text('投稿文を作成中…'), findsOneWidget);
+      expect(find.text('投稿文を作成しています'), findsOneWidget);
+      expect(find.text('商品の特徴に合わせて文章を整えています'), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_placeholder_line_0')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        findsNothing,
+      );
+      expect(find.byType(SnackBar), findsNothing);
+    });
 
-      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    testWidgets('auto-generate success shows body without SnackBar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('AI生成テスト文'), findsOneWidget);
       expect(
         find.byKey(const Key('room_post_prepare_ai_loading')),
         findsNothing,
       );
+      expect(find.byType(SnackBar), findsNothing);
     });
 
     testWidgets('auto-generate failure shows error message', (tester) async {
@@ -337,26 +392,20 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('room_post_prepare_ai_error')), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_error')),
+        findsOneWidget,
+      );
       expect(find.textContaining('作成できませんでした'), findsOneWidget);
     });
 
     testWidgets('regenerate without edit skips confirm dialog', (tester) async {
       final generationService = _SequentialPostCommentGenerationService(const [
-        PostCommentGenerationResult(
-          body: '初回生成文',
-          fullText: '初回生成文',
-        ),
-        PostCommentGenerationResult(
-          body: '再生成文',
-          fullText: '再生成文',
-        ),
+        PostCommentGenerationResult(body: '初回生成文', fullText: '初回生成文'),
+        PostCommentGenerationResult(body: '再生成文', fullText: '再生成文'),
       ]);
       await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: generationService,
-        ),
+        await _wrapSheet(prefs: prefs, generationService: generationService),
       );
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -370,11 +419,10 @@ void main() {
       expect(find.text('再生成文'), findsOneWidget);
     });
 
-    testWidgets('regenerate with edited body shows confirm dialog',
-        (tester) async {
-      await tester.pumpWidget(
-        await _wrapSheet(prefs: prefs),
-      );
+    testWidgets('regenerate with edited body shows confirm dialog', (
+      tester,
+    ) async {
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
@@ -391,9 +439,7 @@ void main() {
     });
 
     testWidgets('regenerate confirm cancel keeps edited body', (tester) async {
-      await tester.pumpWidget(
-        await _wrapSheet(prefs: prefs),
-      );
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
@@ -412,20 +458,11 @@ void main() {
 
     testWidgets('regenerate confirm accept overwrites body', (tester) async {
       final generationService = _SequentialPostCommentGenerationService(const [
-        PostCommentGenerationResult(
-          body: '初回生成文',
-          fullText: '初回生成文',
-        ),
-        PostCommentGenerationResult(
-          body: '作り直し後の文',
-          fullText: '作り直し後の文',
-        ),
+        PostCommentGenerationResult(body: '初回生成文', fullText: '初回生成文'),
+        PostCommentGenerationResult(body: '作り直し後の文', fullText: '作り直し後の文'),
       ]);
       await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: generationService,
-        ),
+        await _wrapSheet(prefs: prefs, generationService: generationService),
       );
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -466,10 +503,7 @@ void main() {
         find.byKey(const Key('room_post_prepare_url_not_ready_hint')),
         findsOneWidget,
       );
-      expect(
-        find.text('ROOM用URLを取得中です。数十秒かかることがあります。'),
-        findsOneWidget,
-      );
+      expect(find.text('ROOM用URLを取得中です。数十秒かかることがあります。'), findsOneWidget);
     });
 
     testWidgets('ROOM button enabled when URL ready', (tester) async {
@@ -494,8 +528,9 @@ void main() {
       );
     });
 
-    testWidgets('copy and open room copies text then launches ROOM',
-        (tester) async {
+    testWidgets('copy and open room copies text then launches ROOM', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         await _wrapSheet(
           prefs: prefs,
@@ -511,9 +546,9 @@ void main() {
       final callLog = <String>[];
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(launcherChannel, (call) async {
-        callLog.add(call.method);
-        return true;
-      });
+            callLog.add(call.method);
+            return true;
+          });
       addTearDown(() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(launcherChannel, null);
@@ -530,12 +565,12 @@ void main() {
       final actionLog = <String>[];
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(SystemChannels.platform, (call) async {
-        if (call.method == 'Clipboard.setData') {
-          copiedText = call.arguments['text'] as String?;
-          actionLog.add('clipboard');
-        }
-        return null;
-      });
+            if (call.method == 'Clipboard.setData') {
+              copiedText = call.arguments['text'] as String?;
+              actionLog.add('clipboard');
+            }
+            return null;
+          });
       addTearDown(() {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(SystemChannels.platform, null);
@@ -556,8 +591,9 @@ void main() {
       expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
     });
 
-    testWidgets('clear button shows confirm dialog and clears on accept',
-        (tester) async {
+    testWidgets('clear button shows confirm dialog and clears on accept', (
+      tester,
+    ) async {
       await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -613,7 +649,10 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('room_post_prepare_rakuten_button')), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_rakuten_button')),
+        findsOneWidget,
+      );
       expect(find.text('楽天で見る'), findsOneWidget);
     });
 
@@ -629,14 +668,9 @@ void main() {
     });
 
     testWidgets('body field displays long text with hashtags', (tester) async {
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: const _NeverCompletingPostCommentGenerationService(),
-        ),
-      );
+      await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       const longBody =
           'おすすめの一品です。レビューも高くて気になっていました。\n'
@@ -655,9 +689,7 @@ void main() {
       expect(find.textContaining('#おすすめ'), findsOneWidget);
     });
 
-    testWidgets('楽天で見る uses outline style and 閉じる is weaker', (
-      tester,
-    ) async {
+    testWidgets('楽天で見る uses outline style and 閉じる is weaker', (tester) async {
       await tester.pumpWidget(await _wrapSheet(prefs: prefs));
       await _openSheet(tester);
       await tester.pumpAndSettle();
@@ -675,10 +707,7 @@ void main() {
         ),
       );
 
-      expect(
-        rakutenButton.style?.backgroundColor?.resolve({}),
-        Colors.white,
-      );
+      expect(rakutenButton.style?.backgroundColor?.resolve({}), Colors.white);
       expect(
         rakutenButton.style?.foregroundColor?.resolve({}),
         HomeScreenColors.homeAccentTeal,
@@ -693,35 +722,37 @@ void main() {
       );
     });
 
-    testWidgets('daily limit blocks API call when three products already used',
-        (tester) async {
-      final today = PostCommentGenerationCountStore.localDateKey();
-      SharedPreferences.setMockInitialValues({
-        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
-        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
-            '["shop:itemA","shop:itemB","shop:itemC"]',
-      });
-      final limitedPrefs = await SharedPreferences.getInstance();
-      final generationService = _CountingPostCommentGenerationService();
+    testWidgets(
+      'daily limit blocks API call when three products already used',
+      (tester) async {
+        final today = PostCommentGenerationCountStore.localDateKey();
+        SharedPreferences.setMockInitialValues({
+          PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+          PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+              '["shop:itemA","shop:itemB","shop:itemC"]',
+        });
+        final limitedPrefs = await SharedPreferences.getInstance();
+        final generationService = _CountingPostCommentGenerationService();
 
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: limitedPrefs,
-          generationService: generationService,
-          generationBucket: PostCommentGenerationBucket.recommendation,
-          productKey: 'shop:itemD',
-          enforceDailyGenerationLimit: true,
-        ),
-      );
-      await _openSheet(tester);
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          await _wrapSheet(
+            prefs: limitedPrefs,
+            generationService: generationService,
+            generationBucket: PostCommentGenerationBucket.recommendation,
+            productKey: 'shop:itemD',
+            enforceDailyGenerationLimit: true,
+          ),
+        );
+        await _openSheet(tester);
+        await tester.pumpAndSettle();
 
-      expect(generationService.callCount, 0);
-      expect(
-        find.text(kPostCommentGenerationDailyLimitMessage),
-        findsOneWidget,
-      );
-    });
+        expect(generationService.callCount, 0);
+        expect(
+          find.text(kPostCommentGenerationDailyLimitMessage),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets('product already generated blocks API call', (tester) async {
       final today = PostCommentGenerationCountStore.localDateKey();
@@ -752,7 +783,9 @@ void main() {
       );
     });
 
-    testWidgets('records product key only on successful generation', (tester) async {
+    testWidgets('records product key only on successful generation', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
 
@@ -770,81 +803,95 @@ void main() {
 
       final keys =
           await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
-        bucketName: PostCommentGenerationBucket.recommendation.name,
-      );
+            bucketName: PostCommentGenerationBucket.recommendation.name,
+          );
       expect(keys, {'shop:item001'});
     });
 
-    testWidgets('restores saved body when reopening same recommendation product',
-        (tester) async {
-      final today = PostCommentGenerationCountStore.localDateKey();
-      final saved = SavedPostCommentGenerationResult.fromGenerationResult(
-        result: const PostCommentGenerationResult(
-          body: '保存済み本文',
-          fullText: '保存済み本文',
-        ),
-        productKey: 'shop:item001',
-        bucket: PostCommentGenerationBucket.recommendation.name,
-        dateKey: today,
-      );
-      SharedPreferences.setMockInitialValues({
-        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
-        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
-            '["shop:item001"]',
-        PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
-        PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
-            jsonEncode({'shop:item001': saved.toJson()}),
-      });
-      final limitedPrefs = await SharedPreferences.getInstance();
-      final generationService = _CountingPostCommentGenerationService();
-
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: limitedPrefs,
-          generationService: generationService,
-          generationBucket: PostCommentGenerationBucket.recommendation,
+    testWidgets(
+      'restores saved body when reopening same recommendation product',
+      (tester) async {
+        final today = PostCommentGenerationCountStore.localDateKey();
+        final saved = SavedPostCommentGenerationResult.fromGenerationResult(
+          result: const PostCommentGenerationResult(
+            body: '保存済み本文',
+            fullText: '保存済み本文',
+          ),
           productKey: 'shop:item001',
-          enforceDailyGenerationLimit: true,
-        ),
-      );
-      await _openSheet(tester);
-      await tester.pumpAndSettle();
+          bucket: PostCommentGenerationBucket.recommendation.name,
+          dateKey: today,
+        );
+        SharedPreferences.setMockInitialValues({
+          PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+          PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+              '["shop:item001"]',
+          PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
+          PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
+              jsonEncode({'shop:item001': saved.toJson()}),
+        });
+        final limitedPrefs = await SharedPreferences.getInstance();
+        final generationService = _CountingPostCommentGenerationService();
 
-      expect(generationService.callCount, 0);
-      expect(find.text('保存済み本文'), findsOneWidget);
-      expect(find.byKey(const Key('room_post_prepare_ai_error')), findsNothing);
-    });
+        await tester.pumpWidget(
+          await _wrapSheet(
+            prefs: limitedPrefs,
+            generationService: generationService,
+            generationBucket: PostCommentGenerationBucket.recommendation,
+            productKey: 'shop:item001',
+            enforceDailyGenerationLimit: true,
+          ),
+        );
+        await _openSheet(tester);
+        await tester.pumpAndSettle();
 
-    testWidgets('persists result and restores after closing and reopening sheet',
-        (tester) async {
-      final generationService = _CountingPostCommentGenerationService();
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: prefs,
-          generationService: generationService,
-          generationBucket: PostCommentGenerationBucket.recommendation,
-          productKey: 'shop:item001',
-          enforceDailyGenerationLimit: true,
-        ),
-      );
-      await _openSheet(tester);
-      await tester.pumpAndSettle();
+        expect(generationService.callCount, 0);
+        expect(find.text('保存済み本文'), findsOneWidget);
+        expect(
+          find.byKey(const Key('room_post_prepare_ai_error')),
+          findsNothing,
+        );
+      },
+    );
 
-      expect(generationService.callCount, 1);
-      expect(find.text('AI生成テスト文'), findsOneWidget);
+    testWidgets(
+      'persists result and restores after closing and reopening sheet',
+      (tester) async {
+        final generationService = _CountingPostCommentGenerationService();
+        await tester.pumpWidget(
+          await _wrapSheet(
+            prefs: prefs,
+            generationService: generationService,
+            generationBucket: PostCommentGenerationBucket.recommendation,
+            productKey: 'shop:item001',
+            enforceDailyGenerationLimit: true,
+          ),
+        );
+        await _openSheet(tester);
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('room_post_prepare_close_button')));
-      await tester.pumpAndSettle();
+        expect(generationService.callCount, 1);
+        expect(find.text('AI生成テスト文'), findsOneWidget);
 
-      await _openSheet(tester);
-      await tester.pumpAndSettle();
+        await tester.tap(
+          find.byKey(const Key('room_post_prepare_close_button')),
+        );
+        await tester.pumpAndSettle();
 
-      expect(generationService.callCount, 1);
-      expect(find.text('AI生成テスト文'), findsOneWidget);
-      expect(find.byKey(const Key('room_post_prepare_ai_error')), findsNothing);
-    });
+        await _openSheet(tester);
+        await tester.pumpAndSettle();
 
-    testWidgets('failed generation does not save result for restore', (tester) async {
+        expect(generationService.callCount, 1);
+        expect(find.text('AI生成テスト文'), findsOneWidget);
+        expect(
+          find.byKey(const Key('room_post_prepare_ai_error')),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets('failed generation does not save result for restore', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
       final generationService = _CountingPostCommentGenerationService();
@@ -885,53 +932,55 @@ void main() {
       expect(generationService.callCount, 1);
     });
 
-    testWidgets('regenerate is blocked with product_already_generated after restore',
-        (tester) async {
-      final today = PostCommentGenerationCountStore.localDateKey();
-      final saved = SavedPostCommentGenerationResult.fromGenerationResult(
-        result: const PostCommentGenerationResult(
-          body: '保存済み本文',
-          fullText: '保存済み本文',
-        ),
-        productKey: 'shop:item001',
-        bucket: PostCommentGenerationBucket.recommendation.name,
-        dateKey: today,
-      );
-      SharedPreferences.setMockInitialValues({
-        PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
-        PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
-            '["shop:item001"]',
-        PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
-        PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
-            jsonEncode({'shop:item001': saved.toJson()}),
-      });
-      final limitedPrefs = await SharedPreferences.getInstance();
-      final generationService = _CountingPostCommentGenerationService();
-
-      await tester.pumpWidget(
-        await _wrapSheet(
-          prefs: limitedPrefs,
-          generationService: generationService,
-          generationBucket: PostCommentGenerationBucket.recommendation,
+    testWidgets(
+      'regenerate is blocked with product_already_generated after restore',
+      (tester) async {
+        final today = PostCommentGenerationCountStore.localDateKey();
+        final saved = SavedPostCommentGenerationResult.fromGenerationResult(
+          result: const PostCommentGenerationResult(
+            body: '保存済み本文',
+            fullText: '保存済み本文',
+          ),
           productKey: 'shop:item001',
-          enforceDailyGenerationLimit: true,
-        ),
-      );
-      await _openSheet(tester);
-      await tester.pumpAndSettle();
+          bucket: PostCommentGenerationBucket.recommendation.name,
+          dateKey: today,
+        );
+        SharedPreferences.setMockInitialValues({
+          PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
+          PostCommentGenerationCountStore.productKeysKeyFor('recommendation'):
+              '["shop:item001"]',
+          PostCommentGenerationResultStore.dateKeyFor('recommendation'): today,
+          PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
+              jsonEncode({'shop:item001': saved.toJson()}),
+        });
+        final limitedPrefs = await SharedPreferences.getInstance();
+        final generationService = _CountingPostCommentGenerationService();
 
-      expect(generationService.callCount, 0);
-      expect(find.text('保存済み本文'), findsOneWidget);
+        await tester.pumpWidget(
+          await _wrapSheet(
+            prefs: limitedPrefs,
+            generationService: generationService,
+            generationBucket: PostCommentGenerationBucket.recommendation,
+            productKey: 'shop:item001',
+            enforceDailyGenerationLimit: true,
+          ),
+        );
+        await _openSheet(tester);
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
-      await tester.pumpAndSettle();
+        expect(generationService.callCount, 0);
+        expect(find.text('保存済み本文'), findsOneWidget);
 
-      expect(generationService.callCount, 0);
-      expect(
-        find.text(kPostCommentGenerationProductAlreadyGeneratedMessage),
-        findsOneWidget,
-      );
-    });
+        await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+        await tester.pumpAndSettle();
+
+        expect(generationService.callCount, 0);
+        expect(
+          find.text(kPostCommentGenerationProductAlreadyGeneratedMessage),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets('saved result ignored when date changes', (tester) async {
       final yesterday = PostCommentGenerationCountStore.localDateKey(
@@ -948,7 +997,8 @@ void main() {
         generatedAt: DateTime(2026, 7, 2),
       );
       SharedPreferences.setMockInitialValues({
-        PostCommentGenerationResultStore.dateKeyFor('recommendation'): yesterday,
+        PostCommentGenerationResultStore.dateKeyFor('recommendation'):
+            yesterday,
         PostCommentGenerationResultStore.resultsMapKeyFor('recommendation'):
             jsonEncode({'shop:item001': saved.toJson()}),
       });
@@ -972,7 +1022,9 @@ void main() {
       expect(find.text('昨日の本文'), findsNothing);
     });
 
-    testWidgets('failed generation does not record product key', (tester) async {
+    testWidgets('failed generation does not record product key', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final limitedPrefs = await SharedPreferences.getInstance();
 
@@ -990,12 +1042,14 @@ void main() {
 
       final keys =
           await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
-        bucketName: PostCommentGenerationBucket.recommendation.name,
-      );
+            bucketName: PostCommentGenerationBucket.recommendation.name,
+          );
       expect(keys, isEmpty);
     });
 
-    testWidgets('remote mode without bucket does not enforce limit', (tester) async {
+    testWidgets('remote mode without bucket does not enforce limit', (
+      tester,
+    ) async {
       final today = PostCommentGenerationCountStore.localDateKey();
       SharedPreferences.setMockInitialValues({
         PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
@@ -1018,12 +1072,14 @@ void main() {
       expect(generationService.callCount, 1);
       final keys =
           await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
-        bucketName: PostCommentGenerationBucket.recommendation.name,
-      );
+            bucketName: PostCommentGenerationBucket.recommendation.name,
+          );
       expect(keys, {'shop:itemA', 'shop:itemB', 'shop:itemC'});
     });
 
-    testWidgets('stub mode without bucket does not enforce limit', (tester) async {
+    testWidgets('stub mode without bucket does not enforce limit', (
+      tester,
+    ) async {
       final today = PostCommentGenerationCountStore.localDateKey();
       SharedPreferences.setMockInitialValues({
         PostCommentGenerationCountStore.dateKeyFor('recommendation'): today,
@@ -1045,8 +1101,8 @@ void main() {
       expect(generationService.callCount, 1);
       final keys =
           await PostCommentGenerationCountStore.readTodayGeneratedProductKeys(
-        bucketName: PostCommentGenerationBucket.recommendation.name,
-      );
+            bucketName: PostCommentGenerationBucket.recommendation.name,
+          );
       expect(keys, {'shop:itemA', 'shop:itemB', 'shop:itemC'});
     });
 
@@ -1083,10 +1139,7 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
-      expect(
-        find.text(kPostCommentGenerationDisabledMessage),
-        findsOneWidget,
-      );
+      expect(find.text(kPostCommentGenerationDisabledMessage), findsOneWidget);
     });
 
     testWidgets('shows network error user message for TIMEOUT', (tester) async {
@@ -1101,19 +1154,163 @@ void main() {
       await _openSheet(tester);
       await tester.pumpAndSettle();
 
+      expect(find.text(kPostCommentGenerationNetworkMessage), findsOneWidget);
+    });
+
+    testWidgets('double execution prevention still works with daily limit', (
+      tester,
+    ) async {
+      final generationService =
+          const _NeverCompletingPostCommentGenerationService();
+      await tester.pumpWidget(
+        await _wrapSheet(prefs: prefs, generationService: generationService),
+      );
+      await _openSheet(tester);
+      await tester.pump();
+
       expect(
-        find.text(kPostCommentGenerationNetworkMessage),
+        find.byKey(const Key('room_post_prepare_ai_loading')),
         findsOneWidget,
+      );
+
+      final aiButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_ai_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
+      );
+      expect(
+        tester.widget<ButtonStyleButton>(aiButtonFinder).onPressed,
+        isNull,
       );
     });
 
-    testWidgets('double execution prevention still works with daily limit',
-        (tester) async {
-      final generationService = const _NeverCompletingPostCommentGenerationService();
+    testWidgets('regenerate shows generating UI then new body', (tester) async {
+      final generationService = _FirstSuccessThenOutcomeService(
+        holdSecond: true,
+      );
+      await tester.pumpWidget(
+        await _wrapSheet(prefs: prefs, generationService: generationService),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('初回生成文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 240));
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        findsNothing,
+      );
+      expect(find.text('初回生成文'), findsNothing);
+
+      final aiButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_ai_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
+      );
+      expect(
+        tester.widget<ButtonStyleButton>(aiButtonFinder).onPressed,
+        isNull,
+      );
+
+      generationService.completeSecond(
+        const PostCommentGenerationResult(body: '再生成文', fullText: '再生成文'),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('再生成文'), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsNothing,
+      );
+      expect(find.byType(SnackBar), findsNothing);
+    });
+
+    testWidgets('regenerate failure restores previous body', (tester) async {
+      final generationService = _FirstSuccessThenOutcomeService(
+        secondError: Exception('stub regenerate failure'),
+      );
+      await tester.pumpWidget(
+        await _wrapSheet(prefs: prefs, generationService: generationService),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.text('初回生成文'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('初回生成文'), findsOneWidget);
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_error')),
+        findsOneWidget,
+      );
+      expect(find.textContaining('作成できませんでした'), findsOneWidget);
+
+      final aiButtonFinder = find.descendant(
+        of: find.byKey(const Key('room_post_prepare_ai_button')),
+        matching: find.bySubtype<ButtonStyleButton>(),
+      );
+      expect(
+        tester.widget<ButtonStyleButton>(aiButtonFinder).onPressed,
+        isNotNull,
+      );
+    });
+
+    testWidgets('reduce motion switches body area without residual opacity', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         await _wrapSheet(
           prefs: prefs,
-          generationService: generationService,
+          generationService: const StubPostCommentGenerationService(
+            delay: Duration(milliseconds: 80),
+          ),
+          disableAnimations: true,
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        findsNothing,
+      );
+
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('room_post_prepare_ai_loading')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('room_post_prepare_body_field')),
+        findsOneWidget,
+      );
+      expect(find.text('投稿文を作成しています'), findsNothing);
+    });
+
+    testWidgets('closing sheet during generation does not throw', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const StubPostCommentGenerationService(
+            delay: Duration(milliseconds: 300),
+          ),
         ),
       );
       await _openSheet(tester);
@@ -1124,13 +1321,15 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.byKey(const Key('room_post_prepare_ai_button')));
+      Navigator.of(
+        tester.element(find.byKey(const Key('room_post_prepare_sheet'))),
+      ).pop();
       await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.pumpAndSettle();
 
-      expect(
-        find.byKey(const Key('room_post_prepare_ai_loading')),
-        findsOneWidget,
-      );
+      expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
+      expect(tester.takeException(), isNull);
     });
   });
 }
