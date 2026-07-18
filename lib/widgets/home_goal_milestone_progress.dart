@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_motion.dart';
 import '../theme/home_screen_colors.dart';
 import '../utils/home_post_milestone.dart';
 
 /// ホーム「今日の目標」進捗ライン（マーカー・件数ラベル・挑戦中バッジ）。
-class HomeGoalMilestoneProgress extends StatelessWidget {
+class HomeGoalMilestoneProgress extends StatefulWidget {
   const HomeGoalMilestoneProgress({super.key, required this.postCount});
 
   final int postCount;
@@ -23,65 +24,131 @@ class HomeGoalMilestoneProgress extends StatelessWidget {
     );
   }
 
+  /// Semantics 用ラベル（次マイルストーン目標 N 件中 M 件）。
+  static String semanticsLabelFor(int postCount) {
+    final snap = HomePostMilestoneSnapshot.fromPostCount(
+      postCount < 0 ? 0 : postCount,
+      useCalendarDayLabel: true,
+    );
+    final target = snap.nextMilestone ?? _milestones.last;
+    return '今日の投稿目標 $target件中${snap.postCount}件';
+  }
+
+  @override
+  State<HomeGoalMilestoneProgress> createState() =>
+      _HomeGoalMilestoneProgressState();
+}
+
+class _HomeGoalMilestoneProgressState extends State<HomeGoalMilestoneProgress> {
+  late double _beginProgress;
+
+  @override
+  void initState() {
+    super.initState();
+    _beginProgress = HomePostMilestoneSnapshot.overallProgress(
+      widget.postCount,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeGoalMilestoneProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.postCount != widget.postCount) {
+      _beginProgress = HomePostMilestoneSnapshot.overallProgress(
+        oldWidget.postCount,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final progress = HomePostMilestoneSnapshot.overallProgress(postCount);
-    final hintStyle = _hintStyle(context);
+    final endProgress = HomePostMilestoneSnapshot.overallProgress(
+      widget.postCount,
+    );
+    final hintStyle = HomeGoalMilestoneProgress._hintStyle(context);
+    final duration = AppMotion.durationOf(context, AppMotion.emphasized);
+    final semanticsLabel = HomeGoalMilestoneProgress.semanticsLabelFor(
+      widget.postCount,
+    );
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final trackWidth = constraints.maxWidth;
-        final inset = _markerSize / 2;
-        final innerWidth = trackWidth - _markerSize;
-        final barTop = (_markerSize - _barHeight) / 2;
+    return Semantics(
+      label: semanticsLabel,
+      value: '${widget.postCount < 0 ? 0 : widget.postCount}',
+      container: true,
+      child: ExcludeSemantics(
+        child: TweenAnimationBuilder<double>(
+          duration: duration,
+          curve: AppMotion.standard,
+          tween: Tween<double>(begin: _beginProgress, end: endProgress),
+          onEnd: () {
+            // Duration.zero 時は build 中に同期発火するため setState しない。
+            _beginProgress = endProgress;
+          },
+          builder: (context, progress, child) {
+            final clamped = progress.clamp(0.0, 1.0);
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final trackWidth = constraints.maxWidth;
+                final inset = HomeGoalMilestoneProgress._markerSize / 2;
+                final innerWidth =
+                    trackWidth - HomeGoalMilestoneProgress._markerSize;
+                final barTop =
+                    (HomeGoalMilestoneProgress._markerSize -
+                        HomeGoalMilestoneProgress._barHeight) /
+                    2;
 
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned(
-              left: inset,
-              right: inset,
-              top: barTop,
-              child: Container(
-                height: _barHeight,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE5E7EB),
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              ),
-            ),
-            if (progress > 0)
-              Positioned(
-                left: inset,
-                top: barTop,
-                width: innerWidth * progress,
-                child: Container(
-                  height: _barHeight,
-                  decoration: BoxDecoration(
-                    color: HomeScreenColors.homeAccentTeal,
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-              ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final milestone in _milestones)
-                  Expanded(
-                    child: _HomeGoalMilestoneColumn(
-                      milestone: milestone,
-                      state: HomePostMilestoneSnapshot.milestoneState(
-                        postCount,
-                        milestone,
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      left: inset,
+                      right: inset,
+                      top: barTop,
+                      child: Container(
+                        height: HomeGoalMilestoneProgress._barHeight,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE5E7EB),
+                          borderRadius: BorderRadius.circular(999),
+                        ),
                       ),
-                      hintStyle: hintStyle,
                     ),
+                    if (clamped > 0)
+                      Positioned(
+                        left: inset,
+                        top: barTop,
+                        width: innerWidth * clamped,
+                        child: Container(
+                          height: HomeGoalMilestoneProgress._barHeight,
+                          decoration: BoxDecoration(
+                            color: HomeScreenColors.homeAccentTeal,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                        ),
+                      ),
+                    child!,
+                  ],
+                );
+              },
+            );
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final milestone in HomeGoalMilestoneProgress._milestones)
+                Expanded(
+                  child: _HomeGoalMilestoneColumn(
+                    milestone: milestone,
+                    state: HomePostMilestoneSnapshot.milestoneState(
+                      widget.postCount,
+                      milestone,
+                    ),
+                    hintStyle: hintStyle,
                   ),
-              ],
-            ),
-          ],
-        );
-      },
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

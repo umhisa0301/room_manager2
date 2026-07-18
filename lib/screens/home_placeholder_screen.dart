@@ -18,6 +18,7 @@ import '../services/room_import_limit.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/home_post_milestone.dart';
+import '../widgets/home_animated_int_count.dart';
 import '../widgets/home_goal_milestone_progress.dart';
 import '../models/room_activity_event.dart';
 import '../state/room_activity_event_provider.dart';
@@ -404,6 +405,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   DateTime? _lastAutoRegenerateTriedAt;
   int _reactionNoticeRefreshNonce = 0;
   bool _isHomeRefreshing = false;
+  bool _isOpeningTodayRecommendations = false;
   static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
@@ -437,8 +439,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         profile: context.read<UserProfileProvider>().profile,
         managedItems: room.items,
         savedShops: context.read<SavedShopProvider>().shops,
-        recommendationProfile:
-            context.read<RoomRecommendationProfileProvider>().profile,
+        recommendationProfile: context
+            .read<RoomRecommendationProfileProvider>()
+            .profile,
         trigger: 'homeInit',
       );
       await _regenerateRecommendationsIfNeeded(
@@ -465,8 +468,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       profile: context.read<UserProfileProvider>().profile,
       managedItems: room.items,
       savedShops: context.read<SavedShopProvider>().shops,
-      recommendationProfile:
-          context.read<RoomRecommendationProfileProvider>().profile,
+      recommendationProfile: context
+          .read<RoomRecommendationProfileProvider>()
+          .profile,
       trigger: 'refresh',
     );
     _guard('skipReason=refreshDoesNotForceRegenerate');
@@ -537,47 +541,56 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
 
   Future<void> _openRoomTypeDiagnosis(BuildContext context) async {
     await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (_) => const RoomTypeDiagnosisScreen(),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const RoomTypeDiagnosisScreen()),
     );
   }
 
   Future<void> _openTodayRecommendations(BuildContext context) async {
-    final recProfile = context.read<RoomRecommendationProfileProvider>();
-    if (!recProfile.isDiagnosed && !recProfile.isDiagnosisPromptSkipped) {
-      final startDiagnosis = await RoomTypeDiagnosisPromptSheet.show(context);
-      if (!context.mounted) return;
-      if (startDiagnosis == true) {
-        await _openRoomTypeDiagnosis(context);
+    if (_isOpeningTodayRecommendations) return;
+    _isOpeningTodayRecommendations = true;
+    if (mounted) setState(() {});
+    try {
+      final recProfile = context.read<RoomRecommendationProfileProvider>();
+      if (!recProfile.isDiagnosed && !recProfile.isDiagnosisPromptSkipped) {
+        final startDiagnosis = await RoomTypeDiagnosisPromptSheet.show(context);
         if (!context.mounted) return;
-      } else if (startDiagnosis == false) {
-        await recProfile.markDiagnosisPromptSkipped();
+        if (startDiagnosis == true) {
+          await _openRoomTypeDiagnosis(context);
+          if (!context.mounted) return;
+        } else if (startDiagnosis == false) {
+          await recProfile.markDiagnosisPromptSkipped();
+        }
       }
+      if (!context.mounted) return;
+      final recommender = context.read<TodayRecommendationProvider>();
+      final roomProvider = context.read<RakutenManagedProductProvider>();
+      final userProfile = context.read<UserProfileProvider>().profile;
+      final savedShops = context.read<SavedShopProvider>().shops;
+      _trace('trigger=cta');
+      _trigger('cta');
+      _trace('action=ensureToday');
+      await recommender.ensureToday(
+        profile: userProfile,
+        managedItems: roomProvider.items,
+        savedShops: savedShops,
+        recommendationProfile: recProfile.profile,
+        trigger: 'cta',
+      );
+      if (recommender.pendingCount <= 0 &&
+          recommender.hasTodayBundleWithEntries) {
+        _guard('skipReason=pendingZeroButBundleExists');
+      }
+      if (!context.mounted) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) =>
+              const TodayRecommendationsScreen(skipInitialEnsure: true),
+        ),
+      );
+    } finally {
+      _isOpeningTodayRecommendations = false;
+      if (mounted) setState(() {});
     }
-    final recommender = context.read<TodayRecommendationProvider>();
-    final roomProvider = context.read<RakutenManagedProductProvider>();
-    _trace('trigger=cta');
-    _trigger('cta');
-    _trace('action=ensureToday');
-    await recommender.ensureToday(
-      profile: context.read<UserProfileProvider>().profile,
-      managedItems: roomProvider.items,
-      savedShops: context.read<SavedShopProvider>().shops,
-      recommendationProfile: recProfile.profile,
-      trigger: 'cta',
-    );
-    if (recommender.pendingCount <= 0 &&
-        recommender.hasTodayBundleWithEntries) {
-      _guard('skipReason=pendingZeroButBundleExists');
-    }
-    if (!context.mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            const TodayRecommendationsScreen(skipInitialEnsure: true),
-      ),
-    );
   }
 
   Future<void> _regenerateRecommendationsIfNeeded({
@@ -610,8 +623,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       profile: context.read<UserProfileProvider>().profile,
       managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
-      recommendationProfile:
-          context.read<RoomRecommendationProfileProvider>().profile,
+      recommendationProfile: context
+          .read<RoomRecommendationProfileProvider>()
+          .profile,
       trigger: trigger,
       manual: force,
     );
@@ -692,8 +706,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         );
                     final profileRoomUrl = userProfileProvider.profile.roomUrl
                         .trim();
-                    final recProfileProvider =
-                        context.watch<RoomRecommendationProfileProvider>();
+                    final recProfileProvider = context
+                        .watch<RoomRecommendationProfileProvider>();
                     final roomImportedDoneCount = items
                         .where(
                           (e) =>
@@ -706,23 +720,26 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       actProvider.events,
                       todayLocalDay,
                     );
-                    final savedShopCount =
-                        context.watch<SavedShopProvider>().shops.length;
+                    final savedShopCount = context
+                        .watch<SavedShopProvider>()
+                        .shops
+                        .length;
                     final collectedProductIds =
                         TodayRecommendationWorkProgress.collectedProductIdsFrom(
-                      items,
-                    );
-                    final recIsLoading = recProvider.isLoading ||
+                          items,
+                        );
+                    final recIsLoading =
+                        recProvider.isLoading ||
                         recProvider.generationStatus ==
                             TodayRecommendationGenerationStatus.loading;
                     final isRecommendationReviewComplete =
                         TodayRecommendationWorkProgress.isVisibleReviewComplete(
-                      bundle: recProvider.bundle,
-                      savedShopCount: savedShopCount,
-                      collectedProductIds: collectedProductIds,
-                      isLoading: recIsLoading,
-                      now: now,
-                    );
+                          bundle: recProvider.bundle,
+                          savedShopCount: savedShopCount,
+                          collectedProductIds: collectedProductIds,
+                          isLoading: recIsLoading,
+                          now: now,
+                        );
                     final todayRoomPostCount = milestonePostCount;
                     final unconfirmedReactionCount = _countUnconfirmedReactions(
                       items,
@@ -770,6 +787,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 todayRoomPostCount: todayRoomPostCount,
                                 pendingCandidateCount: nCandidate,
                                 isRecommendationLoading: recIsLoading,
+                                isRecommendationOpening:
+                                    _isOpeningTodayRecommendations,
                                 roomTypeHint: recProfileProvider.isDiagnosed
                                     ? '${RoomTypeDefinitions.displayNameFor(recProfileProvider.profile!.primaryTypeId)}に合わせて提案'
                                     : null,
@@ -981,6 +1000,7 @@ class _TodayRoomStatusCard extends StatelessWidget {
                     icon: Icons.upload_outlined,
                     label: '投稿',
                     count: todayRoomPostCount,
+                    animateCount: true,
                   ),
                 ),
               ],
@@ -1041,11 +1061,13 @@ class _HomeStatusMetricColumn extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.count,
+    this.animateCount = false,
   });
 
   final IconData icon;
   final String label;
   final int count;
+  final bool animateCount;
 
   @override
   Widget build(BuildContext context) {
@@ -1071,7 +1093,14 @@ class _HomeStatusMetricColumn extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4),
-          _HomeMetricCountText(count: count),
+          if (animateCount)
+            HomeAnimatedIntCount(
+              value: count,
+              builder: (context, displayValue) =>
+                  _HomeMetricCountText(count: displayValue),
+            )
+          else
+            _HomeMetricCountText(count: count),
         ],
       ),
     );
@@ -1397,12 +1426,18 @@ const _homeTodayWorkCtaTextStyle = TextStyle(
   height: 1.15,
 );
 
-class _TodayRoomWorkCard extends StatelessWidget {
-  const _TodayRoomWorkCard({
+const double _homeTodayWorkCtaSlidePx = 4;
+
+/// テスト公開: 今日やることカード（本番ビルドツリーと同一実装）。
+@visibleForTesting
+class TodayRoomWorkCard extends StatelessWidget {
+  const TodayRoomWorkCard({
+    super.key,
     required this.isRecommendationReviewComplete,
     required this.todayRoomPostCount,
     required this.pendingCandidateCount,
     required this.isRecommendationLoading,
+    this.isRecommendationOpening = false,
     this.roomTypeHint,
     required this.onOpenRecommendations,
     required this.onOpenPendingCandidates,
@@ -1413,10 +1448,14 @@ class _TodayRoomWorkCard extends StatelessWidget {
   final int todayRoomPostCount;
   final int pendingCandidateCount;
   final bool isRecommendationLoading;
+  final bool isRecommendationOpening;
   final String? roomTypeHint;
   final VoidCallback onOpenRecommendations;
   final VoidCallback onOpenPendingCandidates;
   final VoidCallback onOpenSearch;
+
+  bool get _recommendationsBusy =>
+      isRecommendationLoading || isRecommendationOpening;
 
   _HomeWorkStepVisualState _stateForStep(int step) {
     final step1Complete = isRecommendationReviewComplete;
@@ -1470,14 +1509,14 @@ class _TodayRoomWorkCard extends StatelessWidget {
     VoidCallback? onTap,
     String semanticsLabel,
   })
-  _primaryCtaSpec() {
-    switch (_primaryAction()) {
+  _primaryCtaSpec(_HomeWorkPrimaryAction action) {
+    switch (action) {
       case _HomeWorkPrimaryAction.recommendations:
         return (
           title: '今日の候補を確認',
           subtitle: 'おすすめコレをチェックしましょう',
           buttonLabel: 'おすすめコレ',
-          onTap: isRecommendationLoading ? null : onOpenRecommendations,
+          onTap: _recommendationsBusy ? null : onOpenRecommendations,
           semanticsLabel: 'home_recommendation_button',
         );
       case _HomeWorkPrimaryAction.roomPost:
@@ -1503,6 +1542,10 @@ class _TodayRoomWorkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryAction = _primaryAction();
+    final cta = _primaryCtaSpec(primaryAction);
+    final switchDuration = AppMotion.durationOf(context, AppMotion.normal);
+
     return Container(
       width: double.infinity,
       decoration: _HomeUi.homeCardDecoration(),
@@ -1512,26 +1555,51 @@ class _TodayRoomWorkCard extends StatelessWidget {
         children: [
           Text('今日やること', style: _HomeUi.homeCardTitle(context)),
           const SizedBox(height: 8),
-          Builder(
-            builder: (context) {
-              final cta = _primaryCtaSpec();
-              return Container(
-                constraints: const BoxConstraints(minHeight: 82),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: HomeScreenColors.homeAccentTealLight,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: HomeScreenColors.homeAccentTealBorder.withValues(
-                      alpha: 0.6,
-                    ),
-                  ),
+          Container(
+            constraints: const BoxConstraints(minHeight: 82),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: HomeScreenColors.homeAccentTealLight,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: HomeScreenColors.homeAccentTealBorder.withValues(
+                  alpha: 0.6,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedSwitcher(
+                  duration: switchDuration,
+                  switchInCurve: AppMotion.standard,
+                  switchOutCurve: AppMotion.standard,
+                  layoutBuilder: (currentChild, previousChildren) {
+                    return currentChild ?? const SizedBox.shrink();
+                  },
+                  transitionBuilder: (child, animation) {
+                    if (switchDuration == Duration.zero) return child;
+                    return FadeTransition(
+                      opacity: animation,
+                      child: AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Offset(
+                              0,
+                              _homeTodayWorkCtaSlidePx * (1 - animation.value),
+                            ),
+                            child: child,
+                          );
+                        },
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: KeyedSubtree(
+                    key: ValueKey<_HomeWorkPrimaryAction>(primaryAction),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
@@ -1579,8 +1647,9 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                 ).copyWith(fontSize: 13, height: 1.25),
                               ),
                               if (roomTypeHint != null &&
-                                  _primaryAction() ==
-                                      _HomeWorkPrimaryAction.recommendations) ...[
+                                  primaryAction ==
+                                      _HomeWorkPrimaryAction
+                                          .recommendations) ...[
                                 const SizedBox(height: 2),
                                 Text(
                                   roomTypeHint!,
@@ -1588,10 +1657,10 @@ class _TodayRoomWorkCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: _HomeUi.homeCardSubtitle(context)
                                       .copyWith(
-                                    fontSize: 12,
-                                    color: HomeScreenColors.homeAccentTeal,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                        fontSize: 12,
+                                        color: HomeScreenColors.homeAccentTeal,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 ),
                               ],
                             ],
@@ -1601,6 +1670,7 @@ class _TodayRoomWorkCard extends StatelessWidget {
                         Semantics(
                           label: cta.semanticsLabel,
                           button: true,
+                          enabled: cta.onTap != null,
                           child: FilledButton(
                             onPressed: cta.onTap,
                             style: FilledButton.styleFrom(
@@ -1627,16 +1697,16 @@ class _TodayRoomWorkCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (isRecommendationLoading &&
-                        _primaryAction() ==
-                            _HomeWorkPrimaryAction.recommendations) ...[
-                      const SizedBox(height: 4),
-                      const LinearProgressIndicator(minHeight: 2),
-                    ],
-                  ],
+                  ),
                 ),
-              );
-            },
+                if (isRecommendationLoading &&
+                    primaryAction ==
+                        _HomeWorkPrimaryAction.recommendations) ...[
+                  const SizedBox(height: 4),
+                  const LinearProgressIndicator(minHeight: 2),
+                ],
+              ],
+            ),
           ),
           const SizedBox(height: 8),
           _HomeWorkFlowRow(
@@ -1646,13 +1716,16 @@ class _TodayRoomWorkCard extends StatelessWidget {
             onOpenRecommendations: onOpenRecommendations,
             onOpenPendingCandidates: onOpenPendingCandidates,
             onOpenSearch: onOpenSearch,
-            isRecommendationLoading: isRecommendationLoading,
+            isRecommendationBusy: _recommendationsBusy,
           ),
         ],
       ),
     );
   }
 }
+
+/// 本番ビルドツリー向けエイリアス（従来の private 名を維持）。
+typedef _TodayRoomWorkCard = TodayRoomWorkCard;
 
 class _HomeWorkFlowRow extends StatelessWidget {
   const _HomeWorkFlowRow({
@@ -1662,7 +1735,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
     required this.onOpenRecommendations,
     required this.onOpenPendingCandidates,
     required this.onOpenSearch,
-    required this.isRecommendationLoading,
+    required this.isRecommendationBusy,
   });
 
   final _HomeWorkStepVisualState step1State;
@@ -1671,7 +1744,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
   final VoidCallback onOpenRecommendations;
   final VoidCallback onOpenPendingCandidates;
   final VoidCallback onOpenSearch;
-  final bool isRecommendationLoading;
+  final bool isRecommendationBusy;
 
   @override
   Widget build(BuildContext context) {
@@ -1681,7 +1754,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
           child: _HomeWorkFlowChip(
             label: 'おすすめ確認',
             state: step1State,
-            onTap: isRecommendationLoading ? null : onOpenRecommendations,
+            onTap: isRecommendationBusy ? null : onOpenRecommendations,
           ),
         ),
         Padding(
@@ -1755,6 +1828,8 @@ class _HomeWorkFlowChip extends StatelessWidget {
         icon = Icons.radio_button_unchecked_rounded;
     }
 
+    final switchDuration = AppMotion.durationOf(context, AppMotion.fast);
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -1769,7 +1844,17 @@ class _HomeWorkFlowChip extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, size: 13, color: iconColor),
+                  AnimatedSwitcher(
+                    duration: switchDuration,
+                    switchInCurve: AppMotion.standard,
+                    switchOutCurve: AppMotion.standard,
+                    child: Icon(
+                      icon,
+                      key: ValueKey<_HomeWorkStepVisualState>(state),
+                      size: 13,
+                      color: iconColor,
+                    ),
+                  ),
                   const SizedBox(width: 3),
                   Flexible(
                     child: Text(
@@ -1786,14 +1871,20 @@ class _HomeWorkFlowChip extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 1),
-              Text(
-                statusLabel,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: _HomeUi.tapHint(context).copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: iconColor,
+              AnimatedSwitcher(
+                duration: switchDuration,
+                switchInCurve: AppMotion.standard,
+                switchOutCurve: AppMotion.standard,
+                child: Text(
+                  statusLabel,
+                  key: ValueKey<_HomeWorkStepVisualState>(state),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: iconColor,
+                  ),
                 ),
               ),
             ],
