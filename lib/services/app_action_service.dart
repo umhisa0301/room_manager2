@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../ui/feedback/app_feedback.dart';
+
 /// クリップボードコピーや URL 起動など、画面横断のアクションを集約する。
 class AppActionService {
   AppActionService._();
@@ -16,9 +18,7 @@ class AppActionService {
     await Clipboard.setData(ClipboardData(text: text));
     onSuccess?.call();
     if (context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(successMessage)));
+      AppFeedback.success(context, message: successMessage);
     }
   }
 

@@ -8,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/mypage_screen_tokens.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../ui/feedback/app_feedback.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/mypage/mypage_widgets.dart';
@@ -37,8 +38,7 @@ class SavedShopsScreen extends StatelessWidget {
       ),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
-        subtitle:
-            '保存した楽天ショップを管理します。「このショップで探す」から店内キーワード検索へ進めます。',
+        subtitle: '保存した楽天ショップを管理します。「このショップで探す」から店内キーワード検索へ進めます。',
         child: Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
             final shops = saved.shops;
@@ -46,8 +46,7 @@ class SavedShopsScreen extends StatelessWidget {
               return AppScreenEmptyCenter(
                 icon: Icons.bookmarks_outlined,
                 title: '保存ショップはまだありません',
-                body:
-                    'ショップ発掘などでショップを保存すると、ここから検索やページ閲覧に再利用できます。',
+                body: 'ショップ発掘などでショップを保存すると、ここから検索やページ閲覧に再利用できます。',
                 actions: [
                   MyPagePrimaryButton(
                     label: 'ショップ発掘を開く',
@@ -96,6 +95,7 @@ class SavedShopsScreen extends StatelessWidget {
                         shopUrl: shop.shopUrl,
                         savedAt: shop.savedAt,
                         lastViewedAt: shop.lastViewedAt,
+                        isBusy: saved.isShopBusy(shop.shopId),
                         onSearchInShop: () async {
                           await saved.markViewed(shop.shopId);
                           if (!context.mounted) return;
@@ -110,22 +110,21 @@ class SavedShopsScreen extends StatelessWidget {
                           if (!context.mounted) return;
                           final url = shop.shopUrl.trim();
                           if (url.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('ショップURLが登録されていません'),
-                              ),
+                            AppFeedback.error(
+                              context,
+                              message: 'ショップURLが登録されていません',
                             );
                             return;
                           }
                           await AppActionService.openUrl(context, url: url);
                         },
                         onRemove: () async {
-                          await saved.removeShop(shop.shopId);
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('「${shop.shopName}」を保存解除しました'),
-                            ),
+                          if (saved.isShopBusy(shop.shopId)) return;
+                          final ok = await saved.removeShop(shop.shopId);
+                          if (!context.mounted || !ok) return;
+                          AppFeedback.success(
+                            context,
+                            message: 'ショップの保存を解除しました',
                           );
                         },
                       );
@@ -200,6 +199,7 @@ class _SavedShopCard extends StatelessWidget {
     required this.shopUrl,
     required this.savedAt,
     required this.lastViewedAt,
+    required this.isBusy,
     required this.onSearchInShop,
     required this.onOpenShopUrl,
     required this.onRemove,
@@ -210,6 +210,7 @@ class _SavedShopCard extends StatelessWidget {
   final String shopUrl;
   final DateTime savedAt;
   final DateTime? lastViewedAt;
+  final bool isBusy;
   final Future<void> Function() onSearchInShop;
   final Future<void> Function() onOpenShopUrl;
   final Future<void> Function() onRemove;
@@ -266,8 +267,9 @@ class _SavedShopCard extends StatelessWidget {
               Expanded(
                 child: MyPageOutlineButton(
                   label: 'ショップページを開く',
-                  onPressed:
-                      shopUrl.trim().isEmpty ? null : () => onOpenShopUrl(),
+                  onPressed: shopUrl.trim().isEmpty
+                      ? null
+                      : () => onOpenShopUrl(),
                   icon: const Icon(Icons.open_in_new_rounded),
                   height: 44,
                 ),
@@ -275,7 +277,7 @@ class _SavedShopCard extends StatelessWidget {
               const SizedBox(width: AppDimensions.spacingSm),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: onRemove,
+                  onPressed: isBusy ? null : onRemove,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: MyPageScreenUi.textSecondary,
                     minimumSize: const Size(0, 44),
@@ -283,9 +285,7 @@ class _SavedShopCard extends StatelessWidget {
                       horizontal: 10,
                       vertical: 6,
                     ),
-                    side: BorderSide(
-                      color: MyPageScreenUi.cardBorder,
-                    ),
+                    side: BorderSide(color: MyPageScreenUi.cardBorder),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -298,15 +298,25 @@ class _SavedShopCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.delete_outline_rounded,
-                        size: 16,
-                        color: MyPageScreenUi.textSecondary,
-                      ),
+                      if (isBusy)
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: MyPageScreenUi.textSecondary,
+                          ),
+                        )
+                      else
+                        Icon(
+                          Icons.delete_outline_rounded,
+                          size: 16,
+                          color: MyPageScreenUi.textSecondary,
+                        ),
                       const SizedBox(width: 6),
                       Flexible(
                         child: Text(
-                          '保存解除',
+                          isBusy ? '解除中…' : '保存解除',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

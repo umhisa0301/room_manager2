@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../models/catalog_product.dart';
 import '../models/analytics_params.dart';
+import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/rakuten_product_search_condition.dart';
@@ -23,6 +24,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../ui/feedback/app_feedback.dart';
 import '../utils/app_debug_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -296,7 +298,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             _ShopDetailHeader(
               shopName: widget.summary.shopName,
               isSaved: isSaved,
-              canSave: widget.summary.shopKey.trim().isNotEmpty &&
+              isBusy: saved.isShopBusy(widget.summary.shopKey),
+              canSave:
+                  widget.summary.shopKey.trim().isNotEmpty &&
                   widget.summary.shopName.trim().isNotEmpty,
               onSaveShop: () => _saveShop(context, saved),
               onBackToSearch: () => Navigator.of(context).maybePop(),
@@ -518,21 +522,31 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                             : null,
                         compactListLayout: _shouldLoadItemsFromShopCode,
                         onRegisterCandidate: () async {
+                          final before = managed.statusForProduct(
+                            item.productId,
+                          );
                           final err = await managed.registerCandidate(
                             item,
                             analyticsSource: AnalyticsCandidateSource.search,
                           );
                           if (!context.mounted) return;
                           if (err != null) {
-                            ScaffoldMessenger.of(
+                            AppFeedback.error(context, message: err);
+                            return;
+                          }
+                          if (before == RakutenManagedProductStatus.none &&
+                              managed.statusForProduct(item.productId) ==
+                                  RakutenManagedProductStatus.candidate) {
+                            AppFeedback.success(
                               context,
-                            ).showSnackBar(SnackBar(content: Text(err)));
-                          } else {
-                            _logFallbackAction(
-                              action: 'addProductsToCandidate',
-                              itemCount: 1,
+                              message: 'コレ候補に追加しました。「投稿」から確認できます',
+                              duration: AppFeedback.durationInfo,
                             );
                           }
+                          _logFallbackAction(
+                            action: 'addProductsToCandidate',
+                            itemCount: 1,
+                          );
                         },
                       );
                     },
@@ -546,13 +560,10 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     );
   }
 
-  Future<void> _saveShop(
-    BuildContext context,
-    SavedShopProvider saved,
-  ) async {
+  Future<void> _saveShop(BuildContext context, SavedShopProvider saved) async {
     final shopCode = widget.summary.shopKey.trim();
     final shopName = widget.summary.shopName.trim();
-    if (saved.isSaved(shopCode)) {
+    if (saved.isSaved(shopCode) || saved.isShopBusy(shopCode)) {
       return;
     }
     if (shopCode.isEmpty || shopName.isEmpty) {
@@ -563,17 +574,16 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         reason: 'missingShopInfo',
       );
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ショップ情報が不足しているため保存できません')),
-      );
+      AppFeedback.error(context, message: 'ショップ情報が不足しているため保存できません');
       return;
     }
     try {
-      await saved.upsertShop(
+      final ok = await saved.upsertShop(
         shopId: shopCode,
         shopName: shopName,
         shopUrl: widget.summary.shopUrl,
       );
+      if (!ok) return;
       if (!saved.isSaved(shopCode)) {
         throw StateError('save verification failed');
       }
@@ -584,9 +594,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       );
       _logFallbackAction(action: 'saveShop');
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ショップを保存しました')),
-      );
+      AppFeedback.success(context, message: 'ショップを保存しました');
     } catch (e) {
       _logSaveShopResult(
         shopCode: shopCode,
@@ -595,9 +603,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         reason: e.toString(),
       );
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ショップの保存に失敗しました: $e')),
-      );
+      AppFeedback.error(context, message: 'ショップの保存に失敗しました');
     }
   }
 
@@ -656,6 +662,7 @@ class _ShopDetailHeader extends StatelessWidget {
   const _ShopDetailHeader({
     required this.shopName,
     required this.isSaved,
+    required this.isBusy,
     required this.canSave,
     required this.onSaveShop,
     required this.onBackToSearch,
@@ -664,6 +671,7 @@ class _ShopDetailHeader extends StatelessWidget {
 
   final String shopName;
   final bool isSaved;
+  final bool isBusy;
   final bool canSave;
   final VoidCallback onSaveShop;
   final VoidCallback onBackToSearch;
@@ -700,14 +708,23 @@ class _ShopDetailHeader extends StatelessWidget {
                 _HeaderMiniButton(
                   key: const Key('shop_discovery_detail_save_shop'),
                   filled: isSaved,
-                  label: isSaved ? '保存済み' : 'このショップを保存',
-                  icon: Icon(
-                    isSaved
-                        ? Icons.bookmark_added_rounded
-                        : Icons.bookmark_add_outlined,
-                    size: 18,
-                  ),
-                  onPressed: isSaved ? null : onSaveShop,
+                  label: isBusy ? '保存中…' : (isSaved ? '保存済み' : 'このショップを保存'),
+                  icon: isBusy
+                      ? SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: RakutenSearchScreenUi.primary,
+                          ),
+                        )
+                      : Icon(
+                          isSaved
+                              ? Icons.bookmark_added_rounded
+                              : Icons.bookmark_add_outlined,
+                          size: 18,
+                        ),
+                  onPressed: isSaved || isBusy ? null : onSaveShop,
                 ),
               _HeaderMiniButton(
                 label: '条件変更',

@@ -21,6 +21,7 @@ import '../state/room_recommendation_profile_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/today_recommendations_screen_tokens.dart';
+import '../ui/feedback/app_feedback.dart';
 import '../utils/recommend_cooldown_policy.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../utils/today_recommendation_work_progress.dart';
@@ -1058,7 +1059,7 @@ class _CardActionAreaState extends State<_CardActionArea> {
     setState(() => _isAddingCandidate = false);
     if (err != null) {
       await showDialog<void>(
-        context: context,
+        context: this.context,
         builder: (ctx) => AlertDialog(
           title: const Text('候補に追加できませんでした'),
           content: Text(err),
@@ -1072,9 +1073,7 @@ class _CardActionAreaState extends State<_CardActionArea> {
       );
       return;
     }
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
+    AppFeedback.success(this.context, message: 'コレ候補に追加しました');
   }
 
   @override

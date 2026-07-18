@@ -14,6 +14,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/mypage_screen_tokens.dart';
+import '../ui/feedback/app_feedback.dart';
 import '../utils/app_input_limits.dart';
 import '../utils/favorite_genre_pref.dart';
 import '../utils/favorite_genre_selection_policy.dart';
@@ -83,10 +84,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     _postStyleKeys = profile.postStyleList.toSet();
     _roomUrlController.text = profile.roomUrl;
     final saved = context.read<SavedShopProvider>().shops.length;
-    final start = widget.initialPageIndex ??
-        (widget.embeddedInEntryHost
-            ? 0
-            : _firstIncompletePage(profile, saved));
+    final start =
+        widget.initialPageIndex ??
+        (widget.embeddedInEntryHost ? 0 : _firstIncompletePage(profile, saved));
     _pageIndex = start;
     _pageController = PageController(initialPage: start);
   }
@@ -336,31 +336,33 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
             .toSet(),
       );
       final rawItems = await searchRepository.search(condition: condition);
-      final items = rawItems.where((item) {
-        final blocked = ProductSafetyFilter.isBlockedProduct(
-          itemName: item.itemName,
-          shopName: item.shopName,
-          genreName: item.genreName,
-          itemUrl: item.itemUrl,
-          affiliateUrl: item.affiliateUrl,
-        );
-        if (blocked) {
-          ProductSafetyFilter.logFilter(
-            source: 'shopRecommend',
-            itemCode: item.productId,
-            title: item.itemName,
-            shopName: item.shopName,
-            genreName: item.genreName,
-            blocked: true,
-            reasons: ProductSafetyFilter.blockedReasons(
+      final items = rawItems
+          .where((item) {
+            final blocked = ProductSafetyFilter.isBlockedProduct(
               itemName: item.itemName,
               shopName: item.shopName,
               genreName: item.genreName,
-            ),
-          );
-        }
-        return !blocked;
-      }).toList(growable: false);
+              itemUrl: item.itemUrl,
+              affiliateUrl: item.affiliateUrl,
+            );
+            if (blocked) {
+              ProductSafetyFilter.logFilter(
+                source: 'shopRecommend',
+                itemCode: item.productId,
+                title: item.itemName,
+                shopName: item.shopName,
+                genreName: item.genreName,
+                blocked: true,
+                reasons: ProductSafetyFilter.blockedReasons(
+                  itemName: item.itemName,
+                  shopName: item.shopName,
+                  genreName: item.genreName,
+                ),
+              );
+            }
+            return !blocked;
+          })
+          .toList(growable: false);
       if (!mounted) return;
       final recs = _rankShopRecommendations(
         ShopDiscoveryAggregator.aggregate(items, shopLimit: 5, itemsPerShop: 3),
@@ -413,15 +415,16 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   ) async {
     _dismissKeyboard();
     final saved = context.read<SavedShopProvider>();
-    if (saved.isSaved(summary.shopKey)) return;
-    final messenger = ScaffoldMessenger.of(context);
-    await saved.upsertShop(
+    if (saved.isSaved(summary.shopKey) || saved.isShopBusy(summary.shopKey)) {
+      return;
+    }
+    final ok = await saved.upsertShop(
       shopId: summary.shopKey,
       shopName: summary.shopName,
       shopUrl: summary.shopUrl,
     );
-    if (!mounted) return;
-    messenger.showSnackBar(const SnackBar(content: Text('保存しました')));
+    if (!mounted || !ok) return;
+    AppFeedback.success(this.context, message: 'ショップを保存しました');
     _logShopRecommend(
       recommendationStarted: _shopRecommendationStarted,
       recommendationCount: _shopRecommendations.length,
@@ -458,8 +461,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     EasyInitialSetupRepository setup,
   ) {
     final missingRoomUrl = !profile.hasRoomUrl;
-    final showMyPageSetupCard =
-        !setup.initialSetupCompleted && missingRoomUrl;
+    final showMyPageSetupCard = !setup.initialSetupCompleted && missingRoomUrl;
     final signature = [
       _pageIndex,
       setup.initialSetupCompleted,
@@ -591,70 +593,68 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
           child: Theme(
             data: MyPageScreenUi.overlayTheme(theme),
             child: _DismissKeyboardOnInteract(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'あとからマイページで変更できます。',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w600,
-                      height: 1.35,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'あとからマイページで変更できます。',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                        height: 1.35,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      _StepDot(
-                        active: _pageIndex == 0,
-                        enabled: true,
-                        label: '1',
-                        onTap: () => _jumpToStep(0),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: AppColors.divider.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      _StepDot(
-                        active: _pageIndex == 1,
-                        enabled: _pageIndex >= 1,
-                        label: '2',
-                        onTap: () => _jumpToStep(1),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  Expanded(
-                    child: PageView(
-                      controller: controller,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onPageChanged: (i) {
-                        _dismissKeyboard();
-                        setState(() => _pageIndex = i);
-                      },
+                    const SizedBox(height: 14),
+                    Row(
                       children: [
-                        _StepProfile(
-                          controller: _nicknameController,
+                        _StepDot(
+                          active: _pageIndex == 0,
+                          enabled: true,
+                          label: '1',
+                          onTap: () => _jumpToStep(0),
                         ),
-                        _StepRoomUrl(
-                          controller: _roomUrlController,
-                          errorText: _roomUrlErrorText,
-                          isChecking: _isCheckingRoomProfile,
-                          onChanged: () => setState(() {}),
+                        Expanded(
+                          child: Divider(
+                            color: AppColors.divider.withValues(alpha: 0.7),
+                          ),
+                        ),
+                        _StepDot(
+                          active: _pageIndex == 1,
+                          enabled: _pageIndex >= 1,
+                          label: '2',
+                          onTap: () => _jumpToStep(1),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  ..._buildSetupBottomActions(context),
-                ],
+                    const SizedBox(height: 14),
+                    Expanded(
+                      child: PageView(
+                        controller: controller,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (i) {
+                          _dismissKeyboard();
+                          setState(() => _pageIndex = i);
+                        },
+                        children: [
+                          _StepProfile(controller: _nicknameController),
+                          _StepRoomUrl(
+                            controller: _roomUrlController,
+                            errorText: _roomUrlErrorText,
+                            isChecking: _isCheckingRoomProfile,
+                            onChanged: () => setState(() {}),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ..._buildSetupBottomActions(context),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
         ),
       ),
     );
@@ -737,9 +737,7 @@ class _DismissKeyboardOnInteract extends StatelessWidget {
 }
 
 class _StepProfile extends StatelessWidget {
-  const _StepProfile({
-    required this.controller,
-  });
+  const _StepProfile({required this.controller});
 
   final TextEditingController controller;
 
@@ -1111,9 +1109,9 @@ class _StepSavedShops extends StatelessWidget {
               ...recommendations.indexed.map((entry) {
                 final index = entry.$1;
                 final summary = entry.$2;
-                final isSaved = context.watch<SavedShopProvider>().isSaved(
-                  summary.shopKey,
-                );
+                final savedProvider = context.watch<SavedShopProvider>();
+                final isSaved = savedProvider.isSaved(summary.shopKey);
+                final isBusy = savedProvider.isShopBusy(summary.shopKey);
                 return Padding(
                   padding: EdgeInsets.only(
                     bottom: index == recommendations.length - 1 ? 0 : 10,
@@ -1122,6 +1120,7 @@ class _StepSavedShops extends StatelessWidget {
                     summary: summary,
                     rank: index + 1,
                     isSaved: isSaved,
+                    isBusy: isBusy,
                     showOpenShopAction: false,
                     disableSavedAction: true,
                     reasonText: _recommendReasonFor(
@@ -1153,9 +1152,7 @@ class _InlineShopIntroCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: MyPageScreenUi.noticeFill,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: MyPageScreenUi.noticeBorder,
-        ),
+        border: Border.all(color: MyPageScreenUi.noticeBorder),
       ),
       child: Text(
         'あなた向けおすすめショップを$candidateCount件ほど提案できます。',
@@ -1366,8 +1363,15 @@ List<String> _genreLabelsForShopSummary(UserProfile profile) {
       .toList(growable: false);
 }
 
-({String genreId, String genreName, bool matched, String reason, bool fallbackUsed, String fallbackReason})
-    _resolveInitialSetupShopRecommendGenre(
+({
+  String genreId,
+  String genreName,
+  bool matched,
+  String reason,
+  bool fallbackUsed,
+  String fallbackReason,
+})
+_resolveInitialSetupShopRecommendGenre(
   List<String> genreIds, {
   String? lastPickedGenreId,
 }) {
@@ -1397,7 +1401,8 @@ List<String> _genreLabelsForShopSummary(UserProfile profile) {
       ? preferred
       : cleaned.last;
   final name = svc.getGenreNameById(chosen);
-  final displayName = name.isNotEmpty &&
+  final displayName =
+      name.isNotEmpty &&
           name != RakutenGenreMasterService.unknownGenreDisplayLabel
       ? name
       : chosen;
@@ -1405,7 +1410,9 @@ List<String> _genreLabelsForShopSummary(UserProfile profile) {
     genreId: chosen,
     genreName: displayName,
     fallbackUsed: false,
-    fallbackReason: preferred.isNotEmpty ? 'lastPickedInSession' : 'lastInSavedList',
+    fallbackReason: preferred.isNotEmpty
+        ? 'lastPickedInSession'
+        : 'lastInSavedList',
   );
   return (
     genreId: chosen,
@@ -1433,7 +1440,9 @@ RakutenProductSearchCondition _shopRecommendationCondition(
       genreId: '',
       genreName: '',
       fallbackUsed: true,
-      fallbackReason: fallbackReason.isNotEmpty ? fallbackReason : 'keywordFallback',
+      fallbackReason: fallbackReason.isNotEmpty
+          ? fallbackReason
+          : 'keywordFallback',
     );
   }
   return RakutenProductSearchCondition(

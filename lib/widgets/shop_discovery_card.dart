@@ -18,6 +18,7 @@ class ShopDiscoveryCard extends StatelessWidget {
     required this.onSave,
     this.showOpenShopAction = true,
     this.disableSavedAction = false,
+    this.isBusy = false,
     this.reasonText,
   });
 
@@ -28,6 +29,9 @@ class ShopDiscoveryCard extends StatelessWidget {
   final VoidCallback onSave;
   final bool showOpenShopAction;
   final bool disableSavedAction;
+
+  /// 同一ショップの保存・解除処理中。
+  final bool isBusy;
   final String? reasonText;
 
   @override
@@ -144,14 +148,27 @@ class ShopDiscoveryCard extends StatelessWidget {
                   ],
                   Expanded(
                     child: RakutenSearchOutlineButton(
-                      label: isSaved ? '保存済み' : saveLabel,
-                      onPressed: isSaved && disableSavedAction ? null : onSave,
-                      icon: Icon(
-                        isSaved
-                            ? Icons.bookmark_added_rounded
-                            : Icons.bookmark_add_outlined,
-                        size: 20,
-                      ),
+                      label: isBusy
+                          ? (isSaved ? '解除中…' : '保存中…')
+                          : (isSaved ? '保存済み' : saveLabel),
+                      onPressed: isBusy || (isSaved && disableSavedAction)
+                          ? null
+                          : onSave,
+                      icon: isBusy
+                          ? SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: RakutenSearchScreenUi.primary,
+                              ),
+                            )
+                          : Icon(
+                              isSaved
+                                  ? Icons.bookmark_added_rounded
+                                  : Icons.bookmark_add_outlined,
+                              size: 20,
+                            ),
                       expand: true,
                       height: 52,
                     ),
