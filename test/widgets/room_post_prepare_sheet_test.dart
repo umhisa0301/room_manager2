@@ -13,6 +13,7 @@ import 'package:room_manager2/repository/pending_collect_notice_repository.dart'
 import 'package:room_manager2/repository/post_style_settings_repository.dart';
 import 'package:room_manager2/repository/rakuten_managed_product_repository.dart';
 import 'package:room_manager2/repository/room_activity_event_repository.dart';
+import 'package:room_manager2/app_messenger.dart';
 import 'package:room_manager2/services/analytics_service.dart';
 import 'package:room_manager2/services/post_comment_generation_count_store.dart';
 import 'package:room_manager2/services/post_comment_generation_result_store.dart';
@@ -75,9 +76,8 @@ class _NeverCompletingPostCommentGenerationService
 
 class _CountingPostCommentGenerationService
     implements PostCommentGenerationService {
-  _CountingPostCommentGenerationService({this.delay = Duration.zero});
+  _CountingPostCommentGenerationService();
 
-  final Duration delay;
   int callCount = 0;
 
   @override
@@ -85,7 +85,6 @@ class _CountingPostCommentGenerationService
     PostCommentGenerationInput input,
   ) async {
     callCount++;
-    await Future<void>.delayed(delay);
     return const PostCommentGenerationResult(
       body: 'AI生成テスト文',
       fullText: 'AI生成テスト文',
@@ -220,6 +219,7 @@ Future<Widget> _wrapSheet({
       ),
     ],
     child: MaterialApp(
+      scaffoldMessengerKey: appRootScaffoldMessengerKey,
       builder: disableAnimations
           ? (context, child) {
               return MediaQuery(
@@ -578,6 +578,8 @@ void main() {
 
       await tester.tap(find.byKey(const Key('room_post_prepare_room_button')));
       await tester.pump();
+      // Sheet 閉鎖前に root Feedback が見えること（人工待ち時間なし）。
+      expect(find.text('投稿文をコピーしました'), findsOneWidget);
       await tester.pump(const Duration(milliseconds: 500));
       await tester.pumpAndSettle(const Duration(seconds: 3));
 

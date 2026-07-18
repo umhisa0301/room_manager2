@@ -21,6 +21,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../ui/feedback/app_feedback.dart';
 import '../utils/product_display_title.dart';
 import '../widgets/app_button.dart';
 import 'room_post_prepare_product_summary.dart';
@@ -322,6 +323,8 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
       }
     }
 
+    // limit 判定の await 後。シート破棄済みなら Provider / setState に進まない。
+    if (!mounted) return;
     final styleSettings = context.read<PostStyleSettingsProvider>().settings;
     final styleConfigured = isPostStyleConfigured(styleSettings);
     final remainingBefore = limitState == null
@@ -471,6 +474,8 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
             ),
           ),
         );
+        // Sheet 閉鎖後も見えるよう root messenger で通知（ROOM 起動は遅らせない）。
+        AppFeedback.successRoot(message: '投稿文をコピーしました');
         if (kDebugMode) {
           debugPrint('[ROOM_POST_PREPARE] copyText done');
         }
