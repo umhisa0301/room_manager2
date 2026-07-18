@@ -1387,8 +1387,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (entryList.length >= 10) break;
         final id = e.item.productId.trim();
         if (id.isEmpty || selectedIds.contains(id)) continue;
-        if (!_passesBackfillQualityGate(e.item, postStyles: postStyles))
+        if (!_passesBackfillQualityGate(e.item, postStyles: postStyles)) {
           continue;
+        }
         entryList.add(
           TodayRecommendationEntry(
             item: e.item,
@@ -1898,8 +1899,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
       if (!SearchResultQualityFilter.hasDisplayableImage(item)) {
         missingImage += 1;
       }
-      if (!SearchResultQualityFilter.hasDisplayablePrice(item))
+      if (!SearchResultQualityFilter.hasDisplayablePrice(item)) {
         missingPrice += 1;
+      }
       final g = item.genreName.trim().isNotEmpty
           ? item.genreName.trim()
           : (item.genreId.trim().isEmpty ? '-' : item.genreId.trim());
