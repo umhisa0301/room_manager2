@@ -85,10 +85,7 @@ class _AppShellState extends State<AppShell> {
     Navigator.of(sheetContext).pop();
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
-    await openRakutenSearchScreen(
-      context,
-      savedShopKeywordEntry: true,
-    );
+    await openRakutenSearchScreen(context, savedShopKeywordEntry: true);
   }
 
   Future<void> _openShopDiscoveryFromSheet(BuildContext sheetContext) async {
@@ -127,143 +124,154 @@ class _AppShellState extends State<AppShell> {
     }
     return TutorialOverlayHost(
       child: Scaffold(
-      body: Stack(
-        clipBehavior: Clip.none,
-        fit: StackFit.expand,
-        children: [
-          IndexedStack(index: idx, children: _screens),
-          if (idx != 2)
-            Consumer2<RoomImportController, BulkOperationStateController>(
-              builder: (context, importCtl, bulk, _) {
-                final syncBusy = importCtl.isRunning ||
-                    bulk.isMetadataEnriching ||
-                    bulk.isRoomReactionSyncRunning;
-                if (idx == 0 && syncBusy) {
-                  unknownFloatingButtonHideLog(
-                    screen: 'home',
+        body: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            IndexedStack(index: idx, children: _screens),
+            if (idx != 2)
+              Consumer2<RoomImportController, BulkOperationStateController>(
+                builder: (context, importCtl, bulk, _) {
+                  final syncBusy =
+                      importCtl.isRunning ||
+                      bulk.isMetadataEnriching ||
+                      bulk.isRoomReactionSyncRunning;
+                  if (idx == 0 && syncBusy) {
+                    unknownFloatingButtonHideLog(
+                      screen: 'home',
+                      widget: 'CommonDraggableEdgeFab',
+                      reason: 'hiddenDuringRoomSync',
+                    );
+                    return const SizedBox.shrink();
+                  }
+                  unknownFloatingButtonAuditLog(
+                    screen: idx == 0 ? 'home' : 'tab$idx',
                     widget: 'CommonDraggableEdgeFab',
-                    reason: 'hiddenDuringRoomSync',
+                    file: 'lib/widgets/common_draggable_edge_fab.dart',
+                    visible: true,
+                    reason: 'commentEdgeFabRightSideNotMenu',
                   );
-                  return const SizedBox.shrink();
-                }
-                unknownFloatingButtonAuditLog(
-                  screen: idx == 0 ? 'home' : 'tab$idx',
-                  widget: 'CommonDraggableEdgeFab',
-                  file: 'lib/widgets/common_draggable_edge_fab.dart',
-                  visible: true,
-                  reason: 'commentEdgeFabRightSideNotMenu',
-                );
-                return CommonDraggableEdgeFab(
-                  shellTabIndex: idx,
-                  onCommentTap: () =>
-                      context.read<AppShellController>().selectTab(2),
-                );
-              },
-            ),
-          if (idx == 2)
-            CommentTabPlusFab(
-              onPressed: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const CommentTemplateEditScreen(
-                      initialTemplate: null,
+                  return CommonDraggableEdgeFab(
+                    shellTabIndex: idx,
+                    onCommentTap: () =>
+                        context.read<AppShellController>().selectTab(2),
+                  );
+                },
+              ),
+            if (idx == 2)
+              CommentTabPlusFab(
+                onPressed: () {
+                  Navigator.of(context).push<void>(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const CommentTemplateEditScreen(
+                        initialTemplate: null,
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          border: Border(
-            top: BorderSide(
-              color: AppColors.divider.withValues(alpha: 0.85),
-              width: 1,
-            ),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              offset: const Offset(0, -1),
-              blurRadius: 6,
-            ),
+                  );
+                },
+              ),
           ],
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimensions.spacingSm,
-              vertical: 4,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            border: Border(
+              top: BorderSide(
+                color: AppColors.divider.withValues(alpha: 0.85),
+                width: 1,
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _NavItem(
-                    key: const Key('app_shell_nav_home'),
-                    icon: Icons.dashboard_outlined,
-                    selectedIcon: Icons.dashboard,
-                    label: 'ホーム',
-                    tooltip: null,
-                    isSelected: idx == 0,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                offset: const Offset(0, -1),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.spacingSm,
+                vertical: 4,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _NavItem(
+                      key: const Key('app_shell_nav_home'),
+                      icon: Icons.dashboard_outlined,
+                      selectedIcon: Icons.dashboard,
+                      label: 'ホーム',
+                      tooltip: null,
+                      semanticsLabel: 'ホーム',
+                      isTab: true,
+                      isSelected: idx == 0,
+                      onTap: () =>
+                          context.read<AppShellController>().selectTab(0),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    key: const Key('app_shell_nav_search'),
-                    icon: Icons.add_circle_outline_rounded,
-                    selectedIcon: Icons.add_circle_rounded,
-                    label: '探す',
-                    tooltip: '候補を追加',
-                    isSelected: false,
-                    onTap: _showAddCandidateSheet,
+                  Expanded(
+                    child: _NavItem(
+                      key: const Key('app_shell_nav_search'),
+                      icon: Icons.add_circle_outline_rounded,
+                      selectedIcon: Icons.add_circle_rounded,
+                      label: '探す',
+                      tooltip: '候補を追加',
+                      semanticsLabel: '候補を追加',
+                      isTab: false,
+                      isSelected: false,
+                      onTap: _showAddCandidateSheet,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    key: const Key('app_shell_nav_managed'),
-                    icon: Icons.collections_bookmark_outlined,
-                    selectedIcon: Icons.collections_bookmark,
-                    label: '投稿',
-                    tooltip: null,
-                    isSelected: idx == 1,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(1),
+                  Expanded(
+                    child: _NavItem(
+                      key: const Key('app_shell_nav_managed'),
+                      icon: Icons.collections_bookmark_outlined,
+                      selectedIcon: Icons.collections_bookmark,
+                      label: '投稿',
+                      tooltip: null,
+                      semanticsLabel: '投稿',
+                      isTab: true,
+                      isSelected: idx == 1,
+                      onTap: () =>
+                          context.read<AppShellController>().selectTab(1),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    key: const Key('app_shell_nav_analytics'),
-                    icon: Icons.insights_outlined,
-                    selectedIcon: Icons.insights_rounded,
-                    label: '分析',
-                    tooltip: null,
-                    isSelected: idx == 3,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(3),
+                  Expanded(
+                    child: _NavItem(
+                      key: const Key('app_shell_nav_analytics'),
+                      icon: Icons.insights_outlined,
+                      selectedIcon: Icons.insights_rounded,
+                      label: '分析',
+                      tooltip: null,
+                      semanticsLabel: '分析',
+                      isTab: true,
+                      isSelected: idx == 3,
+                      onTap: () =>
+                          context.read<AppShellController>().selectTab(3),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    key: const Key('app_shell_nav_mypage'),
-                    icon: Icons.person_outline,
-                    selectedIcon: Icons.person,
-                    label: 'マイページ',
-                    tooltip: null,
-                    isSelected: idx == 4,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(4),
+                  Expanded(
+                    child: _NavItem(
+                      key: const Key('app_shell_nav_mypage'),
+                      icon: Icons.person_outline,
+                      selectedIcon: Icons.person,
+                      label: 'マイページ',
+                      tooltip: null,
+                      semanticsLabel: 'マイページ',
+                      isTab: true,
+                      isSelected: idx == 4,
+                      onTap: () =>
+                          context.read<AppShellController>().selectTab(4),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
     );
   }
 }
@@ -275,6 +283,8 @@ class _NavItem extends StatelessWidget {
     required this.selectedIcon,
     required this.label,
     required this.tooltip,
+    required this.semanticsLabel,
+    required this.isTab,
     required this.isSelected,
     required this.onTap,
   });
@@ -283,14 +293,22 @@ class _NavItem extends StatelessWidget {
   final IconData selectedIcon;
   final String label;
   final String? tooltip;
+  final String semanticsLabel;
+  final bool isTab;
   final bool isSelected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final child = InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+    final child = Semantics(
+      button: true,
+      selected: isTab ? isSelected : null,
+      enabled: true,
+      label: semanticsLabel,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48),
           child: Padding(
@@ -326,10 +344,15 @@ class _NavItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
     );
 
     if (tooltip != null && tooltip!.isNotEmpty) {
-      return Tooltip(message: tooltip!, child: child);
+      return Tooltip(
+        message: tooltip!,
+        excludeFromSemantics: true,
+        child: child,
+      );
     }
     return child;
   }

@@ -12,8 +12,10 @@ import '../../navigation/app_shell_controller.dart';
 import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
 import '../../services/room_reaction_sync_history_store.dart';
+import '../../state/bulk_operation_state_controller.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
+import '../../state/room_import_controller.dart';
 import '../../state/saved_shop_provider.dart';
 import '../../theme/activity_screen_tokens.dart';
 import '../../theme/app_theme.dart';
@@ -23,6 +25,7 @@ import '../../utils/room_reaction_analytics.dart';
 import '../../utils/room_sync_log.dart';
 import '../../utils/shop_display_resolve.dart';
 import '../../widgets/app_card.dart';
+import '../../widgets/operation_confirm_dialog.dart';
 import '../../widgets/product_open_action_buttons.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
 import 'activity_navigation_helpers.dart';
@@ -68,9 +71,10 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     final bottomPad = widget.bottomInset;
 
     return Consumer3<
-        RakutenManagedProductProvider,
-        RoomActivityEventProvider,
-        SavedShopProvider>(
+      RakutenManagedProductProvider,
+      RoomActivityEventProvider,
+      SavedShopProvider
+    >(
       builder: (context, managed, act, saved, _) {
         final items = managed.items;
         final shell = context.read<AppShellController>();
@@ -145,20 +149,17 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         final listChildren = <Widget>[
           KeyedSubtree(
             key: widget.roomReactionSectionKey,
-            child: _RoomReactionAnalyticsSection(
-              allItems: items,
-            ),
+            child: _RoomReactionAnalyticsSection(allItems: items),
           ),
         ];
 
         if (_ActivityAnalyticsUiFlags.showDecisionInsightCard) {
           final done = items
               .where(
-                (e) =>
-                    RakutenManagedProduct.isMemberForStatusTab(
-                      e,
-                      RakutenManagedProductStatus.done,
-                    ),
+                (e) => RakutenManagedProduct.isMemberForStatusTab(
+                  e,
+                  RakutenManagedProductStatus.done,
+                ),
               )
               .toList(growable: false);
           final outcomeLens = _OutcomeLens.combined;
@@ -211,33 +212,29 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     _OutcomeLens lens,
   ) {
     return switch (lens) {
-      _OutcomeLens.combined => done
-          .where(
-            (p) => p.feedbackSoldAt != null || p.feedbackLikedAt != null,
-          )
-          .toList(growable: false),
-      _OutcomeLens.sold => done
-          .where((p) => p.feedbackSoldAt != null)
-          .toList(growable: false),
-      _OutcomeLens.likedOnly => done
-          .where(
-            (p) =>
-                p.feedbackLikedAt != null && p.feedbackSoldAt == null,
-          )
-          .toList(growable: false),
+      _OutcomeLens.combined =>
+        done
+            .where((p) => p.feedbackSoldAt != null || p.feedbackLikedAt != null)
+            .toList(growable: false),
+      _OutcomeLens.sold =>
+        done.where((p) => p.feedbackSoldAt != null).toList(growable: false),
+      _OutcomeLens.likedOnly =>
+        done
+            .where((p) => p.feedbackLikedAt != null && p.feedbackSoldAt == null)
+            .toList(growable: false),
     };
   }
 
   static List<String> get _threeHourLabels => const [
-        '0–3',
-        '3–6',
-        '6–9',
-        '9–12',
-        '12–15',
-        '15–18',
-        '18–21',
-        '21–24',
-      ];
+    '0–3',
+    '3–6',
+    '6–9',
+    '9–12',
+    '12–15',
+    '15–18',
+    '18–21',
+    '21–24',
+  ];
 
   static List<_AggRow> _genreOutcomeAggregation(
     List<RakutenManagedProduct> subset,
@@ -334,9 +331,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       }
     }
     final labels = _threeHourLabels;
-    return [
-      for (var i = 0; i < 8; i++) (label: labels[i], count: counts[i]),
-    ];
+    return [for (var i = 0; i < 8; i++) (label: labels[i], count: counts[i])];
   }
 
   static DateTime? _postedInstantForProduct(
@@ -386,8 +381,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     if (outcomeSubset.isEmpty) {
       return _DecisionBrief(
         conclusion: 'まだ分析材料が少ないです。',
-        rationale:
-            'まずはおすすめコレから候補を2件追加し、コレ済に移して結果を記録しましょう。',
+        rationale: 'まずはおすすめコレから候補を2件追加し、コレ済に移して結果を記録しましょう。',
         footnote: 'コレ済：${done.length}件',
         nextSteps: [
           _NextStepAction(
@@ -449,9 +443,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       ..write('$sampleHeadline（$lensJa）：')
       ..write('\n');
     if (sumT > 0 && bestCount > 0) {
-      rationale.write(
-        '・投稿時刻（アプリ記録）が「$bestLabel」に集中：$bestCount件（全体の$pct%）\n',
-      );
+      rationale.write('・投稿時刻（アプリ記録）が「$bestLabel」に集中：$bestCount件（全体の$pct%）\n');
     } else {
       rationale.write('・時間帯の偏りはまだ読み取れません（記録時刻が少ない）\n');
     }
@@ -661,7 +653,11 @@ class _DecisionInsightCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.bolt_rounded, size: 26, color: ActivityScreenUi.primary),
+              Icon(
+                Icons.bolt_rounded,
+                size: 26,
+                color: ActivityScreenUi.primary,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -684,9 +680,7 @@ class _DecisionInsightCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ActivityScreenUi.subBlockFill,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: ActivityScreenUi.subBlockBorder,
-                ),
+                border: Border.all(color: ActivityScreenUi.subBlockBorder),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -743,8 +737,6 @@ class _DecisionInsightCard extends StatelessWidget {
   }
 }
 
-
-
 class _Thumb extends StatelessWidget {
   const _Thumb({required this.url});
 
@@ -760,8 +752,10 @@ class _Thumb extends StatelessWidget {
         height: 58,
         color: AppColors.surfaceVariant,
         child: u.isEmpty
-            ? Icon(Icons.image_not_supported_outlined,
-                color: AppColors.textTertiary)
+            ? Icon(
+                Icons.image_not_supported_outlined,
+                color: AppColors.textTertiary,
+              )
             : Image.network(
                 u,
                 fit: BoxFit.cover,
@@ -775,11 +769,8 @@ class _Thumb extends StatelessWidget {
   }
 }
 
-
 class _RoomReactionAnalyticsSection extends StatefulWidget {
-  const _RoomReactionAnalyticsSection({
-    required this.allItems,
-  });
+  const _RoomReactionAnalyticsSection({required this.allItems});
 
   final List<RakutenManagedProduct> allItems;
 
@@ -794,6 +785,7 @@ class _RoomReactionAnalyticsSectionState
   bool _historyLoadDone = false;
   int? _lastLogSignature;
   bool _topProductsExpanded = false;
+  bool _reactionSyncStarting = false;
 
   @override
   void initState() {
@@ -818,9 +810,78 @@ class _RoomReactionAnalyticsSectionState
     _emitHistoryDebugLog();
   }
 
+  Future<void> _handleCheckReactions() async {
+    if (_reactionSyncStarting || !mounted) return;
+    final ctl = context.read<RoomImportController>();
+    final bulk = context.read<BulkOperationStateController>();
+    final syncBusy =
+        ctl.isRunning ||
+        bulk.isMetadataEnriching ||
+        bulk.isRoomReactionSyncRunning;
+    if (syncBusy || bulk.isAnyBlockingOperationRunning) {
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_REACTION_SYNC_START_GUARD] screen=analytics_empty '
+          'blockedByBusy=true confirmed=false',
+        );
+      }
+      return;
+    }
+    _reactionSyncStarting = true;
+    if (mounted) setState(() {});
+    try {
+      final confirmed = await showRoomReactionSyncConfirmDialog(
+        context,
+        screen: 'analytics',
+      );
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_REACTION_SYNC_START_GUARD] screen=analytics_empty '
+          'blockedByBusy=false confirmed=$confirmed',
+        );
+      }
+      if (!confirmed || !mounted) return;
+      await ctl.runReactionSync(context);
+      if (!mounted) return;
+      unawaited(_loadHistory());
+    } finally {
+      _reactionSyncStarting = false;
+      if (mounted) setState(() {});
+    }
+  }
+
+  Widget _buildReactionEmptyCta(BuildContext context) {
+    return Consumer2<RoomImportController, BulkOperationStateController>(
+      builder: (context, ctl, bulk, _) {
+        final syncBusy =
+            _reactionSyncStarting ||
+            ctl.isRunning ||
+            bulk.isMetadataEnriching ||
+            bulk.isRoomReactionSyncRunning ||
+            bulk.isAnyBlockingOperationRunning;
+        return Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: OutlinedButton(
+              onPressed: syncBusy
+                  ? null
+                  : () => unawaited(_handleCheckReactions()),
+              style: ActivityScreenUi.compactOutlinedButtonStyle(
+                theme: Theme.of(context),
+              ),
+              child: const Text('反応を確認する'),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _emitHistoryDebugLog() {
     if (!kDebugMode || !_historyLoadDone) return;
-    final tops = _history?.topReactedProducts ?? const <RoomReactionSyncTopProduct>[];
+    final tops =
+        _history?.topReactedProducts ?? const <RoomReactionSyncTopProduct>[];
     var dLike = 0;
     var dCom = 0;
     for (final p in tops) {
@@ -863,8 +924,7 @@ class _RoomReactionAnalyticsSectionState
     final shopMap = <String, int>{};
     for (final e in reacted) {
       final gk = roomReactionAnalyticsGenreBucket(e);
-      genreMap[gk] =
-          (genreMap[gk] ?? 0) + roomReactionAnalyticsReactionSum(e);
+      genreMap[gk] = (genreMap[gk] ?? 0) + roomReactionAnalyticsReactionSum(e);
       final sk = roomReactionAnalyticsShopBucket(e);
       shopMap[sk.key] =
           (shopMap[sk.key] ?? 0) + roomReactionAnalyticsReactionSum(e);
@@ -879,8 +939,9 @@ class _RoomReactionAnalyticsSectionState
 
     final topScore = List<RakutenManagedProduct>.from(elig)
       ..sort((a, b) {
-        final d = roomReactionAnalyticsReactionScore(b)
-            .compareTo(roomReactionAnalyticsReactionScore(a));
+        final d = roomReactionAnalyticsReactionScore(
+          b,
+        ).compareTo(roomReactionAnalyticsReactionScore(a));
         if (d != 0) return d;
         return b.updatedAt.compareTo(a.updatedAt);
       });
@@ -928,14 +989,10 @@ class _RoomReactionAnalyticsSectionState
     final out = <String>[];
     if (reactionCount < 4) {
       out.add('まだ傾向は参考値です');
-      out.add(
-        '反応がある商品は見つかっています。もう少し件数が増えると、伸びやすい傾向が見えやすくなります。',
-      );
+      out.add('反応がある商品は見つかっています。もう少し件数が増えると、伸びやすい傾向が見えやすくなります。');
     } else {
       if (genreBySumSorted.isNotEmpty && genreBySumSorted.first.value > 0) {
-        out.add(
-          '「${genreBySumSorted.first.key}」ジャンルの商品にいいね・コメントが集まっています',
-        );
+        out.add('「${genreBySumSorted.first.key}」ジャンルの商品にいいね・コメントが集まっています');
       }
       if (shopAggSorted.isNotEmpty && shopAggSorted.first.value.sum > 0) {
         final lab = shopAggSorted.first.value.label.trim();
@@ -956,16 +1013,15 @@ class _RoomReactionAnalyticsSectionState
   Widget build(BuildContext context) {
     final deltas = roomReactionAnalyticsDeltaMap(_history);
     final elig = roomReactionAnalyticsEligibleItems(widget.allItems);
-    final withReaction =
-        elig.where(roomReactionAnalyticsHasReaction).toList(growable: false);
+    final withReaction = elig
+        .where(roomReactionAnalyticsHasReaction)
+        .toList(growable: false);
 
     final unknownGenreCount = withReaction
         .where((e) => roomReactionAnalyticsGenreBucket(e) == 'ジャンル未確認')
         .length;
     final unknownShopCount = withReaction
-        .where(
-          (e) => roomReactionAnalyticsShopBucket(e).label == 'ショップ未確認',
-        )
+        .where((e) => roomReactionAnalyticsShopBucket(e).label == 'ショップ未確認')
         .length;
 
     final reactedSorted = List<RakutenManagedProduct>.from(withReaction)
@@ -974,8 +1030,9 @@ class _RoomReactionAnalyticsSectionState
         final sb = roomReactionAnalyticsReactionSum(b);
         final d = sb.compareTo(sa);
         if (d != 0) return d;
-        return roomReactionAnalyticsReactionScore(b)
-            .compareTo(roomReactionAnalyticsReactionScore(a));
+        return roomReactionAnalyticsReactionScore(
+          b,
+        ).compareTo(roomReactionAnalyticsReactionScore(a));
       });
 
     final genreTrend = <String, int>{};
@@ -993,10 +1050,9 @@ class _RoomReactionAnalyticsSectionState
         shopTrend[b.key] = (shopTrend[b.key] ?? 0) + sum;
       }
     }
-    List<MapEntry<String, int>> genreRows = genreTrend.entries
-        .where((e) => e.value > 0)
-        .toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+    List<MapEntry<String, int>> genreRows =
+        genreTrend.entries.where((e) => e.value > 0).toList()
+          ..sort((a, b) => b.value.compareTo(a.value));
     genreRows = genreRows.take(5).toList();
 
     if (kDebugMode) {
@@ -1010,13 +1066,10 @@ class _RoomReactionAnalyticsSectionState
     List<MapEntry<String, ({String label, int sum})>> shopRows =
         shopTrend.entries
             .map(
-              (e) => MapEntry(
-                e.key,
-                (
-                  label: shopLabelByKey[e.key] ?? e.key,
-                  sum: e.value,
-                ),
-              ),
+              (e) => MapEntry(e.key, (
+                label: shopLabelByKey[e.key] ?? e.key,
+                sum: e.value,
+              )),
             )
             .where((e) => e.value.sum > 0)
             .toList()
@@ -1035,10 +1088,8 @@ class _RoomReactionAnalyticsSectionState
       unknownShopCount: unknownShopCount,
     );
 
-    final topGenreLabels =
-        genreRows.map((e) => e.key).join(',');
-    final topShopLabels =
-        shopRows.map((e) => e.value.label).join(',');
+    final topGenreLabels = genreRows.map((e) => e.key).join(',');
+    final topShopLabels = shopRows.map((e) => e.value.label).join(',');
 
     logRoomReactionAnalyticsSectionRenderIfChanged(
       itemsWithReaction: withReaction.length,
@@ -1061,10 +1112,10 @@ class _RoomReactionAnalyticsSectionState
             Text(
               '反応分析',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
+                fontWeight: FontWeight.w900,
+                fontSize: 20,
+                color: ActivityScreenUi.textPrimary,
+              ),
             ),
             const SizedBox(height: 14),
             Icon(
@@ -1076,20 +1127,21 @@ class _RoomReactionAnalyticsSectionState
             Text(
               'まだ反応データがありません。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: ActivityScreenUi.textPrimary,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               'ROOM同期の「反応を確認する」から、いいね・コメントを確認できます。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textSecondary,
-                    fontSize: 15,
-                    height: 1.35,
-                  ),
+                color: ActivityScreenUi.textSecondary,
+                fontSize: 15,
+                height: 1.35,
+              ),
             ),
+            _buildReactionEmptyCta(context),
           ],
         ),
       );
@@ -1108,10 +1160,10 @@ class _RoomReactionAnalyticsSectionState
             Text(
               '反応分析',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
+                fontWeight: FontWeight.w900,
+                fontSize: 20,
+                color: ActivityScreenUi.textPrimary,
+              ),
             ),
             const SizedBox(height: 12),
             Icon(
@@ -1123,28 +1175,30 @@ class _RoomReactionAnalyticsSectionState
             Text(
               'いいねやコメントの取得が進むと、このカードから傾向を確認できます。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textPrimary,
-                    height: 1.4,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: ActivityScreenUi.textPrimary,
+                height: 1.4,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               'まずはROOM同期カードから「反応を確認する」を実行してください。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textSecondary,
-                    height: 1.35,
-                    fontSize: 14,
-                  ),
+                color: ActivityScreenUi.textSecondary,
+                height: 1.35,
+                fontSize: 14,
+              ),
             ),
+            _buildReactionEmptyCta(context),
           ],
         ),
       );
     }
 
-    final maxGenre =
-        genreRows.isEmpty ? 1 : genreRows.map((e) => e.value).reduce((a, b) => a > b ? a : b);
+    final maxGenre = genreRows.isEmpty
+        ? 1
+        : genreRows.map((e) => e.value).reduce((a, b) => a > b ? a : b);
     final maxShop = shopRows.isEmpty
         ? 1
         : shopRows.map((e) => e.value.sum).reduce((a, b) => a > b ? a : b);
@@ -1177,10 +1231,10 @@ class _RoomReactionAnalyticsSectionState
               Text(
                 '今日の気づき',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
-                      color: ActivityScreenUi.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  color: ActivityScreenUi.textPrimary,
+                ),
               ),
               const SizedBox(height: 10),
               for (final line in _buildTodayInsightTexts(
@@ -1194,10 +1248,10 @@ class _RoomReactionAnalyticsSectionState
                   child: Text(
                     line,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          height: 1.45,
-                          fontSize: 14,
-                          color: ActivityScreenUi.textPrimary,
-                        ),
+                      height: 1.45,
+                      fontSize: 14,
+                      color: ActivityScreenUi.textPrimary,
+                    ),
                   ),
                 ),
             ],
@@ -1217,10 +1271,10 @@ class _RoomReactionAnalyticsSectionState
             Text(
               '反応が良かった商品',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
+                fontWeight: FontWeight.w900,
+                fontSize: 20,
+                color: ActivityScreenUi.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -1228,10 +1282,10 @@ class _RoomReactionAnalyticsSectionState
                   ? 'いいね・コメントが多い順'
                   : '反応が確認できた${withReaction.length}件から（いいね・コメントが多い順）',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: ActivityScreenUi.textSecondary,
-                    height: 1.4,
-                    fontSize: 14,
-                  ),
+                color: ActivityScreenUi.textSecondary,
+                height: 1.4,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 14),
             for (var i = 0; i < topLimit; i++) ...[
@@ -1243,8 +1297,7 @@ class _RoomReactionAnalyticsSectionState
               _RoomReactionCompactProductRow(
                 rank: i + 1,
                 product: reactedSorted[i],
-                delta:
-                    deltas[reactedSorted[i].productId.trim()],
+                delta: deltas[reactedSorted[i].productId.trim()],
               ),
             ],
             if (canExpandProducts)
@@ -1252,8 +1305,7 @@ class _RoomReactionAnalyticsSectionState
                 alignment: Alignment.center,
                 child: TextButton.icon(
                   onPressed: () => setState(
-                    () =>
-                        _topProductsExpanded = !_topProductsExpanded,
+                    () => _topProductsExpanded = !_topProductsExpanded,
                   ),
                   icon: Icon(
                     _topProductsExpanded
@@ -1262,9 +1314,7 @@ class _RoomReactionAnalyticsSectionState
                     color: ActivityScreenUi.primary,
                   ),
                   label: Text(
-                    _topProductsExpanded
-                        ? '閉じる'
-                        : 'もっと見る（最大5件）',
+                    _topProductsExpanded ? '閉じる' : 'もっと見る（最大5件）',
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       color: ActivityScreenUi.primary,
@@ -1288,24 +1338,24 @@ class _RoomReactionAnalyticsSectionState
             Text(
               '反応の傾向',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: ActivityScreenUi.textPrimary,
-                  ),
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                color: ActivityScreenUi.textPrimary,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               '反応が多いジャンル',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 4),
             Text(
               'いいね・コメントの合計です',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 10),
             if (genreRowsShown.isEmpty)
@@ -1314,9 +1364,9 @@ class _RoomReactionAnalyticsSectionState
                     ? 'ジャンル未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると表示されます。'
                     : 'ジャンル傾向はまだ十分にありません。商品情報の確認後に表示されます。',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
               )
             else
               for (var i = 0; i < genreRowsShown.length; i++) ...[
@@ -1332,25 +1382,25 @@ class _RoomReactionAnalyticsSectionState
               Text(
                 'ジャンル未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると、分析の精度が上がります。',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      height: 1.35,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.textTertiary,
+                  height: 1.35,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
             const SizedBox(height: 20),
             Text(
               '反応が多いショップ',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 4),
             Text(
               'いいね・コメントの合計です',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 10),
             if (shopRows.isEmpty)
@@ -1359,9 +1409,9 @@ class _RoomReactionAnalyticsSectionState
                     ? 'ショップ未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると表示されます。'
                     : 'ショップ傾向はまだ十分にありません。商品情報の確認後に表示されます。',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
               )
             else
               for (var i = 0; i < shopRowsShown.length; i++) ...[
@@ -1379,8 +1429,8 @@ class _RoomReactionAnalyticsSectionState
                   final topShop = AnalyticsShopSearchLauncher.topReactedShop(
                     widget.allItems,
                   );
-                  final rawShopName = topShop != null &&
-                          topShop.shopName.trim().isNotEmpty
+                  final rawShopName =
+                      topShop != null && topShop.shopName.trim().isNotEmpty
                       ? topShop.shopName.trim()
                       : shopRowsShown.isNotEmpty
                       ? shopRowsShown.first.value.label.trim()
@@ -1394,10 +1444,10 @@ class _RoomReactionAnalyticsSectionState
                   return OutlinedButton.icon(
                     onPressed: () =>
                         AnalyticsShopSearchLauncher.launchTopShopSearch(
-                      context,
-                      items: widget.allItems,
-                      screen: 'activityReactionTrend',
-                    ),
+                          context,
+                          items: widget.allItems,
+                          screen: 'activityReactionTrend',
+                        ),
                     icon: const Icon(Icons.storefront_outlined, size: 18),
                     label: Text(ctaLabel),
                     style: ActivityScreenUi.primaryOutlinedButtonStyle(
@@ -1436,15 +1486,17 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
     final like = product.roomLikeCount ?? 0;
     final comment = product.roomCommentCount ?? 0;
     final genre = product.persistedGenreDisplayName?.trim();
-    final genreLine =
-        (genre != null && genre.isNotEmpty) ? genre : product.genreName.trim();
-    final genreOut = roomReactionAnalyticsGenreTrendEligible(product) &&
-            genreLine.isNotEmpty
+    final genreLine = (genre != null && genre.isNotEmpty)
+        ? genre
+        : product.genreName.trim();
+    final genreOut =
+        roomReactionAnalyticsGenreTrendEligible(product) && genreLine.isNotEmpty
         ? genreLine
         : 'ジャンル未確認';
     final shopOut = roomReactionAnalyticsShopDisplayLine(product);
-    final price =
-        RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
+    final price = RoomColleProductListCardLayout.formatPriceYen(
+      product.itemPrice,
+    );
     final deltaParts = <String>[];
     if (delta != null) {
       if (delta!.deltaLike > 0) {
@@ -1470,9 +1522,9 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
           .openRakutenItemPage(context, product.productId);
       if (!context.mounted) return;
       if (err != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(err)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(err)));
       }
     }
 
@@ -1493,10 +1545,10 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                     '$rank',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: ActivityScreenUi.primary,
-                          fontSize: 17,
-                        ),
+                      fontWeight: FontWeight.w900,
+                      color: ActivityScreenUi.primary,
+                      fontSize: 17,
+                    ),
                   ),
                 ),
               ),
@@ -1523,123 +1575,112 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                           : product.itemName.trim(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 15,
-                                height: 1.25,
-                                decoration: product.rakutenOpenUrl
-                                        .trim()
-                                        .isNotEmpty
-                                    ? TextDecoration.underline
-                                    : null,
-                                decorationColor: AppColors.textPrimary
-                                    .withValues(alpha: 0.25),
-                              ),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                        height: 1.25,
+                        decoration: product.rakutenOpenUrl.trim().isNotEmpty
+                            ? TextDecoration.underline
+                            : null,
+                        decorationColor: AppColors.textPrimary.withValues(
+                          alpha: 0.25,
+                        ),
+                      ),
                     ),
                   ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'いいね $like ・ コメント $comment',
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.textSecondary,
-                              ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'いいね $like ・ コメント $comment',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textSecondary,
                     ),
-                    if (deltaLine.isNotEmpty) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        deltaLine,
-                        style:
-                            Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: ActivityScreenUi.primary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                ),
-                      ),
-                    ],
-                    Text(
-                      price,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                              ),
-                    ),
+                  ),
+                  if (deltaLine.isNotEmpty) ...[
                     const SizedBox(height: 2),
                     Text(
-                      shopOut,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontSize: 12,
-                                color: AppColors.textTertiary,
-                              ),
-                    ),
-                    Text(
-                      genreOut,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontSize: 12,
-                                color: AppColors.textTertiary,
-                              ),
-                    ),
-                    if (soldNote) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        'コレ済の評価：売れた',
-                        style:
-                            Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: AppColors.textTertiary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                      ),
-                    ],
-                    const SizedBox(height: 8),
-                    ProductOpenActionButtons(
-                      product: product,
-                      compact: true,
-                      screen: 'activityReactionProduct',
-                      logStyleAudit: true,
-                      outlineButtonStyle:
-                          ActivityScreenUi.compactProductOutlineButtonStyle(
-                        theme: Theme.of(context),
+                      deltaLine,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ActivityScreenUi.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
                       ),
                     ),
                   ],
-                ),
-              ),
-              InkWell(
-                onTap: () => activityNavigateForProductId(
-                  context,
-                  productId: product.productId,
-                ),
-                borderRadius: BorderRadius.circular(8),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 4, top: 8),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppColors.textTertiary,
-                    size: 24,
+                  Text(
+                    price,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
+                  const SizedBox(height: 2),
+                  Text(
+                    shopOut,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                  Text(
+                    genreOut,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                  if (soldNote) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'コレ済の評価：売れた',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 8),
+                  ProductOpenActionButtons(
+                    product: product,
+                    compact: true,
+                    screen: 'activityReactionProduct',
+                    logStyleAudit: true,
+                    outlineButtonStyle:
+                        ActivityScreenUi.compactProductOutlineButtonStyle(
+                          theme: Theme.of(context),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () => activityNavigateForProductId(
+                context,
+                productId: product.productId,
+              ),
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 4, top: 8),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textTertiary,
+                  size: 24,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
-
-
-
 
 class _RoomReactionAggRow extends StatelessWidget {
   const _RoomReactionAggRow({
@@ -1663,9 +1704,9 @@ class _RoomReactionAggRow extends StatelessWidget {
             label,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         Expanded(
@@ -1685,15 +1726,12 @@ class _RoomReactionAggRow extends StatelessWidget {
           child: Text(
             '$value',
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w800),
           ),
         ),
       ],
     );
   }
 }
-
-
-

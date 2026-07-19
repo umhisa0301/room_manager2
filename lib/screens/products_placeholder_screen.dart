@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
+import '../navigation/rakuten_search_navigator.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -1376,8 +1377,9 @@ List<RakutenManagedProduct> _applyRoomImportMetaLineFilter(
     if (e.coredActivitySource != RakutenCoredActivitySource.roomImport) {
       continue;
     }
-    final incomplete =
-        RoomImportMetadataEnrichmentService.needFlagsForProduct(e).willEnrich;
+    final incomplete = RoomImportMetadataEnrichmentService.needFlagsForProduct(
+      e,
+    ).willEnrich;
     switch (mode) {
       case _RoomImportMetaListFilter.all:
         out.add(e);
@@ -1403,7 +1405,8 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   Set<String> todayRecommendationProductIds = const <String>{},
   String Function(RakutenManagedProduct product)? genreLabelForProduct,
   DateTime? doneAtLocalDayFilter,
-  _RoomImportMetaListFilter roomImportMetaFilter = _RoomImportMetaListFilter.all,
+  _RoomImportMetaListFilter roomImportMetaFilter =
+      _RoomImportMetaListFilter.all,
 }) {
   final baseList = provider.sortedItemsForStatus(status);
   final day = doneAtLocalDayFilter;
@@ -1693,6 +1696,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   bool _doneReactionQuickAutoAppliedOnce = false;
   Timer? _persistSearchDebounce;
   int _lastShellIndex = _roomColleShellIndex;
+  bool _isOpeningSearchFromEmpty = false;
 
   String? get _focusCandidateTargetId {
     final w = widget.initialFocusCandidateProductId;
@@ -1825,6 +1829,61 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       }
     });
     _persistRoomColleUiNow();
+  }
+
+  /// 検索空状態用。キーワードがあればキーワードのみ、なければ当該タブの絞り込み条件のみ解除。
+  /// 並び順・URLフィルタ・メタフィルタ・日付フィルタは維持する。
+  void _clearActiveRoomColleSearchEmptyCause() {
+    if (!mounted) return;
+    _persistSearchDebounce?.cancel();
+    final idx = _tabController.index;
+    setState(() {
+      if (idx == 0) {
+        final hasKeyword = _candidateListFilters.keyword.trim().isNotEmpty;
+        if (hasKeyword) {
+          _candidateSearchController.clear();
+          _candidateListFilters = _candidateListFilters.copyWith(keyword: '');
+        } else {
+          _candidateListFilters = RoomColleListFilterCriteria.defaults;
+          _candidateSearchController.clear();
+        }
+      } else {
+        final hasKeyword = _doneListFilters.keyword.trim().isNotEmpty;
+        if (hasKeyword) {
+          _doneSearchController.clear();
+          _doneListFilters = _doneListFilters.copyWith(keyword: '');
+        } else {
+          _doneListFilters = RoomColleListFilterCriteria.defaults;
+          _doneSearchController.clear();
+        }
+      }
+    });
+    _persistRoomColleUiNow();
+  }
+
+  void _clearCandidateUrlFilter() {
+    if (!mounted) return;
+    if (!_candidateExcludeUrlNotReady) return;
+    setState(() => _candidateExcludeUrlNotReady = false);
+    _persistRoomColleUiNow();
+  }
+
+  void _clearDoneRoomImportMetaFilter() {
+    if (!mounted) return;
+    if (_doneRoomImportMetaFilter == _RoomImportMetaListFilter.all) return;
+    setState(() => _doneRoomImportMetaFilter = _RoomImportMetaListFilter.all);
+    _persistRoomColleUiNow();
+  }
+
+  Future<void> _openSearchFromCandidateEmpty() async {
+    if (_isOpeningSearchFromEmpty) return;
+    _isOpeningSearchFromEmpty = true;
+    try {
+      if (!mounted) return;
+      await openRakutenSearchScreen(context);
+    } finally {
+      _isOpeningSearchFromEmpty = false;
+    }
   }
 
   /// フィルター画面を開かず、検索・絞り込み条件のみ解除（メイン/サブタブは維持）。
@@ -2187,7 +2246,10 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             ),
                             padding: EdgeInsets.zero,
                             onPressed: () => Navigator.of(context).pop(),
-                            icon: const Icon(Icons.arrow_back_rounded, size: 22),
+                            icon: const Icon(
+                              Icons.arrow_back_rounded,
+                              size: 22,
+                            ),
                             color: HomeScreenColors.homeTextPrimary,
                             tooltip: '戻る',
                           ),
@@ -2262,7 +2324,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             criteria: _tabController.index == 0
                                 ? _candidateListFilters
                                 : _doneListFilters,
-                            excludeUrlNotReady: _tabController.index == 0 &&
+                            excludeUrlNotReady:
+                                _tabController.index == 0 &&
                                 _candidateExcludeUrlNotReady,
                             sortPreset: _tabController.index == 0
                                 ? _candidateSortPreset
@@ -2274,7 +2337,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             criteria: _tabController.index == 0
                                 ? _candidateListFilters
                                 : _doneListFilters,
-                            excludeUrlNotReady: _tabController.index == 0 &&
+                            excludeUrlNotReady:
+                                _tabController.index == 0 &&
                                 _candidateExcludeUrlNotReady,
                             sortPreset: _tabController.index == 0
                                 ? _candidateSortPreset
@@ -2284,18 +2348,20 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           onPressed: () => _openRoomColleFilterEditor(
                             isCandidate: _tabController.index == 0,
                           ),
-                          onClear: _roomColleHasActiveSheetFilters(
-                            isCandidate: _tabController.index == 0,
-                            criteria: _tabController.index == 0
-                                ? _candidateListFilters
-                                : _doneListFilters,
-                            excludeUrlNotReady: _tabController.index == 0 &&
-                                _candidateExcludeUrlNotReady,
-                            sortPreset: _tabController.index == 0
-                                ? _candidateSortPreset
-                                : _doneSortPreset,
-                            doneAtLocalDayFilter: _doneLocalDayFilter,
-                          )
+                          onClear:
+                              _roomColleHasActiveSheetFilters(
+                                isCandidate: _tabController.index == 0,
+                                criteria: _tabController.index == 0
+                                    ? _candidateListFilters
+                                    : _doneListFilters,
+                                excludeUrlNotReady:
+                                    _tabController.index == 0 &&
+                                    _candidateExcludeUrlNotReady,
+                                sortPreset: _tabController.index == 0
+                                    ? _candidateSortPreset
+                                    : _doneSortPreset,
+                                doneAtLocalDayFilter: _doneLocalDayFilter,
+                              )
                               ? _clearActiveRoomColleSheetFilters
                               : null,
                         ),
@@ -2333,11 +2399,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             _kRoomColleTabTrackRadius - 4,
                           ),
                         );
-                        return Semantics(
-                          container: true,
-                          label: idx == 0
-                              ? 'post_management_tab_candidates'
-                              : 'post_management_tab_posted',
+                        return KeyedSubtree(
+                          key: Key(
+                            idx == 0
+                                ? 'post_management_tab_candidates'
+                                : 'post_management_tab_posted',
+                          ),
                           child: SegmentedButton<int>(
                             showSelectedIcon: false,
                             expandedInsets: EdgeInsets.zero,
@@ -2350,7 +2417,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
                                 ),
-                                tooltip: 'コレ候補の一覧',
+                                tooltip: 'コレ候補',
                               ),
                               ButtonSegment<int>(
                                 value: 1,
@@ -2360,7 +2427,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
                                 ),
-                                tooltip: 'コレ済の一覧',
+                                tooltip: 'コレ済み',
                               ),
                             ],
                             selected: <int>{_tabController.index},
@@ -2411,8 +2478,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               textStyle: WidgetStateProperty.resolveWith((
                                 states,
                               ) {
-                                final base =
-                                    Theme.of(context).textTheme.labelLarge;
+                                final base = Theme.of(
+                                  context,
+                                ).textTheme.labelLarge;
                                 final selected = states.contains(
                                   WidgetState.selected,
                                 );
@@ -2497,9 +2565,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             onRecoverFromListError:
                                 _recoverRoomColleListAndFilters,
                             emptyTitle: 'コレ候補はまだありません',
-                            emptySubtitle:
-                                '「探す」や「今日のおすすめ」から候補に追加できます。',
+                            emptySubtitle: '「探す」や「今日のおすすめ」から候補に追加できます。',
                             emptyHint: '',
+                            emptyActionLabel: '商品を探す',
+                            onEmptyAction: _openSearchFromCandidateEmpty,
+                            onClearSearchFilter:
+                                _clearActiveRoomColleSearchEmptyCause,
+                            onClearUrlFilter: _clearCandidateUrlFilter,
                             accentColor: RoomColleListAccent.candidate,
                             listScrollController: _candidateScrollController,
                             flashHighlightProductId: _flashProductId,
@@ -2589,8 +2661,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 label: Text('すべて'),
                               ),
                               ButtonSegment(
-                                value:
-                                    _RoomImportMetaListFilter.incompleteOnly,
+                                value: _RoomImportMetaListFilter.incompleteOnly,
                                 label: Text('未確認'),
                               ),
                               ButtonSegment(
@@ -2627,6 +2698,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                     setState(() => _doneLocalDayFilter = null);
                                     _persistRoomColleUiNow();
                                   },
+                            onClearSearchFilter:
+                                _clearActiveRoomColleSearchEmptyCause,
+                            onClearMetaFilter: _clearDoneRoomImportMetaFilter,
                             emptyTitle: 'コレ済の商品はまだありません',
                             emptySubtitle:
                                 'ROOMに投稿した商品や、候補からコレ済に移した商品がここに表示されます。',
@@ -2661,9 +2735,14 @@ class _RoomManagedProductListTab extends StatefulWidget {
     this.onRecoverFromListError,
     this.doneAtLocalDayFilter,
     this.onClearDoneDayFilter,
+    this.onClearSearchFilter,
+    this.onClearUrlFilter,
+    this.onClearMetaFilter,
     required this.emptyTitle,
     required this.emptySubtitle,
     required this.emptyHint,
+    this.emptyActionLabel,
+    this.onEmptyAction,
     this.dayFilterEmptyTitle,
     this.dayFilterEmptySubtitle,
     required this.accentColor,
@@ -2691,9 +2770,14 @@ class _RoomManagedProductListTab extends StatefulWidget {
 
   final DateTime? doneAtLocalDayFilter;
   final VoidCallback? onClearDoneDayFilter;
+  final VoidCallback? onClearSearchFilter;
+  final VoidCallback? onClearUrlFilter;
+  final VoidCallback? onClearMetaFilter;
   final String emptyTitle;
   final String emptySubtitle;
   final String emptyHint;
+  final String? emptyActionLabel;
+  final VoidCallback? onEmptyAction;
   final String? dayFilterEmptyTitle;
   final String? dayFilterEmptySubtitle;
   final Color accentColor;
@@ -2923,8 +3007,8 @@ class _RoomManagedProductListTabState
           doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
           roomImportMetaFilter: widget.roomImportMetaFilter,
         );
-        final listWithoutMetaFilter = widget.roomImportMetaFilter !=
-                _RoomImportMetaListFilter.all
+        final listWithoutMetaFilter =
+            widget.roomImportMetaFilter != _RoomImportMetaListFilter.all
             ? _roomListVisibleItems(
                 provider: provider,
                 status: widget.status,
@@ -2932,10 +3016,11 @@ class _RoomManagedProductListTabState
                 excludeUrlNotReady: widget.excludeUrlNotReady,
                 savedShopIds: savedShopIds,
                 todayRecommendationProductIds: todayRecommendationIds,
-                genreLabelForProduct: (product) => _roomColleGenreLabelForProduct(
-                  product,
-                  prefetchedGenreLabels: _genrePrefetchLabels,
-                ),
+                genreLabelForProduct: (product) =>
+                    _roomColleGenreLabelForProduct(
+                      product,
+                      prefetchedGenreLabels: _genrePrefetchLabels,
+                    ),
                 doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
                 roomImportMetaFilter: _RoomImportMetaListFilter.all,
               )
@@ -3027,6 +3112,8 @@ class _RoomManagedProductListTabState
                     subtitle: widget.emptySubtitle,
                     hint: widget.emptyHint,
                     accentColor: widget.accentColor,
+                    actionLabel: widget.emptyActionLabel,
+                    onAction: widget.onEmptyAction,
                     stateFootnote: '読み込みは完了していますが、このタブに該当するデータは0件です。',
                     embedInListView: false,
                   ),
@@ -3066,6 +3153,7 @@ class _RoomManagedProductListTabState
                   _RoomCollectionUrlFilterEmptyState(
                     accentColor: widget.accentColor,
                     embedInListView: false,
+                    onClearFilter: widget.onClearUrlFilter,
                   ),
                 ],
               ),
@@ -3080,6 +3168,8 @@ class _RoomManagedProductListTabState
                   _RoomCollectionSearchEmptyState(
                     accentColor: widget.accentColor,
                     embedInListView: false,
+                    hasKeyword: widget.listFilters.keyword.trim().isNotEmpty,
+                    onClearFilter: widget.onClearSearchFilter,
                   ),
                 ],
               ),
@@ -3095,6 +3185,7 @@ class _RoomManagedProductListTabState
                     accentColor: widget.accentColor,
                     metaFilter: widget.roomImportMetaFilter,
                     embedInListView: false,
+                    onClearFilter: widget.onClearMetaFilter,
                   ),
                 ],
               ),
@@ -3368,11 +3459,13 @@ class _RoomImportMetaFilterEmptyState extends StatelessWidget {
     required this.accentColor,
     required this.metaFilter,
     this.embedInListView = true,
+    this.onClearFilter,
   });
 
   final Color accentColor;
   final _RoomImportMetaListFilter metaFilter;
   final bool embedInListView;
+  final VoidCallback? onClearFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -3426,6 +3519,10 @@ class _RoomImportMetaFilterEmptyState extends StatelessWidget {
                     fontSize: 13,
                   ),
                 ),
+              ],
+              if (onClearFilter != null) ...[
+                const SizedBox(height: 12),
+                AppSecondaryButton(label: '絞り込みを解除', onPressed: onClearFilter),
               ],
             ],
           ),
@@ -3506,13 +3603,18 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
   const _RoomCollectionSearchEmptyState({
     required this.accentColor,
     this.embedInListView = true,
+    this.hasKeyword = true,
+    this.onClearFilter,
   });
 
   final Color accentColor;
   final bool embedInListView;
+  final bool hasKeyword;
+  final VoidCallback? onClearFilter;
 
   @override
   Widget build(BuildContext context) {
+    final actionLabel = hasKeyword ? '検索をクリア' : '絞り込みを解除';
     final pane = SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.35,
       child: Center(
@@ -3546,6 +3648,13 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
+              if (onClearFilter != null) ...[
+                const SizedBox(height: 12),
+                AppSecondaryButton(
+                  label: actionLabel,
+                  onPressed: onClearFilter,
+                ),
+              ],
             ],
           ),
         ),
@@ -3566,10 +3675,12 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
   const _RoomCollectionUrlFilterEmptyState({
     required this.accentColor,
     this.embedInListView = true,
+    this.onClearFilter,
   });
 
   final Color accentColor;
   final bool embedInListView;
+  final VoidCallback? onClearFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -3616,6 +3727,10 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
+              if (onClearFilter != null) ...[
+                const SizedBox(height: 12),
+                AppSecondaryButton(label: '絞り込みを解除', onPressed: onClearFilter),
+              ],
             ],
           ),
         ),

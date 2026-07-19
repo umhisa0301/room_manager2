@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/activity_screen_tokens.dart';
+import '../../theme/app_motion.dart';
 import 'activity_screen_layout.dart';
 
 /// 活動画面用：実績／分析を 50:50 で均等配置するセグメント。
@@ -46,7 +47,10 @@ class ActivitySegmentedTabBar extends StatelessWidget {
                   child: _ActivityMainTabCell(
                     label: labels[i],
                     selected: i == idx,
-                    onTap: () => onChanged(i),
+                    onTap: () {
+                      if (i == idx) return;
+                      onChanged(i);
+                    },
                     roundedLeft: i == 0,
                     roundedRight: i == n - 1,
                   ),
@@ -80,48 +84,55 @@ class _ActivityMainTabCell extends StatelessWidget {
       left: roundedLeft ? const Radius.circular(20) : Radius.zero,
       right: roundedRight ? const Radius.circular(20) : Radius.zero,
     );
+    final duration = AppMotion.durationOf(context, AppMotion.normal);
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: r,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected ? ActivityScreenUi.primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
-            border: selected
-                ? null
-                : Border.all(
-                    color: ActivityScreenUi.border.withValues(alpha: 0.85),
-                  ),
-            boxShadow: selected
-                ? [
-                    BoxShadow(
-                      color: ActivityScreenUi.selectedTabShadow,
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: r,
+          child: AnimatedContainer(
+            duration: duration,
+            curve: AppMotion.standard,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: selected ? ActivityScreenUi.primary : Colors.transparent,
+              borderRadius: BorderRadius.circular(20),
+              border: selected
+                  ? null
+                  : Border.all(
+                      color: ActivityScreenUi.border.withValues(alpha: 0.85),
                     ),
-                  ]
-                : null,
-          ),
-          child: Center(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: selected ? FontWeight.w900 : FontWeight.w600,
-                    fontSize: 15,
-                    letterSpacing: selected ? 0.2 : 0,
-                    color: selected
-                        ? ActivityScreenUi.textOnPrimary
-                        : ActivityScreenUi.textPrimary,
-                  ),
+              boxShadow: selected
+                  ? [
+                      BoxShadow(
+                        color: ActivityScreenUi.selectedTabShadow,
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Center(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: selected ? FontWeight.w900 : FontWeight.w600,
+                  fontSize: 15,
+                  letterSpacing: selected ? 0.2 : 0,
+                  color: selected
+                      ? ActivityScreenUi.textOnPrimary
+                      : ActivityScreenUi.textPrimary,
+                ),
+              ),
             ),
           ),
         ),

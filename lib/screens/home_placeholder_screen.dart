@@ -1753,6 +1753,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
         Expanded(
           child: _HomeWorkFlowChip(
             label: 'おすすめ確認',
+            semanticsLabel: '今日のおすすめを確認する',
             state: step1State,
             onTap: isRecommendationBusy ? null : onOpenRecommendations,
           ),
@@ -1768,6 +1769,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
         Expanded(
           child: _HomeWorkFlowChip(
             label: '投稿',
+            semanticsLabel: 'コレ候補の商品を投稿する',
             state: step2State,
             onTap: onOpenPendingCandidates,
           ),
@@ -1783,6 +1785,7 @@ class _HomeWorkFlowRow extends StatelessWidget {
         Expanded(
           child: _HomeWorkFlowChip(
             label: '商品探し',
+            semanticsLabel: '新しい商品を探す',
             state: step3State,
             onTap: onOpenSearch,
           ),
@@ -1795,11 +1798,13 @@ class _HomeWorkFlowRow extends StatelessWidget {
 class _HomeWorkFlowChip extends StatelessWidget {
   const _HomeWorkFlowChip({
     required this.label,
+    required this.semanticsLabel,
     required this.state,
     required this.onTap,
   });
 
   final String label;
+  final String semanticsLabel;
   final _HomeWorkStepVisualState state;
   final VoidCallback? onTap;
 
@@ -1829,65 +1834,77 @@ class _HomeWorkFlowChip extends StatelessWidget {
     }
 
     final switchDuration = AppMotion.durationOf(context, AppMotion.fast);
+    final enabled = onTap != null;
+    final fullSemanticsLabel = '$semanticsLabel、$statusLabel';
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: fullSemanticsLabel,
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(8),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 4),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AnimatedSwitcher(
+                        duration: switchDuration,
+                        switchInCurve: AppMotion.standard,
+                        switchOutCurve: AppMotion.standard,
+                        child: Icon(
+                          icon,
+                          key: ValueKey<_HomeWorkStepVisualState>(state),
+                          size: 13,
+                          color: iconColor,
+                        ),
+                      ),
+                      const SizedBox(width: 3),
+                      Flexible(
+                        child: Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: _HomeUi.tapHint(context).copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: HomeScreenColors.homeTextPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 1),
                   AnimatedSwitcher(
                     duration: switchDuration,
                     switchInCurve: AppMotion.standard,
                     switchOutCurve: AppMotion.standard,
-                    child: Icon(
-                      icon,
-                      key: ValueKey<_HomeWorkStepVisualState>(state),
-                      size: 13,
-                      color: iconColor,
-                    ),
-                  ),
-                  const SizedBox(width: 3),
-                  Flexible(
                     child: Text(
-                      label,
+                      statusLabel,
+                      key: ValueKey<_HomeWorkStepVisualState>(state),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: _HomeUi.tapHint(context).copyWith(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: HomeScreenColors.homeTextPrimary,
+                        fontWeight: FontWeight.w500,
+                        color: iconColor,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 1),
-              AnimatedSwitcher(
-                duration: switchDuration,
-                switchInCurve: AppMotion.standard,
-                switchOutCurve: AppMotion.standard,
-                child: Text(
-                  statusLabel,
-                  key: ValueKey<_HomeWorkStepVisualState>(state),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: iconColor,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
