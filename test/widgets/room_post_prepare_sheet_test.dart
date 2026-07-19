@@ -1333,5 +1333,34 @@ void main() {
       expect(find.byKey(const Key('room_post_prepare_sheet')), findsNothing);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets('本文 TextField Semantics は機械IDを晒さず入力可能', (tester) async {
+      final handle = tester.ensureSemantics();
+      await tester.pumpWidget(
+        await _wrapSheet(
+          prefs: prefs,
+          generationService: const _InstantStubPostCommentGenerationService(),
+        ),
+      );
+      await _openSheet(tester);
+      await tester.pumpAndSettle();
+
+      final bodyField = find.byKey(const Key('room_post_prepare_body_field'));
+      expect(bodyField, findsOneWidget);
+      expect(tester.widget(bodyField), isA<TextField>());
+      expect(
+        find.bySemanticsLabel('room_post_prepare_body_field'),
+        findsNothing,
+      );
+
+      final fieldSemantics = tester.getSemantics(bodyField);
+      expect(fieldSemantics.label, isNot('room_post_prepare_body_field'));
+      expect(find.text('AI生成テスト文'), findsOneWidget);
+
+      await tester.enterText(bodyField, 'セマンティクス確認の投稿文');
+      expect(find.text('セマンティクス確認の投稿文'), findsOneWidget);
+
+      handle.dispose();
+    });
   });
 }

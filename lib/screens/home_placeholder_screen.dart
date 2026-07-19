@@ -1508,6 +1508,7 @@ class TodayRoomWorkCard extends StatelessWidget {
     String buttonLabel,
     VoidCallback? onTap,
     String semanticsLabel,
+    Key semanticsKey,
   })
   _primaryCtaSpec(_HomeWorkPrimaryAction action) {
     switch (action) {
@@ -1517,7 +1518,8 @@ class TodayRoomWorkCard extends StatelessWidget {
           subtitle: 'おすすめコレをチェックしましょう',
           buttonLabel: 'おすすめコレ',
           onTap: _recommendationsBusy ? null : onOpenRecommendations,
-          semanticsLabel: 'home_recommendation_button',
+          semanticsLabel: '今日のおすすめを見る',
+          semanticsKey: const Key('home_recommendation_button'),
         );
       case _HomeWorkPrimaryAction.roomPost:
         return (
@@ -1527,7 +1529,8 @@ class TodayRoomWorkCard extends StatelessWidget {
               : 'コレ候補$pendingCandidateCount件',
           buttonLabel: '投稿する',
           onTap: onOpenPendingCandidates,
-          semanticsLabel: 'home_room_post_button',
+          semanticsLabel: 'コレ候補の商品を投稿する',
+          semanticsKey: const Key('home_room_post_button'),
         );
       case _HomeWorkPrimaryAction.searchMore:
         return (
@@ -1535,7 +1538,8 @@ class TodayRoomWorkCard extends StatelessWidget {
           subtitle: 'コレ候補にしたい商品を探しましょう',
           buttonLabel: '探す',
           onTap: onOpenSearch,
-          semanticsLabel: 'home_search_more_button',
+          semanticsLabel: '新しい商品を探す',
+          semanticsKey: const Key('home_search_more_button'),
         );
     }
   }
@@ -1668,9 +1672,11 @@ class TodayRoomWorkCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Semantics(
+                          key: cta.semanticsKey,
                           label: cta.semanticsLabel,
                           button: true,
                           enabled: cta.onTap != null,
+                          excludeSemantics: true,
                           child: FilledButton(
                             onPressed: cta.onTap,
                             style: FilledButton.styleFrom(

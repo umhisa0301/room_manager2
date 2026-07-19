@@ -99,25 +99,32 @@ class _RoomColleFilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = HomeScreenColors.homeAccentTeal;
+    final filterSemanticsLabel = active ? '商品の絞り込み条件を変更する' : '商品を絞り込む';
+    final filterSemanticsKey = Key(
+      active
+          ? 'post_management_filter_button_active'
+          : 'post_management_filter_button',
+    );
     return SizedBox(
       width: _RoomColleUi.filterButtonWidth,
       height: _RoomColleUi.searchRowHeight,
-      child: Semantics(
-        button: true,
-        label: active
-            ? 'post_management_filter_button_active'
-            : 'post_management_filter_button',
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: active
-                ? HomeScreenColors.homeAccentTealLight
-                : HomeScreenColors.homeCardFill,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: accent, width: 1.2),
-          ),
-          child: Row(
-            children: [
-              Expanded(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: active
+              ? HomeScreenColors.homeAccentTealLight
+              : HomeScreenColors.homeCardFill,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: accent, width: 1.2),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Semantics(
+                key: filterSemanticsKey,
+                button: true,
+                enabled: true,
+                label: filterSemanticsLabel,
+                excludeSemantics: true,
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
@@ -179,31 +186,34 @@ class _RoomColleFilterButton extends StatelessWidget {
                   ),
                 ),
               ),
-              if (active && onClear != null)
-                Semantics(
-                  button: true,
-                  label: 'post_management_filter_clear_button',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: onClear,
-                      borderRadius: const BorderRadius.horizontal(
-                        right: Radius.circular(11),
-                      ),
-                      child: SizedBox(
-                        width: 28,
-                        height: _RoomColleUi.searchRowHeight,
-                        child: Icon(
-                          Icons.close_rounded,
-                          size: 14,
-                          color: accent.withValues(alpha: 0.92),
-                        ),
+            ),
+            if (active && onClear != null)
+              Semantics(
+                key: const Key('post_management_filter_clear_button'),
+                button: true,
+                enabled: true,
+                label: '絞り込みを解除する',
+                excludeSemantics: true,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onClear,
+                    borderRadius: const BorderRadius.horizontal(
+                      right: Radius.circular(11),
+                    ),
+                    child: SizedBox(
+                      width: 28,
+                      height: _RoomColleUi.searchRowHeight,
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 14,
+                        color: accent.withValues(alpha: 0.92),
                       ),
                     ),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

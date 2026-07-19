@@ -622,12 +622,10 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
                             title: _aiLoadingMessage,
                             hint: _aiLoadingHint,
                           )
-                        : Semantics(
+                        : KeyedSubtree(
                             key: const ValueKey(
                               'room_post_prepare_body_editor',
                             ),
-                            label: 'room_post_prepare_body_field',
-                            textField: true,
                             child: TextField(
                               key: const Key('room_post_prepare_body_field'),
                               controller: _bodyController,
@@ -644,6 +642,7 @@ class _RoomPostPrepareSheetBodyState extends State<RoomPostPrepareSheetBody> {
                                 height: 1.4,
                               ),
                               decoration: InputDecoration(
+                                // 空欄時は hint、入力後は本文を TextField 標準 Semantics で読み上げる。
                                 hintText: '投稿文を入力またはAIで作成',
                                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.textTertiary,

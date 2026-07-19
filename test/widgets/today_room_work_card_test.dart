@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/screens/home_placeholder_screen.dart';
 import 'package:room_manager2/theme/app_motion.dart';
@@ -177,6 +178,90 @@ void main() {
         isRecommendationOpening: true,
       );
       expect(find.byType(LinearProgressIndicator), findsNothing);
+    });
+
+    testWidgets('主CTA Semantics が action ごとに日本語化し Key を維持する', (tester) async {
+      final handle = tester.ensureSemantics();
+
+      await pumpCard(
+        tester,
+        isRecommendationReviewComplete: false,
+        pendingCandidateCount: 0,
+      );
+      await tester.pump();
+
+      final rec = tester.getSemantics(
+        find.byKey(const Key('home_recommendation_button')),
+      );
+      expect(rec.label, '今日のおすすめを見る');
+      expect(rec.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(rec.hasFlag(SemanticsFlag.isEnabled), isTrue);
+      expect(find.bySemanticsLabel('home_recommendation_button'), findsNothing);
+      expect(find.bySemanticsLabel('今日のおすすめを見る'), findsOneWidget);
+      expect(find.text('おすすめコレ'), findsOneWidget);
+
+      await pumpCard(
+        tester,
+        isRecommendationReviewComplete: true,
+        pendingCandidateCount: 2,
+      );
+      await tester.pump();
+      await tester.pump(AppMotion.normal);
+
+      final post = tester.getSemantics(
+        find.byKey(const Key('home_room_post_button')),
+      );
+      expect(post.label, 'コレ候補の商品を投稿する');
+      expect(post.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(post.hasFlag(SemanticsFlag.isEnabled), isTrue);
+      expect(find.bySemanticsLabel('home_room_post_button'), findsNothing);
+      expect(find.bySemanticsLabel('コレ候補の商品を投稿する'), findsOneWidget);
+
+      await pumpCard(
+        tester,
+        isRecommendationReviewComplete: true,
+        pendingCandidateCount: 0,
+      );
+      await tester.pump();
+      await tester.pump(AppMotion.normal);
+
+      final search = tester.getSemantics(
+        find.byKey(const Key('home_search_more_button')),
+      );
+      expect(search.label, '新しい商品を探す');
+      expect(search.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(find.bySemanticsLabel('home_search_more_button'), findsNothing);
+      expect(find.bySemanticsLabel('新しい商品を探す'), findsOneWidget);
+
+      handle.dispose();
+    });
+
+    testWidgets('busy 中の主CTA Semantics は enabled=false', (tester) async {
+      final handle = tester.ensureSemantics();
+      var taps = 0;
+
+      await pumpCard(
+        tester,
+        isRecommendationReviewComplete: false,
+        pendingCandidateCount: 0,
+        isRecommendationLoading: true,
+        onOpenRecommendations: () => taps++,
+      );
+      await tester.pump();
+
+      final rec = tester.getSemantics(
+        find.byKey(const Key('home_recommendation_button')),
+      );
+      expect(rec.label, '今日のおすすめを見る');
+      expect(rec.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(rec.hasFlag(SemanticsFlag.hasEnabledState), isTrue);
+      expect(rec.hasFlag(SemanticsFlag.isEnabled), isFalse);
+
+      await tester.tap(find.byKey(const Key('home_recommendation_button')));
+      await tester.pump();
+      expect(taps, 0);
+
+      handle.dispose();
     });
   });
 
