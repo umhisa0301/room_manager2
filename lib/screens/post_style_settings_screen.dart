@@ -472,13 +472,16 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
                       label: '顔文字',
                       child: Semantics(
                         label: 'post_style_kaomoji_switch',
-                        child: SwitchListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: const Text('顔文字を使う'),
-                          value: _draft.kaomojiEnabled,
-                          activeThumbColor: MyPageScreenUi.primary,
-                          onChanged: (v) =>
-                              _updateDraft(_draft.copyWith(kaomojiEnabled: v)),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: SwitchListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text('顔文字を使う'),
+                            value: _draft.kaomojiEnabled,
+                            activeThumbColor: MyPageScreenUi.primary,
+                            onChanged: (v) =>
+                                _updateDraft(_draft.copyWith(kaomojiEnabled: v)),
+                          ),
                         ),
                       ),
                     ),
@@ -563,16 +566,19 @@ class _PostStyleSettingsScreenState extends State<PostStyleSettingsScreen> {
                     const SizedBox(height: 8),
                     Semantics(
                       label: 'post_style_avoid_overstatement_switch',
-                      child: SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text('誇張表現を避ける'),
-                        subtitle: const Text(
-                          '「絶対」「必ず」などの強い表現を控えめにします。',
-                        ),
-                        value: _draft.avoidOverstatement,
-                        activeThumbColor: MyPageScreenUi.primary,
-                        onChanged: (v) => _updateDraft(
-                          _draft.copyWith(avoidOverstatement: v),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text('誇張表現を避ける'),
+                          subtitle: const Text(
+                            '「絶対」「必ず」などの強い表現を控えめにします。',
+                          ),
+                          value: _draft.avoidOverstatement,
+                          activeThumbColor: MyPageScreenUi.primary,
+                          onChanged: (v) => _updateDraft(
+                            _draft.copyWith(avoidOverstatement: v),
+                          ),
                         ),
                       ),
                     ),
