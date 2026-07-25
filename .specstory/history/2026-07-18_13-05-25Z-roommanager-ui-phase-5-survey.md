@@ -586,3 +586,2133 @@ Phase 5候補ごとに、
 コード変更は行わないでください。
 
 可能な限り実際のファイルパス、Widget名、メソッド名、表示文言、行範囲を記載してください。
+
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Phase 5の調査を開始する。空状態・タブ・BottomSheet・アクセシビリティの最終仕上げを調査し、16項目の必須回答と優先順位を整理する。
+
+room_manager2のコードベースを体系的に調査する。grepとファイル検索で空状態・タブ・BottomSheet・アクセシビリティのパターンを特定する。</details></think>
+
+_**Agent (default)**_
+
+Phase 5の事前調査として、空状態・タブ・BottomSheet・アクセシビリティ周りを実コードから洗い出します。まず共通Widgetとキーワード検索から進めます。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "空状態全件・共通Widget調査",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "下部タブ・セグメント・切替UI調査",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "BottomSheet全件調査",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Dialog全件調査",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Tooltip・タップ領域・loading Semantics",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "AppMotion/AppFeedback/Theme残件",
+      "id": "6",
+      "status": "pending"
+    },
+    {
+      "content": "優先順位と必須回答16項目をまとめ",
+      "id": "7",
+      "status": "pending"
+    }
+  ],
+  "success": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "AppScreenEmptyCenter|EmptyStateView"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "AppScreenEmptyCenter|EmptyStateView",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/app_screen_status.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/empty_state_view.dart"
+    }
+  ],
+  "totalFiles": 5,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": true,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "まだありません|見つかりません|0件|noData|empty.*state|EmptyState"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "まだありません|見つかりません|0件|noData|empty.*state|EmptyState",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/theme/activity_screen_tokens.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/utils/home_in_app_notice.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/empty_state_view.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_search_feedback.dart"
+    },
+    {
+      "matchCount": 34,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/screens/today_recommendations_summary_card_test.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "test/utils/today_recommendation_genre_distribution_test.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/activity/activity_analytics_tab.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/repository/rakuten_managed_product_repository.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/repository/rakuten_search_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/product_card_rakuten_open.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/room_profile_url_validation_service.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "test/services/room_import_limit_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/room_url_extraction_service.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/rakuten_search_condition_fields.dart"
+    },
+    {
+      "matchCount": 14,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 9,
+      "uri": "test/widgets/home_goal_milestone_progress_test.dart"
+    }
+  ],
+  "totalFiles": 47,
+  "totalMatches": 136
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **1** result in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (1 file)
+
+| File |
+|------|
+| `../lib/widgets/empty_state_view.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showModalBottomSheet|showBottomSheet|DraggableScrollableSheet"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showModalBottomSheet|showBottomSheet|DraggableScrollableSheet",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/add_candidate_entry_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/config/profile_tutorial_actions.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_type_diagnosis_widgets.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    }
+  ],
+  "totalFiles": 15,
+  "totalMatches": 24
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showDialog|AlertDialog|SimpleDialog|operation_confirm_dialog"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "showDialog|AlertDialog|SimpleDialog|operation_confirm_dialog",
+  "topFiles": [
+    {
+      "matchCount": 7,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/services/room_collect_post_limit.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/operation_confirm_dialog.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/widgets/activity/room_next_actions_card.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/post_style_settings_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/add_candidate_from_url_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "integration_test/room_import_e2e_test.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/state/rakuten_managed_product_provider.dart"
+    }
+  ],
+  "totalFiles": 16,
+  "totalMatches": 51
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+空状態Widgetの調査を進めている。主要な空状態Widgetを確認し、他パターンも並行して調査している。</details></think>
+
+_**Agent (default)**_
+
+空状態の共通Widgetと主要画面を読み、タブ・Theme・AppMotion周りも並行して確認します。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\app_screen_status.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\empty_state_view.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "EmptyStateView\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "EmptyStateView\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\empty_state_view.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **3** results in **1** directory</summary>
+
+Directory: **c:\dev\app_project\room_manager2** (3 files)
+
+| File |
+|------|
+| `../lib/widgets/search_group_screen_shell.dart` |
+| `../lib/app_shell.dart` |
+| `../lib/navigation/app_shell_controller.dart` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "ActivitySegmentedTabBar|IndexedStack|NavigationBar|BottomNavigation"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "ActivitySegmentedTabBar|IndexedStack|NavigationBar|BottomNavigation",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib/app_shell.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/activity_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/navigation/app_shell_controller.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/common_draggable_edge_fab.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/app_theme.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/activity/activity_segmented_tab_bar.dart"
+    }
+  ],
+  "totalFiles": 8,
+  "totalMatches": 16
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\theme",
+  "pattern": "dialogTheme|bottomSheetTheme|navigationBarTheme|tabBarTheme|chipTheme|tooltipTheme|ThemeData\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\theme",
+  "pattern": "dialogTheme|bottomSheetTheme|navigationBarTheme|tabBarTheme|chipTheme|tooltipTheme|ThemeData\\(",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib/theme/comment_screen_tokens.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/legal_consent_screen_tokens.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/theme/app_theme.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/theme/mypage_screen_tokens.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/theme/today_recommendations_screen_tokens.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/theme/rakuten_search_screen_tokens.dart"
+    }
+  ],
+  "totalFiles": 6,
+  "totalMatches": 27
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+app_shell、商品画面の空状態、アクティビティ分析、コメント、BottomSheet など、UI調査をさらに深める。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\app_shell.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\activity\activity_segmented_tab_bar.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\products_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\saved_shops_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\theme\app_theme.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+空状態・BottomSheet・Dialogなどの詳細をさらに調査している。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "空状態・コメント・分析調査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Investigate empty states and related UI in the Flutter project at c:\\dev\\app_project\\room_manager2. This is READ-ONLY investigation.\n\nFind and document ALL empty-state UIs with file paths, widget names, titles, body/description text, icons, CTAs, CTA navigation destinations, and whether they use AppScreenEmptyCenter / EmptyStateView / custom widgets.\n\nFocus areas:\n1. lib/screens/products_placeholder_screen.dart - all empty states (_RoomCollectionEmptyState, search empty, URL filter empty, import meta, reaction filter, render empty) - get exact titles, subtitles, hints, actionLabels, and where onAction navigates\n2. lib/screens/comments_placeholder_screen.dart - _CommentTemplatesEmptyGuide\n3. lib/widgets/activity/activity_analytics_tab.dart - empty/insufficient data states\n4. lib/screens/rakuten_search_screen.dart - empty result views (RakutenSearchEmptyView, shop empty, etc.)\n5. lib/screens/home_placeholder_screen.dart - '候補はまだありません'\n6. lib/widgets/room_post_import_flow.dart - empty import results\n7. lib/services/room_kpi_calculator.dart - '今日のコレがまだありません'\n8. Any notification/reaction empty states\n9. easy_initial_setup_screen.dart _InlineShopEmptyCard\n\nAlso check if EmptyStateView is used anywhere (grep suggests only definition).\n\nReturn a structured table-ready summary in Japanese with exact strings and line numbers.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "9ce78e6b-5d92-418f-bcfb-fc1234e689af",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "9ce78e6b-5d92-418f-bcfb-fc1234e689af"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "BottomSheet・Dialog全件調査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Investigate ALL BottomSheets and Dialogs in Flutter project c:\\dev\\app_project\\room_manager2. READ-ONLY.\n\nFor each showModalBottomSheet / showBottomSheet / DraggableScrollableSheet call, document:\n- Sheet purpose/name\n- File path and approximate line\n- dragHandle / showDragHandle\n- SafeArea / useSafeArea\n- isScrollControlled\n- shape / borderRadius\n- backgroundColor\n- height/constraints\n- keyboard handling\n- how to dismiss\n\nMinimum targets:\n- 探す入口 (add_candidate_entry_sheet.dart)\n- 投稿準備 (room_post_prepare_sheet.dart) - Phase 2 improved, note as baseline\n- 商品フィルタ (products_placeholder_screen)\n- ジャンル選択 (genre_drilldown_picker_sheet)\n- 診断案内 (room_type_diagnosis_widgets)\n- ROOM URL編集\n- プロフィール編集\n- テンプレート選択\n- 通知・お知らせ\n- room_post_import_flow result sheet\n- mypage sheets\n- rakuten_search sheets\n- home sheets\n- product_detail sheets\n- shop_discovery sheets\n- profile_tutorial_actions\n- add_candidate_from_url\n\nFor Dialogs (showDialog, AlertDialog, operation_confirm_dialog):\n- purpose, title, actions order (cancel vs confirm), destructive styling, barrierDismissible, shared widget usage\n\nClassify BottomSheets as:\nA. appearance-only alignment\nB. call options worth aligning\nC. keep individual\nD. legacy/unused\n\nReturn detailed Japanese summary with file:line references.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "7533850d-7347-454e-a678-6ba7dbe0d227",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "7533850d-7347-454e-a678-6ba7dbe0d227"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2">
+<details>
+<summary>Tool use: **task_v2**</summary>
+
+
+Parameters:
+
+```json
+{
+  "description": "タブ・A11y・Motion残件調査",
+  "model": "default",
+  "name": "explore",
+  "prompt": "Investigate tabs, accessibility, AppMotion, AppFeedback remnants in Flutter project c:\\dev\\app_project\\room_manager2. READ-ONLY.\n\n1. AppShell bottom nav (lib/app_shell.dart) - _NavItem details: selection, animation, Semantics, badge, re-tap, IndexedStack. Note: \"探す\" tab always isSelected:false and opens sheet.\n\n2. products_placeholder_screen segmented control for コレ候補/コレ済み - find Widget name, AnimatedContainer, duration, curve, colors, content switch, Key, scroll position, Semantics, reduce motion.\n\n3. Other tabs: ActivitySegmentedTabBar, TabController in activity, search condition tabs in rakuten_search, mypage switches. Table of screen/widget/switch method/animation/duration/AppMotion/Semantics/problems. Flag visually similar but differently implemented (do NOT propose unifying all).\n\n4. IconButton/Tooltip/Semantics for: notification bell, copy, save, delete, filter, close, external link, refresh. Table with issues.\n\n5. Tap targets under 48px: visualDensity, materialTapTargetSize, chips, text links, home flow chips from Phase 4. Classify impact: no layout / slight / large.\n\n6. Loading Semantics: CircularProgressIndicator, liveRegion for: おすすめ生成, AI投稿文生成, 候補追加, ショップ保存, ホーム同期, URL取込, 課金. Table.\n\n7. AppMotion unused animations still on real UI - list with file:line. Separate demo/legacy/unwired. Count real-display ones worth Phase 5.\n\n8. AppFeedback remnants - ScaffoldMessenger direct usage for major SnackBars Phase 3 didn't migrate. Max 3 high-value migration candidates.\n\n9. Theme: dialogTheme, bottomSheetTheme, navigationBarTheme, tabBarTheme, chipTheme, tooltipTheme - defined? Phase 5 value?\n\nRead lib/theme/app_motion.dart and lib/ui/feedback/app_feedback.dart for baseline.\n\nReturn Japanese structured findings with paths and line numbers.",
+  "subagentType": "explore"
+}
+```
+Additional data:
+
+```json
+{
+  "status": "success",
+  "subagentComposerId": "6567b96f-aa9a-4428-9690-f747fff0a9bc",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "6567b96f-aa9a-4428-9690-f747fff0a9bc"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+サブエージェントから多くの情報が集まった。これから調査を整理する。
+
+最終報告の正確性を高めるため、Products空状態、Activity分析空状態、Homeフローチップサイズ、AppMotion詳細、セグメントボタン、フィルター空状態のCTA有無などをコードで確認している。必須16項目の回答も精査している。</details></think>
+
+_**Agent (default)**_
+
+重要箇所の行番号と文言を実コードで突き合わせます。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\products_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\products_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\activity\activity_analytics_tab.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\theme\app_motion.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\operation_confirm_dialog.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+空状態の詳細調査を進めている。フィルタークリアCTAがない空状態、通知空状態、ホーム候補空状態、フィルター空状態のCTA必要性を確認する。AppFeedbackの使用パターンも調べる。
+
+空状態の優先順位を整理した。進行を阻む空状態は「コレ候補0件」「分析反応データなし」「検索結果フィルタ空」「ホーム候補空」の4つ。価値の高い改善対象は「コレ候補0件」の「探す」ボタン追加と「分析反応データ不足」の同期ボタン追加。
+
+フィルタ系空状態にクリアフィルタCTAを追加する。ホーム候補パネルは微調整対象。BottomSheetはshape/dragHandle用の小定数のみを共通化し、フルラッパーは不要。タブ選択表示は十分明確でコンテンツスライドは不要。ActivitySegmentedTabBarのreduce motion対応が必要。タップ領域の問題はホームワークフローチップが主因。AppMotion未対応の実表示Animationは約8箇所。AppFeedbackへの追加移行は上位3箇所が対象。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\products_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "ScaffoldMessenger\\.of|AppFeedback\\."
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "ScaffoldMessenger\\.of|AppFeedback\\.",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/activity/activity_analytics_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/ui/feedback/app_feedback.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/state/room_import_controller.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/widgets/room_post_import_flow.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/favorite_genre_picker_sheet.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/services/app_action_service.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/state/rakuten_managed_product_provider.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/easy_initial_setup_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_edit_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/comment_template_edit_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_add_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/monetization_plan_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/post_style_settings_screen.dart"
+    }
+  ],
+  "totalFiles": 32,
+  "totalMatches": 94
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppMotion\\."
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "count",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AppMotion\\.",
+  "topFiles": [
+    {
+      "matchCount": 10,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib\\widgets\\home_goal_milestone_progress.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/theme/app_motion.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/widgets/room_post_prepare_sheet.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib\\widgets\\home_animated_int_count.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 32
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AnimatedContainer|AnimationController|TweenAnimationBuilder"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "AnimatedContainer|AnimationController|TweenAnimationBuilder",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/theme/app_motion.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/app_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/common_draggable_edge_fab.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/collect_post_success_overlay.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/activity/activity_segmented_tab_bar.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\home_goal_milestone_progress.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/activity/activity_achievement_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/closed_test_demo_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/today_recommendations_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\home_animated_int_count.dart"
+    }
+  ],
+  "totalFiles": 14,
+  "totalMatches": 18
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+NavItemのSemanticsとバッジ読み上げ、RakutenSearchEmptyViewも調査に含める。
+
+今日の推奨事項でAppFeedbackとScaffoldMessengerの混在を確認する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\rakuten_search_feedback.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\add_candidate_entry_sheet.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\room_post_prepare_sheet.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\product_detail_screen.dart",
+  "pattern": "IconButton\\(|tooltip:"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\product_detail_screen.dart",
+  "pattern": "IconButton\\(|tooltip:",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\product_detail_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "空状態全件・共通Widget調査",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "下部タブ・セグメント・切替UI調査",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "BottomSheet全件調査",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Dialog全件調査",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Tooltip・タップ領域・loading Semantics",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "AppMotion/AppFeedback/Theme残件",
+      "id": "6",
+      "status": "completed"
+    },
+    {
+      "content": "優先順位と必須回答16項目をまとめ",
+      "id": "7",
+      "status": "in_progress"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "空状態全件・共通Widget調査",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "下部タブ・セグメント・切替UI調査",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "BottomSheet全件調査",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "Dialog全件調査",
+      "id": "4",
+      "status": "pending"
+    },
+    {
+      "content": "Tooltip・タップ領域・loading Semantics",
+      "id": "5",
+      "status": "pending"
+    },
+    {
+      "content": "AppMotion/AppFeedback/Theme残件",
+      "id": "6",
+      "status": "pending"
+    },
+    {
+      "content": "優先順位と必須回答16項目をまとめ",
+      "id": "7",
+      "status": "pending"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+十分な情報が集まった。日本語でPhase 5の調査報告を作成する。
+
+16項目の調査基準に照らし合わせ、Phase 5の優先実装候補を絞り込んだ。空状態にCTAボタンを追加する（コレ候補0件・フィルタ空状態・分析反応データ不足）、およびホームworkflow chipのタップ領域拡大が最も価値が高いと判断した。
+
+下部ナビとセグメントのSemantics・reduce motion対応も調査対象に加えた。NavItemにSemanticsがない点やActivitySegmentedTabBarの固定220msアニメーションを確認した。BottomSheetのラッパー共通化は今回のスコープから除外し、空状態CTA追加に集中する方針とした。
+
+AppFeedbackへの追加移行は3項目に絞る。通知ベルのTooltip・Semantics改善も中程度の対象とする。
+
+空状態の改善はScreen専用EmptyStateViewにCTAを追加する形で行う。共通WidgetとしてEmptyStateViewを復活させたり、LottieやDeadCodeクリーンアップなどは今回のスコープから除外する。
+
+画面全体の空状態はAppScreenEmptyCenterを維持する。リスト内に埋め込む空状態は新規Widgetではなく、_RoomCollectionEmptyStateパターンにactionパラメータを追加する形で対応する。これにより空状態の改善は既存Widgetの拡張に留める。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\product_detail_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.dart",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\room_import_controller.dart",
+  "pattern": "ScaffoldMessenger\\.of\\(context\\)\\.showSnackBar"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\room_import_controller.dart",
+  "pattern": "ScaffoldMessenger\\.of\\(context\\)\\.showSnackBar",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "lib\\state\\room_import_controller.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "空状態全件・共通Widget調査",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "下部タブ・セグメント・切替UI調査",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "BottomSheet全件調査",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Dialog全件調査",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Tooltip・タップ領域・loading Semantics",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "AppMotion/AppFeedback/Theme残件",
+      "id": "6",
+      "status": "completed"
+    },
+    {
+      "content": "優先順位と必須回答16項目をまとめ",
+      "id": "7",
+      "status": "completed"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "空状態全件・共通Widget調査",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "下部タブ・セグメント・切替UI調査",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "BottomSheet全件調査",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "Dialog全件調査",
+      "id": "4",
+      "status": "completed"
+    },
+    {
+      "content": "Tooltip・タップ領域・loading Semantics",
+      "id": "5",
+      "status": "completed"
+    },
+    {
+      "content": "AppMotion/AppFeedback/Theme残件",
+      "id": "6",
+      "status": "completed"
+    },
+    {
+      "content": "優先順位と必須回答16項目をまとめ",
+      "id": "7",
+      "status": "in_progress"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Phase 5の調査に必要な情報が揃った。空状態、タブ、BottomSheet、アクセシビリティ、AppFeedback、Theme、優先順位、動かす/静止判断、必須回答16項目について、具体的なファイルパスやWidget名、メソッド名、表示文言、行範囲を含めた調査を開始する。
+
+日本語で最終報告を執筆する。A～Mの構成と16項目の必須回答を含め、詳細かつ簡潔にまとめる。</details></think>
+
+_**Agent (default)**_
+
+## A. 調査概要
+
+Phase 5向けの**調査のみ**です。コード変更はしていません。
+
+結論として、Phase 5の価値は「新しい演出」ではなく、**行き止まり空状態へのCTA追加**と、**タップ領域・Semantics・reduce motionの穴埋め**に集中するのが妥当です。BottomSheet/Dialogの大共通化、タブコンテンツSlide、空状態アニメは不要です。
+
+基準となる既存資産:
+- `AppMotion` … `lib/theme/app_motion.dart`（fast 160 / normal 240 / emphasized 360）
+- `AppScreenEmptyCenter` … `lib/widgets/app_screen_status.dart:103–165`
+- `EmptyStateView` … **定義のみ・未使用**（`lib/widgets/empty_state_view.dart`）
+- BottomSheet基準 … Phase 2の `room_post_prepare_sheet.dart:49–96`（探す入口と同型）
+
+---
+
+## B. 空状態
+
+### 全件一覧（主要）
+
+| 画面 | Widget | タイトル | 説明 | アイコン | CTA | CTA遷移 | 共通Widget |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 投稿・コレ候補 | `_RoomCollectionEmptyState` (`products_placeholder_screen.dart:2499–2502, 3703`) | コレ候補はまだありません | 「探す」や「今日のおすすめ」から… | `inventory_2_outlined` | **なし** | — | 画面固有 |
+| 投稿・コレ済 | 同上 (`:2630–2632`) | コレ済の商品はまだありません | ROOMに投稿した商品や… | 同上 | **なし** | — | 画面固有 |
+| 投稿・日付フィルタ | 同上 (`:2634–2636, 3043`) | この日にコレした商品はありません | 端末の日付に基づく… | 同上 | すべて表示 | 日付解除（画面内） | 画面固有 |
+| 投稿・検索0件 | `_RoomCollectionSearchEmptyState` (`:3505`) | 一致する商品がありません | キーワードを変えるか、絞り込みを解除… | `search_off_outlined` | **なし** | — | 画面固有 |
+| 投稿・URLフィルタ | `_RoomCollectionUrlFilterEmptyState` (`:3565`) | 「ROOM URLあり」に一致する… | フィルターを変更すると… | `link_off_rounded` | **なし** | — | 画面固有 |
+| 投稿・未確認/確認済 | `_RoomImportMetaFilterEmptyState` (`:3366`) | 未確認/確認済の商品はありません | 説明あり | `fact_check_outlined` | **なし** | — | 画面固有 |
+| 投稿・反応あり | `_RoomReactionFilterEmptyState` (`:3446`) | 反応ありの商品はまだありません | ROOM投稿の反応を確認すると… | `favorite_border_rounded` | **なし** | — | 画面固有 |
+| おすすめコレ | `AppScreenEmptyCenter` (`today_recommendations_screen.dart:278`) | まだ今日のおすすめがありません | ジャンル有無で分岐 | `auto_awesome_outlined` | 今日のおすすめを作る | `_regenerate` | **共通** |
+| 保存ショップ | `AppScreenEmptyCenter` (`saved_shops_screen.dart:46`) | 保存ショップはまだありません | ショップ発掘で… | `bookmarks_outlined` | ショップ発掘を開く | shopDiscovery | **共通** |
+| 楽天・保存ショップ空 | `AppScreenEmptyCenter` (`rakuten_search_screen.dart:3114`) | 同上系統 | 店内検索向け文 | 同上 | ショップ発掘を開く | 画面内 | **共通** |
+| 楽天検索0件群 | `RakutenSearchEmptyView` (`rakuten_search_feedback.dart:420`) | 条件別多数 | 条件別 | 条件別 | 条件を変更/クリア等 | 条件シート | 検索専用 |
+| ホーム・候補 | `_RecentCandidatesPanel` (`home:4531–4544`) | 候補はまだありません | 「探す」や「今日のおすすめ」から… | **なし** | **なし** | — | 画面固有 |
+| ホーム・お知らせ | BottomSheet内 Text (`home:3881–3882`) | 新しいお知らせはありません | — | なし | なし | — | 画面固有 |
+| 分析・反応0 | `activity_analytics_tab.dart:1051–1143` | まだ反応データがありません / いいねやコメントの取得が進むと… | ROOM同期の説明 | insights / sync | **なし** | — | 画面固有 |
+| 分析・材料不足 | DecisionBrief等 (`:386+`) | まだ分析材料が少ないです | rationaleあり | — | おすすめ/コレ済を開く | あり | 画面固有 |
+| コメント | `_CommentTemplatesEmptyGuide` (`comments:317`) | よく使うコメントを登録しましょう | 右下から登録… | `post_add_rounded` | テンプレートを追加 | EditScreen | 画面固有 |
+| URL取込結果 | `room_post_import_flow.dart:779–784` | 追加はありませんでした 等 | 件数ヒーロー | — | コレ済一覧を見る | openRoomCollect | 画面固有 |
+| KPI洞察 | `room_kpi_calculator.dart:225` | 今日のコレがまだありません | … | — | コレ候補を見る | **未配線** | **E.レガシー** |
+| 初期設定ショップ | `_InlineShopEmptyCard` | おすすめショップを取得できませんでした | … | — | あとで設定する | skip | **E.到達不可** |
+
+### 空状態共通Widget
+
+| 項目 | `AppScreenEmptyCenter` | `EmptyStateView` |
+| --- | --- | --- |
+| title / message | `title` + `body` | `message` + `detail` |
+| icon | 必須 `IconData` | 任意（default inbox） |
+| action | `actions: List<Widget>` | **なし** |
+| Semantics | **なし** | **なし** |
+| padding | 横24 | `screenPaddingH*1.5` 等 |
+| 最大幅 | なし | なし |
+| 利用 | おすすめ / 保存ショップ / 楽天保存空 | **0件** |
+| 重複 | 投稿管理の `_RoomCollection*` 群が独自実装 | — |
+
+**判断材料（未実装）:**
+- 新共通Widgetは不要
+- `EmptyStateView` の復活も不要（CTA無しのため）
+- 全画面系は `AppScreenEmptyCenter` のまま十分
+- 一覧埋め込み系は `_RoomCollectionEmptyState` に任意CTAを足す局所拡張が費用対効果が高い
+
+### 空状態優先順位
+
+| 空状態 | 分類 | 問題 | 推奨改善 | Phase5候補 |
+| --- | --- | --- | --- | --- |
+| コレ候補0件 | **A** | 次の行動を文で言うがボタンがない | 「探すを開く」「おすすめを開く」CTA | **Yes** |
+| 検索/URLフィルタ0件 | **A** | 「解除してください」とだけ | 「絞り込みを解除」CTA | **Yes** |
+| 分析・反応データなし | **A** | 同期手順を文のみ | 「反応を確認する」CTA | **Yes** |
+| ホーム候補0件 | **A/C** | CTAなし・表現も薄い | テキストリンクまたは親CTA誘導 | 中 |
+| コレ済0件 | **B/D** | CTAなしだが「済」は自然に空もあり得る | 任意でおすすめ誘導 | 低〜中 |
+| 反応ありフィルタ0 | **B** | 次行動が曖昧 | 「反応を確認する」誘導 | 中 |
+| おすすめ/保存ショップ/コメント | **D** | CTA具体・遷移正しい | 変更不要 | No |
+| 楽天検索0件群 | **D** | CTAあり | 変更不要 | No |
+| KPI洞察 / 初期設定ショップ空 | **E** | 未配線・到達不可 | Phase5対象外 | No |
+
+アニメーションは全空状態で**不要**。
+
+---
+
+## C. タブ・セグメント
+
+### 下部タブ（`lib/app_shell.dart`）
+
+| 項目 | 内容 |
+| --- | --- |
+| 実装 | カスタム `_NavItem`（`:271–336`）。Material `NavigationBar` 不使用 |
+| タブ | ホーム / **探す** / 投稿 / 分析 / マイページ |
+| IndexedStack | `:134` … 0ホーム, 1投稿, 2コメント(フッター外), 3分析, 4マイページ |
+| 選択 | 塗りアイコン + teal色 + `navLabelSelected`。**アニメなし** |
+| 探す | **常に `isSelected: false`**（`:221`）。シートを開く入口 |
+| badge | なし（通知Badgeはホーム内） |
+| AppMotion | **未使用** |
+| Semantics | **なし**（探すのみ Tooltip「候補を追加」） |
+| タップ領域 | `minHeight: 48` |
+| 再タップ | `selectTab` 同一indexは no-op。探すは毎回シート |
+
+**評価:** 選択の視認性は十分。画面遷移Motionは不要。Semanticsラベル（選択状態・探すの役割）とバッジ読み上げは改善余地あり。
+
+### 投稿管理セグメント（`products_placeholder_screen.dart:2341–2436`）
+
+| 項目 | 内容 |
+| --- | --- |
+| Widget | Material `SegmentedButton<int>` + `TabController` / `TabBarView` |
+| AnimatedContainer | セグメント本体にはなし（行flashのみ `:3230` 200ms） |
+| 色 | 選択 teal / 非選択 cardFill |
+| スクロール | タブ切替で `jumpTo(0)` **なし** → 位置保持 |
+| Semantics | machine id（`post_management_tab_candidates` 等）+ tooltip |
+| reduce motion | **未対応**（Material既定） |
+| メタ絞込 | 別 `SegmentedButton` minH **34**（`:2533`） |
+
+**コンテンツSlide/Fadeは不要。** 選択UIの軽い切替で十分。
+
+### 他タブ比較
+
+| 画面 | Widget | 切替方法 | Animation | duration | AppMotion | Semantics | 問題 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 分析 | `ActivitySegmentedTabBar` | `animateTo`+TabBarView | AnimatedContainer | 220ms | なし | なし | reduce motionなし |
+| 投稿 | `SegmentedButton` | 同上 | Material既定 | 未明示 | なし | machine label | 見た目似て実装別 |
+| 楽天検索 | `SearchModeSegmentBar` | 状態切替 | ensureVisible | 220ms | なし | なし | minH 36 |
+| 楽天下ナビ | `_RakutenSearchBottomNavItem` | InkWell | AnimatedContainer | 150ms | なし | なし | AppShellと別実装 |
+| マイページ | セグメントなし | — | — | — | — | — | — |
+| `AppTabBar` | `app_tab.dart` | — | 150ms | — | なし | なし | **未使用** |
+
+全タブ統合は提案しません。ばらつきの指摘のみ。
+
+---
+
+## D. BottomSheet
+
+`showBottomSheet` / `DraggableScrollableSheet` は **0件**。すべて `showModalBottomSheet`。
+
+| Sheet | ファイル | dragHandle | SafeArea | scrollControlled | shape | 高さ | キーボード | 閉じ方 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 投稿準備（基準） | `room_post_prepare_sheet.dart:49` | true | useSafeArea false + 内側 | true | radiusCard 16 + transparent | min | AnimatedPadding 100ms | drag/barrier/操作後 |
+| 探す入口 | `add_candidate_entry_sheet.dart:32` | true | 同上 | true | 同上 | min | 同上 | 同上 |
+| 商品フィルタ | `products:1887` | **手動** | useSafeArea true | true | **radius 24** | **0.8h** | viewInsets | 適用/閉じる |
+| ジャンル | `genre_drilldown_picker_sheet.dart` | true | デフォルト+内側 | true | デフォルト | **0.72h** | viewInsets | 閉じる/確定 |
+| 診断案内 | `room_type_diagnosis_widgets.dart:59` | 手動 | padding.bottom | true | radius 20 | min | なし | CTAでbool |
+| ROOM URL / プロフィール | mypage / home | true | useSafeArea **true** | true | デフォルト | min+_SheetScaffold | viewInsets | 保存/閉じる |
+| お知らせ | `home:3843` | true | 内側 | **false** | デフォルト | min | なし | 行/barrier |
+| 取込結果 | `room_post_import_flow.dart:538` | true | 内側 | true | デフォルト | min | なし | CTA |
+| 楽天条件 | `rakuten_search:3822` | true | — | true | Material | **0.9h** | viewInsets | — |
+| URLから追加 | `add_candidate_from_url_screen.dart:39` | true | true | true | — | — | AnimatedPadding | — |
+
+### 見た目・挙動のばらつき
+
+- 角丸: **16（基準）/ 20 / 24 / デフォルト**
+- dragHandle: システム / 手動 / なし
+- `useSafeArea` と `backgroundColor: transparent` の有無がバラバラ
+- 処理中閉じ制御・明示 `isDismissible` はほぼ未指定（デフォルト可）
+
+### 共通化分類
+
+| 分類 | 対象 |
+| --- | --- |
+| **A** | 投稿準備・探す入口（既に揃っている）を見た目基準にする |
+| **B** | URL/プロフィール編集・PostStyle・お知らせ・テンプレ選択の呼び出しオプション |
+| **C** | フィルタ(0.8)/ジャンル(0.72)/条件検索(0.9)/診断/取込結果 |
+| **D** | `FavoriteGenrePickerSheet`（未表示） |
+
+**巨大helperは不要。** 必要なら `radiusCard`・`showDragHandle: true`・`useSafeArea: false` + 内側SafeArea 程度の定数共有に限定。
+
+---
+
+## E. Dialog
+
+| Dialog | 用途 | title | actions | 破壊的 | barrierDismissible | 共通 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `showRoomImportConfirmDialog` | 取込確認 | ROOM投稿を取り込む | キャンセル→開始(Filled) | なし | デフォルトtrue | **定義あるが呼び出し未使用**（home/next_actionsが複製） |
+| `showRoomReactionSyncConfirmDialog` | 反応確認 | 反応を確認する | 同上 | なし | true | **使用中** |
+| 商品削除 | product_detail | 削除の確認 | キャンセル→削除（赤なし） | 弱い | true | インライン |
+| テンプレ削除 | comments | 削除の確認 | キャンセル→**削除(error色)** | **あり** | true | インライン |
+| 候補から外す | managed card | 候補から外す | キャンセル→実行 | 弱い | true | インライン |
+| AI作り直し/クリア | prepare sheet | … | キャンセル→実行(Text) | なし | true | インライン |
+| その他エラー系 | 多数 | … | 閉じるのみ | — | true | インライン |
+
+- ボタン順は概ね **キャンセル → 実行** で統一
+- 破壊色は **コメント削除のみ** 明確。商品削除は赤なし
+- Dialogアニメ変更は不要。BottomSheetとの使い分けは「確認/破壊」vs「編集・選択・フォーム」で概ね妥当
+
+---
+
+## F. Tooltip・タップ領域
+
+| 画面 | アイコン | 操作 | Tooltip | Semantics | タップ領域 | 問題 |
+| --- | --- | --- | --- | --- | --- | --- |
+| ホーム | 通知ベル | お知らせ | **なし** | machine idのみ | **40×40** | 人間向けlabel不足 |
+| ホーム | 更新pill | 同期 | なし | なし | minH 36 | 弱い |
+| ホーム | フローchip | 導線 | なし | なし | padding 1 / icon 13 | **著しく小さい** |
+| 商品詳細 | 削除 | 削除 | **なし** | なし | IconButton既定 | Tooltip不足 |
+| 商品詳細 | 編集 | 編集 | なし | なし | 同上 | 同上 |
+| 投稿 | フィルタ行 | 絞込 | — | machine id | 行48 OK | labelが機械向け |
+| コメント | 削除 | 削除 | あり | — | — | OK寄り |
+| お知らせclose | 閉じる | 閉じる | あり | — | **28×28** | 小 |
+
+### 48px未満の影響分類
+
+| 箇所 | 影響 |
+| --- | --- |
+| `_HomeWorkFlowChip`（`home:1795–1894`） | **大きな影響**（日常導線） |
+| 通知ベル 40×40 | レイアウト影響なし〜少し |
+| 更新pill / SearchMode 36 / メタセグメント 34 | 少し |
+| お知らせclose 28 | 少し |
+| AppShell nav 48 | 影響なし（OK） |
+
+---
+
+## G. loading・アクセシビリティ
+
+| 処理 | loading UI | 読み上げ | disabled | 問題 |
+| --- | --- | --- | --- | --- |
+| おすすめ生成 | inline status + button isLoading | テキストのみ | ボタン側 | liveRegionなし |
+| AI投稿文生成 | `_RoomPostPrepareAiGeneratingPanel` | **liveRegionあり** | — | **良好（基準）** |
+| 候補追加 | バナー + button loading | バナー非Semantics | あり | 弱い |
+| ショップ保存 | 「保存中…」+ CPI | なし | — | 弱い |
+| ホーム同期 | LinearProgress + 文言 | Keyのみ | 操作制限あり | liveRegionなし |
+| URL取込 | button isLoading | labelのみ | あり | 弱い |
+| 課金 | ボタン無効 + SnackBar | なし | あり | 弱い |
+
+---
+
+## H. reduce motion残件
+
+**実表示・Phase 5で見る価値あり（約8箇所）:**
+
+1. `activity_segmented_tab_bar.dart:89` … 220ms固定  
+2. `rakuten_search_screen.dart:7110` … 下ナビ 150ms  
+3. `products_placeholder_screen.dart:3230` … 行flash 200ms  
+4. `activity_achievement_tab.dart:236` … マイルストーン 380ms  
+5. 同 `:661` … 棒グラフ 720ms  
+6. `collect_post_success_overlay.dart:58` … 520ms  
+7. `common_draggable_edge_fab.dart` … 200ms独自  
+8. `home_placeholder_screen.dart:3337` … `_HomeAnimatedPostedCount` 550ms（隣接の `HomeAnimatedIntCount` はAppMotion済）
+
+**デモ/未配線:** `closed_test_demo_screen.dart`、`app_tab.dart`（未使用）
+
+Phase 5で全部やる必要はなく、**触るUIに付随するものだけ**で十分。
+
+---
+
+## I. AppFeedback残件
+
+全件移行はしません。Phase 5で価値が高いのは最大3件:
+
+1. **おすすめ再生成** … `today_recommendations_screen.dart:187–224`（成功/待機/上限が生SnackBar。候補追加は既にAppFeedback混在）
+2. **ROOM同期ブロック/上限** … `room_import_controller.dart:140–168, 470–482`
+3. **課金サービスメッセージ** … `monetization_plan_screen.dart:124–128`
+
+---
+
+## J. Theme
+
+`app_theme.dart` に **dialogTheme / bottomSheetTheme / navigationBarTheme / tabBarTheme / chipTheme / tooltipTheme は未定義**。  
+あるのは `bottomNavigationBarTheme`（AppShellがカスタムのため実効薄い）と `snackBarTheme`。
+
+| 追加候補 | Phase5価値 | 注意 |
+| --- | --- | --- |
+| bottomSheetTheme | 中（角丸・bg統一） | 高さ固定系Sheetへの副作用に注意 |
+| dialogTheme | 低〜中 | 全Dialogに波及 |
+| tooltipTheme | 低 | 個別Tooltip追加の方が安全 |
+| tabBar / nav / chip | **低** | カスタムUI主体 |
+
+Theme一括追加より、**呼び出しオプション定数**の方が安全。
+
+---
+
+## K. 優先順位
+
+### 高（最大5）
+
+1. **コレ候補0件にCTA**（探す / おすすめ）  
+2. **投稿フィルタ空（検索・URL）に「絞り込み解除」CTA**  
+3. **分析・反応データ不足に「反応を確認する」CTA**  
+4. **ホームフローchipのタップ領域拡大**（Semantics含む）  
+5. **セグメント/ナビのSemantics + ActivitySegmentedTabBarのreduce motion**（コンテンツSlideなし）
+
+### 中
+
+- ホーム候補0件の軽いCTA/リンク  
+- BottomSheet呼び出しオプションの軽揃え（編集系）  
+- 通知ベルの人間向けlabel / 40→48  
+- AppFeedback 3件移行  
+- 商品詳細削除Tooltip  
+- loading liveRegion（ホーム同期・おすすめ）
+
+### 低
+
+- 全BottomSheet/Dialog共通化  
+- EmptyStateView復活・新共通空状態Widget  
+- タブコンテンツSlide/Fade  
+- 破壊色の全Dialog統一  
+- Theme一括追加  
+- レガシー削除（FavoriteGenre / KPI洞察）を主目的にする
+
+---
+
+## L. 動かす / 静止判断
+
+| 候補 | 判断 |
+| --- | --- |
+| 空状態CTA追加 | **静止UI改善**（Animation追加しない） |
+| ホームフローchip | **Accessibility改善** + 静止UI（既存AppMotionは維持） |
+| ActivitySegmentedTabBar | **既存Animation整理**（AppMotion化）／コンテンツSlideは**変更不要** |
+| 下部タブ選択Motion | **変更不要**（現状十分） |
+| BottomSheet見た目全面 | **変更不要**〜中ならオプション定数のみ |
+| Dialogアニメ | **変更不要** |
+| AppFeedback移行 | **静止UI改善**（色/キュー） |
+| 空状態アニメ | **変更不要** |
+
+---
+
+## M. 必須回答16項目
+
+1. **最も改善価値が高い空状態** … 投稿管理の「コレ候補はまだありません」（文はあるがCTAなし。日常頻度が高い）
+2. **CTAがなく行き止まりの空状態はあるか** … **ある**（コレ候補0 / 検索・URLフィルタ0 / 分析反応データなし / ホーム候補0）。おすすめ・保存ショップ・コメント・楽天検索群はCTAあり
+3. **空状態共通Widgetは十分か** … 全画面用 `AppScreenEmptyCenter` は十分。`EmptyStateView` は未使用。一覧埋め込みは画面固有のままCTA拡張で足り、**新共通は不要**
+4. **下部タブの選択状態は十分か** … **視認性は十分**。探すは意図的に非選択。Semanticsが弱い
+5. **タブ切替Animationを追加すべきか** … **コンテンツSlideは不要**。セグメント選択の軽い整理（reduce motion）に留める
+6. **セグメント切替は統一されているか** … **されていない**（SegmentedButton / ActivitySegmentedTabBar / SearchModeSegmentBar）。全統合は不要
+7. **BottomSheetの見た目のばらつき** … **中程度**（角丸16/20/24、ハンドル、SafeArea、固定高0.72–0.9）
+8. **共通BottomSheet wrapperは必要か** … **巨大wrapperは不要**。定数レベルなら可
+9. **Dialogのボタン順・破壊色は統一か** … 順は概ね統一。破壊色は**不統一**（コメント削除のみ赤）
+10. **Tooltip不足の重要アイコン** … **通知ベル**、**商品詳細の削除/編集**、ホーム更新pill
+11. **48px未満の重要タップ領域** … **ホームフローchip**（最大）。ついでベル40、更新36、メタセグメント34
+12. **loading読み上げが弱い箇所** … おすすめ生成、ホーム同期、候補追加バナー、ショップ保存、課金（AI投稿文のみ良好）
+13. **AppMotion未対応の実表示Animation** … **約8箇所**（デモ/未配線除く）
+14. **AppFeedbackへ追加移行すべき箇所** … ①おすすめ再生成SnackBar ②ROOM同期ブロック ③課金メッセージ
+15. **Phase 5で実装すべき3〜5項目**  
+    1. コレ候補空 + フィルタ空のCTA  
+    2. 分析反応不足のCTA  
+    3. ホームフローchipタップ領域  
+    4. セグメント/ナビのSemantics・reduce motion  
+    5.（余力）AppFeedback上位2〜3件 or 通知ベルa11y
+16. **Phase 5で触らない方がよい領域** … 空状態常時アニメ / Lottie・Rive・Shimmer / 全BottomSheet・全Dialog共通化 / タブコンテンツSlide / ナビ方式変更 / デッドコード主目的整理 / Theme一括で全画面波及
+
+---
+
+調査は以上です。実装に進める場合は、上記「高」の1〜4を最初のPR単位にすると局所変更しやすく、テストもしやすいです。
